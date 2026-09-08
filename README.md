@@ -46,6 +46,15 @@ conservative link relationships are source-linked. Fenced-code bodies remain
 raw Markdown context only and are never recursively parsed or treated as
 embedded Go, TypeScript, or another language.
 
+## Agent skill
+
+The vendored [repoctx skill](skills/repoctx/SKILL.md) teaches agents to compile
+an index, retrieve bounded evidence, check freshness and limitations, and expand
+context only when needed. It assumes the `repoctx` binary is on `PATH`.
+
+Copy the `skills/repoctx` directory into your agent's skill directory to use it
+outside this checkout. Installing the Go binary does not install the skill.
+
 ## Compile, then retrieve for an agent
 
 ```sh
