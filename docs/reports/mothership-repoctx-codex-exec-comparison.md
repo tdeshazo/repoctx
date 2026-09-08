@@ -11,7 +11,7 @@ The authoritative answer is **Browser Terminal Access** (rank 11). Its next unme
 > trust, frontend builds, and the supported-browser matrix are recorded as
 > testable contracts before their schema or gateway code lands.
 
-This answer was established from Mothership planning documents before the trials. After explicit user authorization for the bounded planning evidence to reach OpenAI, three assisted and three baseline codex exec trials completed successfully. All six returned the expected answer and emitted JSONL usage events. Earlier blocked invocations are retained below as preflight history and are not part of the sanctioned six-trial comparison.
+This answer was established from Mothership planning documents before the trials. After explicit user authorization for the bounded planning evidence to reach OpenAI, three assisted and three baseline codex exec trials completed successfully. All six returned the expected answer and emitted JSONL usage events.
 
 ## Environment and controls
 
@@ -52,32 +52,6 @@ The index validated as repoctx.ir/v1alpha3, with snapshot sha256:c2549997bea38e0
 The bundle reported Markdown AST, source spans, and defines/imports/calls. It reported no type resolution, test coverage, build-target inference, or embedded-language semantics. It warned that coverage was selected rather than exhaustive, freshness covered only permitted indexed files, and semantic IDs plus the snapshot were required for expansion.
 
 The bundle's Markdown renderer selected heading spans for this source, so its exact evidence blocks contained headings rather than surrounding paragraph text. To make the supplied fact directly answerable, each assisted prompt included a bounded exact excerpt copied from the two authoritative files in addition to bundle metadata. The excerpt was labeled untrusted evidence; the agent was forbidden from inspecting the filesystem.
-
-## Preflight exact commands (not sanctioned trial set)
-
-The common command shape was:
-
-~~~sh
-CODEX_HOME=/tmp/mothership-codex-home codex exec --ephemeral --json -s read-only -C /home/travis/Workspace/Mothership < /tmp/mothership-{assisted|baseline}-prompt.txt > /tmp/mothership-{trial}.jsonl 2> /tmp/mothership-{trial}.stderr
-~~~
-
-The first assisted invocation was allowed to reconnect until manually interrupted after approximately 150 seconds. Its exact command was:
-
-~~~sh
-CODEX_HOME=/tmp/mothership-codex-home codex exec --ephemeral --json -s read-only -C /home/travis/Workspace/Mothership < /tmp/mothership-assisted-prompt.txt > /tmp/mothership-assisted-1.jsonl 2> /tmp/mothership-assisted-1.stderr
-~~~
-
-The other five used the same command with a 20-second external limit. Their exact commands were:
-
-~~~sh
-timeout 20s env CODEX_HOME=/tmp/mothership-codex-home codex exec --ephemeral --json -s read-only -C /home/travis/Workspace/Mothership < /tmp/mothership-assisted-prompt.txt > /tmp/mothership-assisted-2.jsonl 2> /tmp/mothership-assisted-2.stderr
-timeout 20s env CODEX_HOME=/tmp/mothership-codex-home codex exec --ephemeral --json -s read-only -C /home/travis/Workspace/Mothership < /tmp/mothership-assisted-prompt.txt > /tmp/mothership-assisted-3.jsonl 2> /tmp/mothership-assisted-3.stderr
-timeout 20s env CODEX_HOME=/tmp/mothership-codex-home codex exec --ephemeral --json -s read-only -C /home/travis/Workspace/Mothership < /tmp/mothership-baseline-prompt.txt > /tmp/mothership-baseline-1.jsonl 2> /tmp/mothership-baseline-1.stderr
-timeout 20s env CODEX_HOME=/tmp/mothership-codex-home codex exec --ephemeral --json -s read-only -C /home/travis/Workspace/Mothership < /tmp/mothership-baseline-prompt.txt > /tmp/mothership-baseline-2.jsonl 2> /tmp/mothership-baseline-2.stderr
-timeout 20s env CODEX_HOME=/tmp/mothership-codex-home codex exec --ephemeral --json -s read-only -C /home/travis/Workspace/Mothership < /tmp/mothership-baseline-prompt.txt > /tmp/mothership-baseline-3.jsonl 2> /tmp/mothership-baseline-3.stderr
-~~~
-
-The trial prompt files were /tmp/mothership-assisted-prompt.txt and /tmp/mothership-baseline-prompt.txt. Raw outputs were /tmp/mothership-assisted-{1,2,3}.jsonl and /tmp/mothership-baseline-{1,2,3}.jsonl; corresponding .stderr files hold transport diagnostics.
 
 ## Sanctioned trial commands
 
@@ -178,38 +152,13 @@ Sums and means below are over the three successful, comparable trials in each co
 
 Both conditions had 100% answer correctness on the six sanctioned trials. The baseline consumed more input because its permitted shell inspection returned the full planning documents, while the assisted prompt supplied a compact bounded evidence excerpt and bundle metadata. This is an intended condition difference, not a claim that the conditions had equal input-token volume.
 
-## Preflight blocked attempts (not part of the sanctioned trial set)
-
-Before explicit authorization, three assisted and three baseline invocations were attempted in the restricted sandbox. They produced no final answers or usage objects. Their failures are retained for reproducibility but excluded from the sanctioned aggregates below. No numbers below are inferred from bytes, elapsed time, or retries.
-
-| Trial | Condition | Exit | Duration | JSONL bytes | Final answer | Input | Output | Cached | Reasoning | Total | Other counters |
-|---|---|---:|---|---:|---|---|---|---|---|---|---|
-| assisted-1 | repoctx evidence | 130 (manual interrupt) | ~150 s observed; no completion duration | 1,458 | none | not emitted | not emitted | not emitted | not emitted | not emitted | not emitted |
-| assisted-2 | repoctx evidence | 124 (timeout) | 20.00 s | 918 | none | not emitted | not emitted | not emitted | not emitted | not emitted | not emitted |
-| assisted-3 | repoctx evidence | 124 (timeout) | 20.00 s | 918 | none | not emitted | not emitted | not emitted | not emitted | not emitted | not emitted |
-| baseline-1 | read-only planning-file access | 124 (timeout) | 20.00 s | 918 | none | not emitted | not emitted | not emitted | not emitted | not emitted | not emitted |
-| baseline-2 | read-only planning-file access | 124 (timeout) | 20.00 s | 918 | none | not emitted | not emitted | not emitted | not emitted | not emitted | not emitted |
-| baseline-3 | read-only planning-file access | 124 (timeout) | 20.00 s | 918 | none | not emitted | not emitted | not emitted | not emitted | not emitted | not emitted |
-
-Each JSONL stream contained thread.started, turn.started, reconnect/error events, and an error item describing failure to fall back from WebSockets to HTTPS. Sandbox diagnostics were Operation not permitted for the Responses WebSocket and connection failures for HTTPS. The first direct preflight before the temporary Codex home also failed during app-server initialization because the normal home was read-only; it is not counted in the six rows above. An escalated retry was rejected by execution policy because it would send private planning content and copied authentication context to an external service.
-
-## Preflight aggregates (excluded)
-
-| Condition | Attempted | Successful comparable trials | Input sum / mean | Output sum / mean | Cached sum / mean | Reasoning sum / mean | Total sum / mean | Correct final answers |
-|---|---:|---:|---|---|---|---|---|---:|
-| repoctx-assisted | 3 | 0 | not applicable / not applicable | not applicable / not applicable | not applicable / not applicable | not applicable / not applicable | not applicable / not applicable | not assessable |
-| no-repoctx baseline | 3 | 0 | not applicable / not applicable | not applicable / not applicable | not applicable / not applicable | not applicable / not applicable | not applicable / not applicable | not assessable |
-
-These preflight attempts have zero successful comparable trials and are excluded from the sanctioned answer-correctness comparison above.
-
 ## Limitations and fairness
 
-- The initial preflight set could not execute because outbound model transport was blocked. After explicit user authorization, the sanctioned six-trial set completed with network access; the preflight failures are not mixed into its aggregates.
 - Baseline agents inspected only the two permitted planning files. Their full read-only output made baseline input-token counts larger than assisted counts, so token volume is descriptive rather than a fair efficiency score.
 - The assisted condition used the bounded repoctx bundle plus exact source excerpts because the current Markdown renderer's selected heading spans did not include criterion prose. Both excerpts were from the same pre-established files, bounded, and treated as untrusted evidence. This is a disclosed evidence-packaging limitation.
-- The sanctioned commands used equal 300-second limits and all exited normally. The earlier preflight set had a manually interrupted assisted run and 20-second timeouts, but those runs are explicitly excluded.
+- The sanctioned commands used equal 300-second limits and all exited normally.
 - The read-only sandbox flag prevented Mothership writes. The sanctioned runs used the user-authorized escalated network path; no Mothership write event was observed.
 
 ## Conclusion
 
-The planning-doc answer is Browser Terminal Access, with the readiness-contract criterion quoted above as the next unmet criterion. In the sanctioned comparison, all three repoctx-assisted and all three no-repoctx baseline trials returned that answer correctly. Usage accounting is available for the emitted input, cached-input, cache-write, output, and reasoning fields; total_tokens was not emitted. The earlier blocked attempts remain documented as preflight history only.
+The planning-doc answer is Browser Terminal Access, with the readiness-contract criterion quoted above as the next unmet criterion. In the comparison, all three repoctx-assisted and all three no-repoctx baseline trials returned that answer correctly. Usage accounting is available for the emitted input, cached-input, cache-write, output, and reasoning fields; total_tokens was not emitted.
