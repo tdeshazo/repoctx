@@ -1,0 +1,347 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/repoctx.ir.v1alpha3.schema.json",
+  "title": "repoctx IR v1alpha3",
+  "type": "object",
+  "required": [
+    "v",
+    "f"
+  ],
+  "properties": {
+    "v": {
+      "const": "repoctx.ir/v1alpha3"
+    },
+    "r": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "q": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "f": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/file"
+      }
+    },
+    "s": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/symbol"
+      }
+    },
+    "e": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/edge"
+      }
+    },
+    "d": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/diagnostic"
+      }
+    },
+    "g": {
+      "$ref": "#/$defs/symbolGraph"
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "span": {
+      "type": "object",
+      "required": [
+        "a",
+        "b",
+        "c",
+        "d"
+      ],
+      "properties": {
+        "a": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "b": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "c": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "d": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "additionalProperties": false
+    },
+    "node": {
+      "type": "object",
+      "required": [
+        "k",
+        "x"
+      ],
+      "properties": {
+        "k": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "t": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "x": {
+          "$ref": "#/$defs/span"
+        },
+        "c": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 0
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "file": {
+      "type": "object",
+      "required": [
+        "p",
+        "l",
+        "h"
+      ],
+      "properties": {
+        "p": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "l": {
+          "enum": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ]
+        },
+        "h": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "u": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "n": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/node"
+          }
+        },
+        "a": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 0
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "symbol": {
+      "type": "object",
+      "required": [
+        "i",
+        "n",
+        "k",
+        "f",
+        "a"
+      ],
+      "properties": {
+        "n": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "k": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 6
+        },
+        "f": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "a": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "p": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "i": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "r": {
+          "type": "integer",
+          "minimum": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "ref": {
+      "type": "object",
+      "required": [
+        "f",
+        "n"
+      ],
+      "properties": {
+        "f": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "n": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "additionalProperties": false
+    },
+    "edge": {
+      "type": "object",
+      "required": [
+        "k",
+        "f"
+      ],
+      "properties": {
+        "k": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 4
+        },
+        "f": {
+          "$ref": "#/$defs/ref"
+        },
+        "s": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "t": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "o": {
+          "type": "integer",
+          "minimum": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "diagnostic": {
+      "type": "object",
+      "required": [
+        "s",
+        "m"
+      ],
+      "properties": {
+        "s": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 3
+        },
+        "f": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "m": {
+          "type": "integer",
+          "minimum": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "graphExternal": {
+      "type": "object",
+      "required": [
+        "n",
+        "k"
+      ],
+      "properties": {
+        "n": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "k": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 3
+        }
+      },
+      "additionalProperties": false
+    },
+    "csr": {
+      "type": "object",
+      "required": [
+        "o"
+      ],
+      "properties": {
+        "o": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "t": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "k": {
+          "type": "string",
+          "contentEncoding": "base64",
+          "description": "Packed uint8 EdgeKind vector; one byte per CSR arc."
+        },
+        "w": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 1
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "symbolGraph": {
+      "type": "object",
+      "required": [
+        "o",
+        "i"
+      ],
+      "properties": {
+        "x": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/graphExternal"
+          }
+        },
+        "o": {
+          "$ref": "#/$defs/csr"
+        },
+        "i": {
+          "$ref": "#/$defs/csr"
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}
