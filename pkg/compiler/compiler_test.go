@@ -87,11 +87,12 @@ func TestCompileTreeSitterLanguagesAndMalformedDiagnostics(t *testing.T) {
 	mustWrite(t, filepath.Join(root, "common.cts"), "export type Value = string | number;\n")
 	mustWrite(t, filepath.Join(root, "component.tsx"), "export function App() { return <main />; }\n")
 	mustWrite(t, filepath.Join(root, "legacy.jsx"), "export function Legacy() { return <main />; }\n")
+	mustWrite(t, filepath.Join(root, "README.md"), "# Overview\n\nSee [guide](docs/guide.md).\n\n```go\nfunc Hidden() {}\n```\n")
 	repo, err := Compile(Options{Root: root})
 	if err != nil {
 		t.Fatal(err)
 	}
-	if len(repo.Files) != 11 {
+	if len(repo.Files) != 12 {
 		t.Fatalf("files=%d", len(repo.Files))
 	}
 	seen := map[ir.Language]bool{}
@@ -101,7 +102,7 @@ func TestCompileTreeSitterLanguagesAndMalformedDiagnostics(t *testing.T) {
 			t.Fatalf("file %q was not lowered: nodes=%d roots=%v", repo.String(f.Path), len(f.Nodes), f.Roots)
 		}
 	}
-	for _, lang := range []ir.Language{ir.LangPython, ir.LangHTML, ir.LangCSS, ir.LangJavaScript, ir.LangTypeScript, ir.LangTSX} {
+	for _, lang := range []ir.Language{ir.LangPython, ir.LangHTML, ir.LangCSS, ir.LangJavaScript, ir.LangTypeScript, ir.LangTSX, ir.LangMarkdown} {
 		if !seen[lang] {
 			t.Fatalf("language %v not discovered", lang)
 		}
@@ -124,6 +125,37 @@ func TestCompileTreeSitterLanguagesAndMalformedDiagnostics(t *testing.T) {
 		if d.Severity != ir.SeverityError || !strings.Contains(bad.String(d.Message), "tree-sitter") {
 			t.Fatalf("unexpected malformed diagnostic: %#v", d)
 		}
+	}
+}
+
+func TestCompileMarkdownFencesRemainRawContext(t *testing.T) {
+	root := t.TempDir()
+	mustWrite(t, filepath.Join(root, "guide.md"), "# Guide\n\nSee [API](api.md).\n\n```typescript\nexport function Hidden() { return helper(); }\nimport { x } from './hidden';\n```\n")
+	repo, err := Compile(Options{Root: root})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(repo.Files) != 1 || repo.Files[0].Lang != ir.LangMarkdown {
+		t.Fatalf("markdown discovery: files=%#v", repo.Files)
+	}
+	for _, s := range repo.Symbols {
+		if repo.String(s.Name) == "Hidden" || repo.String(s.Name) == "helper" {
+			t.Fatalf("fenced declaration became symbol: %#v", repo.Symbols)
+		}
+	}
+	for _, e := range repo.Edges {
+		if e.Kind == ir.EdgeCalls || e.Kind == ir.EdgeImports {
+			t.Fatalf("fenced code emitted executable edge: %#v", repo.Edges)
+		}
+	}
+	var linked bool
+	for _, e := range repo.Edges {
+		if e.Kind == ir.EdgeReferences && repo.String(e.Text) == "api.md" {
+			linked = true
+		}
+	}
+	if !linked {
+		t.Fatalf("markdown link relationship missing: %#v", repo.Edges)
 	}
 }
 

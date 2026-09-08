@@ -228,6 +228,8 @@ func languageName(k ir.Language) string {
 		return "typescript"
 	case ir.LangTSX:
 		return "tsx"
+	case ir.LangMarkdown:
+		return "markdown"
 	default:
 		return "unknown"
 	}

@@ -137,6 +137,39 @@ func TestBuildReadableDeterministicSourceLinked(t *testing.T) {
 		t.Fatal("missing call")
 	}
 }
+
+func TestMarkdownContextAndFenceCapability(t *testing.T) {
+	root, r := compileFixture(t, map[string]string{"README.md": "# Guide\n\nSee [API](api.md).\n\n```go\nfunc Hidden() { helper() }\n```\n"})
+	o := baseOptions(root)
+	o.Query = "Guide"
+	result, err := Build(r, o)
+	if err != nil {
+		t.Fatal(err)
+	}
+	assertEvidence(t, root, result.Bundle)
+	if result.Bundle.Capabilities.Available == nil || !containsString(result.Bundle.Capabilities.Available, "markdown_ast") {
+		t.Fatalf("markdown capability missing: %#v", result.Bundle.Capabilities)
+	}
+	for _, symbol := range result.Bundle.Symbols {
+		if symbol.Name == "Hidden" || symbol.Name == "helper" {
+			t.Fatalf("fenced code symbol surfaced: %#v", result.Bundle.Symbols)
+		}
+	}
+	for _, rel := range result.Bundle.Relationships {
+		if rel.Kind == "calls" || rel.Kind == "imports" {
+			t.Fatalf("fenced executable relationship surfaced: %#v", result.Bundle.Relationships)
+		}
+	}
+}
+
+func containsString(values []string, want string) bool {
+	for _, value := range values {
+		if value == want {
+			return true
+		}
+	}
+	return false
+}
 func TestGoPhysicalSpansAndDocComments(t *testing.T) {
 	root, r := compileFixture(t, map[string]string{"main.go": "package p\n//line other.go:500\n// Ping is a documented function.\nfunc Ping() { println(\"ok\") }\n"})
 	result, e := Build(r, baseOptions(root))

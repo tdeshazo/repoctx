@@ -3,8 +3,9 @@
 Environment: Go 1.23.2, native C compiler for Tree-sitter, Linux amd64. Python
 is not required for indexing or tests.
 
-- `go test ./...`: passed (including Tree-sitter language discovery, lowering and
-  malformed-input coverage).
+- `go test ./...`: passed (including Tree-sitter language discovery, Markdown
+  block/inline lowering, fenced-code raw-context coverage and malformed-input
+  coverage).
 - `go test -race ./...`: passed.
 - `go vet ./...`: passed.
 - `go build -buildvcs=false -trimpath .` and `go build -buildvcs=false -trimpath

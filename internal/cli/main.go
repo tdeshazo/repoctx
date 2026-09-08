@@ -43,7 +43,7 @@ func Main(args []string) {
 }
 
 func usage() {
-	fmt.Fprintln(os.Stderr, `repoctx - compile Go/Python/HTML/CSS/JavaScript/TypeScript/TSX repositories into a compact typed IR
+	fmt.Fprintln(os.Stderr, `repoctx - compile Go/Python/HTML/CSS/JavaScript/TypeScript/TSX/Markdown repositories into a compact typed IR
 
 Usage:
   repoctx compile [-root DIR] [-o repo.ir.json.gz] [-pretty]
@@ -53,7 +53,7 @@ Usage:
   repoctx validate REPO_IR
 
 The IR contains normalized Tree-sitter AST node tables for Python, HTML, CSS,
-JavaScript, TypeScript and TSX plus the native Go AST, stable symbols, source-linked occurrence edges,
+JavaScript, TypeScript, TSX and Markdown plus the native Go AST, stable symbols, source-linked occurrence edges,
 and a dense forward/reverse CSR symbol graph. Repository symbols occupy graph node
 IDs 0..len(symbols)-1; unit/module/unresolved nodes follow them. Tree-sitter
 lowering is syntax-only: it does not execute code, type-check, or model embedded
@@ -100,7 +100,7 @@ func statsCmd(args []string) {
 		graphNodes = len(repo.Symbols) + len(repo.Graph.External)
 		graphArcs = len(repo.Graph.Out.Targets)
 	}
-	fmt.Printf("IR: %s\nfiles: %d (go=%d python=%d html=%d css=%d javascript=%d typescript=%d tsx=%d)\nnodes: %d\nsymbols: %d\noccurrence edges: %d\ngraph nodes: %d\ngraph arcs: %d\ndiagnostics: %d\nstrings: %d\n", repo.Version, len(repo.Files), langs[ir.LangGo], langs[ir.LangPython], langs[ir.LangHTML], langs[ir.LangCSS], langs[ir.LangJavaScript], langs[ir.LangTypeScript], langs[ir.LangTSX], nodes, len(repo.Symbols), len(repo.Edges), graphNodes, graphArcs, len(repo.Diagnostics), len(repo.Strings))
+	fmt.Printf("IR: %s\nfiles: %d (go=%d python=%d html=%d css=%d javascript=%d typescript=%d tsx=%d markdown=%d)\nnodes: %d\nsymbols: %d\noccurrence edges: %d\ngraph nodes: %d\ngraph arcs: %d\ndiagnostics: %d\nstrings: %d\n", repo.Version, len(repo.Files), langs[ir.LangGo], langs[ir.LangPython], langs[ir.LangHTML], langs[ir.LangCSS], langs[ir.LangJavaScript], langs[ir.LangTypeScript], langs[ir.LangTSX], langs[ir.LangMarkdown], nodes, len(repo.Symbols), len(repo.Edges), graphNodes, graphArcs, len(repo.Diagnostics), len(repo.Strings))
 }
 
 func graphCmd(args []string) {

@@ -85,7 +85,7 @@ func Compile(opts Options) (*ir.Repository, error) {
 		f := ir.File{Path: st.Intern(sf.rel), Lang: sf.lang, Hash: fullHash(data)}
 		if sf.lang == ir.LangPython {
 			f.Unit = st.Intern(pythonModule(sf.rel))
-		} else if sf.lang == ir.LangHTML || sf.lang == ir.LangCSS || sf.lang == ir.LangJavaScript || sf.lang == ir.LangTypeScript || sf.lang == ir.LangTSX {
+		} else if sf.lang == ir.LangHTML || sf.lang == ir.LangCSS || sf.lang == ir.LangJavaScript || sf.lang == ir.LangTypeScript || sf.lang == ir.LangTSX || sf.lang == ir.LangMarkdown {
 			// Web-language units are deliberately file-scoped: cross-file links are
 			// unresolved unless a future front end proves the module relationship.
 			f.Unit = st.Intern(strings.TrimSuffix(sf.rel, filepath.Ext(sf.rel)))
@@ -130,7 +130,7 @@ func Compile(opts Options) (*ir.Repository, error) {
 			for _, e := range res.Edges {
 				repo.Edges = append(repo.Edges, ir.Edge{Kind: e.Kind, From: ir.Ref{File: fidx, Node: e.Node}, Text: st.Intern(e.Text)})
 			}
-		case ir.LangHTML, ir.LangCSS, ir.LangJavaScript, ir.LangTypeScript, ir.LangTSX:
+		case ir.LangHTML, ir.LangCSS, ir.LangJavaScript, ir.LangTypeScript, ir.LangTSX, ir.LangMarkdown:
 			res, err := treeast.Parse(treeLanguage(sf.lang), data, st)
 			if err != nil {
 				repo.Diagnostics = append(repo.Diagnostics, ir.Diagnostic{Severity: ir.SeverityError, File: fidx + 1, Message: st.Intern(err.Error())})
@@ -212,6 +212,8 @@ func discover(root string, opts Options) ([]sourceFile, []string, error) {
 			lang = ir.LangTypeScript
 		case ".tsx", ".jsx":
 			lang = ir.LangTSX
+		case ".md":
+			lang = ir.LangMarkdown
 		default:
 			return nil
 		}
@@ -244,6 +246,8 @@ func treeLanguage(lang ir.Language) treeast.Language {
 		return treeast.TypeScript
 	case ir.LangTSX:
 		return treeast.TSX
+	case ir.LangMarkdown:
+		return treeast.Markdown
 	default:
 		return treeast.Python
 	}
@@ -403,6 +407,8 @@ func semanticSymbolBase(repo *ir.Repository, idx int, values []string) string {
 			lang = "ts"
 		case ir.LangTSX:
 			lang = "tsx"
+		case ir.LangMarkdown:
+			lang = "md"
 		}
 	}
 	var parts []string

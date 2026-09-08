@@ -2,7 +2,7 @@
 
 `repoctx` has **two outputs with different consumers**:
 
-1. **Repository IR (`repoctx.ir/v1alpha3`)**: compact Go/Python/HTML/CSS/JavaScript/TypeScript/TSX ASTs, interned
+1. **Repository IR (`repoctx.ir/v1alpha3`)**: compact Go/Python/HTML/CSS/JavaScript/TypeScript/TSX/Markdown ASTs, interned
    strings, symbols, occurrence edges, and dense forward/reverse CSR adjacency.
    This is the reusable machine index, not the prompt.
 2. **Agent context (`repoctx.context/v1alpha1`)**: a selected, readable JSON or
@@ -34,13 +34,17 @@ from a published version with `go install github.com/tdeshazo/repoctx/cmd/repoct
 
 The module retains a Go 1.23 language baseline and uses pinned official
 Tree-sitter Go bindings and grammars (Python v0.25.0, HTML v0.23.2, CSS v0.25.0,
-JavaScript v0.25.0, TypeScript/TSX v0.23.2). A C compiler is required by the native bindings; no Python
+JavaScript v0.25.0, TypeScript/TSX v0.23.2, Markdown v0.4.1). A C compiler is required by the native bindings; no Python
 interpreter is started or required to index Python files. The supplied executable
 targets Linux amd64. Use an appropriate maintained toolchain for deployment.
 
 `.ts`, `.mts`, and `.cts` files use the TypeScript grammar; `.tsx` and `.jsx`
 files use the TSX grammar. `.js`, `.mjs`, and `.cjs` remain JavaScript and are
 parsed by the separate JavaScript grammar.
+`.md` files use the maintained Markdown block and inline grammars. Headings and
+conservative link relationships are source-linked. Fenced-code bodies remain
+raw Markdown context only and are never recursively parsed or treated as
+embedded Go, TypeScript, or another language.
 
 ## Compile, then retrieve for an agent
 
@@ -175,6 +179,9 @@ control. It does not call any model service.
   file diagnostics rather than semantic claims; source materialization requires
   UTF-8. HTML script/style contents are represented by the HTML grammar and are
   not recursively parsed as JavaScript/CSS.
+- Markdown fenced-code bodies are likewise raw source context only. A fence's
+  info string is not an embedded-language promise, and declarations, calls, and
+  imports inside a fence are not indexed.
 - Repository text remains untrusted, even when fenced or schema-valid. Labels
   and Markdown escaping do not solve prompt injection or enforce permissions.
 - No repository build/test commands are inferred or executed. No test success
@@ -182,10 +189,12 @@ control. It does not call any model service.
 
 ## Semantic limitations
 
-Go, Python, HTML, CSS, JavaScript, TypeScript, and TSX/JSX syntax ASTs are supported. `DEFINES`,
+Go, Python, HTML, CSS, JavaScript, TypeScript, TSX/JSX, and Markdown syntax ASTs are supported. `DEFINES`,
 `IMPORTS`, and conservative `CALLS` are emitted where the grammar exposes a
-source-linked construct. `REFERENCES` is reserved, not populated. Call links use
-same-language, same-unit name heuristics, **not type-checked dispatch**. HTML
+source-linked construct. Markdown links and images emit conservative
+`REFERENCES` occurrence edges, which remain unavailable as a context traversal
+relation. Call links use same-language, same-unit name heuristics, **not
+type-checked dispatch**. HTML
 tags, CSS selectors/properties, and JavaScript/Python/TypeScript declarations are indexed as
 syntax-level names; TSX/JSX support is syntax-only and does not claim React runtime,
 component, type-resolution, or module-resolution semantics. This is not a claim about browser/runtime behavior. Interfaces,
@@ -208,7 +217,7 @@ pkg/ir/                 compact wire IR, CSR and structural validation
 pkg/compiler/           repository discovery, AST linking, validated IR I/O
 pkg/agentctx/           task selection, source verification, bundles and rendering
 internal/lang/goast/    Go AST front end
-internal/lang/treeast/  pinned Tree-sitter Python/HTML/CSS/JavaScript/TypeScript/TSX front end
+internal/lang/treeast/  pinned Tree-sitter Python/HTML/CSS/JavaScript/TypeScript/TSX/Markdown front end
 internal/lang/pyast/    compatibility wrapper for the Python front end
 internal/sourceroot/    bounded, root-relative source reads
 main.go                 module-root compile / stats / graph / validate / context command

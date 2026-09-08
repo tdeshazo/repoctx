@@ -300,7 +300,8 @@
             "css",
             "javascript",
             "typescript",
-            "tsx"
+            "tsx",
+            "markdown"
           ]
         },
         "file": {

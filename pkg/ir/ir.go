@@ -24,6 +24,7 @@ const (
 	LangJavaScript
 	LangTypeScript
 	LangTSX
+	LangMarkdown
 )
 
 type File struct {

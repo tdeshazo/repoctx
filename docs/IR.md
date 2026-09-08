@@ -34,9 +34,12 @@ type Repository struct {
 ```
 
 Each file carries path, language (`1=Go`, `2=Python`, `3=HTML`, `4=CSS`,
-`5=JavaScript`, `6=TypeScript`, `7=TSX/JSX`), a required full SHA-256 content
-hash, optional unit identity, normalized node table and roots. Go uses the
-native Go parser; the other six languages use pinned Tree-sitter grammars.
+`5=JavaScript`, `6=TypeScript`, `7=TSX/JSX`, `8=Markdown`), a required full
+SHA-256 content hash, optional unit identity, normalized node table and roots.
+Go uses the native Go parser; the other seven languages use pinned Tree-sitter
+grammars. Markdown runs the block grammar followed by the inline grammar for
+marked inline ranges. Fenced-code bodies remain raw text/context nodes and are
+never recursively parsed.
 File paths are repository-relative slash paths. Traversal, drive/colon forms,
 backslashes and duplicate paths are rejected by `Repository.Validate`.
 
@@ -102,9 +105,11 @@ type Edge struct {
 }
 ```
 
-`DEFINES=1`, `IMPORTS=2`, `CALLS=3`, `REFERENCES=4`. The current front ends produce
-imports and calls; defines are built from ownership. References is reserved and
-not populated. Call candidates are restricted by language and unit, then matched
+`DEFINES=1`, `IMPORTS=2`, `CALLS=3`, `REFERENCES=4`. Code front ends produce
+imports and calls; Markdown emits conservative link/image references; defines
+are built from ownership. Context traversal keeps References reserved, but
+adjacent Markdown relationships remain source-linked IR evidence. Call
+candidates are restricted by language and unit, then matched
 by terminal name. They are **heuristic candidates**, not proof of static or runtime
 dispatch. Dynamic dispatch, aliases, shadowing and imported targets can be missed
 or incorrectly suggested. The agent bundle marks this limitation per relation.

@@ -49,7 +49,7 @@ func (r *Repository) Validate() error {
 			return fmt.Errorf("file %d: unsafe or duplicate path", i)
 		}
 		paths[p] = true
-		if f.Lang < LangGo || f.Lang > LangTSX {
+		if f.Lang < LangGo || f.Lang > LangMarkdown {
 			return fmt.Errorf("file %d: invalid language", i)
 		}
 		if !str(f.Unit, true) {

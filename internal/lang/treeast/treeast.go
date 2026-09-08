@@ -10,6 +10,7 @@ import (
 	"time"
 	"unicode/utf8"
 
+	treemarkdown "github.com/tree-sitter-grammars/tree-sitter-markdown/bindings/go"
 	sitter "github.com/tree-sitter/go-tree-sitter"
 	treecss "github.com/tree-sitter/tree-sitter-css/bindings/go"
 	treehtml "github.com/tree-sitter/tree-sitter-html/bindings/go"
@@ -30,6 +31,7 @@ const (
 	JavaScript
 	TypeScript
 	TSX
+	Markdown
 )
 
 const (
@@ -87,6 +89,12 @@ func Parse(language Language, src []byte, st *ir.Strings) (Result, error) {
 	if err != nil {
 		return Result{}, err
 	}
+	if language == Markdown {
+		b.collectMarkdownReferenceDefinitions(root)
+		if err := b.attachMarkdownInline(root); err != nil {
+			return Result{}, err
+		}
+	}
 	if root.HasError() {
 		return Result{}, fmt.Errorf("%s tree-sitter syntax errors (root=%s)", languageName(language), root.Kind())
 	}
@@ -108,6 +116,8 @@ func grammarFor(language Language) (*sitter.Language, bool) {
 		return sitter.NewLanguage(treetypescript.LanguageTypescript()), true
 	case TSX:
 		return sitter.NewLanguage(treetypescript.LanguageTSX()), true
+	case Markdown:
+		return sitter.NewLanguage(treemarkdown.Language()), true
 	default:
 		return nil, false
 	}
@@ -127,19 +137,22 @@ func languageName(language Language) string {
 		return "typescript"
 	case TSX:
 		return "tsx"
+	case Markdown:
+		return "markdown"
 	default:
 		return "unknown"
 	}
 }
 
 type builder struct {
-	language  Language
-	src       []byte
-	st        *ir.Strings
-	nodes     []ir.Node
-	nodeIndex map[uintptr]int
-	symbols   []LocalSymbol
-	edges     []LocalEdge
+	language           Language
+	src                []byte
+	st                 *ir.Strings
+	nodes              []ir.Node
+	nodeIndex          map[uintptr]int
+	markdownReferences map[string]string
+	symbols            []LocalSymbol
+	edges              []LocalEdge
 }
 
 func (b *builder) add(n *sitter.Node, depth int) (int, error) {
@@ -224,6 +237,98 @@ func (b *builder) collect(n *sitter.Node, parent int) {
 	}
 }
 
+// attachMarkdownInline parses only the ranges explicitly marked inline by the
+// Markdown block grammar. In particular, fenced code contents have no inline
+// marker and are never sent to the inline parser (or any language parser).
+func (b *builder) attachMarkdownInline(n *sitter.Node) error {
+	if n == nil {
+		return nil
+	}
+	type inlineRange struct {
+		start, end           uint
+		startPoint, endPoint sitter.Point
+		node                 int
+	}
+	var inlineNodes []inlineRange
+	var collect func(*sitter.Node)
+	collect = func(node *sitter.Node) {
+		if node == nil {
+			return
+		}
+		if node.Kind() == "inline" {
+			idx, ok := b.nodeIndex[node.Id()]
+			if !ok {
+				return
+			}
+			inlineNodes = append(inlineNodes, inlineRange{start: node.StartByte(), end: node.EndByte(), startPoint: node.StartPosition(), endPoint: node.EndPosition(), node: idx})
+		}
+		for i := uint(0); i < node.NamedChildCount(); i++ {
+			collect(node.NamedChild(i))
+		}
+	}
+	collect(n)
+	if len(inlineNodes) == 0 {
+		return nil
+	}
+	ranges := make([]sitter.Range, 0, len(inlineNodes))
+	for _, inline := range inlineNodes {
+		// The block tree already guarantees source positions for inline nodes.
+		ranges = append(ranges, sitter.Range{StartByte: inline.start, EndByte: inline.end, StartPoint: inline.startPoint, EndPoint: inline.endPoint})
+	}
+	parser := sitter.NewParser()
+	defer parser.Close()
+	if err := parser.SetLanguage(sitter.NewLanguage(treemarkdown.InlineLanguage())); err != nil {
+		return fmt.Errorf("set markdown inline grammar: %w", err)
+	}
+	parser.SetTimeoutMicros(uint64(parseTimeout / time.Microsecond))
+	if err := parser.SetIncludedRanges(ranges); err != nil {
+		return fmt.Errorf("set markdown inline ranges: %w", err)
+	}
+	tree := parser.Parse(b.src, nil)
+	if tree == nil {
+		return fmt.Errorf("markdown inline parser returned no tree (possibly timed out)")
+	}
+	defer tree.Close()
+	inlineRoot := tree.RootNode()
+	if inlineRoot.HasError() {
+		return fmt.Errorf("markdown inline tree-sitter syntax errors")
+	}
+	for i := uint(0); i < inlineRoot.NamedChildCount(); i++ {
+		child := inlineRoot.NamedChild(i)
+		owner := -1
+		for _, inline := range inlineNodes {
+			if child.StartByte() >= inline.start && child.EndByte() <= inline.end {
+				owner = inline.node
+				break
+			}
+		}
+		if owner < 0 {
+			continue
+		}
+		ci, err := b.add(child, 0)
+		if err != nil {
+			return err
+		}
+		if ci >= 0 {
+			b.nodes[owner].Children = append(b.nodes[owner].Children, ci)
+			b.appendMarkdownInlineEdges(child)
+		}
+	}
+	return nil
+}
+
+func (b *builder) appendMarkdownInlineEdges(n *sitter.Node) {
+	if n == nil {
+		return
+	}
+	if idx, ok := b.nodeIndex[n.Id()]; ok {
+		b.edges = append(b.edges, b.edgesFor(n, idx)...)
+	}
+	for i := uint(0); i < n.NamedChildCount(); i++ {
+		b.appendMarkdownInlineEdges(n.NamedChild(i))
+	}
+}
+
 type declaration struct {
 	name string
 	kind ir.SymbolKind
@@ -285,11 +390,40 @@ func (b *builder) declaration(n *sitter.Node, parent int) (LocalSymbol, bool) {
 		case "declaration":
 			d = declaration{b.descendantText(n, "property_name"), ir.SymVariable}
 		}
+	case Markdown:
+		if kind == "atx_heading" || kind == "setext_heading" {
+			d = declaration{b.markdownHeadingText(n), ir.SymModule}
+		}
 	}
 	if d.name == "" {
 		return LocalSymbol{}, false
 	}
 	return LocalSymbol{Name: cleanName(d.name), Kind: d.kind, Node: b.nodeIndex[n.Id()], Parent: parent}, true
+}
+
+func (b *builder) markdownHeadingText(n *sitter.Node) string {
+	if n == nil {
+		return ""
+	}
+	inline := n.ChildByFieldName("heading_content")
+	if inline == nil {
+		for i := uint(0); i < n.NamedChildCount(); i++ {
+			if child := n.NamedChild(i); child.Kind() == "inline" {
+				inline = child
+				break
+			}
+		}
+	}
+	text := b.nodeText(inline)
+	if text == "" {
+		return ""
+	}
+	// Keep heading labels readable while retaining source-linked spans. This is
+	// intentionally conservative; it does not interpret arbitrary Markdown.
+	for _, marker := range []string{"**", "__", "~~", "`", "*"} {
+		text = strings.ReplaceAll(text, marker, "")
+	}
+	return strings.Join(strings.Fields(text), " ")
 }
 
 func (b *builder) fieldText(n *sitter.Node, field string) string {
@@ -425,8 +559,110 @@ func (b *builder) edgesFor(n *sitter.Node, idx int) []LocalEdge {
 				out = append(out, LocalEdge{Kind: ir.EdgeImports, Node: idx, Text: value})
 			}
 		}
+	case Markdown:
+		switch n.Kind() {
+		case "inline_link", "full_reference_link", "collapsed_reference_link", "shortcut_link", "image", "uri_autolink", "email_autolink":
+			if text := b.markdownDestination(n); text != "" {
+				out = append(out, LocalEdge{Kind: ir.EdgeReferences, Node: idx, Text: text})
+			}
+		case "link_reference_definition":
+			if text := b.markdownDestination(n); text != "" {
+				out = append(out, LocalEdge{Kind: ir.EdgeReferences, Node: idx, Text: text})
+			}
+		}
 	}
 	return out
+}
+
+func (b *builder) markdownDestination(n *sitter.Node) string {
+	if n == nil {
+		return ""
+	}
+	for i := uint(0); i < n.NamedChildCount(); i++ {
+		child := n.NamedChild(i)
+		if child.Kind() == "link_destination" || child.Kind() == "uri" || child.Kind() == "email" {
+			if text := markdownText(b.nodeText(child)); text != "" {
+				return text
+			}
+		}
+		if text := b.markdownDestination(child); text != "" {
+			return text
+		}
+	}
+	if label := b.markdownReferenceLabel(n); label != "" {
+		return b.markdownReferences[label]
+	}
+	// Autolinks have no named destination in the maintained grammar; their
+	// bounded source text is still useful as a syntactic reference.
+	if n.Kind() == "uri_autolink" || n.Kind() == "email_autolink" {
+		return markdownText(b.nodeText(n))
+	}
+	return ""
+}
+
+// collectMarkdownReferenceDefinitions records the first destination for each
+// normalized label, matching Markdown's first-definition-wins behavior.
+func (b *builder) collectMarkdownReferenceDefinitions(n *sitter.Node) {
+	if n == nil {
+		return
+	}
+	if n.Kind() == "link_reference_definition" {
+		label := markdownLabel(b.directMarkdownChildText(n, "link_label"))
+		if destination := b.markdownDestination(n); label != "" && destination != "" {
+			if b.markdownReferences == nil {
+				b.markdownReferences = make(map[string]string)
+			}
+			if _, exists := b.markdownReferences[label]; !exists {
+				b.markdownReferences[label] = destination
+			}
+		}
+	}
+	for i := uint(0); i < n.NamedChildCount(); i++ {
+		b.collectMarkdownReferenceDefinitions(n.NamedChild(i))
+	}
+}
+
+func (b *builder) markdownReferenceLabel(n *sitter.Node) string {
+	if n == nil {
+		return ""
+	}
+	if label := b.directMarkdownChildText(n, "link_label"); label != "" {
+		return markdownLabel(label)
+	}
+	switch n.Kind() {
+	case "collapsed_reference_link", "shortcut_link":
+		return markdownLabel(b.directMarkdownChildText(n, "link_text"))
+	case "image":
+		return markdownLabel(b.directMarkdownChildText(n, "image_description"))
+	default:
+		return ""
+	}
+}
+
+func (b *builder) directMarkdownChildText(n *sitter.Node, kind string) string {
+	for i := uint(0); i < n.NamedChildCount(); i++ {
+		child := n.NamedChild(i)
+		if child.Kind() == kind {
+			return b.nodeText(child)
+		}
+	}
+	return ""
+}
+
+func markdownLabel(text string) string {
+	text = strings.TrimSpace(text)
+	if strings.HasPrefix(text, "[") && strings.HasSuffix(text, "]") {
+		text = text[1 : len(text)-1]
+	}
+	return strings.ToLower(strings.Join(strings.Fields(text), " "))
+}
+
+func markdownText(text string) string {
+	text = strings.Trim(strings.TrimSpace(text), "\"'")
+	if strings.HasPrefix(text, "<") && strings.HasSuffix(text, ">") {
+		text = strings.TrimSuffix(strings.TrimPrefix(text, "<"), ">")
+	}
+	return text
 }
 
 func (b *builder) importTexts(n *sitter.Node) []string {

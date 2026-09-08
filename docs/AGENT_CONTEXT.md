@@ -157,6 +157,11 @@ symlinks but requires an immutable worktree to avoid a validation/open race.
   AST lowering is bounded; syntax errors are surfaced as file diagnostics rather
   than accumulated as semantic claims. HTML script/style blocks are not
   recursively lowered as embedded languages.
+- Markdown uses maintained block and inline Tree-sitter grammars for headings,
+  inline structure and conservative link relationships. `.md` is the supported
+  extension. Fenced-code bodies, including any language info string, remain raw
+  source context only: they are never recursively parsed, executed, or used to
+  emit embedded declarations, calls or imports.
 - Cross-language/same-spelling calls no longer link. Remaining name links are
   same-unit heuristics, and the handoff says so explicitly.
 

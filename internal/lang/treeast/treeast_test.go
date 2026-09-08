@@ -21,6 +21,7 @@ func TestParseLanguagesAndSourceLinkedLowering(t *testing.T) {
 		{"javascript", JavaScript, "import x from 'x'; class Worker { run() { return ping(); } }", []string{"Worker", "run"}, ir.EdgeCalls},
 		{"typescript", TypeScript, "import { helper } from './helper'; interface Worker { run(): string } type Result = string | number; export function run(value: Result): string { return helper(value); }", []string{"Worker", "Result", "run"}, ir.EdgeCalls},
 		{"tsx", TSX, "import React from 'react'; interface Props { name: string } export function App(props: Props) { return <section>{render(props.name)}</section>; }", []string{"Props", "App"}, ir.EdgeCalls},
+		{"markdown", Markdown, "# Overview\n\nSee [guide](docs/guide.md).\n", []string{"Overview"}, ir.EdgeReferences},
 	}
 	for _, tc := range cases {
 		t.Run(tc.name, func(t *testing.T) {
@@ -154,6 +155,80 @@ func TestInvalidUTF8RejectedBeforeNativeParse(t *testing.T) {
 	if _, err := Parse(Python, []byte{'d', 'e', 'f', ' ', 0xff}, ir.NewStrings()); err == nil {
 		t.Fatal("invalid UTF-8 accepted")
 	}
+}
+
+func TestMarkdownFencedCodeIsRawOnly(t *testing.T) {
+	src := []byte("# Notes\n\n```go\nfunc Hidden() { helper() }\nimport \"hidden\"\n```\n")
+	result, err := Parse(Markdown, src, ir.NewStrings())
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, symbol := range result.Symbols {
+		if symbol.Name == "Hidden" || symbol.Name == "helper" || symbol.Name == "hidden" {
+			t.Fatalf("fenced code was lowered as a symbol: %#v", result.Symbols)
+		}
+	}
+	for _, edge := range result.Edges {
+		if edge.Kind == ir.EdgeCalls || edge.Kind == ir.EdgeImports {
+			t.Fatalf("fenced code produced executable-language edge: %#v", result.Edges)
+		}
+	}
+	var raw bool
+	for _, node := range result.Nodes {
+		if node.Kind > 0 {
+			raw = true
+		}
+	}
+	if !raw {
+		t.Fatal("markdown AST is empty")
+	}
+}
+
+func TestMarkdownLinkDestinationPreservesRelativePrefix(t *testing.T) {
+	result, err := Parse(Markdown, []byte("# Links\n\nSee [guide](./docs/guide.md).\n"), ir.NewStrings())
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, edge := range result.Edges {
+		if edge.Kind == ir.EdgeReferences && edge.Text == "./docs/guide.md" {
+			return
+		}
+	}
+	t.Fatalf("relative destination was not preserved: %#v", result.Edges)
+}
+
+func TestMarkdownAutolinksProduceNormalizedReferences(t *testing.T) {
+	result, err := Parse(Markdown, []byte("See <https://example.test/a> and <person@example.test>.\n"), ir.NewStrings())
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, destination := range []string{"https://example.test/a", "person@example.test"} {
+		if !hasMarkdownReferenceAtLine(result, destination, 1) {
+			t.Fatalf("autolink %q missing from %#v", destination, result.Edges)
+		}
+	}
+}
+
+func TestMarkdownReferenceLinksResolveDefinitions(t *testing.T) {
+	src := []byte("[full text][Full Label] [collapsed][] [shortcut] ![image alt][Image Label]\n\n[full label]: https://example.test/full\n[collapsed]: ./docs/collapsed.md\n[shortcut]: /shortcut\n[image label]: assets/image.png\n")
+	result, err := Parse(Markdown, src, ir.NewStrings())
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, destination := range []string{"https://example.test/full", "./docs/collapsed.md", "/shortcut", "assets/image.png"} {
+		if !hasMarkdownReferenceAtLine(result, destination, 1) {
+			t.Fatalf("reference destination %q missing from %#v", destination, result.Edges)
+		}
+	}
+}
+
+func hasMarkdownReferenceAtLine(result Result, destination string, line int) bool {
+	for _, edge := range result.Edges {
+		if edge.Kind == ir.EdgeReferences && edge.Text == destination && edge.Node >= 0 && edge.Node < len(result.Nodes) && result.Nodes[edge.Node].Span.SL == line {
+			return true
+		}
+	}
+	return false
 }
 
 func TestParseRepeatedlyClosesNativeResources(t *testing.T) {
