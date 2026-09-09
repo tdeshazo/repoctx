@@ -1,4 +1,6 @@
 include README.md
+include LICENSE
+include NOTICE
 include Makefile
 include go.mod
 include go.sum

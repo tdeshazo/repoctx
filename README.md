@@ -285,3 +285,8 @@ Documentation: [agent handoff contract](docs/AGENT_CONTEXT.md),
 This release has automated contract and regression tests. It has **not** been
 measured in a live coding-agent task-success evaluation; improved retrieval or
 coding success is not claimed.
+
+## License
+
+Copyright 2026 Travis DeShazo. Licensed under the
+[Apache License 2.0](LICENSE). See [NOTICE](NOTICE) for attribution.

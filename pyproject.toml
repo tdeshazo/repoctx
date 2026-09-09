@@ -7,6 +7,7 @@ name = "repoctx"
 version = "0.1.0"
 description = "Native Go repository context compiler"
 readme = "README.md"
+license = { file = "LICENSE" }
 requires-python = ">=3.9"
 authors = [
   { name = "Travis DeShazo" },
@@ -14,6 +15,7 @@ authors = [
 classifiers = [
   "Environment :: Console",
   "Intended Audience :: Developers",
+  "License :: OSI Approved :: Apache Software License",
   "Programming Language :: Go",
   "Programming Language :: Python :: 3",
   "Topic :: Software Development :: Libraries :: Python Modules",
