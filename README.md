@@ -38,6 +38,11 @@ JavaScript v0.25.0, TypeScript/TSX v0.23.2, Markdown v0.4.1). A C compiler is re
 interpreter is started or required to index Python files. The supplied executable
 targets Linux amd64. Use an appropriate maintained toolchain for deployment.
 
+The Go build uses CGO for Tree-sitter. A native C compiler and the Go toolchain
+are required when building from a checkout or source distribution; set `CC` (and
+any platform-specific compiler flags) in the environment when the compiler is
+not the platform default. `CGO_ENABLED=0` is not supported.
+
 `.ts`, `.mts`, and `.cts` files use the TypeScript grammar; `.tsx` and `.jsx`
 files use the TSX grammar. `.js`, `.mjs`, and `.cjs` remain JavaScript and are
 parsed by the separate JavaScript grammar.
@@ -45,6 +50,44 @@ parsed by the separate JavaScript grammar.
 conservative link relationships are source-linked. Fenced-code bodies remain
 raw Markdown context only and are never recursively parsed or treated as
 embedded Go, TypeScript, or another language.
+
+## Python package
+
+The `repoctx` distribution provides the same module-root Go command through a
+console script and `python -m repoctx_cli`. A wheel install does not need Go or
+a C compiler at runtime. To install from this checkout:
+
+```bash
+python -m pip install .
+repoctx --help
+python -m repoctx_cli --help
+```
+
+To build and install from this checkout, use Python 3.9 or newer with
+`setuptools`, `wheel`, and the `build` frontend available:
+
+```bash
+python -m pip install .
+python -m build --wheel
+python -m build --sdist
+python -m pip install dist/repoctx-*.whl
+```
+
+If the `build` frontend is not installed, `python setup.py bdist_wheel` is
+also supported for local builds.
+
+Building a wheel or installing directly from this checkout compiles the Go
+module with CGO. Building from an sdist likewise requires Go 1.23 or newer and
+a working C compiler; the sdist contains the Go sources and pinned module
+checksums needed for that build. Build on the target platform: the wheel is
+platform-specific and is deliberately not tagged as `py3-none-any`. Only the
+Linux amd64 build is validated in this repository; other platform builds are
+not claimed unless their Go, CGO, and Tree-sitter toolchains succeed.
+
+The Python launcher only forwards arguments and inherited standard streams to
+the bundled executable. It does not reimplement indexing, and its Markdown
+fence behavior is therefore exactly the Go CLI's raw-context policy described
+above.
 
 ## Agent skill
 
