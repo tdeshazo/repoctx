@@ -3,6 +3,7 @@ package agentctx
 import (
 	"path/filepath"
 	"sort"
+	"strings"
 
 	"github.com/tdeshazo/repoctx/pkg/ir"
 )
@@ -139,7 +140,26 @@ func relationships(r *ir.Repository, b *Bundle, sources map[int]*source, limit i
 				matches := e.ToSymbol > 0 && e.ToSymbol-1 == a.to
 				if e.ToSymbol == 0 && a.to >= len(r.Symbols) {
 					x := r.Graph.External[a.to-len(r.Symbols)]
-					matches = r.String(x.Name) == "symbol:"+r.String(e.Text)
+					label := r.String(x.Name)
+					// Unresolved calls use a symbol:<name> external label,
+					// while imports point at either a repository unit or an
+					// external module. Keep the occurrence site attached to
+					// all three boundary forms.
+					switch a.kind {
+					case ir.EdgeImports:
+						raw := r.String(e.Text)
+						matches = label == "module:"+raw
+						if !matches && x.Kind == ir.GraphExternalUnit {
+							matches = importUnitMatches(r, e, label, raw)
+							if !matches {
+								// Retain a conservative fallback for an older index whose
+								// graph label cannot expose enough module information.
+								matches = importArcTargets(r, e, a.to)
+							}
+						}
+					default:
+						matches = label == "symbol:"+r.String(e.Text)
+					}
 				}
 				if !matches {
 					continue
@@ -151,4 +171,82 @@ func relationships(r *ir.Repository, b *Bundle, sources map[int]*source, limit i
 		out = append(out, rel)
 	}
 	return out, omitted
+}
+
+func importUnitMatches(r *ir.Repository, e ir.Edge, label, raw string) bool {
+	if e.From.File < 0 || e.From.File >= len(r.Files) {
+		return false
+	}
+	source := r.Files[e.From.File]
+	if source.Lang == ir.LangPython {
+		return label == "unit:py:"+raw || strings.HasPrefix(raw, strings.TrimPrefix(label, "unit:py:")+".")
+	}
+	if source.Lang != ir.LangGo || !strings.HasPrefix(label, "unit:go:") {
+		return false
+	}
+	// Current Go unit labels are unit:go:<relative-directory>/<package>.
+	// The module prefix from go.mod is absent from that label, so compare the
+	// relative-directory suffix of the import path. This distinguishes ordinary
+	// repository imports without pretending to implement module resolution.
+	key := strings.TrimPrefix(label, "unit:go:")
+	dir := ""
+	if slash := strings.LastIndexByte(key, '/'); slash >= 0 {
+		dir = key[:slash]
+	}
+	if dir == "" {
+		return !strings.Contains(raw, "/")
+	}
+	return strings.HasSuffix(raw, "/"+dir)
+}
+
+func importArcTargets(r *ir.Repository, e ir.Edge, target int) bool {
+	from := -1
+	if e.OwnerSymbol > 0 {
+		from = e.OwnerSymbol - 1
+	} else if unit := graphUnitForFile(r, e.From.File); unit >= 0 {
+		from = unit
+	}
+	if from < 0 || from+1 >= len(r.Graph.Out.Offsets) {
+		return false
+	}
+	for i := r.Graph.Out.Offsets[from]; i < r.Graph.Out.Offsets[from+1]; i++ {
+		if r.Graph.Out.Kinds[i] == ir.EdgeImports && int(r.Graph.Out.Targets[i]) == target {
+			return true
+		}
+	}
+	return false
+}
+
+// graphUnitForFile returns the external unit node used as an occurrence's
+// source when it is not owned by a symbol. Labels are derived exactly as in
+// compiler.buildSymbolGraph; no additional module-resolution claim is made.
+func graphUnitForFile(r *ir.Repository, file int) int {
+	if file < 0 || file >= len(r.Files) {
+		return -1
+	}
+	f := r.Files[file]
+	path := filepath.ToSlash(r.String(f.Path))
+	unit := r.String(f.Unit)
+	label := ""
+	switch f.Lang {
+	case ir.LangGo:
+		dir := filepath.ToSlash(filepath.Dir(path))
+		if dir == "." {
+			dir = ""
+		}
+		if dir != "" {
+			unit = dir + "/" + unit
+		}
+		label = "unit:go:" + unit
+	case ir.LangPython:
+		label = "unit:py:" + unit
+	default:
+		label = "unit:" + path
+	}
+	for i, x := range r.Graph.External {
+		if x.Kind == ir.GraphExternalUnit && r.String(x.Name) == label {
+			return len(r.Symbols) + i
+		}
+	}
+	return -1
 }

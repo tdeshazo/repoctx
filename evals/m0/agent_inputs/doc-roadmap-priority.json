@@ -1,0 +1,7 @@
+{
+  "id": "doc-roadmap-priority",
+  "question": "Which incomplete roadmap item is highest priority, and what is its next unmet criterion?",
+  "files": [
+    "docs/roadmap.md"
+  ]
+}

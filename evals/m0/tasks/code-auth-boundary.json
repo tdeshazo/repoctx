@@ -1,0 +1,41 @@
+{
+  "id": "code-auth-boundary",
+  "question": "Which function checks the request token before loading a profile?",
+  "source_files": [
+    "sources/code-auth-boundary.py"
+  ],
+  "source_map": {
+    "sources/code-auth-boundary.py": "src/auth.py"
+  },
+  "answer_spans": [
+    {
+      "id": "s1",
+      "file": "sources/code-auth-boundary.py",
+      "start_byte": 142,
+      "end_byte": 233,
+      "text": "def load_profile(request):\n    verify_token(request.token)\n    return profile(request.user)"
+    }
+  ],
+  "expected_relationships": [
+    {
+      "from": "load_profile",
+      "to": "verify_token",
+      "kind": "calls",
+      "resolution": "name_heuristic",
+      "surface": "context",
+      "evidence": [
+        "s1"
+      ]
+    }
+  ],
+  "allowed_scope": [
+    "src/auth.py"
+  ],
+  "denied_scope": [],
+  "budgets": {
+    "max_bytes": 12000,
+    "max_symbols": 8,
+    "max_tokens": null,
+    "tokenizer": null
+  }
+}

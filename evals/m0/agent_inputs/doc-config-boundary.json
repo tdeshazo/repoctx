@@ -1,0 +1,7 @@
+{
+  "id": "doc-config-boundary",
+  "question": "Which configuration files are outside the current freshness guarantee?",
+  "files": [
+    "docs/freshness.md"
+  ]
+}

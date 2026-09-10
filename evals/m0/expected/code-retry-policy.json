@@ -1,0 +1,10 @@
+{
+  "id": "code-retry-policy",
+  "answer": "3 attempts.",
+  "spans": [
+    "s1",
+    "s2"
+  ],
+  "relationships": [],
+  "outcome": "answerable"
+}

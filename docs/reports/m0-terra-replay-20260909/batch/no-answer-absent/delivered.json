@@ -1,0 +1,11 @@
+{
+  "question": "Which module implements the unannounced quantum cache?",
+  "files": [
+    {
+      "file": "src/inventory.md",
+      "start_byte": 0,
+      "end_byte": 79,
+      "text": "# Module inventory\n\nThe repository contains a file reader and a text renderer.\n"
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "id": "mixed-release-gate",
+  "question": "Which code gate implements the documented release requirement, and what does it check?",
+  "files": [
+    "docs/release.md",
+    "src/release.go"
+  ]
+}

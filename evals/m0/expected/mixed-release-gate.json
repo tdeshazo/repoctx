@@ -1,0 +1,10 @@
+{
+  "id": "mixed-release-gate",
+  "answer": "ValidateRelease checks Report.Reproducible, implementing the requirement for a reproducible validation report.",
+  "spans": [
+    "s1",
+    "s2"
+  ],
+  "relationships": [],
+  "outcome": "answerable"
+}

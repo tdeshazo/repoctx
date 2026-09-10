@@ -1,0 +1,7 @@
+{
+  "id": "code-auth-boundary",
+  "question": "Which function checks the request token before loading a profile?",
+  "files": [
+    "src/auth.py"
+  ]
+}

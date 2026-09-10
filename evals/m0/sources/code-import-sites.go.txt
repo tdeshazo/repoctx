@@ -1,0 +1,10 @@
+package imports
+
+import (
+	"example.test/store"
+	"fmt"
+)
+
+func Print() {
+	fmt.Println(store.Name)
+}

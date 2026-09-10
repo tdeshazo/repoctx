@@ -1,0 +1,64 @@
+{
+  "id": "code-import-sites",
+  "question": "Where are the repository-module and external imports declared?",
+  "source_files": [
+    "sources/code-import-sites.go.txt",
+    "sources/code-import-module.txt",
+    "sources/code-import-store.go.txt"
+  ],
+  "source_map": {
+    "sources/code-import-sites.go.txt": "src/imports.go",
+    "sources/code-import-module.txt": "go.mod",
+    "sources/code-import-store.go.txt": "store/store.go"
+  },
+  "answer_spans": [
+    {
+      "id": "s1",
+      "file": "sources/code-import-sites.go.txt",
+      "start_byte": 27,
+      "end_byte": 47,
+      "text": "\"example.test/store\""
+    },
+    {
+      "id": "s2",
+      "file": "sources/code-import-sites.go.txt",
+      "start_byte": 49,
+      "end_byte": 54,
+      "text": "\"fmt\""
+    }
+  ],
+  "expected_relationships": [
+    {
+      "from": "src/imports.go",
+      "to": "example.test/store",
+      "kind": "imports",
+      "resolution": "syntactic",
+      "surface": "index",
+      "evidence": [
+        "s1"
+      ]
+    },
+    {
+      "from": "src/imports.go",
+      "to": "fmt",
+      "kind": "imports",
+      "resolution": "syntactic",
+      "surface": "index",
+      "evidence": [
+        "s2"
+      ]
+    }
+  ],
+  "allowed_scope": [
+    "src/imports.go",
+    "go.mod",
+    "store/store.go"
+  ],
+  "denied_scope": [],
+  "budgets": {
+    "max_bytes": 12000,
+    "max_symbols": 8,
+    "max_tokens": null,
+    "tokenizer": null
+  }
+}

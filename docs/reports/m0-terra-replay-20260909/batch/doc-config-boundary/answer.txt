@@ -1,0 +1,1 @@
+{"outcome":"answerable","answer":"Unindexed build configuration files, including go.mod and tsconfig.json, are outside the current freshness guarantee.","citations":[{"file":"docs/freshness.md","quote":"Only indexed source files are freshness-verified.\nUnindexed build configuration, including go.mod and tsconfig.json, requires recompilation."}]}

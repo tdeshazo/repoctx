@@ -1,0 +1,62 @@
+{
+  "doc-roadmap-priority": {
+    "seconds": 0.017494,
+    "exit_code": 0,
+    "stderr": ""
+  },
+  "doc-api-contract": {
+    "seconds": 0.015607,
+    "exit_code": 0,
+    "stderr": ""
+  },
+  "doc-config-boundary": {
+    "seconds": 0.01574,
+    "exit_code": 0,
+    "stderr": ""
+  },
+  "doc-release-notes": {
+    "seconds": 0.016179,
+    "exit_code": 0,
+    "stderr": ""
+  },
+  "code-import-sites": {
+    "seconds": 0.014963,
+    "exit_code": 0,
+    "stderr": ""
+  },
+  "code-retry-policy": {
+    "seconds": 0.01579,
+    "exit_code": 0,
+    "stderr": ""
+  },
+  "code-auth-boundary": {
+    "seconds": 0.019344,
+    "exit_code": 0,
+    "stderr": ""
+  },
+  "code-parser-error": {
+    "seconds": 0.016484,
+    "exit_code": 0,
+    "stderr": ""
+  },
+  "mixed-release-gate": {
+    "seconds": 0.018866,
+    "exit_code": 0,
+    "stderr": ""
+  },
+  "mixed-schema-owner": {
+    "seconds": 0.016259,
+    "exit_code": 0,
+    "stderr": ""
+  },
+  "no-answer-restricted": {
+    "seconds": 0.01519,
+    "exit_code": 0,
+    "stderr": ""
+  },
+  "no-answer-absent": {
+    "seconds": 0.017104,
+    "exit_code": 0,
+    "stderr": ""
+  }
+}

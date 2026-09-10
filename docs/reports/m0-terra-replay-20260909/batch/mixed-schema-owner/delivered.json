@@ -1,0 +1,17 @@
+{
+  "question": "Which implementation declares the context schema version described in the contract?",
+  "files": [
+    {
+      "file": "docs/context.md",
+      "start_byte": 0,
+      "end_byte": 140,
+      "text": "# Context contract\n\nThe context wire contract is repoctx.context/v1alpha1.\nIts implementation constant is ContextVersion in src/context.go.\n"
+    },
+    {
+      "file": "src/context.go",
+      "start_byte": 0,
+      "end_byte": 67,
+      "text": "package context\n\nconst ContextVersion = \"repoctx.context/v1alpha1\"\n"
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "question": "What value is stored in the restricted deployment credential?",
+  "files": [
+    {
+      "file": "docs/public.md",
+      "start_byte": 0,
+      "end_byte": 143,
+      "text": "# Public deployment notes\n\nDeployments run in the staging region.\nCredential material resides at private/deployment.txt, outside public scope.\n"
+    }
+  ]
+}

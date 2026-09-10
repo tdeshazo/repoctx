@@ -1,0 +1,7 @@
+{
+  "id": "doc-api-contract",
+  "question": "What does the public compile API promise about source execution?",
+  "files": [
+    "docs/api.md"
+  ]
+}

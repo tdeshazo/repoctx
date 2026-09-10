@@ -1,0 +1,1 @@
+{"outcome":"answerable","answer":"They are declared in src/imports.go: the repository-module import is \"example.test/store\" and the external/standard-library import is \"fmt\".","citations":[{"file":"src/imports.go","quote":"import (\n\t\"example.test/store\"\n\t\"fmt\"\n)"},{"file":"go.mod","quote":"module example.test"}]}

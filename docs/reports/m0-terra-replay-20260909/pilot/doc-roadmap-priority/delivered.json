@@ -1,0 +1,11 @@
+{
+  "question": "Which incomplete roadmap item is highest priority, and what is its next unmet criterion?",
+  "files": [
+    {
+      "file": "docs/roadmap.md",
+      "start_byte": 0,
+      "end_byte": 175,
+      "text": "# Roadmap\n\n## Evidence bundles — priority 1\n- [x] Preserve exact UTF-8 source.\n- [ ] Preserve CRLF byte offsets.\n\n## Retrieval — priority 2\n- [ ] Search paragraph bodies.\n"
+    }
+  ]
+}

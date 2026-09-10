@@ -1,0 +1,40 @@
+{
+  "id": "mixed-schema-owner",
+  "question": "Which implementation declares the context schema version described in the contract?",
+  "source_files": [
+    "sources/mixed-schema-owner.md",
+    "sources/mixed-schema-owner.go.txt"
+  ],
+  "source_map": {
+    "sources/mixed-schema-owner.md": "docs/context.md",
+    "sources/mixed-schema-owner.go.txt": "src/context.go"
+  },
+  "answer_spans": [
+    {
+      "id": "s1",
+      "file": "sources/mixed-schema-owner.md",
+      "start_byte": 20,
+      "end_byte": 139,
+      "text": "The context wire contract is repoctx.context/v1alpha1.\nIts implementation constant is ContextVersion in src/context.go."
+    },
+    {
+      "id": "s2",
+      "file": "sources/mixed-schema-owner.go.txt",
+      "start_byte": 17,
+      "end_byte": 66,
+      "text": "const ContextVersion = \"repoctx.context/v1alpha1\""
+    }
+  ],
+  "expected_relationships": [],
+  "allowed_scope": [
+    "docs/context.md",
+    "src/context.go"
+  ],
+  "denied_scope": [],
+  "budgets": {
+    "max_bytes": 16000,
+    "max_symbols": 8,
+    "max_tokens": null,
+    "tokenizer": null
+  }
+}

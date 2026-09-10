@@ -1,0 +1,8 @@
+{
+  "id": "no-answer-absent",
+  "answer": null,
+  "spans": [],
+  "relationships": [],
+  "outcome": "no_answer",
+  "explanation": "The complete permitted fixture has no implementation or declaration of the requested module."
+}

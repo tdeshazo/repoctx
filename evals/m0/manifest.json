@@ -1,0 +1,91 @@
+{
+  "version": "repoctx.m0.fixtures/v2",
+  "purpose": "deterministic engineering corpus; no retrieval or agent performance claim",
+  "distinct_task_count": 12,
+  "fixtures": [
+    {
+      "id": "doc-roadmap-priority",
+      "category": "documentation",
+      "task": "tasks/doc-roadmap-priority.json",
+      "expected": "expected/doc-roadmap-priority.json",
+      "agent_input": "agent_inputs/doc-roadmap-priority.json"
+    },
+    {
+      "id": "doc-api-contract",
+      "category": "documentation",
+      "task": "tasks/doc-api-contract.json",
+      "expected": "expected/doc-api-contract.json",
+      "agent_input": "agent_inputs/doc-api-contract.json"
+    },
+    {
+      "id": "doc-config-boundary",
+      "category": "documentation",
+      "task": "tasks/doc-config-boundary.json",
+      "expected": "expected/doc-config-boundary.json",
+      "agent_input": "agent_inputs/doc-config-boundary.json"
+    },
+    {
+      "id": "doc-release-notes",
+      "category": "documentation",
+      "task": "tasks/doc-release-notes.json",
+      "expected": "expected/doc-release-notes.json",
+      "agent_input": "agent_inputs/doc-release-notes.json"
+    },
+    {
+      "id": "code-import-sites",
+      "category": "code",
+      "task": "tasks/code-import-sites.json",
+      "expected": "expected/code-import-sites.json",
+      "agent_input": "agent_inputs/code-import-sites.json"
+    },
+    {
+      "id": "code-retry-policy",
+      "category": "code",
+      "task": "tasks/code-retry-policy.json",
+      "expected": "expected/code-retry-policy.json",
+      "agent_input": "agent_inputs/code-retry-policy.json"
+    },
+    {
+      "id": "code-auth-boundary",
+      "category": "code",
+      "task": "tasks/code-auth-boundary.json",
+      "expected": "expected/code-auth-boundary.json",
+      "agent_input": "agent_inputs/code-auth-boundary.json"
+    },
+    {
+      "id": "code-parser-error",
+      "category": "code",
+      "task": "tasks/code-parser-error.json",
+      "expected": "expected/code-parser-error.json",
+      "agent_input": "agent_inputs/code-parser-error.json"
+    },
+    {
+      "id": "mixed-release-gate",
+      "category": "mixed",
+      "task": "tasks/mixed-release-gate.json",
+      "expected": "expected/mixed-release-gate.json",
+      "agent_input": "agent_inputs/mixed-release-gate.json"
+    },
+    {
+      "id": "mixed-schema-owner",
+      "category": "mixed",
+      "task": "tasks/mixed-schema-owner.json",
+      "expected": "expected/mixed-schema-owner.json",
+      "agent_input": "agent_inputs/mixed-schema-owner.json"
+    },
+    {
+      "id": "no-answer-restricted",
+      "category": "no_answer",
+      "task": "tasks/no-answer-restricted.json",
+      "expected": "expected/no-answer-restricted.json",
+      "agent_input": "agent_inputs/no-answer-restricted.json"
+    },
+    {
+      "id": "no-answer-absent",
+      "category": "no_answer",
+      "task": "tasks/no-answer-absent.json",
+      "expected": "expected/no-answer-absent.json",
+      "agent_input": "agent_inputs/no-answer-absent.json"
+    }
+  ]
+}

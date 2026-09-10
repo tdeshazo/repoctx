@@ -1,0 +1,37 @@
+{
+  "id": "doc-roadmap-priority",
+  "question": "Which incomplete roadmap item is highest priority, and what is its next unmet criterion?",
+  "source_files": [
+    "sources/doc-roadmap-priority.md"
+  ],
+  "source_map": {
+    "sources/doc-roadmap-priority.md": "docs/roadmap.md"
+  },
+  "answer_spans": [
+    {
+      "id": "s1",
+      "file": "sources/doc-roadmap-priority.md",
+      "start_byte": 11,
+      "end_byte": 114,
+      "text": "## Evidence bundles — priority 1\n- [x] Preserve exact UTF-8 source.\n- [ ] Preserve CRLF byte offsets."
+    },
+    {
+      "id": "s2",
+      "file": "sources/doc-roadmap-priority.md",
+      "start_byte": 116,
+      "end_byte": 174,
+      "text": "## Retrieval — priority 2\n- [ ] Search paragraph bodies."
+    }
+  ],
+  "expected_relationships": [],
+  "allowed_scope": [
+    "docs/roadmap.md"
+  ],
+  "denied_scope": [],
+  "budgets": {
+    "max_bytes": 12000,
+    "max_symbols": 8,
+    "max_tokens": null,
+    "tokenizer": null
+  }
+}

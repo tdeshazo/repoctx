@@ -1,0 +1,9 @@
+{
+  "id": "code-parser-error",
+  "answer": "invalid",
+  "spans": [
+    "s1"
+  ],
+  "relationships": [],
+  "outcome": "answerable"
+}

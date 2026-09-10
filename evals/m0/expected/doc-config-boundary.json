@@ -1,0 +1,9 @@
+{
+  "id": "doc-config-boundary",
+  "answer": "Unindexed build configuration, including go.mod and tsconfig.json, requires recompilation.",
+  "spans": [
+    "s1"
+  ],
+  "relationships": [],
+  "outcome": "answerable"
+}

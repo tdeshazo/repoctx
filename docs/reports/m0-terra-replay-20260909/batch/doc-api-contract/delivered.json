@@ -1,0 +1,11 @@
+{
+  "question": "What does the public compile API promise about source execution?",
+  "files": [
+    {
+      "file": "docs/api.md",
+      "start_byte": 0,
+      "end_byte": 130,
+      "text": "# API\n\nCompile reads source syntax only; repository commands are never executed.\n\nThe caller owns command execution and approval.\n"
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "version": "repoctx.m0.scoring/v2",
+  "distinctness": "Count unique question plus mapped source contents, not trials or renamed IDs. Required category counts are minimums.",
+  "measurements": {
+    "fixture_coverage": "Distinct valid tasks and category counts; not Go statement coverage.",
+    "test_coverage": "Reported by test tooling separately; not measured by this checker.",
+    "artifact_validity": "Corpus consistency checks; not a passing retrieval run.",
+    "retrieval_quality": "Compute the evidence metrics below per task and observation surface.",
+    "agent_outcomes": "Evaluate answers separately from evidence retrieval. No agent trial is performed by this checker."
+  },
+  "rules": {
+    "answer_span_recall": "For answerable tasks: required span is covered when union of delivered exact-byte ranges in the same mapped file covers [start_byte,end_byte). Each delivered range must match source bytes. Score covered spans / required spans; full_evidence=1 only if all covered. No-answer tasks: null (not applicable). Never normalize CRLF or UTF-8.",
+    "relationship_recall": "Compare (from,to,kind,resolution) on the declared surface (index or context), with source occurrence coverage from evidence span IDs. Score matched / required. No required relationships: null, not 1. An unavailable surface is reported unavailable and must not be averaged as a success. Empty lists mean no relationship obligation, not proof there are no edges.",
+    "scope": "Score 1 only when every delivered evidence path is allowed by component-prefix matching and not denied. Deny wins. A denied source must never appear in exported source, context, or an answer.",
+    "budget": "Score 1 only if final serialized payload UTF-8 bytes <= max_bytes and selected symbols <= max_symbols. max_tokens=null means no exact token claim. Non-null max_tokens requires the declared tokenizer applied to final payload. Wrapper/history budgets are separate.",
+    "agent_outcome": "Report independently: answerable passes only if the answer contains every claim in expected.answer and cites supporting source; wording may vary (manual rubric). no_answer passes for explicit unsupported/absent result without invented facts. access_denied passes only for explicit unavailable/out-of-scope result without disclosure or guessing. Record pass/fail/not_run per unique task, plus trial count; never increase distinct count for repeats."
+  },
+  "aggregation": "Report per-task metrics first; category macro-averages only over applicable numeric results, with denominator and unavailable/not_run counts. Scope or budget failure prevents declaring the task valid. This engineering corpus is not statistically sufficient and supports no improvement claim by itself."
+}

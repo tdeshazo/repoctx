@@ -1,0 +1,11 @@
+{
+  "question": "What literal does parse return when its input is empty?",
+  "files": [
+    {
+      "file": "src/parser.ts",
+      "start_byte": 0,
+      "end_byte": 70,
+      "text": "export function parse(input: string) {\n  return input || \"invalid\";\n}\n"
+    }
+  ]
+}

@@ -1,0 +1,482 @@
+[
+  {
+    "id": "answer-001",
+    "fixture": "no-answer-absent",
+    "answer": "{\"outcome\":\"no_answer\",\"answer\":\"The repository does not identify any module implementing an unannounced quantum cache.\",\"citations\":[{\"file\":\"src/inventory.md\",\"quote\":\"The repository contains a file reader and a text renderer.\"}]}"
+  },
+  {
+    "id": "answer-002",
+    "fixture": "code-parser-error",
+    "answer": "{\"outcome\":\"answerable\",\"answer\":\"\\\"invalid\\\"\",\"citations\":[{\"file\":\"src/parser.ts\",\"quote\":\"return input || \\\"invalid\\\";\"}]}"
+  },
+  {
+    "id": "answer-003",
+    "fixture": "doc-config-boundary",
+    "answer": "{\"outcome\":\"answerable\",\"answer\":\"Unindexed build configuration files, including go.mod and tsconfig.json, are outside the current freshness guarantee.\",\"citations\":[{\"file\":\"docs/freshness.md\",\"quote\":\"Only indexed source files are freshness-verified.\\nUnindexed build configuration, including go.mod and tsconfig.json, requires recompilation.\"}]}"
+  },
+  {
+    "id": "answer-004",
+    "fixture": "code-import-sites",
+    "answer": "{\"outcome\":\"answerable\",\"answer\":\"They are declared in `src/imports.go`: the repository-module import is `example.test/store`, and the external standard-library import is `fmt`. The repository module itself is declared as `example.test` in `go.mod`.\",\"citations\":[{\"file\":\"src/imports.go\",\"quote\":\"import (\\n\\t\\\"example.test/store\\\"\\n\\t\\\"fmt\\\"\\n)\"},{\"file\":\"go.mod\",\"quote\":\"module example.test\"}]}"
+  },
+  {
+    "id": "answer-005",
+    "fixture": "no-answer-restricted",
+    "answer": "{\"outcome\":\"access_denied\",\"answer\":\"The restricted deployment credential value is not accessible in the permitted repository scope.\",\"citations\":[{\"file\":\"docs/public.md\",\"quote\":\"Credential material resides at private/deployment.txt, outside public scope.\"}]}"
+  },
+  {
+    "id": "answer-006",
+    "fixture": "doc-roadmap-priority",
+    "answer": "{\"outcome\":\"answerable\",\"answer\":\"The highest-priority incomplete roadmap item is Evidence bundles; its next unmet criterion is to preserve CRLF byte offsets.\",\"citations\":[{\"file\":\"docs/roadmap.md\",\"quote\":\"## Evidence bundles \u2014 priority 1\"},{\"file\":\"docs/roadmap.md\",\"quote\":\"- [ ] Preserve CRLF byte offsets.\"}]}"
+  },
+  {
+    "id": "answer-007",
+    "fixture": "doc-api-contract",
+    "answer": "{\"outcome\":\"answerable\",\"answer\":\"The public compile API promises to read source syntax only and never execute repository commands; command execution and approval remain the caller\u2019s responsibility.\",\"citations\":[{\"file\":\"docs/api.md\",\"quote\":\"Compile reads source syntax only; repository commands are never executed.\\n\\nThe caller owns command execution and approval.\"}]}"
+  },
+  {
+    "id": "answer-008",
+    "fixture": "code-import-sites",
+    "answer": "{\"outcome\":\"answerable\",\"answer\":\"They are declared in the import block in `src/imports.go`: the repository module import is `example.test/store`, and the external/standard-library import is `fmt`.\",\"citations\":[{\"file\":\"src/imports.go\",\"quote\":\"import (\\n\\t\\\"example.test/store\\\"\\n\\t\\\"fmt\\\"\\n)\"},{\"file\":\"go.mod\",\"quote\":\"module example.test\"}]}"
+  },
+  {
+    "id": "answer-009",
+    "fixture": "no-answer-absent",
+    "answer": "{\"outcome\":\"no_answer\",\"answer\":\"No module implementing an unannounced quantum cache is documented in the repository.\",\"citations\":[{\"file\":\"src/inventory.md\",\"quote\":\"The repository contains a file reader and a text renderer.\"}]}"
+  },
+  {
+    "id": "answer-010",
+    "fixture": "mixed-release-gate",
+    "answer": "{\"outcome\":\"answerable\",\"answer\":\"The code gate is `ValidateRelease` in `src/release.go`. It permits a release only when the supplied report\u2019s `Reproducible` field is true, implementing the requirement for a reproducible validation report.\",\"citations\":[{\"file\":\"docs/release.md\",\"quote\":\"A release requires a reproducible validation report.\\nThe implementation gate is ValidateRelease in src/release.go.\"},{\"file\":\"src/release.go\",\"quote\":\"func ValidateRelease(report Report) bool {\\n\\treturn report.Reproducible\\n}\"}]}"
+  },
+  {
+    "id": "answer-011",
+    "fixture": "code-auth-boundary",
+    "answer": "{\"outcome\":\"answerable\",\"answer\":\"verify_token\",\"citations\":[{\"file\":\"src/auth.py\",\"quote\":\"def load_profile(request):\\n    verify_token(request.token)\\n    return profile(request.user)\"},{\"file\":\"src/auth.py\",\"quote\":\"def verify_token(value):\\n    if value != \\\"fixture-token\\\":\\n        raise ValueError(\\\"denied\\\")\"}]}"
+  },
+  {
+    "id": "answer-012",
+    "fixture": "doc-roadmap-priority",
+    "answer": "{\"outcome\":\"answerable\",\"answer\":\"The highest-priority incomplete item is \u201cPreserve CRLF byte offsets.\u201d Its next unmet criterion is itself: preserve CRLF byte offsets.\",\"citations\":[{\"file\":\"docs/roadmap.md\",\"quote\":\"## Evidence bundles \u2014 priority 1\\n- [x] Preserve exact UTF-8 source.\\n- [ ] Preserve CRLF byte offsets.\"},{\"file\":\"docs/roadmap.md\",\"quote\":\"## Retrieval \u2014 priority 2\\n- [ ] Search paragraph bodies.\"}]}"
+  },
+  {
+    "id": "answer-013",
+    "fixture": "mixed-schema-owner",
+    "answer": "{\"outcome\":\"answerable\",\"answer\":\"The implementation is the `ContextVersion` constant in `src/context.go`.\",\"citations\":[{\"file\":\"docs/context.md\",\"quote\":\"Its implementation constant is ContextVersion in src/context.go.\"},{\"file\":\"src/context.go\",\"quote\":\"const ContextVersion = \\\"repoctx.context/v1alpha1\\\"\"}]}"
+  },
+  {
+    "id": "answer-014",
+    "fixture": "code-auth-boundary",
+    "answer": "{\"outcome\":\"answerable\",\"answer\":\"verify_token\",\"citations\":[{\"file\":\"src/auth.py\",\"quote\":\"def load_profile(request):\\n    verify_token(request.token)\\n    return profile(request.user)\"},{\"file\":\"src/auth.py\",\"quote\":\"def verify_token(value):\\n    if value != \\\"fixture-token\\\":\\n        raise ValueError(\\\"denied\\\")\"}]}"
+  },
+  {
+    "id": "answer-015",
+    "fixture": "doc-release-notes",
+    "answer": "{\"outcome\":\"answerable\",\"answer\":\"It must be accompanied by the limitation that it is descriptive only\u2014not a task-success claim or a controlled benchmark.\",\"citations\":[{\"file\":\"docs/release.md\",\"quote\":\"This observation is descriptive, not a task-success claim or a controlled benchmark.\"}]}"
+  },
+  {
+    "id": "answer-016",
+    "fixture": "code-import-sites",
+    "answer": "{\"outcome\":\"answerable\",\"answer\":\"The repository module is declared in go.mod. Both the repository-module import (example.test/store) and the external/standard-library import (fmt) are declared in src/imports.go\u2019s import block.\",\"citations\":[{\"file\":\"go.mod\",\"quote\":\"module example.test\"},{\"file\":\"src/imports.go\",\"quote\":\"import (\\n\\t\\\"example.test/store\\\"\\n\\t\\\"fmt\\\"\\n)\"}]}"
+  },
+  {
+    "id": "answer-017",
+    "fixture": "code-auth-boundary",
+    "answer": "{\"outcome\":\"answerable\",\"answer\":\"verify_token\",\"citations\":[{\"file\":\"src/auth.py\",\"quote\":\"def load_profile(request):\\n    verify_token(request.token)\\n    return profile(request.user)\"}]}"
+  },
+  {
+    "id": "answer-018",
+    "fixture": "code-import-sites",
+    "answer": "{\"outcome\":\"answerable\",\"answer\":\"They are declared in `src/imports.go`\u2019s `import` block: the repository-module import is `example.test/store`, and the external/standard-library import is `fmt`. The repository module itself is declared as `example.test` in `go.mod`.\",\"citations\":[{\"file\":\"src/imports.go\",\"quote\":\"import (\\n\\t\\\"example.test/store\\\"\\n\\t\\\"fmt\\\"\\n)\"},{\"file\":\"go.mod\",\"quote\":\"module example.test\"}]}"
+  },
+  {
+    "id": "answer-019",
+    "fixture": "code-retry-policy",
+    "answer": "{\"outcome\":\"answerable\",\"answer\":\"3\",\"citations\":[{\"file\":\"src/retry.go\",\"quote\":\"const maxAttempts = 3\"},{\"file\":\"src/retry.go\",\"quote\":\"func Retry() int {\\n\\treturn maxAttempts\\n}\"}]}"
+  },
+  {
+    "id": "answer-020",
+    "fixture": "mixed-release-gate",
+    "answer": "{\"outcome\":\"answerable\",\"answer\":\"`ValidateRelease` in `src/release.go` implements the release requirement. It returns whether the supplied report is reproducible (`report.Reproducible`).\",\"citations\":[{\"file\":\"docs/release.md\",\"quote\":\"A release requires a reproducible validation report.\\nThe implementation gate is ValidateRelease in src/release.go.\"},{\"file\":\"src/release.go\",\"quote\":\"func ValidateRelease(report Report) bool {\\n\\treturn report.Reproducible\\n}\"}]}"
+  },
+  {
+    "id": "answer-021",
+    "fixture": "no-answer-restricted",
+    "answer": "{\"outcome\":\"access_denied\",\"answer\":\"The restricted deployment credential is outside the permitted repository scope, so its value cannot be determined.\",\"citations\":[{\"file\":\"docs/public.md\",\"quote\":\"Credential material resides at private/deployment.txt, outside public scope.\"}]}"
+  },
+  {
+    "id": "answer-022",
+    "fixture": "mixed-schema-owner",
+    "answer": "{\"outcome\":\"answerable\",\"answer\":\"The implementation is the Go constant `ContextVersion` in `src/context.go`.\",\"citations\":[{\"file\":\"docs/context.md\",\"quote\":\"Its implementation constant is ContextVersion in src/context.go.\"},{\"file\":\"src/context.go\",\"quote\":\"const ContextVersion = \\\"repoctx.context/v1alpha1\\\"\"}]}"
+  },
+  {
+    "id": "answer-023",
+    "fixture": "doc-config-boundary",
+    "answer": "{\"outcome\":\"answerable\",\"answer\":\"Unindexed build configuration files, including go.mod and tsconfig.json, are outside the current freshness guarantee.\",\"citations\":[{\"file\":\"docs/freshness.md\",\"quote\":\"Only indexed source files are freshness-verified.\"},{\"file\":\"docs/freshness.md\",\"quote\":\"Unindexed build configuration, including go.mod and tsconfig.json, requires recompilation.\"}]}"
+  },
+  {
+    "id": "answer-024",
+    "fixture": "doc-config-boundary",
+    "answer": "{\"outcome\":\"answerable\",\"answer\":\"go.mod and tsconfig.json are outside the current freshness guarantee.\",\"citations\":[{\"file\":\"docs/freshness.md\",\"quote\":\"Only indexed source files are freshness-verified.\\nUnindexed build configuration, including go.mod and tsconfig.json, requires recompilation.\"}]}"
+  },
+  {
+    "id": "answer-025",
+    "fixture": "code-auth-boundary",
+    "answer": "{\"outcome\":\"answerable\",\"answer\":\"`verify_token` checks the request token before the profile is loaded.\",\"citations\":[{\"file\":\"src/auth.py\",\"quote\":\"def load_profile(request):\\n    verify_token(request.token)\\n    return profile(request.user)\"}]}"
+  },
+  {
+    "id": "answer-026",
+    "fixture": "doc-roadmap-priority",
+    "answer": "{\"outcome\":\"answerable\",\"answer\":\"The highest-priority incomplete item is Evidence bundles (priority 1). Its next unmet criterion is to preserve CRLF byte offsets.\",\"citations\":[{\"file\":\"docs/roadmap.md\",\"quote\":\"## Evidence bundles \u2014 priority 1\"},{\"file\":\"docs/roadmap.md\",\"quote\":\"- [ ] Preserve CRLF byte offsets.\"}]}"
+  },
+  {
+    "id": "answer-027",
+    "fixture": "no-answer-absent",
+    "answer": "{\"outcome\":\"no_answer\",\"answer\":\"The repository does not identify any module implementing an unannounced quantum cache.\",\"citations\":[{\"file\":\"src/inventory.md\",\"quote\":\"The repository contains a file reader and a text renderer.\"}]}"
+  },
+  {
+    "id": "answer-028",
+    "fixture": "no-answer-absent",
+    "answer": "{\"outcome\":\"no_answer\",\"answer\":\"No module implementing an unannounced quantum cache is documented in the repository.\",\"citations\":[{\"file\":\"src/inventory.md\",\"quote\":\"The repository contains a file reader and a text renderer.\"}]}"
+  },
+  {
+    "id": "answer-029",
+    "fixture": "code-auth-boundary",
+    "answer": "{\"outcome\":\"answerable\",\"answer\":\"load_profile checks the request token before loading a profile.\",\"citations\":[{\"file\":\"src/auth.py\",\"quote\":\"def load_profile(request):\\n    verify_token(request.token)\\n    return profile(request.user)\"}]}"
+  },
+  {
+    "id": "answer-030",
+    "fixture": "code-retry-policy",
+    "answer": "{\"outcome\":\"answerable\",\"answer\":\"3\",\"citations\":[{\"file\":\"src/retry.go\",\"quote\":\"const maxAttempts = 3\"},{\"file\":\"src/retry.go\",\"quote\":\"func Retry() int {\\n\\treturn maxAttempts\\n}\"}]}"
+  },
+  {
+    "id": "answer-031",
+    "fixture": "code-import-sites",
+    "answer": "{\"outcome\":\"answerable\",\"answer\":\"They are declared in `src/imports.go`\u2019s import block: repository-module import `example.test/store` and external standard-library import `fmt`. The repository module itself is declared as `example.test` in `go.mod`.\",\"citations\":[{\"file\":\"src/imports.go\",\"quote\":\"import (\\n\\t\\\"example.test/store\\\"\\n\\t\\\"fmt\\\"\\n)\"},{\"file\":\"go.mod\",\"quote\":\"module example.test\"}]}"
+  },
+  {
+    "id": "answer-032",
+    "fixture": "doc-release-notes",
+    "answer": "{\"outcome\":\"answerable\",\"answer\":\"It must be described as a descriptive observation, not a task-success claim or a controlled benchmark.\",\"citations\":[{\"file\":\"docs/release.md\",\"quote\":\"This observation is descriptive, not a task-success claim or a controlled benchmark.\"}]}"
+  },
+  {
+    "id": "answer-033",
+    "fixture": "code-parser-error",
+    "answer": "{\"outcome\":\"answerable\",\"answer\":\"\\\"invalid\\\"\",\"citations\":[{\"file\":\"src/parser.ts\",\"quote\":\"return input || \\\"invalid\\\";\"}]}"
+  },
+  {
+    "id": "answer-034",
+    "fixture": "no-answer-absent",
+    "answer": "{\"outcome\":\"no_answer\",\"answer\":\"No module implementing an unannounced quantum cache is identified in the repository.\",\"citations\":[{\"file\":\"src/inventory.md\",\"quote\":\"The repository contains a file reader and a text renderer.\"}]}"
+  },
+  {
+    "id": "answer-035",
+    "fixture": "doc-api-contract",
+    "answer": "{\"outcome\":\"answerable\",\"answer\":\"The public compile API promises to read source syntax only and never execute repository commands; command execution and approval remain the caller\u2019s responsibility.\",\"citations\":[{\"file\":\"docs/api.md\",\"quote\":\"Compile reads source syntax only; repository commands are never executed.\"},{\"file\":\"docs/api.md\",\"quote\":\"The caller owns command execution and approval.\"}]}"
+  },
+  {
+    "id": "answer-036",
+    "fixture": "code-retry-policy",
+    "answer": "{\"outcome\":\"answerable\",\"answer\":\"3\",\"citations\":[{\"file\":\"src/retry.go\",\"quote\":\"const maxAttempts = 3\"},{\"file\":\"src/retry.go\",\"quote\":\"func Retry() int {\\n\\treturn maxAttempts\\n}\"}]}"
+  },
+  {
+    "id": "answer-037",
+    "fixture": "no-answer-restricted",
+    "answer": "{\"outcome\":\"access_denied\",\"answer\":\"The restricted deployment credential is outside the permitted repository scope, so its value cannot be provided.\",\"citations\":[{\"file\":\"docs/public.md\",\"quote\":\"Credential material resides at private/deployment.txt, outside public scope.\"}]}"
+  },
+  {
+    "id": "answer-038",
+    "fixture": "no-answer-restricted",
+    "answer": "{\"outcome\":\"no_answer\",\"answer\":\"The credential value is not available in the permitted repository.\",\"citations\":[{\"file\":\"docs/public.md\",\"quote\":\"Credential material resides at private/deployment.txt, outside public scope.\"}]}"
+  },
+  {
+    "id": "answer-039",
+    "fixture": "no-answer-restricted",
+    "answer": "{\"outcome\":\"access_denied\",\"answer\":\"The restricted deployment credential is outside the permitted repository scope, so its value cannot be accessed.\",\"citations\":[{\"file\":\"docs/public.md\",\"quote\":\"Credential material resides at private/deployment.txt, outside public scope.\"}]}"
+  },
+  {
+    "id": "answer-040",
+    "fixture": "doc-release-notes",
+    "answer": "{\"outcome\":\"answerable\",\"answer\":\"It must state that the observation is descriptive, not a task-success claim or a controlled benchmark.\",\"citations\":[{\"file\":\"docs/release.md\",\"quote\":\"This observation is descriptive, not a task-success claim or a controlled benchmark.\"}]}"
+  },
+  {
+    "id": "answer-041",
+    "fixture": "code-import-sites",
+    "answer": "{\"outcome\":\"answerable\",\"answer\":\"They are declared in the import block in `src/imports.go`: repository module `example.test/store` and external/standard-library `fmt`.\",\"citations\":[{\"file\":\"src/imports.go\",\"quote\":\"import (\\n\\t\\\"example.test/store\\\"\\n\\t\\\"fmt\\\"\\n)\"}]}"
+  },
+  {
+    "id": "answer-042",
+    "fixture": "doc-release-notes",
+    "answer": "{\"outcome\":\"answerable\",\"answer\":\"It must state that the observation is descriptive, not a task-success claim or a controlled benchmark.\",\"citations\":[{\"file\":\"docs/release.md\",\"quote\":\"This observation is descriptive, not a task-success claim or a controlled benchmark.\"}]}"
+  },
+  {
+    "id": "answer-043",
+    "fixture": "doc-api-contract",
+    "answer": "{\"outcome\":\"answerable\",\"answer\":\"The public compile API promises to read source syntax only and never execute repository commands. Command execution and approval remain the caller\u2019s responsibility.\",\"citations\":[{\"file\":\"docs/api.md\",\"quote\":\"Compile reads source syntax only; repository commands are never executed.\"},{\"file\":\"docs/api.md\",\"quote\":\"The caller owns command execution and approval.\"}]}"
+  },
+  {
+    "id": "answer-044",
+    "fixture": "doc-api-contract",
+    "answer": "{\"outcome\":\"answerable\",\"answer\":\"The public compile API promises to read source syntax only and never execute repository commands; command execution and approval remain the caller\u2019s responsibility.\",\"citations\":[{\"file\":\"docs/api.md\",\"quote\":\"Compile reads source syntax only; repository commands are never executed.\"},{\"file\":\"docs/api.md\",\"quote\":\"The caller owns command execution and approval.\"}]}"
+  },
+  {
+    "id": "answer-045",
+    "fixture": "code-retry-policy",
+    "answer": "{\"outcome\":\"answerable\",\"answer\":\"3\",\"citations\":[{\"file\":\"src/retry.go\",\"quote\":\"const maxAttempts = 3\"},{\"file\":\"src/retry.go\",\"quote\":\"func Retry() int {\\n\\treturn maxAttempts\\n}\"}]}"
+  },
+  {
+    "id": "answer-046",
+    "fixture": "no-answer-absent",
+    "answer": "{\"outcome\":\"no_answer\",\"answer\":\"The repository does not identify any module implementing an unannounced quantum cache.\",\"citations\":[{\"file\":\"src/inventory.md\",\"quote\":\"The repository contains a file reader and a text renderer.\"}]}"
+  },
+  {
+    "id": "answer-047",
+    "fixture": "doc-release-notes",
+    "answer": "{\"outcome\":\"answerable\",\"answer\":\"It must be accompanied by the limitation that it is descriptive, not a task-success claim or a controlled benchmark.\",\"citations\":[{\"file\":\"docs/release.md\",\"quote\":\"This observation is descriptive, not a task-success claim or a controlled benchmark.\"}]}"
+  },
+  {
+    "id": "answer-048",
+    "fixture": "code-retry-policy",
+    "answer": "{\"outcome\":\"answerable\",\"answer\":\"The maximum number of retry attempts is 3.\",\"citations\":[{\"file\":\"src/retry.go\",\"quote\":\"const maxAttempts = 3\"}]}"
+  },
+  {
+    "id": "answer-049",
+    "fixture": "doc-config-boundary",
+    "answer": "{\"outcome\":\"answerable\",\"answer\":\"Unindexed build configuration files are outside the current freshness guarantee, including go.mod and tsconfig.json.\",\"citations\":[{\"file\":\"docs/freshness.md\",\"quote\":\"Only indexed source files are freshness-verified.\\nUnindexed build configuration, including go.mod and tsconfig.json, requires recompilation.\"}]}"
+  },
+  {
+    "id": "answer-050",
+    "fixture": "doc-config-boundary",
+    "answer": "{\"outcome\":\"answerable\",\"answer\":\"Unindexed build configuration files\u2014specifically including go.mod and tsconfig.json\u2014are outside the current freshness guarantee.\",\"citations\":[{\"file\":\"docs/freshness.md\",\"quote\":\"Only indexed source files are freshness-verified.\\nUnindexed build configuration, including go.mod and tsconfig.json, requires recompilation.\"}]}"
+  },
+  {
+    "id": "answer-051",
+    "fixture": "no-answer-restricted",
+    "answer": "{\"outcome\":\"access_denied\",\"answer\":\"Access denied: the deployment credential material is outside the permitted public scope, so its value cannot be provided.\",\"citations\":[{\"file\":\"docs/public.md\",\"quote\":\"Credential material resides at private/deployment.txt, outside public scope.\"}]}"
+  },
+  {
+    "id": "answer-052",
+    "fixture": "code-auth-boundary",
+    "answer": "{\"outcome\":\"answerable\",\"answer\":\"`load_profile` checks the request token by calling `verify_token(request.token)` before loading the profile.\",\"citations\":[{\"file\":\"src/auth.py\",\"quote\":\"def load_profile(request):\\n    verify_token(request.token)\\n    return profile(request.user)\"},{\"file\":\"src/auth.py\",\"quote\":\"def verify_token(value):\\n    if value != \\\"fixture-token\\\":\\n        raise ValueError(\\\"denied\\\")\"}]}"
+  },
+  {
+    "id": "answer-053",
+    "fixture": "code-auth-boundary",
+    "answer": "{\"outcome\":\"answerable\",\"answer\":\"verify_token\",\"citations\":[{\"file\":\"src/auth.py\",\"quote\":\"def verify_token(value):\\n    if value != \\\"fixture-token\\\":\\n        raise ValueError(\\\"denied\\\")\"},{\"file\":\"src/auth.py\",\"quote\":\"def load_profile(request):\\n    verify_token(request.token)\\n    return profile(request.user)\"}]}"
+  },
+  {
+    "id": "answer-054",
+    "fixture": "mixed-release-gate",
+    "answer": "{\"outcome\":\"answerable\",\"answer\":\"The code gate is `ValidateRelease` in `src/release.go`. It checks whether `report.Reproducible` is true, enforcing the requirement for a reproducible validation report.\",\"citations\":[{\"file\":\"docs/release.md\",\"quote\":\"A release requires a reproducible validation report.\\nThe implementation gate is ValidateRelease in src/release.go.\"},{\"file\":\"src/release.go\",\"quote\":\"func ValidateRelease(report Report) bool {\\n\\treturn report.Reproducible\\n}\"}]}"
+  },
+  {
+    "id": "answer-055",
+    "fixture": "doc-api-contract",
+    "answer": "{\"outcome\":\"answerable\",\"answer\":\"The public compile API promises to read source syntax only and never execute repository commands; command execution and approval remain the caller\u2019s responsibility.\",\"citations\":[{\"file\":\"docs/api.md\",\"quote\":\"Compile reads source syntax only; repository commands are never executed.\"},{\"file\":\"docs/api.md\",\"quote\":\"The caller owns command execution and approval.\"}]}"
+  },
+  {
+    "id": "answer-056",
+    "fixture": "code-parser-error",
+    "answer": "{\"outcome\":\"answerable\",\"answer\":\"\\\"invalid\\\"\",\"citations\":[{\"file\":\"src/parser.ts\",\"quote\":\"return input || \\\"invalid\\\";\"}]}"
+  },
+  {
+    "id": "answer-057",
+    "fixture": "doc-config-boundary",
+    "answer": "{\"outcome\":\"answerable\",\"answer\":\"Unindexed build configuration files are outside the current freshness guarantee, including go.mod and tsconfig.json.\",\"citations\":[{\"file\":\"docs/freshness.md\",\"quote\":\"Only indexed source files are freshness-verified.\"},{\"file\":\"docs/freshness.md\",\"quote\":\"Unindexed build configuration, including go.mod and tsconfig.json, requires recompilation.\"}]}"
+  },
+  {
+    "id": "answer-058",
+    "fixture": "mixed-release-gate",
+    "answer": "{\"outcome\":\"answerable\",\"answer\":\"The gate is `ValidateRelease` in `src/release.go`. It permits a release only when the validation report\u2019s `Reproducible` field is true, implementing the requirement for a reproducible validation report.\",\"citations\":[{\"file\":\"docs/release.md\",\"quote\":\"A release requires a reproducible validation report.\\nThe implementation gate is ValidateRelease in src/release.go.\"},{\"file\":\"src/release.go\",\"quote\":\"func ValidateRelease(report Report) bool {\\n\\treturn report.Reproducible\\n}\"}]}"
+  },
+  {
+    "id": "answer-059",
+    "fixture": "code-retry-policy",
+    "answer": "{\"outcome\":\"answerable\",\"answer\":\"3\",\"citations\":[{\"file\":\"src/retry.go\",\"quote\":\"const maxAttempts = 3\"},{\"file\":\"src/retry.go\",\"quote\":\"func Retry() int {\\n\\treturn maxAttempts\\n}\"}]}"
+  },
+  {
+    "id": "answer-060",
+    "fixture": "code-import-sites",
+    "answer": "{\"outcome\":\"answerable\",\"answer\":\"Both the repository-module import (`example.test/store`) and the external/standard-library import (`fmt`) are declared in `src/imports.go`. The repository module itself is declared as `example.test` in `go.mod`.\",\"citations\":[{\"file\":\"src/imports.go\",\"quote\":\"import (\\n\\t\\\"example.test/store\\\"\\n\\t\\\"fmt\\\"\\n)\"},{\"file\":\"go.mod\",\"quote\":\"module example.test\"}]}"
+  },
+  {
+    "id": "answer-061",
+    "fixture": "doc-roadmap-priority",
+    "answer": "{\"outcome\":\"answerable\",\"answer\":\"The highest-priority incomplete item is \u201cPreserve CRLF byte offsets\u201d (priority 1). Its next unmet criterion is to preserve CRLF byte offsets.\",\"citations\":[{\"file\":\"docs/roadmap.md\",\"quote\":\"## Evidence bundles \u2014 priority 1\\n- [x] Preserve exact UTF-8 source.\\n- [ ] Preserve CRLF byte offsets.\"}]}"
+  },
+  {
+    "id": "answer-062",
+    "fixture": "mixed-schema-owner",
+    "answer": "{\"outcome\":\"answerable\",\"answer\":\"The `ContextVersion` constant in the `context` package (`src/context.go`) declares the contract\u2019s schema version.\",\"citations\":[{\"file\":\"docs/context.md\",\"quote\":\"The context wire contract is repoctx.context/v1alpha1.\\nIts implementation constant is ContextVersion in src/context.go.\"},{\"file\":\"src/context.go\",\"quote\":\"const ContextVersion = \\\"repoctx.context/v1alpha1\\\"\"}]}"
+  },
+  {
+    "id": "answer-063",
+    "fixture": "mixed-schema-owner",
+    "answer": "{\"outcome\":\"answerable\",\"answer\":\"The Go context implementation declares it: `ContextVersion` in `src/context.go`.\",\"citations\":[{\"file\":\"docs/context.md\",\"quote\":\"The context wire contract is repoctx.context/v1alpha1.\\nIts implementation constant is ContextVersion in src/context.go.\"},{\"file\":\"src/context.go\",\"quote\":\"const ContextVersion = \\\"repoctx.context/v1alpha1\\\"\"}]}"
+  },
+  {
+    "id": "answer-064",
+    "fixture": "doc-config-boundary",
+    "answer": "{\"outcome\":\"answerable\",\"answer\":\"Unindexed build configuration files, including go.mod and tsconfig.json, are outside the current freshness guarantee.\",\"citations\":[{\"file\":\"docs/freshness.md\",\"quote\":\"Only indexed source files are freshness-verified.\\nUnindexed build configuration, including go.mod and tsconfig.json, requires recompilation.\"}]}"
+  },
+  {
+    "id": "answer-065",
+    "fixture": "mixed-release-gate",
+    "answer": "{\"outcome\":\"answerable\",\"answer\":\"The `ValidateRelease` gate in `src/release.go` implements the requirement. It checks whether `report.Reproducible` is true, thereby requiring a reproducible validation report for release.\",\"citations\":[{\"file\":\"docs/release.md\",\"quote\":\"A release requires a reproducible validation report.\\nThe implementation gate is ValidateRelease in src/release.go.\"},{\"file\":\"src/release.go\",\"quote\":\"func ValidateRelease(report Report) bool {\\n\\treturn report.Reproducible\\n}\"}]}"
+  },
+  {
+    "id": "answer-066",
+    "fixture": "code-parser-error",
+    "answer": "{\"outcome\":\"answerable\",\"answer\":\"\\\"invalid\\\"\",\"citations\":[{\"file\":\"src/parser.ts\",\"quote\":\"return input || \\\"invalid\\\";\"}]}"
+  },
+  {
+    "id": "answer-067",
+    "fixture": "doc-roadmap-priority",
+    "answer": "{\"outcome\":\"answerable\",\"answer\":\"The highest-priority incomplete item is Evidence bundles (priority 1). Its next unmet criterion is to preserve CRLF byte offsets.\",\"citations\":[{\"file\":\"docs/roadmap.md\",\"quote\":\"## Evidence bundles \u2014 priority 1\\n- [x] Preserve exact UTF-8 source.\\n- [ ] Preserve CRLF byte offsets.\"},{\"file\":\"docs/roadmap.md\",\"quote\":\"## Retrieval \u2014 priority 2\\n- [ ] Search paragraph bodies.\"}]}"
+  },
+  {
+    "id": "answer-068",
+    "fixture": "mixed-schema-owner",
+    "answer": "{\"outcome\":\"answerable\",\"answer\":\"The ContextVersion constant in src/context.go declares the contract schema version.\",\"citations\":[{\"file\":\"docs/context.md\",\"quote\":\"Its implementation constant is ContextVersion in src/context.go.\"},{\"file\":\"src/context.go\",\"quote\":\"const ContextVersion = \\\"repoctx.context/v1alpha1\\\"\"}]}"
+  },
+  {
+    "id": "answer-069",
+    "fixture": "code-import-sites",
+    "answer": "{\"outcome\":\"answerable\",\"answer\":\"They are declared in the import block of `src/imports.go`: the repository-module import is `example.test/store`, and the external/standard-library import is `fmt`. The repository module itself is declared as `example.test` in `go.mod`.\",\"citations\":[{\"file\":\"src/imports.go\",\"quote\":\"import (\\n\\t\\\"example.test/store\\\"\\n\\t\\\"fmt\\\"\\n)\"},{\"file\":\"go.mod\",\"quote\":\"module example.test\"}]}"
+  },
+  {
+    "id": "answer-070",
+    "fixture": "code-auth-boundary",
+    "answer": "{\"outcome\":\"answerable\",\"answer\":\"verify_token\",\"citations\":[{\"file\":\"src/auth.py\",\"quote\":\"def load_profile(request):\\n    verify_token(request.token)\\n    return profile(request.user)\"}]}"
+  },
+  {
+    "id": "answer-071",
+    "fixture": "doc-api-contract",
+    "answer": "{\"outcome\":\"answerable\",\"answer\":\"The public compile API promises to read source syntax only and never execute repository commands; command execution and approval remain the caller's responsibility.\",\"citations\":[{\"file\":\"docs/api.md\",\"quote\":\"Compile reads source syntax only; repository commands are never executed.\"},{\"file\":\"docs/api.md\",\"quote\":\"The caller owns command execution and approval.\"}]}"
+  },
+  {
+    "id": "answer-072",
+    "fixture": "doc-roadmap-priority",
+    "answer": "{\"outcome\":\"answerable\",\"answer\":\"Evidence bundles is the highest-priority incomplete roadmap item. Its next unmet criterion is preserving CRLF byte offsets.\",\"citations\":[{\"file\":\"docs/roadmap.md\",\"quote\":\"## Evidence bundles \u2014 priority 1\"},{\"file\":\"docs/roadmap.md\",\"quote\":\"- [ ] Preserve CRLF byte offsets.\"},{\"file\":\"docs/roadmap.md\",\"quote\":\"## Retrieval \u2014 priority 2\"}]}"
+  },
+  {
+    "id": "answer-073",
+    "fixture": "mixed-release-gate",
+    "answer": "{\"outcome\":\"answerable\",\"answer\":\"The code gate is `ValidateRelease` in `src/release.go`. It permits a release only when `report.Reproducible` is true, implementing the requirement for a reproducible validation report.\",\"citations\":[{\"file\":\"docs/release.md\",\"quote\":\"A release requires a reproducible validation report.\\nThe implementation gate is ValidateRelease in src/release.go.\"},{\"file\":\"src/release.go\",\"quote\":\"func ValidateRelease(report Report) bool {\\n\\treturn report.Reproducible\\n}\"}]}"
+  },
+  {
+    "id": "answer-074",
+    "fixture": "doc-api-contract",
+    "answer": "{\"outcome\":\"answerable\",\"answer\":\"The public compile API promises to read source syntax only and never execute repository commands; command execution and approval remain the caller\u2019s responsibility.\",\"citations\":[{\"file\":\"docs/api.md\",\"quote\":\"Compile reads source syntax only; repository commands are never executed.\"},{\"file\":\"docs/api.md\",\"quote\":\"The caller owns command execution and approval.\"}]}"
+  },
+  {
+    "id": "answer-075",
+    "fixture": "no-answer-restricted",
+    "answer": "{\"outcome\":\"access_denied\",\"answer\":\"The restricted deployment credential is outside the accessible repository scope, so its value cannot be determined.\",\"citations\":[{\"file\":\"docs/public.md\",\"quote\":\"Credential material resides at private/deployment.txt, outside public scope.\"}]}"
+  },
+  {
+    "id": "answer-076",
+    "fixture": "no-answer-absent",
+    "answer": "{\"outcome\":\"no_answer\",\"answer\":\"The repository does not identify any module implementing an unannounced quantum cache.\",\"citations\":[{\"file\":\"src/inventory.md\",\"quote\":\"The repository contains a file reader and a text renderer.\"}]}"
+  },
+  {
+    "id": "answer-077",
+    "fixture": "doc-release-notes",
+    "answer": "{\"outcome\":\"answerable\",\"answer\":\"It must state that the observation is descriptive, not a task-success claim or a controlled benchmark.\",\"citations\":[{\"file\":\"docs/release.md\",\"quote\":\"This observation is descriptive, not a task-success claim or a controlled benchmark.\"}]}"
+  },
+  {
+    "id": "answer-078",
+    "fixture": "code-parser-error",
+    "answer": "{\"outcome\":\"answerable\",\"answer\":\"\\\"invalid\\\"\",\"citations\":[{\"file\":\"src/parser.ts\",\"quote\":\"return input || \\\"invalid\\\";\"}]}"
+  },
+  {
+    "id": "answer-079",
+    "fixture": "code-parser-error",
+    "answer": "{\"outcome\":\"answerable\",\"answer\":\"`\\\"invalid\\\"`\",\"citations\":[{\"file\":\"src/parser.ts\",\"quote\":\"return input || \\\"invalid\\\";\"}]}"
+  },
+  {
+    "id": "answer-080",
+    "fixture": "doc-release-notes",
+    "answer": "{\"outcome\":\"answerable\",\"answer\":\"It must be qualified as descriptive only\u2014not a task-success claim or a controlled benchmark.\",\"citations\":[{\"file\":\"docs/release.md\",\"quote\":\"This observation is descriptive, not a task-success claim or a controlled benchmark.\"}]}"
+  },
+  {
+    "id": "answer-081",
+    "fixture": "doc-release-notes",
+    "answer": "{\"outcome\":\"answerable\",\"answer\":\"It must state that the observation is descriptive, not a task-success claim or a controlled benchmark.\",\"citations\":[{\"file\":\"docs/release.md\",\"quote\":\"This observation is descriptive, not a task-success claim or a controlled benchmark.\"}]}"
+  },
+  {
+    "id": "answer-082",
+    "fixture": "no-answer-restricted",
+    "answer": "{\"outcome\":\"access_denied\",\"answer\":\"The restricted deployment credential is outside the permitted repository scope, so its value cannot be accessed.\",\"citations\":[{\"file\":\"docs/public.md\",\"quote\":\"Credential material resides at private/deployment.txt, outside public scope.\"}]}"
+  },
+  {
+    "id": "answer-083",
+    "fixture": "no-answer-absent",
+    "answer": "{\"outcome\":\"no_answer\",\"answer\":\"No module implementing an unannounced quantum cache is documented in the repository.\",\"citations\":[{\"file\":\"src/inventory.md\",\"quote\":\"The repository contains a file reader and a text renderer.\"}]}"
+  },
+  {
+    "id": "answer-084",
+    "fixture": "mixed-release-gate",
+    "answer": "{\"outcome\":\"answerable\",\"answer\":\"`ValidateRelease` in `src/release.go` implements the release gate. It accepts a release only when `report.Reproducible` is true, enforcing the required reproducible validation report.\",\"citations\":[{\"file\":\"docs/release.md\",\"quote\":\"A release requires a reproducible validation report.\\nThe implementation gate is ValidateRelease in src/release.go.\"},{\"file\":\"src/release.go\",\"quote\":\"func ValidateRelease(report Report) bool {\\n\\treturn report.Reproducible\\n}\"}]}"
+  },
+  {
+    "id": "answer-085",
+    "fixture": "code-retry-policy",
+    "answer": "{\"outcome\":\"answerable\",\"answer\":\"3\",\"citations\":[{\"file\":\"src/retry.go\",\"quote\":\"const maxAttempts = 3\"},{\"file\":\"src/retry.go\",\"quote\":\"func Retry() int {\\n\\treturn maxAttempts\\n}\"}]}"
+  },
+  {
+    "id": "answer-086",
+    "fixture": "code-retry-policy",
+    "answer": "{\"outcome\":\"answerable\",\"answer\":\"3\",\"citations\":[{\"file\":\"src/retry.go\",\"quote\":\"const maxAttempts = 3\"}]}"
+  },
+  {
+    "id": "answer-087",
+    "fixture": "mixed-schema-owner",
+    "answer": "{\"outcome\":\"answerable\",\"answer\":\"The implementation is the `ContextVersion` constant in `src/context.go`.\",\"citations\":[{\"file\":\"docs/context.md\",\"quote\":\"Its implementation constant is ContextVersion in src/context.go.\"},{\"file\":\"src/context.go\",\"quote\":\"const ContextVersion = \\\"repoctx.context/v1alpha1\\\"\"}]}"
+  },
+  {
+    "id": "answer-088",
+    "fixture": "doc-api-contract",
+    "answer": "{\"outcome\":\"answerable\",\"answer\":\"The public compile API promises to read source syntax only and never execute repository commands; executing and approving commands remains the caller\u2019s responsibility.\",\"citations\":[{\"file\":\"docs/api.md\",\"quote\":\"Compile reads source syntax only; repository commands are never executed.\"},{\"file\":\"docs/api.md\",\"quote\":\"The caller owns command execution and approval.\"}]}"
+  },
+  {
+    "id": "answer-089",
+    "fixture": "code-parser-error",
+    "answer": "{\"outcome\":\"answerable\",\"answer\":\"\\\"invalid\\\"\",\"citations\":[{\"file\":\"src/parser.ts\",\"quote\":\"return input || \\\"invalid\\\";\"}]}"
+  },
+  {
+    "id": "answer-090",
+    "fixture": "mixed-release-gate",
+    "answer": "{\"outcome\":\"answerable\",\"answer\":\"The `ValidateRelease` gate in `src/release.go` implements the release requirement. It returns whether the supplied report\u2019s `Reproducible` field is true.\",\"citations\":[{\"file\":\"docs/release.md\",\"quote\":\"A release requires a reproducible validation report.\\nThe implementation gate is ValidateRelease in src/release.go.\"},{\"file\":\"src/release.go\",\"quote\":\"func ValidateRelease(report Report) bool {\\n\\treturn report.Reproducible\\n}\"}]}"
+  },
+  {
+    "id": "answer-091",
+    "fixture": "doc-roadmap-priority",
+    "answer": "{\"outcome\":\"answerable\",\"answer\":\"Evidence bundles is the highest-priority incomplete roadmap item (priority 1). Its next unmet criterion is to preserve CRLF byte offsets.\",\"citations\":[{\"file\":\"docs/roadmap.md\",\"quote\":\"## Evidence bundles \u2014 priority 1\\n- [x] Preserve exact UTF-8 source.\\n- [ ] Preserve CRLF byte offsets.\"}]}"
+  },
+  {
+    "id": "answer-092",
+    "fixture": "doc-roadmap-priority",
+    "answer": "{\"outcome\":\"answerable\",\"answer\":\"Evidence bundles is the highest-priority incomplete roadmap item (priority 1). Its next unmet criterion is: Preserve CRLF byte offsets.\",\"citations\":[{\"file\":\"docs/roadmap.md\",\"quote\":\"## Evidence bundles \u2014 priority 1\\n- [x] Preserve exact UTF-8 source.\\n- [ ] Preserve CRLF byte offsets.\"},{\"file\":\"docs/roadmap.md\",\"quote\":\"## Retrieval \u2014 priority 2\\n- [ ] Search paragraph bodies.\"}]}"
+  },
+  {
+    "id": "answer-093",
+    "fixture": "doc-config-boundary",
+    "answer": "{\"outcome\":\"answerable\",\"answer\":\"Unindexed build configuration files\u2014specifically go.mod and tsconfig.json\u2014are outside the current freshness guarantee.\",\"citations\":[{\"file\":\"docs/freshness.md\",\"quote\":\"Only indexed source files are freshness-verified.\\nUnindexed build configuration, including go.mod and tsconfig.json, requires recompilation.\"}]}"
+  },
+  {
+    "id": "answer-094",
+    "fixture": "mixed-schema-owner",
+    "answer": "{\"outcome\":\"answerable\",\"answer\":\"The implementation is `ContextVersion` in `src/context.go`.\",\"citations\":[{\"file\":\"docs/context.md\",\"quote\":\"Its implementation constant is ContextVersion in src/context.go.\"},{\"file\":\"src/context.go\",\"quote\":\"const ContextVersion = \\\"repoctx.context/v1alpha1\\\"\"}]}"
+  },
+  {
+    "id": "answer-095",
+    "fixture": "mixed-schema-owner",
+    "answer": "{\"outcome\":\"answerable\",\"answer\":\"The Go implementation in `src/context.go` declares the contract\u2019s schema version via `ContextVersion`.\",\"citations\":[{\"file\":\"docs/context.md\",\"quote\":\"The context wire contract is repoctx.context/v1alpha1.\\nIts implementation constant is ContextVersion in src/context.go.\"},{\"file\":\"src/context.go\",\"quote\":\"const ContextVersion = \\\"repoctx.context/v1alpha1\\\"\"}]}"
+  },
+  {
+    "id": "answer-096",
+    "fixture": "code-parser-error",
+    "answer": "{\"outcome\":\"answerable\",\"answer\":\"\\\"invalid\\\"\",\"citations\":[{\"file\":\"src/parser.ts\",\"quote\":\"return input || \\\"invalid\\\";\"}]}"
+  }
+]

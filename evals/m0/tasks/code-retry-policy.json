@@ -1,0 +1,37 @@
+{
+  "id": "code-retry-policy",
+  "question": "What is the maximum number of retry attempts?",
+  "source_files": [
+    "sources/code-retry-policy.go.txt"
+  ],
+  "source_map": {
+    "sources/code-retry-policy.go.txt": "src/retry.go"
+  },
+  "answer_spans": [
+    {
+      "id": "s1",
+      "file": "sources/code-retry-policy.go.txt",
+      "start_byte": 15,
+      "end_byte": 36,
+      "text": "const maxAttempts = 3"
+    },
+    {
+      "id": "s2",
+      "file": "sources/code-retry-policy.go.txt",
+      "start_byte": 38,
+      "end_byte": 78,
+      "text": "func Retry() int {\n\treturn maxAttempts\n}"
+    }
+  ],
+  "expected_relationships": [],
+  "allowed_scope": [
+    "src/retry.go"
+  ],
+  "denied_scope": [],
+  "budgets": {
+    "max_bytes": 12000,
+    "max_symbols": 8,
+    "max_tokens": null,
+    "tokenizer": null
+  }
+}

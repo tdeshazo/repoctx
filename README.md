@@ -280,7 +280,8 @@ examples/agent/         application-side tool adapter
 
 Documentation: [agent handoff contract](docs/AGENT_CONTEXT.md),
 [IR reference](docs/IR.md), [IR schema](docs/ir.schema.json),
-[context schema](docs/context.schema.json).
+[context schema](docs/context.schema.json),
+[evaluation report and latest results](docs/reports/mothership-repoctx-codex-exec-comparison.md).
 
 This release has automated contract and regression tests. It has **not** been
 measured in a live coding-agent task-success evaluation; improved retrieval or

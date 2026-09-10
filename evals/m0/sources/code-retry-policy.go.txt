@@ -1,0 +1,7 @@
+package retry
+
+const maxAttempts = 3
+
+func Retry() int {
+	return maxAttempts
+}

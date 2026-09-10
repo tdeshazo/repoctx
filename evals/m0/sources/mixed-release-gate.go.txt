@@ -1,0 +1,9 @@
+package release
+
+type Report struct {
+	Reproducible bool
+}
+
+func ValidateRelease(report Report) bool {
+	return report.Reproducible
+}

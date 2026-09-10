@@ -1,0 +1,30 @@
+{
+  "id": "doc-config-boundary",
+  "question": "Which configuration files are outside the current freshness guarantee?",
+  "source_files": [
+    "sources/doc-config-boundary.md"
+  ],
+  "source_map": {
+    "sources/doc-config-boundary.md": "docs/freshness.md"
+  },
+  "answer_spans": [
+    {
+      "id": "s1",
+      "file": "sources/doc-config-boundary.md",
+      "start_byte": 63,
+      "end_byte": 153,
+      "text": "Unindexed build configuration, including go.mod and tsconfig.json, requires recompilation."
+    }
+  ],
+  "expected_relationships": [],
+  "allowed_scope": [
+    "docs/freshness.md"
+  ],
+  "denied_scope": [],
+  "budgets": {
+    "max_bytes": 12000,
+    "max_symbols": 8,
+    "max_tokens": null,
+    "tokenizer": null
+  }
+}

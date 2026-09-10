@@ -1,0 +1,22 @@
+{
+  "id": "no-answer-absent",
+  "question": "Which module implements the unannounced quantum cache?",
+  "source_files": [
+    "sources/no-answer-absent.txt"
+  ],
+  "source_map": {
+    "sources/no-answer-absent.txt": "src/inventory.md"
+  },
+  "answer_spans": [],
+  "expected_relationships": [],
+  "allowed_scope": [
+    "src/inventory.md"
+  ],
+  "denied_scope": [],
+  "budgets": {
+    "max_bytes": 12000,
+    "max_symbols": 8,
+    "max_tokens": null,
+    "tokenizer": null
+  }
+}

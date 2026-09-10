@@ -1,0 +1,30 @@
+{
+  "id": "code-parser-error",
+  "question": "What literal does parse return when its input is empty?",
+  "source_files": [
+    "sources/code-parser-error.ts"
+  ],
+  "source_map": {
+    "sources/code-parser-error.ts": "src/parser.ts"
+  },
+  "answer_spans": [
+    {
+      "id": "s1",
+      "file": "sources/code-parser-error.ts",
+      "start_byte": 41,
+      "end_byte": 67,
+      "text": "return input || \"invalid\";"
+    }
+  ],
+  "expected_relationships": [],
+  "allowed_scope": [
+    "src/parser.ts"
+  ],
+  "denied_scope": [],
+  "budgets": {
+    "max_bytes": 12000,
+    "max_symbols": 8,
+    "max_tokens": null,
+    "tokenizer": null
+  }
+}

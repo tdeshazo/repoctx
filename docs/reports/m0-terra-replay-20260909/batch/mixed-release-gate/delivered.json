@@ -1,0 +1,17 @@
+{
+  "question": "Which code gate implements the documented release requirement, and what does it check?",
+  "files": [
+    {
+      "file": "docs/release.md",
+      "start_byte": 0,
+      "end_byte": 135,
+      "text": "# Release contract\n\nA release requires a reproducible validation report.\nThe implementation gate is ValidateRelease in src/release.go.\n"
+    },
+    {
+      "file": "src/release.go",
+      "start_byte": 0,
+      "end_byte": 133,
+      "text": "package release\n\ntype Report struct {\n\tReproducible bool\n}\n\nfunc ValidateRelease(report Report) bool {\n\treturn report.Reproducible\n}\n"
+    }
+  ]
+}

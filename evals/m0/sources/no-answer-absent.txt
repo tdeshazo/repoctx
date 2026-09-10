@@ -1,0 +1,3 @@
+# Module inventory
+
+The repository contains a file reader and a text renderer.

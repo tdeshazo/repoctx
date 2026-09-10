@@ -1,0 +1,9 @@
+{
+  "id": "doc-release-notes",
+  "answer": "The local timing observation is descriptive, from one run, and is not a task-success claim.",
+  "spans": [
+    "s1"
+  ],
+  "relationships": [],
+  "outcome": "answerable"
+}

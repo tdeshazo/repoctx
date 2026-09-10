@@ -1,0 +1,8 @@
+{
+  "id": "no-answer-restricted",
+  "answer": null,
+  "spans": [],
+  "relationships": [],
+  "outcome": "access_denied",
+  "explanation": "Requested file is denied; no value may be inferred or disclosed."
+}

@@ -1,0 +1,31 @@
+{
+  "id": "code-import-sites",
+  "answer": "src/imports.go declares example.test/store and fmt in its import block.",
+  "spans": [
+    "s1",
+    "s2"
+  ],
+  "relationships": [
+    {
+      "from": "src/imports.go",
+      "to": "example.test/store",
+      "kind": "imports",
+      "resolution": "syntactic",
+      "surface": "index",
+      "evidence": [
+        "s1"
+      ]
+    },
+    {
+      "from": "src/imports.go",
+      "to": "fmt",
+      "kind": "imports",
+      "resolution": "syntactic",
+      "surface": "index",
+      "evidence": [
+        "s2"
+      ]
+    }
+  ],
+  "outcome": "answerable"
+}

@@ -1,0 +1,20 @@
+{
+  "id": "code-auth-boundary",
+  "answer": "load_profile calls verify_token before profile.",
+  "spans": [
+    "s1"
+  ],
+  "relationships": [
+    {
+      "from": "load_profile",
+      "to": "verify_token",
+      "kind": "calls",
+      "resolution": "name_heuristic",
+      "surface": "context",
+      "evidence": [
+        "s1"
+      ]
+    }
+  ],
+  "outcome": "answerable"
+}

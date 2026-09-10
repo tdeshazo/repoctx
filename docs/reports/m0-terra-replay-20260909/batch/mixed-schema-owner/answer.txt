@@ -1,0 +1,1 @@
+{"outcome":"answerable","answer":"src/context.go declares the context schema version via the ContextVersion constant.","citations":[{"file":"docs/context.md","quote":"Its implementation constant is ContextVersion in src/context.go."},{"file":"src/context.go","quote":"const ContextVersion = \"repoctx.context/v1alpha1\""}]}

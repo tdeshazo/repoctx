@@ -113,42 +113,46 @@ not, by itself, justify a performance or task-success claim.
 **Objective:** Make correctness and improvement observable before expanding the
 feature set.
 
+Evidence for the completed M0 gates is retained in the [reproducible baseline
+report](docs/reports/m0-baseline.json) and [baseline contract](docs/M0_BASELINE.md).
+
 **Primary surfaces:** Existing tests in `pkg/agentctx`, `pkg/compiler`, `pkg/ir`,
 `internal/lang`, and `internal/sourceroot`; proposed CI and `evals/` fixtures.
 
 ### Work
 
-- [ ] **M0-01 — Record a fresh baseline.** Automate Go tests, race tests, vet,
+- [x] **M0-01 — Record a fresh baseline.** Automate Go tests, race tests, vet,
   both CLI builds, IR/context schema checks, and Python distribution smoke
   tests. Record the source commit, Go/C/Python toolchains where used, platform,
   grammar dependencies, and commands. Do not treat historical coverage numbers
   as current results.
-- [ ] **M0-02 — Create a small deterministic evaluation corpus.** Start with at
+- [x] **M0-02 — Create a small deterministic evaluation corpus.** Start with at
   least 12 distinct fixtures: four documentation tasks, four code tasks, two
   mixed code/document tasks, and two no-answer or access-restricted tasks.
   Store tasks, answer-bearing spans, expected relationships, allowed scope,
   budgets, and scoring rules separately from agent-visible inputs. This count
   is an initial engineering target, not a statistically sufficient benchmark.
-- [ ] **M0-03 — Reproduce source-inspection findings.** Add focused tests for
+  Corpus and replay instructions: [M0 evaluation fixtures](evals/m0/README.md).
+- [x] **M0-03 — Reproduce source-inspection findings.** Add focused tests for
   import relationship occurrence sites and the scope/freshness treatment of
   `go.mod`. The import-site issue is a hypothesis from static review: reproduce
   it before documenting it as a confirmed bug, then fix it or record why it
   does not reproduce. Test both repository-module and external imports.
-- [ ] **M0-04 — Make claims traceable.** Update validation and comparison
+- [x] **M0-04 — Make claims traceable.** Update validation and comparison
   documentation with source revisions, exact conditions, limitations, and
   reproducible artifacts where disclosure is permitted. Keep private source
   and account configuration out of fixtures and published logs.
 
 ### Acceptance gates
 
-- [ ] The documented baseline commands run from a clean checkout in a declared
+- [x] The documented baseline commands run from a clean checkout in a declared
   environment, with machine-readable results and failures retained.
-- [ ] Contract checks cover exact bytes, UTF-8/CRLF positions, final JSON and
+- [x] Contract checks cover exact bytes, UTF-8/CRLF positions, final JSON and
   Markdown payload bounds, tokenizer-hook errors, overlap merging, stale
   sources, denied paths, and malformed indexes.
-- [ ] Each fixture has an independently inspectable expected result. Repeating
+- [x] Each fixture has an independently inspectable expected result. Repeating
   one task does not increase the reported number of distinct tasks.
-- [ ] Test coverage, artifact validity, retrieval quality, and agent outcomes are
+- [x] Test coverage, artifact validity, retrieval quality, and agent outcomes are
   reported as different measurements.
 
 ## 5. M1 — Retrieve sufficient document and source evidence

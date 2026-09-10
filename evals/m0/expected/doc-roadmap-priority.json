@@ -1,0 +1,10 @@
+{
+  "id": "doc-roadmap-priority",
+  "answer": "Evidence bundles (priority 1); its next unmet criterion is to preserve CRLF byte offsets.",
+  "spans": [
+    "s1",
+    "s2"
+  ],
+  "relationships": [],
+  "outcome": "answerable"
+}

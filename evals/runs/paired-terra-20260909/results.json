@@ -1,0 +1,4691 @@
+{
+  "groups": {
+    "cold/baseline": {
+      "trials": 24,
+      "distinct_tasks": 12,
+      "passed": 21,
+      "exact_citations": 24,
+      "condition_adherent": 24,
+      "median_seconds": 16.784077500000002,
+      "mean_seconds": 17.397014833333333,
+      "mean_input_tokens": 68319.25,
+      "usage_available": 24,
+      "sum_usage": {
+        "input_tokens": 1639662,
+        "cached_input_tokens": 1512192,
+        "output_tokens": 9399,
+        "reasoning_output_tokens": 1585
+      },
+      "mean_shell_calls": 2.2916666666666665,
+      "mean_tool_output_bytes": 470.625,
+      "tool_errors": 10,
+      "truncated_tool_outputs": 0,
+      "source_unchanged": 24,
+      "foreign_tool_trials": 0
+    },
+    "cold/assisted": {
+      "trials": 24,
+      "distinct_tasks": 12,
+      "passed": 21,
+      "exact_citations": 24,
+      "condition_adherent": 24,
+      "median_seconds": 18.365551,
+      "mean_seconds": 18.665801625,
+      "mean_input_tokens": 71715.41666666667,
+      "usage_available": 24,
+      "sum_usage": {
+        "input_tokens": 1721170,
+        "cached_input_tokens": 1587712,
+        "output_tokens": 11099,
+        "reasoning_output_tokens": 3848
+      },
+      "mean_shell_calls": 2.0833333333333335,
+      "mean_tool_output_bytes": 4294.291666666667,
+      "tool_errors": 2,
+      "truncated_tool_outputs": 0,
+      "source_unchanged": 24,
+      "foreign_tool_trials": 0
+    },
+    "warm/baseline": {
+      "trials": 24,
+      "distinct_tasks": 12,
+      "passed": 21,
+      "exact_citations": 24,
+      "condition_adherent": 24,
+      "median_seconds": 15.7241735,
+      "mean_seconds": 16.814344166666668,
+      "mean_input_tokens": 65446.166666666664,
+      "usage_available": 24,
+      "sum_usage": {
+        "input_tokens": 1570708,
+        "cached_input_tokens": 1445888,
+        "output_tokens": 9307,
+        "reasoning_output_tokens": 1467
+      },
+      "mean_shell_calls": 2.2916666666666665,
+      "mean_tool_output_bytes": 495,
+      "tool_errors": 9,
+      "truncated_tool_outputs": 0,
+      "source_unchanged": 24,
+      "foreign_tool_trials": 0
+    },
+    "warm/assisted": {
+      "trials": 24,
+      "distinct_tasks": 12,
+      "passed": 22,
+      "exact_citations": 24,
+      "condition_adherent": 24,
+      "median_seconds": 16.6376785,
+      "mean_seconds": 18.0232045,
+      "mean_input_tokens": 75349.125,
+      "usage_available": 24,
+      "sum_usage": {
+        "input_tokens": 1808379,
+        "cached_input_tokens": 1632512,
+        "output_tokens": 10635,
+        "reasoning_output_tokens": 3014
+      },
+      "mean_shell_calls": 2.2916666666666665,
+      "mean_tool_output_bytes": 4344.416666666667,
+      "tool_errors": 6,
+      "truncated_tool_outputs": 0,
+      "source_unchanged": 24,
+      "foreign_tool_trials": 0
+    }
+  },
+  "by_task": {
+    "code-auth-boundary": {
+      "baseline": {
+        "trials": 4,
+        "distinct_tasks": 1,
+        "passed": 4,
+        "exact_citations": 4,
+        "condition_adherent": 4,
+        "median_seconds": 15.4159915,
+        "mean_seconds": 15.09123975,
+        "mean_input_tokens": 66365,
+        "usage_available": 4,
+        "sum_usage": {
+          "input_tokens": 265460,
+          "cached_input_tokens": 250112,
+          "output_tokens": 1217,
+          "reasoning_output_tokens": 112
+        },
+        "mean_shell_calls": 2.25,
+        "mean_tool_output_bytes": 618.25,
+        "tool_errors": 1,
+        "truncated_tool_outputs": 0,
+        "source_unchanged": 4,
+        "foreign_tool_trials": 0
+      },
+      "assisted": {
+        "trials": 4,
+        "distinct_tasks": 1,
+        "passed": 4,
+        "exact_citations": 4,
+        "condition_adherent": 4,
+        "median_seconds": 15.90499,
+        "mean_seconds": 16.7924715,
+        "mean_input_tokens": 67476.75,
+        "usage_available": 4,
+        "sum_usage": {
+          "input_tokens": 269907,
+          "cached_input_tokens": 244224,
+          "output_tokens": 1820,
+          "reasoning_output_tokens": 685
+        },
+        "mean_shell_calls": 2,
+        "mean_tool_output_bytes": 6892,
+        "tool_errors": 1,
+        "truncated_tool_outputs": 0,
+        "source_unchanged": 4,
+        "foreign_tool_trials": 0
+      }
+    },
+    "code-import-sites": {
+      "baseline": {
+        "trials": 4,
+        "distinct_tasks": 1,
+        "passed": 4,
+        "exact_citations": 4,
+        "condition_adherent": 4,
+        "median_seconds": 18.1327655,
+        "mean_seconds": 19.02678225,
+        "mean_input_tokens": 66574,
+        "usage_available": 4,
+        "sum_usage": {
+          "input_tokens": 266296,
+          "cached_input_tokens": 250112,
+          "output_tokens": 2131,
+          "reasoning_output_tokens": 479
+        },
+        "mean_shell_calls": 2.25,
+        "mean_tool_output_bytes": 445.5,
+        "tool_errors": 0,
+        "truncated_tool_outputs": 0,
+        "source_unchanged": 4,
+        "foreign_tool_trials": 0
+      },
+      "assisted": {
+        "trials": 4,
+        "distinct_tasks": 1,
+        "passed": 4,
+        "exact_citations": 4,
+        "condition_adherent": 4,
+        "median_seconds": 21.489152500000003,
+        "mean_seconds": 20.97461325,
+        "mean_input_tokens": 80786.25,
+        "usage_available": 4,
+        "sum_usage": {
+          "input_tokens": 323145,
+          "cached_input_tokens": 298496,
+          "output_tokens": 2002,
+          "reasoning_output_tokens": 545
+        },
+        "mean_shell_calls": 2.5,
+        "mean_tool_output_bytes": 4194.25,
+        "tool_errors": 1,
+        "truncated_tool_outputs": 0,
+        "source_unchanged": 4,
+        "foreign_tool_trials": 0
+      }
+    },
+    "code-parser-error": {
+      "baseline": {
+        "trials": 4,
+        "distinct_tasks": 1,
+        "passed": 4,
+        "exact_citations": 4,
+        "condition_adherent": 4,
+        "median_seconds": 13.2778745,
+        "mean_seconds": 13.184647,
+        "mean_input_tokens": 58973.25,
+        "usage_available": 4,
+        "sum_usage": {
+          "input_tokens": 235893,
+          "cached_input_tokens": 221952,
+          "output_tokens": 1077,
+          "reasoning_output_tokens": 132
+        },
+        "mean_shell_calls": 2,
+        "mean_tool_output_bytes": 312.5,
+        "tool_errors": 0,
+        "truncated_tool_outputs": 0,
+        "source_unchanged": 4,
+        "foreign_tool_trials": 0
+      },
+      "assisted": {
+        "trials": 4,
+        "distinct_tasks": 1,
+        "passed": 4,
+        "exact_citations": 4,
+        "condition_adherent": 4,
+        "median_seconds": 16.757661,
+        "mean_seconds": 16.598329500000002,
+        "mean_input_tokens": 71606,
+        "usage_available": 4,
+        "sum_usage": {
+          "input_tokens": 286424,
+          "cached_input_tokens": 250112,
+          "output_tokens": 1309,
+          "reasoning_output_tokens": 276
+        },
+        "mean_shell_calls": 2,
+        "mean_tool_output_bytes": 3346,
+        "tool_errors": 0,
+        "truncated_tool_outputs": 0,
+        "source_unchanged": 4,
+        "foreign_tool_trials": 0
+      }
+    },
+    "code-retry-policy": {
+      "baseline": {
+        "trials": 4,
+        "distinct_tasks": 1,
+        "passed": 4,
+        "exact_citations": 4,
+        "condition_adherent": 4,
+        "median_seconds": 15.684877,
+        "mean_seconds": 15.380033749999999,
+        "mean_input_tokens": 59639.25,
+        "usage_available": 4,
+        "sum_usage": {
+          "input_tokens": 238557,
+          "cached_input_tokens": 203520,
+          "output_tokens": 1258,
+          "reasoning_output_tokens": 178
+        },
+        "mean_shell_calls": 1.5,
+        "mean_tool_output_bytes": 391.5,
+        "tool_errors": 0,
+        "truncated_tool_outputs": 0,
+        "source_unchanged": 4,
+        "foreign_tool_trials": 0
+      },
+      "assisted": {
+        "trials": 4,
+        "distinct_tasks": 1,
+        "passed": 4,
+        "exact_citations": 4,
+        "condition_adherent": 4,
+        "median_seconds": 19.274006,
+        "mean_seconds": 18.236241,
+        "mean_input_tokens": 69227.75,
+        "usage_available": 4,
+        "sum_usage": {
+          "input_tokens": 276911,
+          "cached_input_tokens": 257280,
+          "output_tokens": 1662,
+          "reasoning_output_tokens": 524
+        },
+        "mean_shell_calls": 2,
+        "mean_tool_output_bytes": 4399.25,
+        "tool_errors": 1,
+        "truncated_tool_outputs": 0,
+        "source_unchanged": 4,
+        "foreign_tool_trials": 0
+      }
+    },
+    "doc-api-contract": {
+      "baseline": {
+        "trials": 4,
+        "distinct_tasks": 1,
+        "passed": 4,
+        "exact_citations": 4,
+        "condition_adherent": 4,
+        "median_seconds": 18.0880345,
+        "mean_seconds": 18.224278,
+        "mean_input_tokens": 73146.25,
+        "usage_available": 4,
+        "sum_usage": {
+          "input_tokens": 292585,
+          "cached_input_tokens": 263936,
+          "output_tokens": 1654,
+          "reasoning_output_tokens": 195
+        },
+        "mean_shell_calls": 2.75,
+        "mean_tool_output_bytes": 420.75,
+        "tool_errors": 1,
+        "truncated_tool_outputs": 0,
+        "source_unchanged": 4,
+        "foreign_tool_trials": 0
+      },
+      "assisted": {
+        "trials": 4,
+        "distinct_tasks": 1,
+        "passed": 4,
+        "exact_citations": 4,
+        "condition_adherent": 4,
+        "median_seconds": 17.7838095,
+        "mean_seconds": 17.611706,
+        "mean_input_tokens": 71948.5,
+        "usage_available": 4,
+        "sum_usage": {
+          "input_tokens": 287794,
+          "cached_input_tokens": 266240,
+          "output_tokens": 1587,
+          "reasoning_output_tokens": 382
+        },
+        "mean_shell_calls": 2,
+        "mean_tool_output_bytes": 3390.25,
+        "tool_errors": 0,
+        "truncated_tool_outputs": 0,
+        "source_unchanged": 4,
+        "foreign_tool_trials": 0
+      }
+    },
+    "doc-config-boundary": {
+      "baseline": {
+        "trials": 4,
+        "distinct_tasks": 1,
+        "passed": 4,
+        "exact_citations": 4,
+        "condition_adherent": 4,
+        "median_seconds": 14.193356000000001,
+        "mean_seconds": 14.39314875,
+        "mean_input_tokens": 55947.5,
+        "usage_available": 4,
+        "sum_usage": {
+          "input_tokens": 223790,
+          "cached_input_tokens": 210944,
+          "output_tokens": 1437,
+          "reasoning_output_tokens": 340
+        },
+        "mean_shell_calls": 1.75,
+        "mean_tool_output_bytes": 625,
+        "tool_errors": 2,
+        "truncated_tool_outputs": 0,
+        "source_unchanged": 4,
+        "foreign_tool_trials": 0
+      },
+      "assisted": {
+        "trials": 4,
+        "distinct_tasks": 1,
+        "passed": 4,
+        "exact_citations": 4,
+        "condition_adherent": 4,
+        "median_seconds": 17.267345499999998,
+        "mean_seconds": 16.97923725,
+        "mean_input_tokens": 72749,
+        "usage_available": 4,
+        "sum_usage": {
+          "input_tokens": 290996,
+          "cached_input_tokens": 261120,
+          "output_tokens": 1620,
+          "reasoning_output_tokens": 335
+        },
+        "mean_shell_calls": 2,
+        "mean_tool_output_bytes": 3551.5,
+        "tool_errors": 0,
+        "truncated_tool_outputs": 0,
+        "source_unchanged": 4,
+        "foreign_tool_trials": 0
+      }
+    },
+    "doc-release-notes": {
+      "baseline": {
+        "trials": 4,
+        "distinct_tasks": 1,
+        "passed": 0,
+        "exact_citations": 4,
+        "condition_adherent": 4,
+        "median_seconds": 16.9277755,
+        "mean_seconds": 17.6610155,
+        "mean_input_tokens": 73635.75,
+        "usage_available": 4,
+        "sum_usage": {
+          "input_tokens": 294543,
+          "cached_input_tokens": 265984,
+          "output_tokens": 1512,
+          "reasoning_output_tokens": 168
+        },
+        "mean_shell_calls": 3,
+        "mean_tool_output_bytes": 340.75,
+        "tool_errors": 4,
+        "truncated_tool_outputs": 0,
+        "source_unchanged": 4,
+        "foreign_tool_trials": 0
+      },
+      "assisted": {
+        "trials": 4,
+        "distinct_tasks": 1,
+        "passed": 0,
+        "exact_citations": 4,
+        "condition_adherent": 4,
+        "median_seconds": 16.5249685,
+        "mean_seconds": 17.37920975,
+        "mean_input_tokens": 72350.25,
+        "usage_available": 4,
+        "sum_usage": {
+          "input_tokens": 289401,
+          "cached_input_tokens": 267264,
+          "output_tokens": 1791,
+          "reasoning_output_tokens": 644
+        },
+        "mean_shell_calls": 2.25,
+        "mean_tool_output_bytes": 3494.25,
+        "tool_errors": 1,
+        "truncated_tool_outputs": 0,
+        "source_unchanged": 4,
+        "foreign_tool_trials": 0
+      }
+    },
+    "doc-roadmap-priority": {
+      "baseline": {
+        "trials": 4,
+        "distinct_tasks": 1,
+        "passed": 3,
+        "exact_citations": 4,
+        "condition_adherent": 4,
+        "median_seconds": 15.597769,
+        "mean_seconds": 15.646854000000001,
+        "mean_input_tokens": 59428.75,
+        "usage_available": 4,
+        "sum_usage": {
+          "input_tokens": 237715,
+          "cached_input_tokens": 213760,
+          "output_tokens": 1524,
+          "reasoning_output_tokens": 252
+        },
+        "mean_shell_calls": 2,
+        "mean_tool_output_bytes": 438,
+        "tool_errors": 0,
+        "truncated_tool_outputs": 0,
+        "source_unchanged": 4,
+        "foreign_tool_trials": 0
+      },
+      "assisted": {
+        "trials": 4,
+        "distinct_tasks": 1,
+        "passed": 3,
+        "exact_citations": 4,
+        "condition_adherent": 4,
+        "median_seconds": 15.755084,
+        "mean_seconds": 16.368464,
+        "mean_input_tokens": 73411.25,
+        "usage_available": 4,
+        "sum_usage": {
+          "input_tokens": 293645,
+          "cached_input_tokens": 269312,
+          "output_tokens": 1646,
+          "reasoning_output_tokens": 393
+        },
+        "mean_shell_calls": 2,
+        "mean_tool_output_bytes": 5857,
+        "tool_errors": 0,
+        "truncated_tool_outputs": 0,
+        "source_unchanged": 4,
+        "foreign_tool_trials": 0
+      }
+    },
+    "mixed-release-gate": {
+      "baseline": {
+        "trials": 4,
+        "distinct_tasks": 1,
+        "passed": 4,
+        "exact_citations": 4,
+        "condition_adherent": 4,
+        "median_seconds": 15.134233,
+        "mean_seconds": 19.18105475,
+        "mean_input_tokens": 59590,
+        "usage_available": 4,
+        "sum_usage": {
+          "input_tokens": 238360,
+          "cached_input_tokens": 212736,
+          "output_tokens": 1577,
+          "reasoning_output_tokens": 154
+        },
+        "mean_shell_calls": 2,
+        "mean_tool_output_bytes": 832.5,
+        "tool_errors": 0,
+        "truncated_tool_outputs": 0,
+        "source_unchanged": 4,
+        "foreign_tool_trials": 0
+      },
+      "assisted": {
+        "trials": 4,
+        "distinct_tasks": 1,
+        "passed": 4,
+        "exact_citations": 4,
+        "condition_adherent": 4,
+        "median_seconds": 19.919862000000002,
+        "mean_seconds": 19.627934,
+        "mean_input_tokens": 65637,
+        "usage_available": 4,
+        "sum_usage": {
+          "input_tokens": 262548,
+          "cached_input_tokens": 243200,
+          "output_tokens": 2270,
+          "reasoning_output_tokens": 920
+        },
+        "mean_shell_calls": 2,
+        "mean_tool_output_bytes": 4867.5,
+        "tool_errors": 0,
+        "truncated_tool_outputs": 0,
+        "source_unchanged": 4,
+        "foreign_tool_trials": 0
+      }
+    },
+    "mixed-schema-owner": {
+      "baseline": {
+        "trials": 4,
+        "distinct_tasks": 1,
+        "passed": 4,
+        "exact_citations": 4,
+        "condition_adherent": 4,
+        "median_seconds": 19.231329000000002,
+        "mean_seconds": 18.78217725,
+        "mean_input_tokens": 74015.25,
+        "usage_available": 4,
+        "sum_usage": {
+          "input_tokens": 296061,
+          "cached_input_tokens": 280320,
+          "output_tokens": 1626,
+          "reasoning_output_tokens": 292
+        },
+        "mean_shell_calls": 2.25,
+        "mean_tool_output_bytes": 456.75,
+        "tool_errors": 2,
+        "truncated_tool_outputs": 0,
+        "source_unchanged": 4,
+        "foreign_tool_trials": 0
+      },
+      "assisted": {
+        "trials": 4,
+        "distinct_tasks": 1,
+        "passed": 4,
+        "exact_citations": 4,
+        "condition_adherent": 4,
+        "median_seconds": 15.8286445,
+        "mean_seconds": 16.526602,
+        "mean_input_tokens": 73076,
+        "usage_available": 4,
+        "sum_usage": {
+          "input_tokens": 292304,
+          "cached_input_tokens": 269312,
+          "output_tokens": 1726,
+          "reasoning_output_tokens": 436
+        },
+        "mean_shell_calls": 2,
+        "mean_tool_output_bytes": 4716,
+        "tool_errors": 0,
+        "truncated_tool_outputs": 0,
+        "source_unchanged": 4,
+        "foreign_tool_trials": 0
+      }
+    },
+    "no-answer-absent": {
+      "baseline": {
+        "trials": 4,
+        "distinct_tasks": 1,
+        "passed": 4,
+        "exact_citations": 4,
+        "condition_adherent": 4,
+        "median_seconds": 19.608732,
+        "mean_seconds": 21.101827,
+        "mean_input_tokens": 88342.25,
+        "usage_available": 4,
+        "sum_usage": {
+          "input_tokens": 353369,
+          "cached_input_tokens": 333568,
+          "output_tokens": 1906,
+          "reasoning_output_tokens": 368
+        },
+        "mean_shell_calls": 3.5,
+        "mean_tool_output_bytes": 316.5,
+        "tool_errors": 6,
+        "truncated_tool_outputs": 0,
+        "source_unchanged": 4,
+        "foreign_tool_trials": 0
+      },
+      "assisted": {
+        "trials": 4,
+        "distinct_tasks": 1,
+        "passed": 4,
+        "exact_citations": 4,
+        "condition_adherent": 4,
+        "median_seconds": 19.403804,
+        "mean_seconds": 19.893579000000003,
+        "mean_input_tokens": 80325,
+        "usage_available": 4,
+        "sum_usage": {
+          "input_tokens": 321300,
+          "cached_input_tokens": 297472,
+          "output_tokens": 1983,
+          "reasoning_output_tokens": 720
+        },
+        "mean_shell_calls": 2.75,
+        "mean_tool_output_bytes": 3503.25,
+        "tool_errors": 2,
+        "truncated_tool_outputs": 0,
+        "source_unchanged": 4,
+        "foreign_tool_trials": 0
+      }
+    },
+    "no-answer-restricted": {
+      "baseline": {
+        "trials": 4,
+        "distinct_tasks": 1,
+        "passed": 3,
+        "exact_citations": 4,
+        "condition_adherent": 4,
+        "median_seconds": 17.819171,
+        "mean_seconds": 17.595096,
+        "mean_input_tokens": 66935.25,
+        "usage_available": 4,
+        "sum_usage": {
+          "input_tokens": 267741,
+          "cached_input_tokens": 251136,
+          "output_tokens": 1787,
+          "reasoning_output_tokens": 382
+        },
+        "mean_shell_calls": 2.25,
+        "mean_tool_output_bytes": 595.75,
+        "tool_errors": 3,
+        "truncated_tool_outputs": 0,
+        "source_unchanged": 4,
+        "foreign_tool_trials": 0
+      },
+      "assisted": {
+        "trials": 4,
+        "distinct_tasks": 1,
+        "passed": 4,
+        "exact_citations": 4,
+        "condition_adherent": 4,
+        "median_seconds": 22.8798645,
+        "mean_seconds": 23.1456495,
+        "mean_input_tokens": 83793.5,
+        "usage_available": 4,
+        "sum_usage": {
+          "input_tokens": 335174,
+          "cached_input_tokens": 296192,
+          "output_tokens": 2318,
+          "reasoning_output_tokens": 1002
+        },
+        "mean_shell_calls": 2.75,
+        "mean_tool_output_bytes": 3621,
+        "tool_errors": 2,
+        "truncated_tool_outputs": 0,
+        "source_unchanged": 4,
+        "foreign_tool_trials": 0
+      }
+    }
+  },
+  "rows": [
+    {
+      "id": "trial-001",
+      "fixture": "doc-config-boundary",
+      "cache": "warm",
+      "repeat": 1,
+      "condition": "assisted",
+      "duration_seconds": 18.215218,
+      "usage": {
+        "input_tokens": 71686,
+        "cached_input_tokens": 56064,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 406,
+        "reasoning_output_tokens": 77
+      },
+      "source_unchanged": true,
+      "blind_id": "answer-057",
+      "passed": true,
+      "judgment": {
+        "pass": true,
+        "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+      },
+      "citations_exact": true,
+      "outcome_match": true,
+      "condition_adherent": true,
+      "shell_calls": 2,
+      "tool_errors": 0,
+      "tool_output_bytes": 3652,
+      "truncated_tool_outputs": 0,
+      "foreign_tool_count": 0,
+      "source_read_syscalls": null,
+      "source_paths_mentioned_in_commands": [
+        "docs/freshness.md"
+      ],
+      "post_initial_shell_calls": 1,
+      "initial_retrieval": {
+        "available": true,
+        "context_exit": 0,
+        "required_spans": 1,
+        "covered_spans": 0,
+        "full_evidence": false,
+        "compile_seconds": 0.0,
+        "compiled": false,
+        "relationship_recall": null,
+        "verified_files": 1
+      }
+    },
+    {
+      "id": "trial-002",
+      "fixture": "mixed-schema-owner",
+      "cache": "cold",
+      "repeat": 2,
+      "condition": "baseline",
+      "duration_seconds": 17.38026,
+      "usage": {
+        "input_tokens": 71036,
+        "cached_input_tokens": 67328,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 371,
+        "reasoning_output_tokens": 39
+      },
+      "source_unchanged": true,
+      "blind_id": "answer-087",
+      "passed": true,
+      "judgment": {
+        "pass": true,
+        "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+      },
+      "citations_exact": true,
+      "outcome_match": true,
+      "condition_adherent": true,
+      "shell_calls": 2,
+      "tool_errors": 0,
+      "tool_output_bytes": 500,
+      "truncated_tool_outputs": 0,
+      "foreign_tool_count": 0,
+      "source_read_syscalls": null,
+      "source_paths_mentioned_in_commands": [
+        "docs/context.md",
+        "src/context.go"
+      ],
+      "post_initial_shell_calls": null,
+      "initial_retrieval": null
+    },
+    {
+      "id": "trial-003",
+      "fixture": "doc-release-notes",
+      "cache": "cold",
+      "repeat": 2,
+      "condition": "baseline",
+      "duration_seconds": 21.512568,
+      "usage": {
+        "input_tokens": 85664,
+        "cached_input_tokens": 70144,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 414,
+        "reasoning_output_tokens": 37
+      },
+      "source_unchanged": true,
+      "blind_id": "answer-015",
+      "passed": false,
+      "judgment": {
+        "pass": false,
+        "reason": "Omits the required single-run qualification from both answer and quotations; descriptive/non-task-success qualifications alone are incomplete."
+      },
+      "citations_exact": true,
+      "outcome_match": true,
+      "condition_adherent": true,
+      "shell_calls": 3,
+      "tool_errors": 1,
+      "tool_output_bytes": 347,
+      "truncated_tool_outputs": 0,
+      "foreign_tool_count": 0,
+      "source_read_syscalls": null,
+      "source_paths_mentioned_in_commands": [
+        "docs/release.md"
+      ],
+      "post_initial_shell_calls": null,
+      "initial_retrieval": null
+    },
+    {
+      "id": "trial-004",
+      "fixture": "code-parser-error",
+      "cache": "warm",
+      "repeat": 1,
+      "condition": "assisted",
+      "duration_seconds": 17.744737,
+      "usage": {
+        "input_tokens": 71616,
+        "cached_input_tokens": 53248,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 318,
+        "reasoning_output_tokens": 62
+      },
+      "source_unchanged": true,
+      "blind_id": "answer-056",
+      "passed": true,
+      "judgment": {
+        "pass": true,
+        "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+      },
+      "citations_exact": true,
+      "outcome_match": true,
+      "condition_adherent": true,
+      "shell_calls": 2,
+      "tool_errors": 0,
+      "tool_output_bytes": 3346,
+      "truncated_tool_outputs": 0,
+      "foreign_tool_count": 0,
+      "source_read_syscalls": null,
+      "source_paths_mentioned_in_commands": [
+        "src/parser.ts"
+      ],
+      "post_initial_shell_calls": 1,
+      "initial_retrieval": {
+        "available": true,
+        "context_exit": 0,
+        "required_spans": 1,
+        "covered_spans": 1,
+        "full_evidence": true,
+        "compile_seconds": 0.0,
+        "compiled": false,
+        "relationship_recall": null,
+        "verified_files": 1
+      }
+    },
+    {
+      "id": "trial-005",
+      "fixture": "doc-release-notes",
+      "cache": "cold",
+      "repeat": 1,
+      "condition": "baseline",
+      "duration_seconds": 17.991644,
+      "usage": {
+        "input_tokens": 69658,
+        "cached_input_tokens": 65280,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 385,
+        "reasoning_output_tokens": 62
+      },
+      "source_unchanged": true,
+      "blind_id": "answer-047",
+      "passed": false,
+      "judgment": {
+        "pass": false,
+        "reason": "Omits the required single-run qualification from both answer and quotations; descriptive/non-task-success qualifications alone are incomplete."
+      },
+      "citations_exact": true,
+      "outcome_match": true,
+      "condition_adherent": true,
+      "shell_calls": 3,
+      "tool_errors": 1,
+      "tool_output_bytes": 335,
+      "truncated_tool_outputs": 0,
+      "foreign_tool_count": 0,
+      "source_read_syscalls": null,
+      "source_paths_mentioned_in_commands": [
+        "docs/release.md"
+      ],
+      "post_initial_shell_calls": null,
+      "initial_retrieval": null
+    },
+    {
+      "id": "trial-006",
+      "fixture": "code-auth-boundary",
+      "cache": "cold",
+      "repeat": 2,
+      "condition": "baseline",
+      "duration_seconds": 16.228299,
+      "usage": {
+        "input_tokens": 70929,
+        "cached_input_tokens": 67328,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 290,
+        "reasoning_output_tokens": 33
+      },
+      "source_unchanged": true,
+      "blind_id": "answer-017",
+      "passed": true,
+      "judgment": {
+        "pass": true,
+        "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+      },
+      "citations_exact": true,
+      "outcome_match": true,
+      "condition_adherent": true,
+      "shell_calls": 2,
+      "tool_errors": 0,
+      "tool_output_bytes": 741,
+      "truncated_tool_outputs": 0,
+      "foreign_tool_count": 0,
+      "source_read_syscalls": null,
+      "source_paths_mentioned_in_commands": [
+        "src/auth.py"
+      ],
+      "post_initial_shell_calls": null,
+      "initial_retrieval": null
+    },
+    {
+      "id": "trial-007",
+      "fixture": "code-import-sites",
+      "cache": "cold",
+      "repeat": 1,
+      "condition": "assisted",
+      "duration_seconds": 25.676767,
+      "usage": {
+        "input_tokens": 89854,
+        "cached_input_tokens": 83456,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 712,
+        "reasoning_output_tokens": 273
+      },
+      "source_unchanged": true,
+      "blind_id": "answer-004",
+      "passed": true,
+      "judgment": {
+        "pass": true,
+        "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+      },
+      "citations_exact": true,
+      "outcome_match": true,
+      "condition_adherent": true,
+      "shell_calls": 3,
+      "tool_errors": 1,
+      "tool_output_bytes": 4276,
+      "truncated_tool_outputs": 0,
+      "foreign_tool_count": 0,
+      "source_read_syscalls": null,
+      "source_paths_mentioned_in_commands": [
+        "go.mod",
+        "src/imports.go"
+      ],
+      "post_initial_shell_calls": 2,
+      "initial_retrieval": {
+        "available": true,
+        "context_exit": 0,
+        "required_spans": 2,
+        "covered_spans": 2,
+        "full_evidence": true,
+        "compile_seconds": 0.00531170700196526,
+        "compiled": true,
+        "relationship_recall": null,
+        "verified_files": 2
+      }
+    },
+    {
+      "id": "trial-008",
+      "fixture": "code-auth-boundary",
+      "cache": "cold",
+      "repeat": 1,
+      "condition": "baseline",
+      "duration_seconds": 15.109542,
+      "usage": {
+        "input_tokens": 69572,
+        "cached_input_tokens": 65280,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 303,
+        "reasoning_output_tokens": 29
+      },
+      "source_unchanged": true,
+      "blind_id": "answer-029",
+      "passed": true,
+      "judgment": {
+        "pass": true,
+        "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+      },
+      "citations_exact": true,
+      "outcome_match": true,
+      "condition_adherent": true,
+      "shell_calls": 3,
+      "tool_errors": 1,
+      "tool_output_bytes": 532,
+      "truncated_tool_outputs": 0,
+      "foreign_tool_count": 0,
+      "source_read_syscalls": null,
+      "source_paths_mentioned_in_commands": [
+        "src/auth.py"
+      ],
+      "post_initial_shell_calls": null,
+      "initial_retrieval": null
+    },
+    {
+      "id": "trial-009",
+      "fixture": "doc-api-contract",
+      "cache": "warm",
+      "repeat": 1,
+      "condition": "baseline",
+      "duration_seconds": 18.954432,
+      "usage": {
+        "input_tokens": 69643,
+        "cached_input_tokens": 65280,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 373,
+        "reasoning_output_tokens": 40
+      },
+      "source_unchanged": true,
+      "blind_id": "answer-007",
+      "passed": true,
+      "judgment": {
+        "pass": true,
+        "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+      },
+      "citations_exact": true,
+      "outcome_match": true,
+      "condition_adherent": true,
+      "shell_calls": 3,
+      "tool_errors": 0,
+      "tool_output_bytes": 331,
+      "truncated_tool_outputs": 0,
+      "foreign_tool_count": 0,
+      "source_read_syscalls": null,
+      "source_paths_mentioned_in_commands": [
+        "docs/api.md"
+      ],
+      "post_initial_shell_calls": null,
+      "initial_retrieval": null
+    },
+    {
+      "id": "trial-010",
+      "fixture": "mixed-schema-owner",
+      "cache": "warm",
+      "repeat": 1,
+      "condition": "baseline",
+      "duration_seconds": 21.082398,
+      "usage": {
+        "input_tokens": 85340,
+        "cached_input_tokens": 81408,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 379,
+        "reasoning_output_tokens": 21
+      },
+      "source_unchanged": true,
+      "blind_id": "answer-094",
+      "passed": true,
+      "judgment": {
+        "pass": true,
+        "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+      },
+      "citations_exact": true,
+      "outcome_match": true,
+      "condition_adherent": true,
+      "shell_calls": 3,
+      "tool_errors": 1,
+      "tool_output_bytes": 454,
+      "truncated_tool_outputs": 0,
+      "foreign_tool_count": 0,
+      "source_read_syscalls": null,
+      "source_paths_mentioned_in_commands": [
+        "docs/context.md",
+        "src/context.go"
+      ],
+      "post_initial_shell_calls": null,
+      "initial_retrieval": null
+    },
+    {
+      "id": "trial-011",
+      "fixture": "no-answer-absent",
+      "cache": "cold",
+      "repeat": 1,
+      "condition": "baseline",
+      "duration_seconds": 26.918724,
+      "usage": {
+        "input_tokens": 84026,
+        "cached_input_tokens": 79360,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 527,
+        "reasoning_output_tokens": 132
+      },
+      "source_unchanged": true,
+      "blind_id": "answer-028",
+      "passed": true,
+      "judgment": {
+        "pass": true,
+        "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+      },
+      "citations_exact": true,
+      "outcome_match": true,
+      "condition_adherent": true,
+      "shell_calls": 4,
+      "tool_errors": 2,
+      "tool_output_bytes": 384,
+      "truncated_tool_outputs": 0,
+      "foreign_tool_count": 0,
+      "source_read_syscalls": null,
+      "source_paths_mentioned_in_commands": [
+        "src/inventory.md"
+      ],
+      "post_initial_shell_calls": null,
+      "initial_retrieval": null
+    },
+    {
+      "id": "trial-012",
+      "fixture": "code-retry-policy",
+      "cache": "warm",
+      "repeat": 1,
+      "condition": "baseline",
+      "duration_seconds": 14.377659,
+      "usage": {
+        "input_tokens": 56422,
+        "cached_input_tokens": 43008,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 300,
+        "reasoning_output_tokens": 29
+      },
+      "source_unchanged": true,
+      "blind_id": "answer-086",
+      "passed": true,
+      "judgment": {
+        "pass": true,
+        "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+      },
+      "citations_exact": true,
+      "outcome_match": true,
+      "condition_adherent": true,
+      "shell_calls": 1,
+      "tool_errors": 0,
+      "tool_output_bytes": 217,
+      "truncated_tool_outputs": 0,
+      "foreign_tool_count": 0,
+      "source_read_syscalls": null,
+      "source_paths_mentioned_in_commands": [],
+      "post_initial_shell_calls": null,
+      "initial_retrieval": null
+    },
+    {
+      "id": "trial-013",
+      "fixture": "mixed-schema-owner",
+      "cache": "warm",
+      "repeat": 2,
+      "condition": "baseline",
+      "duration_seconds": 10.984234,
+      "usage": {
+        "input_tokens": 41516,
+        "cached_input_tokens": 39168,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 271,
+        "reasoning_output_tokens": 60
+      },
+      "source_unchanged": true,
+      "blind_id": "answer-013",
+      "passed": true,
+      "judgment": {
+        "pass": true,
+        "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+      },
+      "citations_exact": true,
+      "outcome_match": true,
+      "condition_adherent": true,
+      "shell_calls": 1,
+      "tool_errors": 0,
+      "tool_output_bytes": 426,
+      "truncated_tool_outputs": 0,
+      "foreign_tool_count": 0,
+      "source_read_syscalls": null,
+      "source_paths_mentioned_in_commands": [],
+      "post_initial_shell_calls": null,
+      "initial_retrieval": null
+    },
+    {
+      "id": "trial-014",
+      "fixture": "doc-config-boundary",
+      "cache": "warm",
+      "repeat": 2,
+      "condition": "baseline",
+      "duration_seconds": 13.266944,
+      "usage": {
+        "input_tokens": 55701,
+        "cached_input_tokens": 52224,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 337,
+        "reasoning_output_tokens": 49
+      },
+      "source_unchanged": true,
+      "blind_id": "answer-050",
+      "passed": true,
+      "judgment": {
+        "pass": true,
+        "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+      },
+      "citations_exact": true,
+      "outcome_match": true,
+      "condition_adherent": true,
+      "shell_calls": 2,
+      "tool_errors": 0,
+      "tool_output_bytes": 776,
+      "truncated_tool_outputs": 0,
+      "foreign_tool_count": 0,
+      "source_read_syscalls": null,
+      "source_paths_mentioned_in_commands": [
+        "docs/freshness.md"
+      ],
+      "post_initial_shell_calls": null,
+      "initial_retrieval": null
+    },
+    {
+      "id": "trial-015",
+      "fixture": "doc-roadmap-priority",
+      "cache": "warm",
+      "repeat": 1,
+      "condition": "baseline",
+      "duration_seconds": 15.133434,
+      "usage": {
+        "input_tokens": 55655,
+        "cached_input_tokens": 52224,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 400,
+        "reasoning_output_tokens": 58
+      },
+      "source_unchanged": true,
+      "blind_id": "answer-072",
+      "passed": true,
+      "judgment": {
+        "pass": true,
+        "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+      },
+      "citations_exact": true,
+      "outcome_match": true,
+      "condition_adherent": true,
+      "shell_calls": 2,
+      "tool_errors": 0,
+      "tool_output_bytes": 550,
+      "truncated_tool_outputs": 0,
+      "foreign_tool_count": 0,
+      "source_read_syscalls": null,
+      "source_paths_mentioned_in_commands": [
+        "docs/roadmap.md"
+      ],
+      "post_initial_shell_calls": null,
+      "initial_retrieval": null
+    },
+    {
+      "id": "trial-016",
+      "fixture": "code-parser-error",
+      "cache": "cold",
+      "repeat": 2,
+      "condition": "assisted",
+      "duration_seconds": 18.135781,
+      "usage": {
+        "input_tokens": 71735,
+        "cached_input_tokens": 66304,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 395,
+        "reasoning_output_tokens": 149
+      },
+      "source_unchanged": true,
+      "blind_id": "answer-096",
+      "passed": true,
+      "judgment": {
+        "pass": true,
+        "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+      },
+      "citations_exact": true,
+      "outcome_match": true,
+      "condition_adherent": true,
+      "shell_calls": 2,
+      "tool_errors": 0,
+      "tool_output_bytes": 3346,
+      "truncated_tool_outputs": 0,
+      "foreign_tool_count": 0,
+      "source_read_syscalls": null,
+      "source_paths_mentioned_in_commands": [
+        "src/parser.ts"
+      ],
+      "post_initial_shell_calls": 1,
+      "initial_retrieval": {
+        "available": true,
+        "context_exit": 0,
+        "required_spans": 1,
+        "covered_spans": 1,
+        "full_evidence": true,
+        "compile_seconds": 0.005432011999801034,
+        "compiled": true,
+        "relationship_recall": null,
+        "verified_files": 1
+      }
+    },
+    {
+      "id": "trial-017",
+      "fixture": "no-answer-absent",
+      "cache": "cold",
+      "repeat": 2,
+      "condition": "assisted",
+      "duration_seconds": 25.022206,
+      "usage": {
+        "input_tokens": 104923,
+        "cached_input_tokens": 98560,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 628,
+        "reasoning_output_tokens": 230
+      },
+      "source_unchanged": true,
+      "blind_id": "answer-083",
+      "passed": true,
+      "judgment": {
+        "pass": true,
+        "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+      },
+      "citations_exact": true,
+      "outcome_match": true,
+      "condition_adherent": true,
+      "shell_calls": 4,
+      "tool_errors": 1,
+      "tool_output_bytes": 3720,
+      "truncated_tool_outputs": 0,
+      "foreign_tool_count": 0,
+      "source_read_syscalls": null,
+      "source_paths_mentioned_in_commands": [
+        "src/inventory.md"
+      ],
+      "post_initial_shell_calls": 3,
+      "initial_retrieval": {
+        "available": true,
+        "context_exit": 0,
+        "required_spans": 0,
+        "covered_spans": 0,
+        "full_evidence": null,
+        "compile_seconds": 0.0059203269993304275,
+        "compiled": true,
+        "relationship_recall": null,
+        "verified_files": 1
+      }
+    },
+    {
+      "id": "trial-018",
+      "fixture": "code-retry-policy",
+      "cache": "cold",
+      "repeat": 1,
+      "condition": "baseline",
+      "duration_seconds": 17.4706,
+      "usage": {
+        "input_tokens": 69778,
+        "cached_input_tokens": 65280,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 369,
+        "reasoning_output_tokens": 34
+      },
+      "source_unchanged": true,
+      "blind_id": "answer-059",
+      "passed": true,
+      "judgment": {
+        "pass": true,
+        "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+      },
+      "citations_exact": true,
+      "outcome_match": true,
+      "condition_adherent": true,
+      "shell_calls": 2,
+      "tool_errors": 0,
+      "tool_output_bytes": 535,
+      "truncated_tool_outputs": 0,
+      "foreign_tool_count": 0,
+      "source_read_syscalls": null,
+      "source_paths_mentioned_in_commands": [
+        "src/retry.go"
+      ],
+      "post_initial_shell_calls": null,
+      "initial_retrieval": null
+    },
+    {
+      "id": "trial-019",
+      "fixture": "doc-api-contract",
+      "cache": "cold",
+      "repeat": 1,
+      "condition": "assisted",
+      "duration_seconds": 19.090064,
+      "usage": {
+        "input_tokens": 71807,
+        "cached_input_tokens": 66304,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 409,
+        "reasoning_output_tokens": 112
+      },
+      "source_unchanged": true,
+      "blind_id": "answer-074",
+      "passed": true,
+      "judgment": {
+        "pass": true,
+        "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+      },
+      "citations_exact": true,
+      "outcome_match": true,
+      "condition_adherent": true,
+      "shell_calls": 2,
+      "tool_errors": 0,
+      "tool_output_bytes": 3322,
+      "truncated_tool_outputs": 0,
+      "foreign_tool_count": 0,
+      "source_read_syscalls": null,
+      "source_paths_mentioned_in_commands": [
+        "docs/api.md"
+      ],
+      "post_initial_shell_calls": 1,
+      "initial_retrieval": {
+        "available": true,
+        "context_exit": 0,
+        "required_spans": 1,
+        "covered_spans": 0,
+        "full_evidence": false,
+        "compile_seconds": 0.0038882310000190046,
+        "compiled": true,
+        "relationship_recall": null,
+        "verified_files": 1
+      }
+    },
+    {
+      "id": "trial-020",
+      "fixture": "mixed-release-gate",
+      "cache": "cold",
+      "repeat": 1,
+      "condition": "assisted",
+      "duration_seconds": 21.157822,
+      "usage": {
+        "input_tokens": 58864,
+        "cached_input_tokens": 54272,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 637,
+        "reasoning_output_tokens": 307
+      },
+      "source_unchanged": true,
+      "blind_id": "answer-010",
+      "passed": true,
+      "judgment": {
+        "pass": true,
+        "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+      },
+      "citations_exact": true,
+      "outcome_match": true,
+      "condition_adherent": true,
+      "shell_calls": 2,
+      "tool_errors": 0,
+      "tool_output_bytes": 5117,
+      "truncated_tool_outputs": 0,
+      "foreign_tool_count": 0,
+      "source_read_syscalls": null,
+      "source_paths_mentioned_in_commands": [
+        "docs/release.md",
+        "src/release.go"
+      ],
+      "post_initial_shell_calls": 1,
+      "initial_retrieval": {
+        "available": true,
+        "context_exit": 0,
+        "required_spans": 2,
+        "covered_spans": 1,
+        "full_evidence": false,
+        "compile_seconds": 0.005158929998287931,
+        "compiled": true,
+        "relationship_recall": null,
+        "verified_files": 2
+      }
+    },
+    {
+      "id": "trial-021",
+      "fixture": "doc-config-boundary",
+      "cache": "cold",
+      "repeat": 1,
+      "condition": "assisted",
+      "duration_seconds": 17.409709,
+      "usage": {
+        "input_tokens": 72979,
+        "cached_input_tokens": 68352,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 372,
+        "reasoning_output_tokens": 61
+      },
+      "source_unchanged": true,
+      "blind_id": "answer-093",
+      "passed": true,
+      "judgment": {
+        "pass": true,
+        "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+      },
+      "citations_exact": true,
+      "outcome_match": true,
+      "condition_adherent": true,
+      "shell_calls": 2,
+      "tool_errors": 0,
+      "tool_output_bytes": 3451,
+      "truncated_tool_outputs": 0,
+      "foreign_tool_count": 0,
+      "source_read_syscalls": null,
+      "source_paths_mentioned_in_commands": [
+        "docs/freshness.md"
+      ],
+      "post_initial_shell_calls": 1,
+      "initial_retrieval": {
+        "available": true,
+        "context_exit": 0,
+        "required_spans": 1,
+        "covered_spans": 0,
+        "full_evidence": false,
+        "compile_seconds": 0.00581824599794345,
+        "compiled": true,
+        "relationship_recall": null,
+        "verified_files": 1
+      }
+    },
+    {
+      "id": "trial-022",
+      "fixture": "doc-config-boundary",
+      "cache": "cold",
+      "repeat": 1,
+      "condition": "baseline",
+      "duration_seconds": 14.983776,
+      "usage": {
+        "input_tokens": 55699,
+        "cached_input_tokens": 52224,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 367,
+        "reasoning_output_tokens": 73
+      },
+      "source_unchanged": true,
+      "blind_id": "answer-064",
+      "passed": true,
+      "judgment": {
+        "pass": true,
+        "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+      },
+      "citations_exact": true,
+      "outcome_match": true,
+      "condition_adherent": true,
+      "shell_calls": 2,
+      "tool_errors": 1,
+      "tool_output_bytes": 835,
+      "truncated_tool_outputs": 0,
+      "foreign_tool_count": 0,
+      "source_read_syscalls": null,
+      "source_paths_mentioned_in_commands": [
+        "docs/freshness.md"
+      ],
+      "post_initial_shell_calls": null,
+      "initial_retrieval": null
+    },
+    {
+      "id": "trial-023",
+      "fixture": "code-retry-policy",
+      "cache": "cold",
+      "repeat": 2,
+      "condition": "assisted",
+      "duration_seconds": 14.325841,
+      "usage": {
+        "input_tokens": 57622,
+        "cached_input_tokens": 53248,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 294,
+        "reasoning_output_tokens": 68
+      },
+      "source_unchanged": true,
+      "blind_id": "answer-085",
+      "passed": true,
+      "judgment": {
+        "pass": true,
+        "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+      },
+      "citations_exact": true,
+      "outcome_match": true,
+      "condition_adherent": true,
+      "shell_calls": 1,
+      "tool_errors": 0,
+      "tool_output_bytes": 4255,
+      "truncated_tool_outputs": 0,
+      "foreign_tool_count": 0,
+      "source_read_syscalls": null,
+      "source_paths_mentioned_in_commands": [],
+      "post_initial_shell_calls": 0,
+      "initial_retrieval": {
+        "available": true,
+        "context_exit": 0,
+        "required_spans": 2,
+        "covered_spans": 2,
+        "full_evidence": true,
+        "compile_seconds": 0.004491501997108571,
+        "compiled": true,
+        "relationship_recall": null,
+        "verified_files": 1
+      }
+    },
+    {
+      "id": "trial-024",
+      "fixture": "mixed-release-gate",
+      "cache": "warm",
+      "repeat": 2,
+      "condition": "baseline",
+      "duration_seconds": 32.184639,
+      "usage": {
+        "input_tokens": 71261,
+        "cached_input_tokens": 66304,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 479,
+        "reasoning_output_tokens": 53
+      },
+      "source_unchanged": true,
+      "blind_id": "answer-084",
+      "passed": true,
+      "judgment": {
+        "pass": true,
+        "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+      },
+      "citations_exact": true,
+      "outcome_match": true,
+      "condition_adherent": true,
+      "shell_calls": 2,
+      "tool_errors": 0,
+      "tool_output_bytes": 834,
+      "truncated_tool_outputs": 0,
+      "foreign_tool_count": 0,
+      "source_read_syscalls": null,
+      "source_paths_mentioned_in_commands": [
+        "docs/release.md",
+        "src/release.go"
+      ],
+      "post_initial_shell_calls": null,
+      "initial_retrieval": null
+    },
+    {
+      "id": "trial-025",
+      "fixture": "doc-api-contract",
+      "cache": "warm",
+      "repeat": 1,
+      "condition": "assisted",
+      "duration_seconds": 17.108097,
+      "usage": {
+        "input_tokens": 72738,
+        "cached_input_tokens": 68352,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 341,
+        "reasoning_output_tokens": 23
+      },
+      "source_unchanged": true,
+      "blind_id": "answer-055",
+      "passed": true,
+      "judgment": {
+        "pass": true,
+        "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+      },
+      "citations_exact": true,
+      "outcome_match": true,
+      "condition_adherent": true,
+      "shell_calls": 2,
+      "tool_errors": 0,
+      "tool_output_bytes": 3413,
+      "truncated_tool_outputs": 0,
+      "foreign_tool_count": 0,
+      "source_read_syscalls": null,
+      "source_paths_mentioned_in_commands": [
+        "docs/api.md"
+      ],
+      "post_initial_shell_calls": 1,
+      "initial_retrieval": {
+        "available": true,
+        "context_exit": 0,
+        "required_spans": 1,
+        "covered_spans": 0,
+        "full_evidence": false,
+        "compile_seconds": 0.0,
+        "compiled": false,
+        "relationship_recall": null,
+        "verified_files": 1
+      }
+    },
+    {
+      "id": "trial-026",
+      "fixture": "no-answer-restricted",
+      "cache": "cold",
+      "repeat": 1,
+      "condition": "assisted",
+      "duration_seconds": 20.414941,
+      "usage": {
+        "input_tokens": 71745,
+        "cached_input_tokens": 66304,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 447,
+        "reasoning_output_tokens": 180
+      },
+      "source_unchanged": true,
+      "blind_id": "answer-005",
+      "passed": true,
+      "judgment": {
+        "pass": true,
+        "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+      },
+      "citations_exact": true,
+      "outcome_match": true,
+      "condition_adherent": true,
+      "shell_calls": 2,
+      "tool_errors": 0,
+      "tool_output_bytes": 3473,
+      "truncated_tool_outputs": 0,
+      "foreign_tool_count": 0,
+      "source_read_syscalls": null,
+      "source_paths_mentioned_in_commands": [
+        "docs/public.md"
+      ],
+      "post_initial_shell_calls": 1,
+      "initial_retrieval": {
+        "available": true,
+        "context_exit": 0,
+        "required_spans": 0,
+        "covered_spans": 0,
+        "full_evidence": null,
+        "compile_seconds": 0.004481932999624405,
+        "compiled": true,
+        "relationship_recall": null,
+        "verified_files": 1
+      }
+    },
+    {
+      "id": "trial-027",
+      "fixture": "code-retry-policy",
+      "cache": "cold",
+      "repeat": 1,
+      "condition": "assisted",
+      "duration_seconds": 19.573174,
+      "usage": {
+        "input_tokens": 72453,
+        "cached_input_tokens": 67328,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 387,
+        "reasoning_output_tokens": 109
+      },
+      "source_unchanged": true,
+      "blind_id": "answer-030",
+      "passed": true,
+      "judgment": {
+        "pass": true,
+        "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+      },
+      "citations_exact": true,
+      "outcome_match": true,
+      "condition_adherent": true,
+      "shell_calls": 2,
+      "tool_errors": 0,
+      "tool_output_bytes": 4399,
+      "truncated_tool_outputs": 0,
+      "foreign_tool_count": 0,
+      "source_read_syscalls": null,
+      "source_paths_mentioned_in_commands": [
+        "src/retry.go"
+      ],
+      "post_initial_shell_calls": 1,
+      "initial_retrieval": {
+        "available": true,
+        "context_exit": 0,
+        "required_spans": 2,
+        "covered_spans": 2,
+        "full_evidence": true,
+        "compile_seconds": 0.004078227000718471,
+        "compiled": true,
+        "relationship_recall": null,
+        "verified_files": 1
+      }
+    },
+    {
+      "id": "trial-028",
+      "fixture": "mixed-schema-owner",
+      "cache": "cold",
+      "repeat": 1,
+      "condition": "baseline",
+      "duration_seconds": 25.681817,
+      "usage": {
+        "input_tokens": 98169,
+        "cached_input_tokens": 92416,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 605,
+        "reasoning_output_tokens": 172
+      },
+      "source_unchanged": true,
+      "blind_id": "answer-068",
+      "passed": true,
+      "judgment": {
+        "pass": true,
+        "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+      },
+      "citations_exact": true,
+      "outcome_match": true,
+      "condition_adherent": true,
+      "shell_calls": 3,
+      "tool_errors": 1,
+      "tool_output_bytes": 447,
+      "truncated_tool_outputs": 0,
+      "foreign_tool_count": 0,
+      "source_read_syscalls": null,
+      "source_paths_mentioned_in_commands": [
+        "docs/context.md",
+        "src/context.go"
+      ],
+      "post_initial_shell_calls": null,
+      "initial_retrieval": null
+    },
+    {
+      "id": "trial-029",
+      "fixture": "doc-api-contract",
+      "cache": "cold",
+      "repeat": 2,
+      "condition": "baseline",
+      "duration_seconds": 17.833258,
+      "usage": {
+        "input_tokens": 69530,
+        "cached_input_tokens": 55040,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 412,
+        "reasoning_output_tokens": 44
+      },
+      "source_unchanged": true,
+      "blind_id": "answer-071",
+      "passed": true,
+      "judgment": {
+        "pass": true,
+        "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+      },
+      "citations_exact": true,
+      "outcome_match": true,
+      "condition_adherent": true,
+      "shell_calls": 2,
+      "tool_errors": 0,
+      "tool_output_bytes": 454,
+      "truncated_tool_outputs": 0,
+      "foreign_tool_count": 0,
+      "source_read_syscalls": null,
+      "source_paths_mentioned_in_commands": [
+        "docs/api.md"
+      ],
+      "post_initial_shell_calls": null,
+      "initial_retrieval": null
+    },
+    {
+      "id": "trial-030",
+      "fixture": "code-retry-policy",
+      "cache": "cold",
+      "repeat": 2,
+      "condition": "baseline",
+      "duration_seconds": 12.679781,
+      "usage": {
+        "input_tokens": 41437,
+        "cached_input_tokens": 28928,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 198,
+        "reasoning_output_tokens": 30
+      },
+      "source_unchanged": true,
+      "blind_id": "answer-048",
+      "passed": true,
+      "judgment": {
+        "pass": true,
+        "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+      },
+      "citations_exact": true,
+      "outcome_match": true,
+      "condition_adherent": true,
+      "shell_calls": 1,
+      "tool_errors": 0,
+      "tool_output_bytes": 263,
+      "truncated_tool_outputs": 0,
+      "foreign_tool_count": 0,
+      "source_read_syscalls": null,
+      "source_paths_mentioned_in_commands": [],
+      "post_initial_shell_calls": null,
+      "initial_retrieval": null
+    },
+    {
+      "id": "trial-031",
+      "fixture": "doc-release-notes",
+      "cache": "warm",
+      "repeat": 1,
+      "condition": "baseline",
+      "duration_seconds": 15.275943,
+      "usage": {
+        "input_tokens": 69583,
+        "cached_input_tokens": 65280,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 347,
+        "reasoning_output_tokens": 34
+      },
+      "source_unchanged": true,
+      "blind_id": "answer-042",
+      "passed": false,
+      "judgment": {
+        "pass": false,
+        "reason": "Omits the required single-run qualification from both answer and quotations; descriptive/non-task-success qualifications alone are incomplete."
+      },
+      "citations_exact": true,
+      "outcome_match": true,
+      "condition_adherent": true,
+      "shell_calls": 3,
+      "tool_errors": 1,
+      "tool_output_bytes": 335,
+      "truncated_tool_outputs": 0,
+      "foreign_tool_count": 0,
+      "source_read_syscalls": null,
+      "source_paths_mentioned_in_commands": [
+        "docs/release.md"
+      ],
+      "post_initial_shell_calls": null,
+      "initial_retrieval": null
+    },
+    {
+      "id": "trial-032",
+      "fixture": "doc-config-boundary",
+      "cache": "cold",
+      "repeat": 2,
+      "condition": "baseline",
+      "duration_seconds": 15.918939,
+      "usage": {
+        "input_tokens": 70927,
+        "cached_input_tokens": 67328,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 450,
+        "reasoning_output_tokens": 147
+      },
+      "source_unchanged": true,
+      "blind_id": "answer-024",
+      "passed": true,
+      "judgment": {
+        "pass": true,
+        "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+      },
+      "citations_exact": true,
+      "outcome_match": true,
+      "condition_adherent": true,
+      "shell_calls": 2,
+      "tool_errors": 1,
+      "tool_output_bytes": 538,
+      "truncated_tool_outputs": 0,
+      "foreign_tool_count": 0,
+      "source_read_syscalls": null,
+      "source_paths_mentioned_in_commands": [
+        "docs/freshness.md"
+      ],
+      "post_initial_shell_calls": null,
+      "initial_retrieval": null
+    },
+    {
+      "id": "trial-033",
+      "fixture": "mixed-schema-owner",
+      "cache": "warm",
+      "repeat": 2,
+      "condition": "assisted",
+      "duration_seconds": 15.044026,
+      "usage": {
+        "input_tokens": 73675,
+        "cached_input_tokens": 68352,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 369,
+        "reasoning_output_tokens": 48
+      },
+      "source_unchanged": true,
+      "blind_id": "answer-095",
+      "passed": true,
+      "judgment": {
+        "pass": true,
+        "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+      },
+      "citations_exact": true,
+      "outcome_match": true,
+      "condition_adherent": true,
+      "shell_calls": 2,
+      "tool_errors": 0,
+      "tool_output_bytes": 4679,
+      "truncated_tool_outputs": 0,
+      "foreign_tool_count": 0,
+      "source_read_syscalls": null,
+      "source_paths_mentioned_in_commands": [
+        "docs/context.md",
+        "src/context.go"
+      ],
+      "post_initial_shell_calls": 1,
+      "initial_retrieval": {
+        "available": true,
+        "context_exit": 0,
+        "required_spans": 2,
+        "covered_spans": 1,
+        "full_evidence": false,
+        "compile_seconds": 0.0,
+        "compiled": false,
+        "relationship_recall": null,
+        "verified_files": 2
+      }
+    },
+    {
+      "id": "trial-034",
+      "fixture": "doc-api-contract",
+      "cache": "warm",
+      "repeat": 2,
+      "condition": "baseline",
+      "duration_seconds": 17.766611,
+      "usage": {
+        "input_tokens": 83710,
+        "cached_input_tokens": 78336,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 470,
+        "reasoning_output_tokens": 59
+      },
+      "source_unchanged": true,
+      "blind_id": "answer-043",
+      "passed": true,
+      "judgment": {
+        "pass": true,
+        "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+      },
+      "citations_exact": true,
+      "outcome_match": true,
+      "condition_adherent": true,
+      "shell_calls": 3,
+      "tool_errors": 1,
+      "tool_output_bytes": 567,
+      "truncated_tool_outputs": 0,
+      "foreign_tool_count": 0,
+      "source_read_syscalls": null,
+      "source_paths_mentioned_in_commands": [
+        "docs/api.md"
+      ],
+      "post_initial_shell_calls": null,
+      "initial_retrieval": null
+    },
+    {
+      "id": "trial-035",
+      "fixture": "doc-roadmap-priority",
+      "cache": "warm",
+      "repeat": 2,
+      "condition": "baseline",
+      "duration_seconds": 14.95034,
+      "usage": {
+        "input_tokens": 57145,
+        "cached_input_tokens": 44032,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 415,
+        "reasoning_output_tokens": 94
+      },
+      "source_unchanged": true,
+      "blind_id": "answer-006",
+      "passed": true,
+      "judgment": {
+        "pass": true,
+        "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+      },
+      "citations_exact": true,
+      "outcome_match": true,
+      "condition_adherent": true,
+      "shell_calls": 2,
+      "tool_errors": 0,
+      "tool_output_bytes": 550,
+      "truncated_tool_outputs": 0,
+      "foreign_tool_count": 0,
+      "source_read_syscalls": null,
+      "source_paths_mentioned_in_commands": [
+        "docs/roadmap.md"
+      ],
+      "post_initial_shell_calls": null,
+      "initial_retrieval": null
+    },
+    {
+      "id": "trial-036",
+      "fixture": "mixed-release-gate",
+      "cache": "cold",
+      "repeat": 2,
+      "condition": "assisted",
+      "duration_seconds": 18.681902,
+      "usage": {
+        "input_tokens": 58626,
+        "cached_input_tokens": 54272,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 587,
+        "reasoning_output_tokens": 281
+      },
+      "source_unchanged": true,
+      "blind_id": "answer-073",
+      "passed": true,
+      "judgment": {
+        "pass": true,
+        "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+      },
+      "citations_exact": true,
+      "outcome_match": true,
+      "condition_adherent": true,
+      "shell_calls": 2,
+      "tool_errors": 0,
+      "tool_output_bytes": 4772,
+      "truncated_tool_outputs": 0,
+      "foreign_tool_count": 0,
+      "source_read_syscalls": null,
+      "source_paths_mentioned_in_commands": [
+        "docs/release.md",
+        "src/release.go"
+      ],
+      "post_initial_shell_calls": 1,
+      "initial_retrieval": {
+        "available": true,
+        "context_exit": 0,
+        "required_spans": 2,
+        "covered_spans": 1,
+        "full_evidence": false,
+        "compile_seconds": 0.005578296997555299,
+        "compiled": true,
+        "relationship_recall": null,
+        "verified_files": 2
+      }
+    },
+    {
+      "id": "trial-037",
+      "fixture": "mixed-release-gate",
+      "cache": "warm",
+      "repeat": 1,
+      "condition": "baseline",
+      "duration_seconds": 14.271114,
+      "usage": {
+        "input_tokens": 55621,
+        "cached_input_tokens": 41984,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 347,
+        "reasoning_output_tokens": 30
+      },
+      "source_unchanged": true,
+      "blind_id": "answer-020",
+      "passed": true,
+      "judgment": {
+        "pass": true,
+        "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+      },
+      "citations_exact": true,
+      "outcome_match": true,
+      "condition_adherent": true,
+      "shell_calls": 2,
+      "tool_errors": 0,
+      "tool_output_bytes": 712,
+      "truncated_tool_outputs": 0,
+      "foreign_tool_count": 0,
+      "source_read_syscalls": null,
+      "source_paths_mentioned_in_commands": [
+        "docs/release.md",
+        "src/release.go"
+      ],
+      "post_initial_shell_calls": null,
+      "initial_retrieval": null
+    },
+    {
+      "id": "trial-038",
+      "fixture": "doc-config-boundary",
+      "cache": "warm",
+      "repeat": 2,
+      "condition": "assisted",
+      "duration_seconds": 15.16704,
+      "usage": {
+        "input_tokens": 73236,
+        "cached_input_tokens": 68352,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 418,
+        "reasoning_output_tokens": 86
+      },
+      "source_unchanged": true,
+      "blind_id": "answer-023",
+      "passed": true,
+      "judgment": {
+        "pass": true,
+        "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+      },
+      "citations_exact": true,
+      "outcome_match": true,
+      "condition_adherent": true,
+      "shell_calls": 2,
+      "tool_errors": 0,
+      "tool_output_bytes": 3652,
+      "truncated_tool_outputs": 0,
+      "foreign_tool_count": 0,
+      "source_read_syscalls": null,
+      "source_paths_mentioned_in_commands": [
+        "docs/freshness.md"
+      ],
+      "post_initial_shell_calls": 1,
+      "initial_retrieval": {
+        "available": true,
+        "context_exit": 0,
+        "required_spans": 1,
+        "covered_spans": 0,
+        "full_evidence": false,
+        "compile_seconds": 0.0,
+        "compiled": false,
+        "relationship_recall": null,
+        "verified_files": 1
+      }
+    },
+    {
+      "id": "trial-039",
+      "fixture": "code-import-sites",
+      "cache": "cold",
+      "repeat": 2,
+      "condition": "baseline",
+      "duration_seconds": 16.449008,
+      "usage": {
+        "input_tokens": 55627,
+        "cached_input_tokens": 52224,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 507,
+        "reasoning_output_tokens": 144
+      },
+      "source_unchanged": true,
+      "blind_id": "answer-060",
+      "passed": true,
+      "judgment": {
+        "pass": true,
+        "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+      },
+      "citations_exact": true,
+      "outcome_match": true,
+      "condition_adherent": true,
+      "shell_calls": 2,
+      "tool_errors": 0,
+      "tool_output_bytes": 360,
+      "truncated_tool_outputs": 0,
+      "foreign_tool_count": 0,
+      "source_read_syscalls": null,
+      "source_paths_mentioned_in_commands": [
+        "go.mod",
+        "src/imports.go",
+        "store/store.go"
+      ],
+      "post_initial_shell_calls": null,
+      "initial_retrieval": null
+    },
+    {
+      "id": "trial-040",
+      "fixture": "doc-release-notes",
+      "cache": "cold",
+      "repeat": 2,
+      "condition": "assisted",
+      "duration_seconds": 17.314019,
+      "usage": {
+        "input_tokens": 57789,
+        "cached_input_tokens": 53248,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 476,
+        "reasoning_output_tokens": 240
+      },
+      "source_unchanged": true,
+      "blind_id": "answer-032",
+      "passed": false,
+      "judgment": {
+        "pass": false,
+        "reason": "Omits the required single-run qualification from both answer and quotations; descriptive/non-task-success qualifications alone are incomplete."
+      },
+      "citations_exact": true,
+      "outcome_match": true,
+      "condition_adherent": true,
+      "shell_calls": 2,
+      "tool_errors": 0,
+      "tool_output_bytes": 3397,
+      "truncated_tool_outputs": 0,
+      "foreign_tool_count": 0,
+      "source_read_syscalls": null,
+      "source_paths_mentioned_in_commands": [
+        "docs/release.md"
+      ],
+      "post_initial_shell_calls": 1,
+      "initial_retrieval": {
+        "available": true,
+        "context_exit": 0,
+        "required_spans": 1,
+        "covered_spans": 0,
+        "full_evidence": false,
+        "compile_seconds": 0.0056889539991971105,
+        "compiled": true,
+        "relationship_recall": null,
+        "verified_files": 1
+      }
+    },
+    {
+      "id": "trial-041",
+      "fixture": "mixed-schema-owner",
+      "cache": "cold",
+      "repeat": 1,
+      "condition": "assisted",
+      "duration_seconds": 16.613263,
+      "usage": {
+        "input_tokens": 72344,
+        "cached_input_tokens": 67328,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 471,
+        "reasoning_output_tokens": 153
+      },
+      "source_unchanged": true,
+      "blind_id": "answer-062",
+      "passed": true,
+      "judgment": {
+        "pass": true,
+        "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+      },
+      "citations_exact": true,
+      "outcome_match": true,
+      "condition_adherent": true,
+      "shell_calls": 2,
+      "tool_errors": 0,
+      "tool_output_bytes": 4679,
+      "truncated_tool_outputs": 0,
+      "foreign_tool_count": 0,
+      "source_read_syscalls": null,
+      "source_paths_mentioned_in_commands": [
+        "docs/context.md",
+        "src/context.go"
+      ],
+      "post_initial_shell_calls": 1,
+      "initial_retrieval": {
+        "available": true,
+        "context_exit": 0,
+        "required_spans": 2,
+        "covered_spans": 1,
+        "full_evidence": false,
+        "compile_seconds": 0.005802166000648867,
+        "compiled": true,
+        "relationship_recall": null,
+        "verified_files": 2
+      }
+    },
+    {
+      "id": "trial-042",
+      "fixture": "code-auth-boundary",
+      "cache": "warm",
+      "repeat": 2,
+      "condition": "baseline",
+      "duration_seconds": 13.304677,
+      "usage": {
+        "input_tokens": 55505,
+        "cached_input_tokens": 52224,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 272,
+        "reasoning_output_tokens": 13
+      },
+      "source_unchanged": true,
+      "blind_id": "answer-025",
+      "passed": true,
+      "judgment": {
+        "pass": true,
+        "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+      },
+      "citations_exact": true,
+      "outcome_match": true,
+      "condition_adherent": true,
+      "shell_calls": 2,
+      "tool_errors": 0,
+      "tool_output_bytes": 600,
+      "truncated_tool_outputs": 0,
+      "foreign_tool_count": 0,
+      "source_read_syscalls": null,
+      "source_paths_mentioned_in_commands": [
+        "src/auth.py"
+      ],
+      "post_initial_shell_calls": null,
+      "initial_retrieval": null
+    },
+    {
+      "id": "trial-043",
+      "fixture": "code-import-sites",
+      "cache": "cold",
+      "repeat": 1,
+      "condition": "baseline",
+      "duration_seconds": 17.119147,
+      "usage": {
+        "input_tokens": 70835,
+        "cached_input_tokens": 67328,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 461,
+        "reasoning_output_tokens": 94
+      },
+      "source_unchanged": true,
+      "blind_id": "answer-031",
+      "passed": true,
+      "judgment": {
+        "pass": true,
+        "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+      },
+      "citations_exact": true,
+      "outcome_match": true,
+      "condition_adherent": true,
+      "shell_calls": 2,
+      "tool_errors": 0,
+      "tool_output_bytes": 430,
+      "truncated_tool_outputs": 0,
+      "foreign_tool_count": 0,
+      "source_read_syscalls": null,
+      "source_paths_mentioned_in_commands": [
+        "go.mod",
+        "src/imports.go",
+        "store/store.go"
+      ],
+      "post_initial_shell_calls": null,
+      "initial_retrieval": null
+    },
+    {
+      "id": "trial-044",
+      "fixture": "code-auth-boundary",
+      "cache": "cold",
+      "repeat": 2,
+      "condition": "assisted",
+      "duration_seconds": 15.560873,
+      "usage": {
+        "input_tokens": 59763,
+        "cached_input_tokens": 54272,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 440,
+        "reasoning_output_tokens": 184
+      },
+      "source_unchanged": true,
+      "blind_id": "answer-053",
+      "passed": true,
+      "judgment": {
+        "pass": true,
+        "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+      },
+      "citations_exact": true,
+      "outcome_match": true,
+      "condition_adherent": true,
+      "shell_calls": 2,
+      "tool_errors": 0,
+      "tool_output_bytes": 6933,
+      "truncated_tool_outputs": 0,
+      "foreign_tool_count": 0,
+      "source_read_syscalls": null,
+      "source_paths_mentioned_in_commands": [
+        "src/auth.py"
+      ],
+      "post_initial_shell_calls": 1,
+      "initial_retrieval": {
+        "available": true,
+        "context_exit": 0,
+        "required_spans": 1,
+        "covered_spans": 1,
+        "full_evidence": true,
+        "compile_seconds": 0.006686160999379354,
+        "compiled": true,
+        "relationship_recall": 1.0,
+        "verified_files": 1
+      }
+    },
+    {
+      "id": "trial-045",
+      "fixture": "mixed-release-gate",
+      "cache": "cold",
+      "repeat": 2,
+      "condition": "baseline",
+      "duration_seconds": 15.500743,
+      "usage": {
+        "input_tokens": 55724,
+        "cached_input_tokens": 52224,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 378,
+        "reasoning_output_tokens": 37
+      },
+      "source_unchanged": true,
+      "blind_id": "answer-090",
+      "passed": true,
+      "judgment": {
+        "pass": true,
+        "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+      },
+      "citations_exact": true,
+      "outcome_match": true,
+      "condition_adherent": true,
+      "shell_calls": 2,
+      "tool_errors": 0,
+      "tool_output_bytes": 892,
+      "truncated_tool_outputs": 0,
+      "foreign_tool_count": 0,
+      "source_read_syscalls": null,
+      "source_paths_mentioned_in_commands": [
+        "docs/release.md",
+        "src/release.go"
+      ],
+      "post_initial_shell_calls": null,
+      "initial_retrieval": null
+    },
+    {
+      "id": "trial-046",
+      "fixture": "code-auth-boundary",
+      "cache": "warm",
+      "repeat": 1,
+      "condition": "assisted",
+      "duration_seconds": 19.799033,
+      "usage": {
+        "input_tokens": 76468,
+        "cached_input_tokens": 70400,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 573,
+        "reasoning_output_tokens": 270
+      },
+      "source_unchanged": true,
+      "blind_id": "answer-070",
+      "passed": true,
+      "judgment": {
+        "pass": true,
+        "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+      },
+      "citations_exact": true,
+      "outcome_match": true,
+      "condition_adherent": true,
+      "shell_calls": 3,
+      "tool_errors": 1,
+      "tool_output_bytes": 7078,
+      "truncated_tool_outputs": 0,
+      "foreign_tool_count": 0,
+      "source_read_syscalls": null,
+      "source_paths_mentioned_in_commands": [
+        "src/auth.py"
+      ],
+      "post_initial_shell_calls": 2,
+      "initial_retrieval": {
+        "available": true,
+        "context_exit": 0,
+        "required_spans": 1,
+        "covered_spans": 1,
+        "full_evidence": true,
+        "compile_seconds": 0.0,
+        "compiled": false,
+        "relationship_recall": 1.0,
+        "verified_files": 1
+      }
+    },
+    {
+      "id": "trial-047",
+      "fixture": "doc-roadmap-priority",
+      "cache": "warm",
+      "repeat": 1,
+      "condition": "assisted",
+      "duration_seconds": 15.368446,
+      "usage": {
+        "input_tokens": 72970,
+        "cached_input_tokens": 67328,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 382,
+        "reasoning_output_tokens": 95
+      },
+      "source_unchanged": true,
+      "blind_id": "answer-091",
+      "passed": true,
+      "judgment": {
+        "pass": true,
+        "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+      },
+      "citations_exact": true,
+      "outcome_match": true,
+      "condition_adherent": true,
+      "shell_calls": 2,
+      "tool_errors": 0,
+      "tool_output_bytes": 5857,
+      "truncated_tool_outputs": 0,
+      "foreign_tool_count": 0,
+      "source_read_syscalls": null,
+      "source_paths_mentioned_in_commands": [
+        "docs/roadmap.md"
+      ],
+      "post_initial_shell_calls": 1,
+      "initial_retrieval": {
+        "available": true,
+        "context_exit": 0,
+        "required_spans": 2,
+        "covered_spans": 0,
+        "full_evidence": false,
+        "compile_seconds": 0.0,
+        "compiled": false,
+        "relationship_recall": null,
+        "verified_files": 1
+      }
+    },
+    {
+      "id": "trial-048",
+      "fixture": "no-answer-absent",
+      "cache": "warm",
+      "repeat": 2,
+      "condition": "baseline",
+      "duration_seconds": 19.44218,
+      "usage": {
+        "input_tokens": 85680,
+        "cached_input_tokens": 81408,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 462,
+        "reasoning_output_tokens": 87
+      },
+      "source_unchanged": true,
+      "blind_id": "answer-001",
+      "passed": true,
+      "judgment": {
+        "pass": true,
+        "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+      },
+      "citations_exact": true,
+      "outcome_match": true,
+      "condition_adherent": true,
+      "shell_calls": 3,
+      "tool_errors": 1,
+      "tool_output_bytes": 271,
+      "truncated_tool_outputs": 0,
+      "foreign_tool_count": 0,
+      "source_read_syscalls": null,
+      "source_paths_mentioned_in_commands": [
+        "src/inventory.md"
+      ],
+      "post_initial_shell_calls": null,
+      "initial_retrieval": null
+    },
+    {
+      "id": "trial-049",
+      "fixture": "code-retry-policy",
+      "cache": "warm",
+      "repeat": 1,
+      "condition": "assisted",
+      "duration_seconds": 18.974838,
+      "usage": {
+        "input_tokens": 74232,
+        "cached_input_tokens": 69376,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 542,
+        "reasoning_output_tokens": 221
+      },
+      "source_unchanged": true,
+      "blind_id": "answer-019",
+      "passed": true,
+      "judgment": {
+        "pass": true,
+        "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+      },
+      "citations_exact": true,
+      "outcome_match": true,
+      "condition_adherent": true,
+      "shell_calls": 3,
+      "tool_errors": 1,
+      "tool_output_bytes": 4544,
+      "truncated_tool_outputs": 0,
+      "foreign_tool_count": 0,
+      "source_read_syscalls": null,
+      "source_paths_mentioned_in_commands": [
+        "src/retry.go"
+      ],
+      "post_initial_shell_calls": 2,
+      "initial_retrieval": {
+        "available": true,
+        "context_exit": 0,
+        "required_spans": 2,
+        "covered_spans": 2,
+        "full_evidence": true,
+        "compile_seconds": 0.0,
+        "compiled": false,
+        "relationship_recall": null,
+        "verified_files": 1
+      }
+    },
+    {
+      "id": "trial-050",
+      "fixture": "doc-roadmap-priority",
+      "cache": "cold",
+      "repeat": 2,
+      "condition": "baseline",
+      "duration_seconds": 16.062104,
+      "usage": {
+        "input_tokens": 69430,
+        "cached_input_tokens": 65280,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 385,
+        "reasoning_output_tokens": 73
+      },
+      "source_unchanged": true,
+      "blind_id": "answer-061",
+      "passed": false,
+      "judgment": {
+        "pass": false,
+        "reason": "Names the CRLF criterion as the roadmap item instead of Evidence bundles; the correct heading in its quote does not resolve the contradictory answer."
+      },
+      "citations_exact": true,
+      "outcome_match": true,
+      "condition_adherent": true,
+      "shell_calls": 2,
+      "tool_errors": 0,
+      "tool_output_bytes": 326,
+      "truncated_tool_outputs": 0,
+      "foreign_tool_count": 0,
+      "source_read_syscalls": null,
+      "source_paths_mentioned_in_commands": [
+        "docs/roadmap.md"
+      ],
+      "post_initial_shell_calls": null,
+      "initial_retrieval": null
+    },
+    {
+      "id": "trial-051",
+      "fixture": "no-answer-restricted",
+      "cache": "warm",
+      "repeat": 2,
+      "condition": "assisted",
+      "duration_seconds": 27.931711,
+      "usage": {
+        "input_tokens": 102531,
+        "cached_input_tokens": 83200,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 683,
+        "reasoning_output_tokens": 251
+      },
+      "source_unchanged": true,
+      "blind_id": "answer-082",
+      "passed": true,
+      "judgment": {
+        "pass": true,
+        "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+      },
+      "citations_exact": true,
+      "outcome_match": true,
+      "condition_adherent": true,
+      "shell_calls": 4,
+      "tool_errors": 1,
+      "tool_output_bytes": 3904,
+      "truncated_tool_outputs": 0,
+      "foreign_tool_count": 0,
+      "source_read_syscalls": null,
+      "source_paths_mentioned_in_commands": [
+        "docs/public.md"
+      ],
+      "post_initial_shell_calls": 3,
+      "initial_retrieval": {
+        "available": true,
+        "context_exit": 0,
+        "required_spans": 0,
+        "covered_spans": 0,
+        "full_evidence": null,
+        "compile_seconds": 0.0,
+        "compiled": false,
+        "relationship_recall": null,
+        "verified_files": 1
+      }
+    },
+    {
+      "id": "trial-052",
+      "fixture": "code-retry-policy",
+      "cache": "warm",
+      "repeat": 2,
+      "condition": "assisted",
+      "duration_seconds": 20.071111,
+      "usage": {
+        "input_tokens": 72604,
+        "cached_input_tokens": 67328,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 439,
+        "reasoning_output_tokens": 126
+      },
+      "source_unchanged": true,
+      "blind_id": "answer-036",
+      "passed": true,
+      "judgment": {
+        "pass": true,
+        "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+      },
+      "citations_exact": true,
+      "outcome_match": true,
+      "condition_adherent": true,
+      "shell_calls": 2,
+      "tool_errors": 0,
+      "tool_output_bytes": 4399,
+      "truncated_tool_outputs": 0,
+      "foreign_tool_count": 0,
+      "source_read_syscalls": null,
+      "source_paths_mentioned_in_commands": [
+        "src/retry.go"
+      ],
+      "post_initial_shell_calls": 1,
+      "initial_retrieval": {
+        "available": true,
+        "context_exit": 0,
+        "required_spans": 2,
+        "covered_spans": 2,
+        "full_evidence": true,
+        "compile_seconds": 0.0,
+        "compiled": false,
+        "relationship_recall": null,
+        "verified_files": 1
+      }
+    },
+    {
+      "id": "trial-053",
+      "fixture": "code-auth-boundary",
+      "cache": "warm",
+      "repeat": 1,
+      "condition": "baseline",
+      "duration_seconds": 15.722441,
+      "usage": {
+        "input_tokens": 69454,
+        "cached_input_tokens": 65280,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 352,
+        "reasoning_output_tokens": 37
+      },
+      "source_unchanged": true,
+      "blind_id": "answer-011",
+      "passed": true,
+      "judgment": {
+        "pass": true,
+        "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+      },
+      "citations_exact": true,
+      "outcome_match": true,
+      "condition_adherent": true,
+      "shell_calls": 2,
+      "tool_errors": 0,
+      "tool_output_bytes": 600,
+      "truncated_tool_outputs": 0,
+      "foreign_tool_count": 0,
+      "source_read_syscalls": null,
+      "source_paths_mentioned_in_commands": [
+        "src/auth.py"
+      ],
+      "post_initial_shell_calls": null,
+      "initial_retrieval": null
+    },
+    {
+      "id": "trial-054",
+      "fixture": "no-answer-restricted",
+      "cache": "cold",
+      "repeat": 2,
+      "condition": "baseline",
+      "duration_seconds": 19.016136,
+      "usage": {
+        "input_tokens": 71104,
+        "cached_input_tokens": 66304,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 439,
+        "reasoning_output_tokens": 77
+      },
+      "source_unchanged": true,
+      "blind_id": "answer-037",
+      "passed": true,
+      "judgment": {
+        "pass": true,
+        "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+      },
+      "citations_exact": true,
+      "outcome_match": true,
+      "condition_adherent": true,
+      "shell_calls": 2,
+      "tool_errors": 0,
+      "tool_output_bytes": 414,
+      "truncated_tool_outputs": 0,
+      "foreign_tool_count": 0,
+      "source_read_syscalls": null,
+      "source_paths_mentioned_in_commands": [
+        "docs/public.md"
+      ],
+      "post_initial_shell_calls": null,
+      "initial_retrieval": null
+    },
+    {
+      "id": "trial-055",
+      "fixture": "no-answer-absent",
+      "cache": "warm",
+      "repeat": 1,
+      "condition": "baseline",
+      "duration_seconds": 19.775284,
+      "usage": {
+        "input_tokens": 100038,
+        "cached_input_tokens": 94464,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 498,
+        "reasoning_output_tokens": 81
+      },
+      "source_unchanged": true,
+      "blind_id": "answer-034",
+      "passed": true,
+      "judgment": {
+        "pass": true,
+        "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+      },
+      "citations_exact": true,
+      "outcome_match": true,
+      "condition_adherent": true,
+      "shell_calls": 4,
+      "tool_errors": 2,
+      "tool_output_bytes": 328,
+      "truncated_tool_outputs": 0,
+      "foreign_tool_count": 0,
+      "source_read_syscalls": null,
+      "source_paths_mentioned_in_commands": [
+        "src/inventory.md"
+      ],
+      "post_initial_shell_calls": null,
+      "initial_retrieval": null
+    },
+    {
+      "id": "trial-056",
+      "fixture": "code-import-sites",
+      "cache": "cold",
+      "repeat": 2,
+      "condition": "assisted",
+      "duration_seconds": 25.119993,
+      "usage": {
+        "input_tokens": 87643,
+        "cached_input_tokens": 81408,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 504,
+        "reasoning_output_tokens": 110
+      },
+      "source_unchanged": true,
+      "blind_id": "answer-069",
+      "passed": true,
+      "judgment": {
+        "pass": true,
+        "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+      },
+      "citations_exact": true,
+      "outcome_match": true,
+      "condition_adherent": true,
+      "shell_calls": 3,
+      "tool_errors": 0,
+      "tool_output_bytes": 4261,
+      "truncated_tool_outputs": 0,
+      "foreign_tool_count": 0,
+      "source_read_syscalls": null,
+      "source_paths_mentioned_in_commands": [
+        "go.mod",
+        "src/imports.go",
+        "store/store.go"
+      ],
+      "post_initial_shell_calls": 2,
+      "initial_retrieval": {
+        "available": true,
+        "context_exit": 0,
+        "required_spans": 2,
+        "covered_spans": 2,
+        "full_evidence": true,
+        "compile_seconds": 0.0058063040014531,
+        "compiled": true,
+        "relationship_recall": null,
+        "verified_files": 2
+      }
+    },
+    {
+      "id": "trial-057",
+      "fixture": "code-import-sites",
+      "cache": "warm",
+      "repeat": 2,
+      "condition": "assisted",
+      "duration_seconds": 15.243381,
+      "usage": {
+        "input_tokens": 73473,
+        "cached_input_tokens": 67328,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 382,
+        "reasoning_output_tokens": 41
+      },
+      "source_unchanged": true,
+      "blind_id": "answer-008",
+      "passed": true,
+      "judgment": {
+        "pass": true,
+        "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+      },
+      "citations_exact": true,
+      "outcome_match": true,
+      "condition_adherent": true,
+      "shell_calls": 2,
+      "tool_errors": 0,
+      "tool_output_bytes": 4159,
+      "truncated_tool_outputs": 0,
+      "foreign_tool_count": 0,
+      "source_read_syscalls": null,
+      "source_paths_mentioned_in_commands": [
+        "go.mod",
+        "src/imports.go"
+      ],
+      "post_initial_shell_calls": 1,
+      "initial_retrieval": {
+        "available": true,
+        "context_exit": 0,
+        "required_spans": 2,
+        "covered_spans": 2,
+        "full_evidence": true,
+        "compile_seconds": 0.0,
+        "compiled": false,
+        "relationship_recall": null,
+        "verified_files": 2
+      }
+    },
+    {
+      "id": "trial-058",
+      "fixture": "code-import-sites",
+      "cache": "warm",
+      "repeat": 2,
+      "condition": "baseline",
+      "duration_seconds": 19.146384,
+      "usage": {
+        "input_tokens": 55701,
+        "cached_input_tokens": 52224,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 551,
+        "reasoning_output_tokens": 157
+      },
+      "source_unchanged": true,
+      "blind_id": "answer-018",
+      "passed": true,
+      "judgment": {
+        "pass": true,
+        "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+      },
+      "citations_exact": true,
+      "outcome_match": true,
+      "condition_adherent": true,
+      "shell_calls": 2,
+      "tool_errors": 0,
+      "tool_output_bytes": 360,
+      "truncated_tool_outputs": 0,
+      "foreign_tool_count": 0,
+      "source_read_syscalls": null,
+      "source_paths_mentioned_in_commands": [
+        "go.mod",
+        "src/imports.go",
+        "store/store.go"
+      ],
+      "post_initial_shell_calls": null,
+      "initial_retrieval": null
+    },
+    {
+      "id": "trial-059",
+      "fixture": "doc-config-boundary",
+      "cache": "cold",
+      "repeat": 2,
+      "condition": "assisted",
+      "duration_seconds": 17.124982,
+      "usage": {
+        "input_tokens": 73095,
+        "cached_input_tokens": 68352,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 424,
+        "reasoning_output_tokens": 111
+      },
+      "source_unchanged": true,
+      "blind_id": "answer-003",
+      "passed": true,
+      "judgment": {
+        "pass": true,
+        "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+      },
+      "citations_exact": true,
+      "outcome_match": true,
+      "condition_adherent": true,
+      "shell_calls": 2,
+      "tool_errors": 0,
+      "tool_output_bytes": 3451,
+      "truncated_tool_outputs": 0,
+      "foreign_tool_count": 0,
+      "source_read_syscalls": null,
+      "source_paths_mentioned_in_commands": [
+        "docs/freshness.md"
+      ],
+      "post_initial_shell_calls": 1,
+      "initial_retrieval": {
+        "available": true,
+        "context_exit": 0,
+        "required_spans": 1,
+        "covered_spans": 0,
+        "full_evidence": false,
+        "compile_seconds": 0.006174693000502884,
+        "compiled": true,
+        "relationship_recall": null,
+        "verified_files": 1
+      }
+    },
+    {
+      "id": "trial-060",
+      "fixture": "doc-release-notes",
+      "cache": "warm",
+      "repeat": 1,
+      "condition": "assisted",
+      "duration_seconds": 15.735918,
+      "usage": {
+        "input_tokens": 71691,
+        "cached_input_tokens": 66304,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 379,
+        "reasoning_output_tokens": 66
+      },
+      "source_unchanged": true,
+      "blind_id": "answer-040",
+      "passed": false,
+      "judgment": {
+        "pass": false,
+        "reason": "Omits the required single-run qualification from both answer and quotations; descriptive/non-task-success qualifications alone are incomplete."
+      },
+      "citations_exact": true,
+      "outcome_match": true,
+      "condition_adherent": true,
+      "shell_calls": 2,
+      "tool_errors": 0,
+      "tool_output_bytes": 3641,
+      "truncated_tool_outputs": 0,
+      "foreign_tool_count": 0,
+      "source_read_syscalls": null,
+      "source_paths_mentioned_in_commands": [
+        "docs/release.md"
+      ],
+      "post_initial_shell_calls": 1,
+      "initial_retrieval": {
+        "available": true,
+        "context_exit": 0,
+        "required_spans": 1,
+        "covered_spans": 0,
+        "full_evidence": false,
+        "compile_seconds": 0.0,
+        "compiled": false,
+        "relationship_recall": null,
+        "verified_files": 1
+      }
+    },
+    {
+      "id": "trial-061",
+      "fixture": "doc-roadmap-priority",
+      "cache": "cold",
+      "repeat": 2,
+      "condition": "assisted",
+      "duration_seconds": 16.141722,
+      "usage": {
+        "input_tokens": 72905,
+        "cached_input_tokens": 65280,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 336,
+        "reasoning_output_tokens": 25
+      },
+      "source_unchanged": true,
+      "blind_id": "answer-012",
+      "passed": false,
+      "judgment": {
+        "pass": false,
+        "reason": "Names the CRLF criterion as the roadmap item instead of Evidence bundles; the correct heading in its quote does not resolve the contradictory answer."
+      },
+      "citations_exact": true,
+      "outcome_match": true,
+      "condition_adherent": true,
+      "shell_calls": 2,
+      "tool_errors": 0,
+      "tool_output_bytes": 5857,
+      "truncated_tool_outputs": 0,
+      "foreign_tool_count": 0,
+      "source_read_syscalls": null,
+      "source_paths_mentioned_in_commands": [
+        "docs/roadmap.md"
+      ],
+      "post_initial_shell_calls": 1,
+      "initial_retrieval": {
+        "available": true,
+        "context_exit": 0,
+        "required_spans": 2,
+        "covered_spans": 0,
+        "full_evidence": false,
+        "compile_seconds": 0.0066063609992852435,
+        "compiled": true,
+        "relationship_recall": null,
+        "verified_files": 1
+      }
+    },
+    {
+      "id": "trial-062",
+      "fixture": "code-parser-error",
+      "cache": "cold",
+      "repeat": 2,
+      "condition": "baseline",
+      "duration_seconds": 12.905109,
+      "usage": {
+        "input_tokens": 55465,
+        "cached_input_tokens": 52224,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 257,
+        "reasoning_output_tokens": 33
+      },
+      "source_unchanged": true,
+      "blind_id": "answer-066",
+      "passed": true,
+      "judgment": {
+        "pass": true,
+        "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+      },
+      "citations_exact": true,
+      "outcome_match": true,
+      "condition_adherent": true,
+      "shell_calls": 2,
+      "tool_errors": 0,
+      "tool_output_bytes": 305,
+      "truncated_tool_outputs": 0,
+      "foreign_tool_count": 0,
+      "source_read_syscalls": null,
+      "source_paths_mentioned_in_commands": [
+        "src/parser.ts"
+      ],
+      "post_initial_shell_calls": null,
+      "initial_retrieval": null
+    },
+    {
+      "id": "trial-063",
+      "fixture": "no-answer-absent",
+      "cache": "warm",
+      "repeat": 2,
+      "condition": "assisted",
+      "duration_seconds": 15.744502,
+      "usage": {
+        "input_tokens": 71545,
+        "cached_input_tokens": 66304,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 353,
+        "reasoning_output_tokens": 65
+      },
+      "source_unchanged": true,
+      "blind_id": "answer-076",
+      "passed": true,
+      "judgment": {
+        "pass": true,
+        "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+      },
+      "citations_exact": true,
+      "outcome_match": true,
+      "condition_adherent": true,
+      "shell_calls": 2,
+      "tool_errors": 0,
+      "tool_output_bytes": 3384,
+      "truncated_tool_outputs": 0,
+      "foreign_tool_count": 0,
+      "source_read_syscalls": null,
+      "source_paths_mentioned_in_commands": [
+        "src/inventory.md"
+      ],
+      "post_initial_shell_calls": 1,
+      "initial_retrieval": {
+        "available": true,
+        "context_exit": 0,
+        "required_spans": 0,
+        "covered_spans": 0,
+        "full_evidence": null,
+        "compile_seconds": 0.0,
+        "compiled": false,
+        "relationship_recall": null,
+        "verified_files": 1
+      }
+    },
+    {
+      "id": "trial-064",
+      "fixture": "doc-roadmap-priority",
+      "cache": "warm",
+      "repeat": 2,
+      "condition": "assisted",
+      "duration_seconds": 15.101424,
+      "usage": {
+        "input_tokens": 72976,
+        "cached_input_tokens": 67328,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 355,
+        "reasoning_output_tokens": 20
+      },
+      "source_unchanged": true,
+      "blind_id": "answer-067",
+      "passed": true,
+      "judgment": {
+        "pass": true,
+        "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+      },
+      "citations_exact": true,
+      "outcome_match": true,
+      "condition_adherent": true,
+      "shell_calls": 2,
+      "tool_errors": 0,
+      "tool_output_bytes": 5857,
+      "truncated_tool_outputs": 0,
+      "foreign_tool_count": 0,
+      "source_read_syscalls": null,
+      "source_paths_mentioned_in_commands": [
+        "docs/roadmap.md"
+      ],
+      "post_initial_shell_calls": 1,
+      "initial_retrieval": {
+        "available": true,
+        "context_exit": 0,
+        "required_spans": 2,
+        "covered_spans": 0,
+        "full_evidence": false,
+        "compile_seconds": 0.0,
+        "compiled": false,
+        "relationship_recall": null,
+        "verified_files": 1
+      }
+    },
+    {
+      "id": "trial-065",
+      "fixture": "mixed-release-gate",
+      "cache": "warm",
+      "repeat": 2,
+      "condition": "assisted",
+      "duration_seconds": 16.16726,
+      "usage": {
+        "input_tokens": 72373,
+        "cached_input_tokens": 67328,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 412,
+        "reasoning_output_tokens": 42
+      },
+      "source_unchanged": true,
+      "blind_id": "answer-065",
+      "passed": true,
+      "judgment": {
+        "pass": true,
+        "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+      },
+      "citations_exact": true,
+      "outcome_match": true,
+      "condition_adherent": true,
+      "shell_calls": 2,
+      "tool_errors": 0,
+      "tool_output_bytes": 4809,
+      "truncated_tool_outputs": 0,
+      "foreign_tool_count": 0,
+      "source_read_syscalls": null,
+      "source_paths_mentioned_in_commands": [
+        "docs/release.md",
+        "src/release.go"
+      ],
+      "post_initial_shell_calls": 1,
+      "initial_retrieval": {
+        "available": true,
+        "context_exit": 0,
+        "required_spans": 2,
+        "covered_spans": 1,
+        "full_evidence": false,
+        "compile_seconds": 0.0,
+        "compiled": false,
+        "relationship_recall": null,
+        "verified_files": 2
+      }
+    },
+    {
+      "id": "trial-066",
+      "fixture": "no-answer-restricted",
+      "cache": "warm",
+      "repeat": 1,
+      "condition": "baseline",
+      "duration_seconds": 15.725906,
+      "usage": {
+        "input_tokens": 69995,
+        "cached_input_tokens": 65280,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 412,
+        "reasoning_output_tokens": 86
+      },
+      "source_unchanged": true,
+      "blind_id": "answer-038",
+      "passed": false,
+      "judgment": {
+        "pass": false,
+        "reason": "Safely abstains but labels the restricted case no_answer rather than the required access_denied."
+      },
+      "citations_exact": true,
+      "outcome_match": false,
+      "condition_adherent": true,
+      "shell_calls": 3,
+      "tool_errors": 1,
+      "tool_output_bytes": 879,
+      "truncated_tool_outputs": 0,
+      "foreign_tool_count": 0,
+      "source_read_syscalls": null,
+      "source_paths_mentioned_in_commands": [
+        "docs/public.md"
+      ],
+      "post_initial_shell_calls": null,
+      "initial_retrieval": null
+    },
+    {
+      "id": "trial-067",
+      "fixture": "code-parser-error",
+      "cache": "warm",
+      "repeat": 2,
+      "condition": "baseline",
+      "duration_seconds": 11.24888,
+      "usage": {
+        "input_tokens": 55434,
+        "cached_input_tokens": 52224,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 241,
+        "reasoning_output_tokens": 27
+      },
+      "source_unchanged": true,
+      "blind_id": "answer-078",
+      "passed": true,
+      "judgment": {
+        "pass": true,
+        "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+      },
+      "citations_exact": true,
+      "outcome_match": true,
+      "condition_adherent": true,
+      "shell_calls": 2,
+      "tool_errors": 0,
+      "tool_output_bytes": 305,
+      "truncated_tool_outputs": 0,
+      "foreign_tool_count": 0,
+      "source_read_syscalls": null,
+      "source_paths_mentioned_in_commands": [
+        "src/parser.ts"
+      ],
+      "post_initial_shell_calls": null,
+      "initial_retrieval": null
+    },
+    {
+      "id": "trial-068",
+      "fixture": "no-answer-restricted",
+      "cache": "cold",
+      "repeat": 2,
+      "condition": "assisted",
+      "duration_seconds": 18.891158,
+      "usage": {
+        "input_tokens": 71881,
+        "cached_input_tokens": 65280,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 572,
+        "reasoning_output_tokens": 289
+      },
+      "source_unchanged": true,
+      "blind_id": "answer-051",
+      "passed": true,
+      "judgment": {
+        "pass": true,
+        "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+      },
+      "citations_exact": true,
+      "outcome_match": true,
+      "condition_adherent": true,
+      "shell_calls": 2,
+      "tool_errors": 0,
+      "tool_output_bytes": 3489,
+      "truncated_tool_outputs": 0,
+      "foreign_tool_count": 0,
+      "source_read_syscalls": null,
+      "source_paths_mentioned_in_commands": [
+        "docs/public.md"
+      ],
+      "post_initial_shell_calls": 1,
+      "initial_retrieval": {
+        "available": true,
+        "context_exit": 0,
+        "required_spans": 0,
+        "covered_spans": 0,
+        "full_evidence": null,
+        "compile_seconds": 0.0046848829988448415,
+        "compiled": true,
+        "relationship_recall": null,
+        "verified_files": 1
+      }
+    },
+    {
+      "id": "trial-069",
+      "fixture": "doc-release-notes",
+      "cache": "warm",
+      "repeat": 2,
+      "condition": "assisted",
+      "duration_seconds": 22.219379,
+      "usage": {
+        "input_tokens": 87106,
+        "cached_input_tokens": 79360,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 601,
+        "reasoning_output_tokens": 263
+      },
+      "source_unchanged": true,
+      "blind_id": "answer-080",
+      "passed": false,
+      "judgment": {
+        "pass": false,
+        "reason": "Omits the required single-run qualification from both answer and quotations; descriptive/non-task-success qualifications alone are incomplete."
+      },
+      "citations_exact": true,
+      "outcome_match": true,
+      "condition_adherent": true,
+      "shell_calls": 3,
+      "tool_errors": 1,
+      "tool_output_bytes": 3542,
+      "truncated_tool_outputs": 0,
+      "foreign_tool_count": 0,
+      "source_read_syscalls": null,
+      "source_paths_mentioned_in_commands": [
+        "docs/release.md"
+      ],
+      "post_initial_shell_calls": 2,
+      "initial_retrieval": {
+        "available": true,
+        "context_exit": 0,
+        "required_spans": 1,
+        "covered_spans": 0,
+        "full_evidence": false,
+        "compile_seconds": 0.0,
+        "compiled": false,
+        "relationship_recall": null,
+        "verified_files": 1
+      }
+    },
+    {
+      "id": "trial-070",
+      "fixture": "mixed-release-gate",
+      "cache": "cold",
+      "repeat": 1,
+      "condition": "baseline",
+      "duration_seconds": 14.767723,
+      "usage": {
+        "input_tokens": 55754,
+        "cached_input_tokens": 52224,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 373,
+        "reasoning_output_tokens": 34
+      },
+      "source_unchanged": true,
+      "blind_id": "answer-054",
+      "passed": true,
+      "judgment": {
+        "pass": true,
+        "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+      },
+      "citations_exact": true,
+      "outcome_match": true,
+      "condition_adherent": true,
+      "shell_calls": 2,
+      "tool_errors": 0,
+      "tool_output_bytes": 892,
+      "truncated_tool_outputs": 0,
+      "foreign_tool_count": 0,
+      "source_read_syscalls": null,
+      "source_paths_mentioned_in_commands": [
+        "docs/release.md",
+        "src/release.go"
+      ],
+      "post_initial_shell_calls": null,
+      "initial_retrieval": null
+    },
+    {
+      "id": "trial-071",
+      "fixture": "mixed-schema-owner",
+      "cache": "warm",
+      "repeat": 1,
+      "condition": "assisted",
+      "duration_seconds": 14.558831,
+      "usage": {
+        "input_tokens": 72115,
+        "cached_input_tokens": 67328,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 353,
+        "reasoning_output_tokens": 47
+      },
+      "source_unchanged": true,
+      "blind_id": "answer-063",
+      "passed": true,
+      "judgment": {
+        "pass": true,
+        "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+      },
+      "citations_exact": true,
+      "outcome_match": true,
+      "condition_adherent": true,
+      "shell_calls": 2,
+      "tool_errors": 0,
+      "tool_output_bytes": 4679,
+      "truncated_tool_outputs": 0,
+      "foreign_tool_count": 0,
+      "source_read_syscalls": null,
+      "source_paths_mentioned_in_commands": [
+        "docs/context.md",
+        "src/context.go"
+      ],
+      "post_initial_shell_calls": 1,
+      "initial_retrieval": {
+        "available": true,
+        "context_exit": 0,
+        "required_spans": 2,
+        "covered_spans": 1,
+        "full_evidence": false,
+        "compile_seconds": 0.0,
+        "compiled": false,
+        "relationship_recall": null,
+        "verified_files": 2
+      }
+    },
+    {
+      "id": "trial-072",
+      "fixture": "no-answer-restricted",
+      "cache": "warm",
+      "repeat": 1,
+      "condition": "assisted",
+      "duration_seconds": 25.344788,
+      "usage": {
+        "input_tokens": 89017,
+        "cached_input_tokens": 81408,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 616,
+        "reasoning_output_tokens": 282
+      },
+      "source_unchanged": true,
+      "blind_id": "answer-039",
+      "passed": true,
+      "judgment": {
+        "pass": true,
+        "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+      },
+      "citations_exact": true,
+      "outcome_match": true,
+      "condition_adherent": true,
+      "shell_calls": 3,
+      "tool_errors": 1,
+      "tool_output_bytes": 3618,
+      "truncated_tool_outputs": 0,
+      "foreign_tool_count": 0,
+      "source_read_syscalls": null,
+      "source_paths_mentioned_in_commands": [
+        "docs/public.md"
+      ],
+      "post_initial_shell_calls": 2,
+      "initial_retrieval": {
+        "available": true,
+        "context_exit": 0,
+        "required_spans": 0,
+        "covered_spans": 0,
+        "full_evidence": null,
+        "compile_seconds": 0.0,
+        "compiled": false,
+        "relationship_recall": null,
+        "verified_files": 1
+      }
+    },
+    {
+      "id": "trial-073",
+      "fixture": "code-parser-error",
+      "cache": "cold",
+      "repeat": 1,
+      "condition": "baseline",
+      "duration_seconds": 14.933959,
+      "usage": {
+        "input_tokens": 69488,
+        "cached_input_tokens": 65280,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 303,
+        "reasoning_output_tokens": 36
+      },
+      "source_unchanged": true,
+      "blind_id": "answer-089",
+      "passed": true,
+      "judgment": {
+        "pass": true,
+        "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+      },
+      "citations_exact": true,
+      "outcome_match": true,
+      "condition_adherent": true,
+      "shell_calls": 2,
+      "tool_errors": 0,
+      "tool_output_bytes": 335,
+      "truncated_tool_outputs": 0,
+      "foreign_tool_count": 0,
+      "source_read_syscalls": null,
+      "source_paths_mentioned_in_commands": [
+        "src/parser.ts"
+      ],
+      "post_initial_shell_calls": null,
+      "initial_retrieval": null
+    },
+    {
+      "id": "trial-074",
+      "fixture": "code-parser-error",
+      "cache": "warm",
+      "repeat": 2,
+      "condition": "assisted",
+      "duration_seconds": 14.742215,
+      "usage": {
+        "input_tokens": 71583,
+        "cached_input_tokens": 65280,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 326,
+        "reasoning_output_tokens": 44
+      },
+      "source_unchanged": true,
+      "blind_id": "answer-002",
+      "passed": true,
+      "judgment": {
+        "pass": true,
+        "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+      },
+      "citations_exact": true,
+      "outcome_match": true,
+      "condition_adherent": true,
+      "shell_calls": 2,
+      "tool_errors": 0,
+      "tool_output_bytes": 3346,
+      "truncated_tool_outputs": 0,
+      "foreign_tool_count": 0,
+      "source_read_syscalls": null,
+      "source_paths_mentioned_in_commands": [
+        "src/parser.ts"
+      ],
+      "post_initial_shell_calls": 1,
+      "initial_retrieval": {
+        "available": true,
+        "context_exit": 0,
+        "required_spans": 1,
+        "covered_spans": 1,
+        "full_evidence": true,
+        "compile_seconds": 0.0,
+        "compiled": false,
+        "relationship_recall": null,
+        "verified_files": 1
+      }
+    },
+    {
+      "id": "trial-075",
+      "fixture": "no-answer-absent",
+      "cache": "cold",
+      "repeat": 1,
+      "condition": "assisted",
+      "duration_seconds": 18.27158,
+      "usage": {
+        "input_tokens": 71566,
+        "cached_input_tokens": 65280,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 359,
+        "reasoning_output_tokens": 67
+      },
+      "source_unchanged": true,
+      "blind_id": "answer-046",
+      "passed": true,
+      "judgment": {
+        "pass": true,
+        "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+      },
+      "citations_exact": true,
+      "outcome_match": true,
+      "condition_adherent": true,
+      "shell_calls": 2,
+      "tool_errors": 0,
+      "tool_output_bytes": 3401,
+      "truncated_tool_outputs": 0,
+      "foreign_tool_count": 0,
+      "source_read_syscalls": null,
+      "source_paths_mentioned_in_commands": [
+        "src/inventory.md"
+      ],
+      "post_initial_shell_calls": 1,
+      "initial_retrieval": {
+        "available": true,
+        "context_exit": 0,
+        "required_spans": 0,
+        "covered_spans": 0,
+        "full_evidence": null,
+        "compile_seconds": 0.005144274000485893,
+        "compiled": true,
+        "relationship_recall": null,
+        "verified_files": 1
+      }
+    },
+    {
+      "id": "trial-076",
+      "fixture": "no-answer-restricted",
+      "cache": "cold",
+      "repeat": 1,
+      "condition": "baseline",
+      "duration_seconds": 18.00975,
+      "usage": {
+        "input_tokens": 70998,
+        "cached_input_tokens": 67328,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 463,
+        "reasoning_output_tokens": 78
+      },
+      "source_unchanged": true,
+      "blind_id": "answer-021",
+      "passed": true,
+      "judgment": {
+        "pass": true,
+        "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+      },
+      "citations_exact": true,
+      "outcome_match": true,
+      "condition_adherent": true,
+      "shell_calls": 2,
+      "tool_errors": 1,
+      "tool_output_bytes": 490,
+      "truncated_tool_outputs": 0,
+      "foreign_tool_count": 0,
+      "source_read_syscalls": null,
+      "source_paths_mentioned_in_commands": [
+        "docs/public.md"
+      ],
+      "post_initial_shell_calls": null,
+      "initial_retrieval": null
+    },
+    {
+      "id": "trial-077",
+      "fixture": "code-auth-boundary",
+      "cache": "warm",
+      "repeat": 2,
+      "condition": "assisted",
+      "duration_seconds": 15.58672,
+      "usage": {
+        "input_tokens": 75171,
+        "cached_input_tokens": 66304,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 361,
+        "reasoning_output_tokens": 59
+      },
+      "source_unchanged": true,
+      "blind_id": "answer-014",
+      "passed": true,
+      "judgment": {
+        "pass": true,
+        "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+      },
+      "citations_exact": true,
+      "outcome_match": true,
+      "condition_adherent": true,
+      "shell_calls": 2,
+      "tool_errors": 0,
+      "tool_output_bytes": 6933,
+      "truncated_tool_outputs": 0,
+      "foreign_tool_count": 0,
+      "source_read_syscalls": null,
+      "source_paths_mentioned_in_commands": [
+        "src/auth.py"
+      ],
+      "post_initial_shell_calls": 1,
+      "initial_retrieval": {
+        "available": true,
+        "context_exit": 0,
+        "required_spans": 1,
+        "covered_spans": 1,
+        "full_evidence": true,
+        "compile_seconds": 0.0,
+        "compiled": false,
+        "relationship_recall": 1.0,
+        "verified_files": 1
+      }
+    },
+    {
+      "id": "trial-078",
+      "fixture": "code-retry-policy",
+      "cache": "warm",
+      "repeat": 2,
+      "condition": "baseline",
+      "duration_seconds": 16.992095,
+      "usage": {
+        "input_tokens": 70920,
+        "cached_input_tokens": 66304,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 391,
+        "reasoning_output_tokens": 85
+      },
+      "source_unchanged": true,
+      "blind_id": "answer-045",
+      "passed": true,
+      "judgment": {
+        "pass": true,
+        "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+      },
+      "citations_exact": true,
+      "outcome_match": true,
+      "condition_adherent": true,
+      "shell_calls": 2,
+      "tool_errors": 0,
+      "tool_output_bytes": 551,
+      "truncated_tool_outputs": 0,
+      "foreign_tool_count": 0,
+      "source_read_syscalls": null,
+      "source_paths_mentioned_in_commands": [
+        "src/retry.go"
+      ],
+      "post_initial_shell_calls": null,
+      "initial_retrieval": null
+    },
+    {
+      "id": "trial-079",
+      "fixture": "code-import-sites",
+      "cache": "warm",
+      "repeat": 1,
+      "condition": "baseline",
+      "duration_seconds": 23.39259,
+      "usage": {
+        "input_tokens": 84133,
+        "cached_input_tokens": 78336,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 612,
+        "reasoning_output_tokens": 84
+      },
+      "source_unchanged": true,
+      "blind_id": "answer-016",
+      "passed": true,
+      "judgment": {
+        "pass": true,
+        "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+      },
+      "citations_exact": true,
+      "outcome_match": true,
+      "condition_adherent": true,
+      "shell_calls": 3,
+      "tool_errors": 0,
+      "tool_output_bytes": 632,
+      "truncated_tool_outputs": 0,
+      "foreign_tool_count": 0,
+      "source_read_syscalls": null,
+      "source_paths_mentioned_in_commands": [
+        "go.mod",
+        "src/imports.go",
+        "store/store.go"
+      ],
+      "post_initial_shell_calls": null,
+      "initial_retrieval": null
+    },
+    {
+      "id": "trial-080",
+      "fixture": "no-answer-absent",
+      "cache": "warm",
+      "repeat": 1,
+      "condition": "assisted",
+      "duration_seconds": 20.536028,
+      "usage": {
+        "input_tokens": 73266,
+        "cached_input_tokens": 67328,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 643,
+        "reasoning_output_tokens": 358
+      },
+      "source_unchanged": true,
+      "blind_id": "answer-027",
+      "passed": true,
+      "judgment": {
+        "pass": true,
+        "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+      },
+      "citations_exact": true,
+      "outcome_match": true,
+      "condition_adherent": true,
+      "shell_calls": 3,
+      "tool_errors": 1,
+      "tool_output_bytes": 3508,
+      "truncated_tool_outputs": 0,
+      "foreign_tool_count": 0,
+      "source_read_syscalls": null,
+      "source_paths_mentioned_in_commands": [
+        "src/inventory.md"
+      ],
+      "post_initial_shell_calls": 2,
+      "initial_retrieval": {
+        "available": true,
+        "context_exit": 0,
+        "required_spans": 0,
+        "covered_spans": 0,
+        "full_evidence": null,
+        "compile_seconds": 0.0,
+        "compiled": false,
+        "relationship_recall": null,
+        "verified_files": 1
+      }
+    },
+    {
+      "id": "trial-081",
+      "fixture": "doc-release-notes",
+      "cache": "cold",
+      "repeat": 1,
+      "condition": "assisted",
+      "duration_seconds": 14.247523,
+      "usage": {
+        "input_tokens": 72815,
+        "cached_input_tokens": 68352,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 335,
+        "reasoning_output_tokens": 75
+      },
+      "source_unchanged": true,
+      "blind_id": "answer-081",
+      "passed": false,
+      "judgment": {
+        "pass": false,
+        "reason": "Omits the required single-run qualification from both answer and quotations; descriptive/non-task-success qualifications alone are incomplete."
+      },
+      "citations_exact": true,
+      "outcome_match": true,
+      "condition_adherent": true,
+      "shell_calls": 2,
+      "tool_errors": 0,
+      "tool_output_bytes": 3397,
+      "truncated_tool_outputs": 0,
+      "foreign_tool_count": 0,
+      "source_read_syscalls": null,
+      "source_paths_mentioned_in_commands": [
+        "docs/release.md"
+      ],
+      "post_initial_shell_calls": 1,
+      "initial_retrieval": {
+        "available": true,
+        "context_exit": 0,
+        "required_spans": 1,
+        "covered_spans": 0,
+        "full_evidence": false,
+        "compile_seconds": 0.004992489997675875,
+        "compiled": true,
+        "relationship_recall": null,
+        "verified_files": 1
+      }
+    },
+    {
+      "id": "trial-082",
+      "fixture": "code-parser-error",
+      "cache": "cold",
+      "repeat": 1,
+      "condition": "assisted",
+      "duration_seconds": 15.770585,
+      "usage": {
+        "input_tokens": 71490,
+        "cached_input_tokens": 65280,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 270,
+        "reasoning_output_tokens": 21
+      },
+      "source_unchanged": true,
+      "blind_id": "answer-033",
+      "passed": true,
+      "judgment": {
+        "pass": true,
+        "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+      },
+      "citations_exact": true,
+      "outcome_match": true,
+      "condition_adherent": true,
+      "shell_calls": 2,
+      "tool_errors": 0,
+      "tool_output_bytes": 3346,
+      "truncated_tool_outputs": 0,
+      "foreign_tool_count": 0,
+      "source_read_syscalls": null,
+      "source_paths_mentioned_in_commands": [
+        "src/parser.ts"
+      ],
+      "post_initial_shell_calls": 1,
+      "initial_retrieval": {
+        "available": true,
+        "context_exit": 0,
+        "required_spans": 1,
+        "covered_spans": 1,
+        "full_evidence": true,
+        "compile_seconds": 0.005511752002348658,
+        "compiled": true,
+        "relationship_recall": null,
+        "verified_files": 1
+      }
+    },
+    {
+      "id": "trial-083",
+      "fixture": "code-auth-boundary",
+      "cache": "cold",
+      "repeat": 1,
+      "condition": "assisted",
+      "duration_seconds": 16.22326,
+      "usage": {
+        "input_tokens": 58505,
+        "cached_input_tokens": 53248,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 446,
+        "reasoning_output_tokens": 172
+      },
+      "source_unchanged": true,
+      "blind_id": "answer-052",
+      "passed": true,
+      "judgment": {
+        "pass": true,
+        "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+      },
+      "citations_exact": true,
+      "outcome_match": true,
+      "condition_adherent": true,
+      "shell_calls": 1,
+      "tool_errors": 0,
+      "tool_output_bytes": 6624,
+      "truncated_tool_outputs": 0,
+      "foreign_tool_count": 0,
+      "source_read_syscalls": null,
+      "source_paths_mentioned_in_commands": [],
+      "post_initial_shell_calls": 0,
+      "initial_retrieval": {
+        "available": true,
+        "context_exit": 0,
+        "required_spans": 1,
+        "covered_spans": 1,
+        "full_evidence": true,
+        "compile_seconds": 0.005822082999657141,
+        "compiled": true,
+        "relationship_recall": 1.0,
+        "verified_files": 1
+      }
+    },
+    {
+      "id": "trial-084",
+      "fixture": "no-answer-absent",
+      "cache": "cold",
+      "repeat": 2,
+      "condition": "baseline",
+      "duration_seconds": 18.27112,
+      "usage": {
+        "input_tokens": 83625,
+        "cached_input_tokens": 78336,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 419,
+        "reasoning_output_tokens": 68
+      },
+      "source_unchanged": true,
+      "blind_id": "answer-009",
+      "passed": true,
+      "judgment": {
+        "pass": true,
+        "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+      },
+      "citations_exact": true,
+      "outcome_match": true,
+      "condition_adherent": true,
+      "shell_calls": 3,
+      "tool_errors": 1,
+      "tool_output_bytes": 283,
+      "truncated_tool_outputs": 0,
+      "foreign_tool_count": 0,
+      "source_read_syscalls": null,
+      "source_paths_mentioned_in_commands": [
+        "src/inventory.md"
+      ],
+      "post_initial_shell_calls": null,
+      "initial_retrieval": null
+    },
+    {
+      "id": "trial-085",
+      "fixture": "mixed-schema-owner",
+      "cache": "cold",
+      "repeat": 2,
+      "condition": "assisted",
+      "duration_seconds": 19.890288,
+      "usage": {
+        "input_tokens": 74170,
+        "cached_input_tokens": 66304,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 533,
+        "reasoning_output_tokens": 188
+      },
+      "source_unchanged": true,
+      "blind_id": "answer-022",
+      "passed": true,
+      "judgment": {
+        "pass": true,
+        "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+      },
+      "citations_exact": true,
+      "outcome_match": true,
+      "condition_adherent": true,
+      "shell_calls": 2,
+      "tool_errors": 0,
+      "tool_output_bytes": 4827,
+      "truncated_tool_outputs": 0,
+      "foreign_tool_count": 0,
+      "source_read_syscalls": null,
+      "source_paths_mentioned_in_commands": [
+        "docs/context.md",
+        "src/context.go"
+      ],
+      "post_initial_shell_calls": 1,
+      "initial_retrieval": {
+        "available": true,
+        "context_exit": 0,
+        "required_spans": 2,
+        "covered_spans": 1,
+        "full_evidence": false,
+        "compile_seconds": 0.005976853000902338,
+        "compiled": true,
+        "relationship_recall": null,
+        "verified_files": 2
+      }
+    },
+    {
+      "id": "trial-086",
+      "fixture": "doc-release-notes",
+      "cache": "warm",
+      "repeat": 2,
+      "condition": "baseline",
+      "duration_seconds": 15.863907,
+      "usage": {
+        "input_tokens": 69638,
+        "cached_input_tokens": 65280,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 366,
+        "reasoning_output_tokens": 35
+      },
+      "source_unchanged": true,
+      "blind_id": "answer-077",
+      "passed": false,
+      "judgment": {
+        "pass": false,
+        "reason": "Omits the required single-run qualification from both answer and quotations; descriptive/non-task-success qualifications alone are incomplete."
+      },
+      "citations_exact": true,
+      "outcome_match": true,
+      "condition_adherent": true,
+      "shell_calls": 3,
+      "tool_errors": 1,
+      "tool_output_bytes": 346,
+      "truncated_tool_outputs": 0,
+      "foreign_tool_count": 0,
+      "source_read_syscalls": null,
+      "source_paths_mentioned_in_commands": [
+        "docs/release.md"
+      ],
+      "post_initial_shell_calls": null,
+      "initial_retrieval": null
+    },
+    {
+      "id": "trial-087",
+      "fixture": "doc-roadmap-priority",
+      "cache": "cold",
+      "repeat": 1,
+      "condition": "baseline",
+      "duration_seconds": 16.441538,
+      "usage": {
+        "input_tokens": 55485,
+        "cached_input_tokens": 52224,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 324,
+        "reasoning_output_tokens": 27
+      },
+      "source_unchanged": true,
+      "blind_id": "answer-092",
+      "passed": true,
+      "judgment": {
+        "pass": true,
+        "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+      },
+      "citations_exact": true,
+      "outcome_match": true,
+      "condition_adherent": true,
+      "shell_calls": 2,
+      "tool_errors": 0,
+      "tool_output_bytes": 326,
+      "truncated_tool_outputs": 0,
+      "foreign_tool_count": 0,
+      "source_read_syscalls": null,
+      "source_paths_mentioned_in_commands": [
+        "docs/roadmap.md"
+      ],
+      "post_initial_shell_calls": null,
+      "initial_retrieval": null
+    },
+    {
+      "id": "trial-088",
+      "fixture": "no-answer-restricted",
+      "cache": "warm",
+      "repeat": 2,
+      "condition": "baseline",
+      "duration_seconds": 17.628592,
+      "usage": {
+        "input_tokens": 55644,
+        "cached_input_tokens": 52224,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 473,
+        "reasoning_output_tokens": 141
+      },
+      "source_unchanged": true,
+      "blind_id": "answer-075",
+      "passed": true,
+      "judgment": {
+        "pass": true,
+        "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+      },
+      "citations_exact": true,
+      "outcome_match": true,
+      "condition_adherent": true,
+      "shell_calls": 2,
+      "tool_errors": 1,
+      "tool_output_bytes": 600,
+      "truncated_tool_outputs": 0,
+      "foreign_tool_count": 0,
+      "source_read_syscalls": null,
+      "source_paths_mentioned_in_commands": [
+        "docs/public.md"
+      ],
+      "post_initial_shell_calls": null,
+      "initial_retrieval": null
+    },
+    {
+      "id": "trial-089",
+      "fixture": "code-import-sites",
+      "cache": "warm",
+      "repeat": 1,
+      "condition": "assisted",
+      "duration_seconds": 17.858312,
+      "usage": {
+        "input_tokens": 72175,
+        "cached_input_tokens": 66304,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 404,
+        "reasoning_output_tokens": 121
+      },
+      "source_unchanged": true,
+      "blind_id": "answer-041",
+      "passed": true,
+      "judgment": {
+        "pass": true,
+        "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+      },
+      "citations_exact": true,
+      "outcome_match": true,
+      "condition_adherent": true,
+      "shell_calls": 2,
+      "tool_errors": 0,
+      "tool_output_bytes": 4081,
+      "truncated_tool_outputs": 0,
+      "foreign_tool_count": 0,
+      "source_read_syscalls": null,
+      "source_paths_mentioned_in_commands": [
+        "src/imports.go"
+      ],
+      "post_initial_shell_calls": 1,
+      "initial_retrieval": {
+        "available": true,
+        "context_exit": 0,
+        "required_spans": 2,
+        "covered_spans": 2,
+        "full_evidence": true,
+        "compile_seconds": 0.0,
+        "compiled": false,
+        "relationship_recall": null,
+        "verified_files": 2
+      }
+    },
+    {
+      "id": "trial-090",
+      "fixture": "doc-roadmap-priority",
+      "cache": "cold",
+      "repeat": 1,
+      "condition": "assisted",
+      "duration_seconds": 18.862264,
+      "usage": {
+        "input_tokens": 74794,
+        "cached_input_tokens": 69376,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 573,
+        "reasoning_output_tokens": 253
+      },
+      "source_unchanged": true,
+      "blind_id": "answer-026",
+      "passed": true,
+      "judgment": {
+        "pass": true,
+        "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+      },
+      "citations_exact": true,
+      "outcome_match": true,
+      "condition_adherent": true,
+      "shell_calls": 2,
+      "tool_errors": 0,
+      "tool_output_bytes": 5857,
+      "truncated_tool_outputs": 0,
+      "foreign_tool_count": 0,
+      "source_read_syscalls": null,
+      "source_paths_mentioned_in_commands": [
+        "docs/roadmap.md"
+      ],
+      "post_initial_shell_calls": 1,
+      "initial_retrieval": {
+        "available": true,
+        "context_exit": 0,
+        "required_spans": 2,
+        "covered_spans": 0,
+        "full_evidence": false,
+        "compile_seconds": 0.005858681997779058,
+        "compiled": true,
+        "relationship_recall": null,
+        "verified_files": 1
+      }
+    },
+    {
+      "id": "trial-091",
+      "fixture": "code-parser-error",
+      "cache": "warm",
+      "repeat": 1,
+      "condition": "baseline",
+      "duration_seconds": 13.65064,
+      "usage": {
+        "input_tokens": 55506,
+        "cached_input_tokens": 52224,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 276,
+        "reasoning_output_tokens": 36
+      },
+      "source_unchanged": true,
+      "blind_id": "answer-079",
+      "passed": true,
+      "judgment": {
+        "pass": true,
+        "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+      },
+      "citations_exact": true,
+      "outcome_match": true,
+      "condition_adherent": true,
+      "shell_calls": 2,
+      "tool_errors": 0,
+      "tool_output_bytes": 305,
+      "truncated_tool_outputs": 0,
+      "foreign_tool_count": 0,
+      "source_read_syscalls": null,
+      "source_paths_mentioned_in_commands": [
+        "src/parser.ts"
+      ],
+      "post_initial_shell_calls": null,
+      "initial_retrieval": null
+    },
+    {
+      "id": "trial-092",
+      "fixture": "doc-api-contract",
+      "cache": "warm",
+      "repeat": 2,
+      "condition": "assisted",
+      "duration_seconds": 15.789141,
+      "usage": {
+        "input_tokens": 71447,
+        "cached_input_tokens": 65280,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 345,
+        "reasoning_output_tokens": 57
+      },
+      "source_unchanged": true,
+      "blind_id": "answer-035",
+      "passed": true,
+      "judgment": {
+        "pass": true,
+        "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+      },
+      "citations_exact": true,
+      "outcome_match": true,
+      "condition_adherent": true,
+      "shell_calls": 2,
+      "tool_errors": 0,
+      "tool_output_bytes": 3413,
+      "truncated_tool_outputs": 0,
+      "foreign_tool_count": 0,
+      "source_read_syscalls": null,
+      "source_paths_mentioned_in_commands": [
+        "docs/api.md"
+      ],
+      "post_initial_shell_calls": 1,
+      "initial_retrieval": {
+        "available": true,
+        "context_exit": 0,
+        "required_spans": 1,
+        "covered_spans": 0,
+        "full_evidence": false,
+        "compile_seconds": 0.0,
+        "compiled": false,
+        "relationship_recall": null,
+        "verified_files": 1
+      }
+    },
+    {
+      "id": "trial-093",
+      "fixture": "mixed-release-gate",
+      "cache": "warm",
+      "repeat": 1,
+      "condition": "assisted",
+      "duration_seconds": 22.504752,
+      "usage": {
+        "input_tokens": 72685,
+        "cached_input_tokens": 67328,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 634,
+        "reasoning_output_tokens": 290
+      },
+      "source_unchanged": true,
+      "blind_id": "answer-058",
+      "passed": true,
+      "judgment": {
+        "pass": true,
+        "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+      },
+      "citations_exact": true,
+      "outcome_match": true,
+      "condition_adherent": true,
+      "shell_calls": 2,
+      "tool_errors": 0,
+      "tool_output_bytes": 4772,
+      "truncated_tool_outputs": 0,
+      "foreign_tool_count": 0,
+      "source_read_syscalls": null,
+      "source_paths_mentioned_in_commands": [
+        "docs/release.md",
+        "src/release.go"
+      ],
+      "post_initial_shell_calls": 1,
+      "initial_retrieval": {
+        "available": true,
+        "context_exit": 0,
+        "required_spans": 2,
+        "covered_spans": 1,
+        "full_evidence": false,
+        "compile_seconds": 0.0,
+        "compiled": false,
+        "relationship_recall": null,
+        "verified_files": 2
+      }
+    },
+    {
+      "id": "trial-094",
+      "fixture": "doc-config-boundary",
+      "cache": "warm",
+      "repeat": 1,
+      "condition": "baseline",
+      "duration_seconds": 13.402936,
+      "usage": {
+        "input_tokens": 41463,
+        "cached_input_tokens": 39168,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 283,
+        "reasoning_output_tokens": 71
+      },
+      "source_unchanged": true,
+      "blind_id": "answer-049",
+      "passed": true,
+      "judgment": {
+        "pass": true,
+        "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+      },
+      "citations_exact": true,
+      "outcome_match": true,
+      "condition_adherent": true,
+      "shell_calls": 1,
+      "tool_errors": 0,
+      "tool_output_bytes": 351,
+      "truncated_tool_outputs": 0,
+      "foreign_tool_count": 0,
+      "source_read_syscalls": null,
+      "source_paths_mentioned_in_commands": [],
+      "post_initial_shell_calls": null,
+      "initial_retrieval": null
+    },
+    {
+      "id": "trial-095",
+      "fixture": "doc-api-contract",
+      "cache": "cold",
+      "repeat": 1,
+      "condition": "baseline",
+      "duration_seconds": 18.342811,
+      "usage": {
+        "input_tokens": 69702,
+        "cached_input_tokens": 65280,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 399,
+        "reasoning_output_tokens": 52
+      },
+      "source_unchanged": true,
+      "blind_id": "answer-088",
+      "passed": true,
+      "judgment": {
+        "pass": true,
+        "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+      },
+      "citations_exact": true,
+      "outcome_match": true,
+      "condition_adherent": true,
+      "shell_calls": 3,
+      "tool_errors": 0,
+      "tool_output_bytes": 331,
+      "truncated_tool_outputs": 0,
+      "foreign_tool_count": 0,
+      "source_read_syscalls": null,
+      "source_paths_mentioned_in_commands": [
+        "docs/api.md"
+      ],
+      "post_initial_shell_calls": null,
+      "initial_retrieval": null
+    },
+    {
+      "id": "trial-096",
+      "fixture": "doc-api-contract",
+      "cache": "cold",
+      "repeat": 2,
+      "condition": "assisted",
+      "duration_seconds": 18.459522,
+      "usage": {
+        "input_tokens": 71802,
+        "cached_input_tokens": 66304,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 492,
+        "reasoning_output_tokens": 190
+      },
+      "source_unchanged": true,
+      "blind_id": "answer-044",
+      "passed": true,
+      "judgment": {
+        "pass": true,
+        "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+      },
+      "citations_exact": true,
+      "outcome_match": true,
+      "condition_adherent": true,
+      "shell_calls": 2,
+      "tool_errors": 0,
+      "tool_output_bytes": 3413,
+      "truncated_tool_outputs": 0,
+      "foreign_tool_count": 0,
+      "source_read_syscalls": null,
+      "source_paths_mentioned_in_commands": [
+        "docs/api.md"
+      ],
+      "post_initial_shell_calls": 1,
+      "initial_retrieval": {
+        "available": true,
+        "context_exit": 0,
+        "required_spans": 1,
+        "covered_spans": 0,
+        "full_evidence": false,
+        "compile_seconds": 0.006467051000072388,
+        "compiled": true,
+        "relationship_recall": null,
+        "verified_files": 1
+      }
+    }
+  ],
+  "paired": {
+    "cold": {
+      "pairs": 24,
+      "baseline_only_pass": 0,
+      "assisted_only_pass": 0,
+      "mean_assisted_minus_baseline_seconds": 1.2687867916666666,
+      "mean_assisted_minus_baseline_input_tokens": 3396.1666666666665
+    },
+    "warm": {
+      "pairs": 24,
+      "baseline_only_pass": 0,
+      "assisted_only_pass": 1,
+      "mean_assisted_minus_baseline_seconds": 1.2088603333333334,
+      "mean_assisted_minus_baseline_input_tokens": 9902.958333333334
+    }
+  },
+  "overall": {
+    "baseline": {
+      "trials": 48,
+      "distinct_tasks": 12,
+      "passed": 42,
+      "exact_citations": 48,
+      "condition_adherent": 48,
+      "median_seconds": 16.3349185,
+      "mean_seconds": 17.1056795,
+      "mean_input_tokens": 66882.70833333333,
+      "usage_available": 48,
+      "sum_usage": {
+        "input_tokens": 3210370,
+        "cached_input_tokens": 2958080,
+        "output_tokens": 18706,
+        "reasoning_output_tokens": 3052
+      },
+      "mean_shell_calls": 2.2916666666666665,
+      "mean_tool_output_bytes": 482.8125,
+      "tool_errors": 19,
+      "truncated_tool_outputs": 0,
+      "source_unchanged": 48,
+      "foreign_tool_trials": 0
+    },
+    "assisted": {
+      "trials": 48,
+      "distinct_tasks": 12,
+      "passed": 43,
+      "exact_citations": 48,
+      "condition_adherent": 48,
+      "median_seconds": 17.8015245,
+      "mean_seconds": 18.3445030625,
+      "mean_input_tokens": 73532.27083333333,
+      "usage_available": 48,
+      "sum_usage": {
+        "input_tokens": 3529549,
+        "cached_input_tokens": 3220224,
+        "output_tokens": 21734,
+        "reasoning_output_tokens": 6862
+      },
+      "mean_shell_calls": 2.1875,
+      "mean_tool_output_bytes": 4319.354166666667,
+      "tool_errors": 8,
+      "truncated_tool_outputs": 0,
+      "source_unchanged": 48,
+      "foreign_tool_trials": 0
+    }
+  }
+}

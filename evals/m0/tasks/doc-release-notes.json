@@ -1,0 +1,30 @@
+{
+  "id": "doc-release-notes",
+  "question": "What limitation must accompany the release note's performance observation?",
+  "source_files": [
+    "sources/doc-release-notes.md"
+  ],
+  "source_map": {
+    "sources/doc-release-notes.md": "docs/release.md"
+  },
+  "answer_spans": [
+    {
+      "id": "s1",
+      "file": "sources/doc-release-notes.md",
+      "start_byte": 11,
+      "end_byte": 142,
+      "text": "A local example compile took 12 ms in one run.\nThis observation is descriptive, not a task-success claim or a controlled benchmark."
+    }
+  ],
+  "expected_relationships": [],
+  "allowed_scope": [
+    "docs/release.md"
+  ],
+  "denied_scope": [],
+  "budgets": {
+    "max_bytes": 12000,
+    "max_symbols": 8,
+    "max_tokens": null,
+    "tokenizer": null
+  }
+}

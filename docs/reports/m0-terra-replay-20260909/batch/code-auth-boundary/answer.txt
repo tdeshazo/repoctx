@@ -1,0 +1,1 @@
+{"outcome":"answerable","answer":"load_profile","citations":[{"file":"src/auth.py","quote":"def load_profile(request):\n    verify_token(request.token)\n    return profile(request.user)"}]}

@@ -1,0 +1,11 @@
+{
+  "question": "Which function checks the request token before loading a profile?",
+  "files": [
+    {
+      "file": "src/auth.py",
+      "start_byte": 0,
+      "end_byte": 234,
+      "text": "def verify_token(value):\n    if value != \"fixture-token\":\n        raise ValueError(\"denied\")\n\n\ndef profile(user):\n    return {\"user\": user}\n\n\ndef load_profile(request):\n    verify_token(request.token)\n    return profile(request.user)\n"
+    }
+  ]
+}

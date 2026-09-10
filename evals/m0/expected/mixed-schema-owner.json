@@ -1,0 +1,10 @@
+{
+  "id": "mixed-schema-owner",
+  "answer": "src/context.go declares ContextVersion as repoctx.context/v1alpha1, matching docs/context.md.",
+  "spans": [
+    "s1",
+    "s2"
+  ],
+  "relationships": [],
+  "outcome": "answerable"
+}

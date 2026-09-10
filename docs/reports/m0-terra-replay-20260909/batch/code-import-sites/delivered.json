@@ -1,0 +1,23 @@
+{
+  "question": "Where are the repository-module and external imports declared?",
+  "files": [
+    {
+      "file": "src/imports.go",
+      "start_byte": 0,
+      "end_byte": 100,
+      "text": "package imports\n\nimport (\n\t\"example.test/store\"\n\t\"fmt\"\n)\n\nfunc Print() {\n\tfmt.Println(store.Name)\n}\n"
+    },
+    {
+      "file": "go.mod",
+      "start_byte": 0,
+      "end_byte": 29,
+      "text": "module example.test\n\ngo 1.23\n"
+    },
+    {
+      "file": "store/store.go",
+      "start_byte": 0,
+      "end_byte": 40,
+      "text": "package store\n\nconst Name = \"inventory\"\n"
+    }
+  ]
+}

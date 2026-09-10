@@ -1,0 +1,9 @@
+{
+  "id": "doc-api-contract",
+  "answer": "Compile reads source syntax only; it never executes repository commands.",
+  "spans": [
+    "s1"
+  ],
+  "relationships": [],
+  "outcome": "answerable"
+}

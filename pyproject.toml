@@ -21,6 +21,14 @@ classifiers = [
   "Topic :: Software Development :: Libraries :: Python Modules",
 ]
 
+[project.optional-dependencies]
+test = [
+  "build>=1.2",
+  "jsonschema>=4.20,<5",
+  "setuptools>=69",
+  "wheel>=0.43",
+]
+
 [project.scripts]
 repoctx = "repoctx_cli:main"
 

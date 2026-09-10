@@ -1,0 +1,8 @@
+{
+  "id": "mixed-schema-owner",
+  "question": "Which implementation declares the context schema version described in the contract?",
+  "files": [
+    "docs/context.md",
+    "src/context.go"
+  ]
+}

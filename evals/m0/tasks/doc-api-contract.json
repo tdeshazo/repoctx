@@ -1,0 +1,30 @@
+{
+  "id": "doc-api-contract",
+  "question": "What does the public compile API promise about source execution?",
+  "source_files": [
+    "sources/doc-api-contract.md"
+  ],
+  "source_map": {
+    "sources/doc-api-contract.md": "docs/api.md"
+  },
+  "answer_spans": [
+    {
+      "id": "s1",
+      "file": "sources/doc-api-contract.md",
+      "start_byte": 7,
+      "end_byte": 80,
+      "text": "Compile reads source syntax only; repository commands are never executed."
+    }
+  ],
+  "expected_relationships": [],
+  "allowed_scope": [
+    "docs/api.md"
+  ],
+  "denied_scope": [],
+  "budgets": {
+    "max_bytes": 12000,
+    "max_symbols": 8,
+    "max_tokens": null,
+    "tokenizer": null
+  }
+}

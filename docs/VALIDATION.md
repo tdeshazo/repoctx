@@ -1,5 +1,22 @@
 # Validation record — repoctx agent context edition
 
+For a readable summary of the latest tests and model trials, start with the
+[evaluation report](reports/mothership-repoctx-codex-exec-comparison.md).
+It includes the September 9 paired Terra trial (baseline 42/48 versus
+repoctx-first 43/48), with retrieval and fallback measured separately, and the
+earlier full-source replay (11/12). Model outcomes are separate from software validation.
+
+## Historical software validation
+
+This file records the earlier validation execution for source revision
+`6c303125e2a7864f944dc7e83716518fb3bb24a6` (the revision named by the original
+validation report). It is historical evidence, not a claim that a later
+checkout has been freshly tested. For the reproducible M0 command sequence and
+machine-readable report format, see [M0 baseline](M0_BASELINE.md) and run
+`python3 scripts/m0_baseline.py --output /tmp/repoctx-m0-baseline.json` from a
+clean checkout. That runner records the exact revision and conditions for the
+new execution.
+
 Environment: Go 1.23.2, native C compiler for Tree-sitter, Linux amd64. Python
 is not required for indexing or tests.
 
@@ -64,7 +81,9 @@ were run separately from the Go coverage collection. No claim of full coverage.
 
 ## Important scope limits
 
-No live LLM or coding-agent benchmark was run. These tests establish interface,
+No live LLM or coding-agent benchmark was run in this historical validation.
+The later model trials are summarized in the evaluation report above.
+These tests establish interface,
 source-fidelity and resource-bound behavior, not improved task success or general
 prompt-injection resistance. SHA-256 freshness is limited to permitted indexed
 files; new sources and unindexed build configuration require recompilation.

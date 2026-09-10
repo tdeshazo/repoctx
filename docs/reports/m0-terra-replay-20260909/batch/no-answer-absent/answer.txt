@@ -1,0 +1,1 @@
+{"outcome":"no_answer","answer":"The supplied file does not identify any module implementing an unannounced quantum cache.","citations":[{"file":"src/inventory.md","quote":"The repository contains a file reader and a text renderer."}]}

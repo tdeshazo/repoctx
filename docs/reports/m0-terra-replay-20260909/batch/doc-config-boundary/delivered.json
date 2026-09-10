@@ -1,0 +1,11 @@
+{
+  "question": "Which configuration files are outside the current freshness guarantee?",
+  "files": [
+    {
+      "file": "docs/freshness.md",
+      "start_byte": 0,
+      "end_byte": 154,
+      "text": "# Freshness\n\nOnly indexed source files are freshness-verified.\nUnindexed build configuration, including go.mod and tsconfig.json, requires recompilation.\n"
+    }
+  ]
+}

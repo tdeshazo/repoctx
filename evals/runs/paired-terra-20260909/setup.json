@@ -1,0 +1,23 @@
+{
+  "codex_cli": "0.153.4",
+  "excluded_setup_trials": 12,
+  "smoke_runs": [
+    {"directory": "/tmp/repoctx-paired-smoke-20260909", "trials": 4, "result": "No shell dispatch with code_mode_host disabled; configuration corrected before measurement."},
+    {"directory": "/tmp/repoctx-paired-smoke2-20260909", "trials": 4, "result": "MCP approval configuration prevented shell execution; configuration corrected before measurement."},
+    {"directory": "/tmp/repoctx-paired-smoke3-20260909", "trials": 4, "result": "Corrected retry-policy setup trials completed with shell access and required initial repoctx use."}
+  ],
+  "validation": {
+    "build": "GOCACHE=/tmp/repoctx-paired-go-cache go build -buildvcs=false -trimpath -o /tmp/repoctx-paired-binary .: passed",
+    "isolation_preflight": "passed; restricted files, host home, credentials and baseline repoctx unavailable",
+    "python_tests": "PYTHONPATH=src python3 -m unittest discover -s tests -p 'test_*.py': 21 passed",
+    "initial_test_invocation": "Without PYTHONPATH=src, test_launcher import failed; corrected environment and reran all tests.",
+    "scoring": "All 96 schedule records, corpus hashes, citation bytes, initial evidence bytes/hashes, and response caps verified."
+  },
+  "grading": {
+    "grader": "primary assistant",
+    "condition_masked": true,
+    "independent_human": false,
+    "procedure": "Reviewed all shuffled answers with fixture rubrics, persisted 96 decisions, then joined condition key with scorer.",
+    "limitations": "Grader saw execution progress and setup answers. Quotes may supply omitted claims but cannot override contradictory answer text."
+  }
+}

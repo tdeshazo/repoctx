@@ -1,0 +1,386 @@
+{
+  "answer-001": {
+    "pass": true,
+    "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+  },
+  "answer-002": {
+    "pass": true,
+    "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+  },
+  "answer-003": {
+    "pass": true,
+    "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+  },
+  "answer-004": {
+    "pass": true,
+    "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+  },
+  "answer-005": {
+    "pass": true,
+    "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+  },
+  "answer-006": {
+    "pass": true,
+    "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+  },
+  "answer-007": {
+    "pass": true,
+    "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+  },
+  "answer-008": {
+    "pass": true,
+    "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+  },
+  "answer-009": {
+    "pass": true,
+    "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+  },
+  "answer-010": {
+    "pass": true,
+    "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+  },
+  "answer-011": {
+    "pass": true,
+    "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+  },
+  "answer-012": {
+    "pass": false,
+    "reason": "Names the CRLF criterion as the roadmap item instead of Evidence bundles; the correct heading in its quote does not resolve the contradictory answer."
+  },
+  "answer-013": {
+    "pass": true,
+    "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+  },
+  "answer-014": {
+    "pass": true,
+    "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+  },
+  "answer-015": {
+    "pass": false,
+    "reason": "Omits the required single-run qualification from both answer and quotations; descriptive/non-task-success qualifications alone are incomplete."
+  },
+  "answer-016": {
+    "pass": true,
+    "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+  },
+  "answer-017": {
+    "pass": true,
+    "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+  },
+  "answer-018": {
+    "pass": true,
+    "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+  },
+  "answer-019": {
+    "pass": true,
+    "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+  },
+  "answer-020": {
+    "pass": true,
+    "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+  },
+  "answer-021": {
+    "pass": true,
+    "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+  },
+  "answer-022": {
+    "pass": true,
+    "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+  },
+  "answer-023": {
+    "pass": true,
+    "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+  },
+  "answer-024": {
+    "pass": true,
+    "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+  },
+  "answer-025": {
+    "pass": true,
+    "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+  },
+  "answer-026": {
+    "pass": true,
+    "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+  },
+  "answer-027": {
+    "pass": true,
+    "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+  },
+  "answer-028": {
+    "pass": true,
+    "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+  },
+  "answer-029": {
+    "pass": true,
+    "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+  },
+  "answer-030": {
+    "pass": true,
+    "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+  },
+  "answer-031": {
+    "pass": true,
+    "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+  },
+  "answer-032": {
+    "pass": false,
+    "reason": "Omits the required single-run qualification from both answer and quotations; descriptive/non-task-success qualifications alone are incomplete."
+  },
+  "answer-033": {
+    "pass": true,
+    "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+  },
+  "answer-034": {
+    "pass": true,
+    "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+  },
+  "answer-035": {
+    "pass": true,
+    "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+  },
+  "answer-036": {
+    "pass": true,
+    "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+  },
+  "answer-037": {
+    "pass": true,
+    "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+  },
+  "answer-038": {
+    "pass": false,
+    "reason": "Safely abstains but labels the restricted case no_answer rather than the required access_denied."
+  },
+  "answer-039": {
+    "pass": true,
+    "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+  },
+  "answer-040": {
+    "pass": false,
+    "reason": "Omits the required single-run qualification from both answer and quotations; descriptive/non-task-success qualifications alone are incomplete."
+  },
+  "answer-041": {
+    "pass": true,
+    "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+  },
+  "answer-042": {
+    "pass": false,
+    "reason": "Omits the required single-run qualification from both answer and quotations; descriptive/non-task-success qualifications alone are incomplete."
+  },
+  "answer-043": {
+    "pass": true,
+    "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+  },
+  "answer-044": {
+    "pass": true,
+    "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+  },
+  "answer-045": {
+    "pass": true,
+    "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+  },
+  "answer-046": {
+    "pass": true,
+    "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+  },
+  "answer-047": {
+    "pass": false,
+    "reason": "Omits the required single-run qualification from both answer and quotations; descriptive/non-task-success qualifications alone are incomplete."
+  },
+  "answer-048": {
+    "pass": true,
+    "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+  },
+  "answer-049": {
+    "pass": true,
+    "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+  },
+  "answer-050": {
+    "pass": true,
+    "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+  },
+  "answer-051": {
+    "pass": true,
+    "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+  },
+  "answer-052": {
+    "pass": true,
+    "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+  },
+  "answer-053": {
+    "pass": true,
+    "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+  },
+  "answer-054": {
+    "pass": true,
+    "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+  },
+  "answer-055": {
+    "pass": true,
+    "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+  },
+  "answer-056": {
+    "pass": true,
+    "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+  },
+  "answer-057": {
+    "pass": true,
+    "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+  },
+  "answer-058": {
+    "pass": true,
+    "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+  },
+  "answer-059": {
+    "pass": true,
+    "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+  },
+  "answer-060": {
+    "pass": true,
+    "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+  },
+  "answer-061": {
+    "pass": false,
+    "reason": "Names the CRLF criterion as the roadmap item instead of Evidence bundles; the correct heading in its quote does not resolve the contradictory answer."
+  },
+  "answer-062": {
+    "pass": true,
+    "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+  },
+  "answer-063": {
+    "pass": true,
+    "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+  },
+  "answer-064": {
+    "pass": true,
+    "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+  },
+  "answer-065": {
+    "pass": true,
+    "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+  },
+  "answer-066": {
+    "pass": true,
+    "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+  },
+  "answer-067": {
+    "pass": true,
+    "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+  },
+  "answer-068": {
+    "pass": true,
+    "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+  },
+  "answer-069": {
+    "pass": true,
+    "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+  },
+  "answer-070": {
+    "pass": true,
+    "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+  },
+  "answer-071": {
+    "pass": true,
+    "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+  },
+  "answer-072": {
+    "pass": true,
+    "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+  },
+  "answer-073": {
+    "pass": true,
+    "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+  },
+  "answer-074": {
+    "pass": true,
+    "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+  },
+  "answer-075": {
+    "pass": true,
+    "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+  },
+  "answer-076": {
+    "pass": true,
+    "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+  },
+  "answer-077": {
+    "pass": false,
+    "reason": "Omits the required single-run qualification from both answer and quotations; descriptive/non-task-success qualifications alone are incomplete."
+  },
+  "answer-078": {
+    "pass": true,
+    "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+  },
+  "answer-079": {
+    "pass": true,
+    "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+  },
+  "answer-080": {
+    "pass": false,
+    "reason": "Omits the required single-run qualification from both answer and quotations; descriptive/non-task-success qualifications alone are incomplete."
+  },
+  "answer-081": {
+    "pass": false,
+    "reason": "Omits the required single-run qualification from both answer and quotations; descriptive/non-task-success qualifications alone are incomplete."
+  },
+  "answer-082": {
+    "pass": true,
+    "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+  },
+  "answer-083": {
+    "pass": true,
+    "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+  },
+  "answer-084": {
+    "pass": true,
+    "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+  },
+  "answer-085": {
+    "pass": true,
+    "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+  },
+  "answer-086": {
+    "pass": true,
+    "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+  },
+  "answer-087": {
+    "pass": true,
+    "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+  },
+  "answer-088": {
+    "pass": true,
+    "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+  },
+  "answer-089": {
+    "pass": true,
+    "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+  },
+  "answer-090": {
+    "pass": true,
+    "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+  },
+  "answer-091": {
+    "pass": true,
+    "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+  },
+  "answer-092": {
+    "pass": true,
+    "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+  },
+  "answer-093": {
+    "pass": true,
+    "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+  },
+  "answer-094": {
+    "pass": true,
+    "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+  },
+  "answer-095": {
+    "pass": true,
+    "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+  },
+  "answer-096": {
+    "pass": true,
+    "reason": "Whole response, including quoted evidence, supplies the required claims or appropriate abstention without a contradictory claim; exact quotation and outcome checks are applied separately."
+  }
+}

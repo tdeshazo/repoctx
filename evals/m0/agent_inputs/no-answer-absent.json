@@ -1,0 +1,7 @@
+{
+  "id": "no-answer-absent",
+  "question": "Which module implements the unannounced quantum cache?",
+  "files": [
+    "src/inventory.md"
+  ]
+}

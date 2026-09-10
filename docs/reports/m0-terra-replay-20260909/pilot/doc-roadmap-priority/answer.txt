@@ -1,0 +1,1 @@
+{"outcome":"answerable","answer":"Evidence bundles is the highest-priority incomplete item; its next unmet criterion is preserving CRLF byte offsets.","citations":[{"file":"docs/roadmap.md","quote":"## Evidence bundles — priority 1"},{"file":"docs/roadmap.md","quote":"- [ ] Preserve CRLF byte offsets."}]}

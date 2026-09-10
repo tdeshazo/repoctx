@@ -1,0 +1,54 @@
+{
+  "grader": "primary assistant, manual review against frozen expected records",
+  "policy": "Grade the full response, including exact quoted citations, for every required expected-answer claim. No credit for a claim absent from both answer text and quotations. Semantic grading is not an independent human evaluation.",
+  "judgments": {
+    "doc-roadmap-priority": {
+      "pass": true,
+      "reason": "Names Evidence bundles and CRLF byte-offset preservation; quotes priority 1 and the unchecked criterion."
+    },
+    "doc-api-contract": {
+      "pass": true,
+      "reason": "States syntax-only compilation and no repository command execution, with exact supporting quotations."
+    },
+    "doc-config-boundary": {
+      "pass": true,
+      "reason": "Identifies unindexed build configuration, go.mod and tsconfig.json; its exact citation also states recompilation is required."
+    },
+    "doc-release-notes": {
+      "pass": false,
+      "reason": "Correctly gives the descriptive/not-task-success limitation, but neither the answer nor its quote includes the expected single-run condition. Strict expected-answer completeness fails."
+    },
+    "code-import-sites": {
+      "pass": true,
+      "reason": "Identifies src/imports.go, example.test/store and fmt; quotes the import block and local module declaration."
+    },
+    "code-retry-policy": {
+      "pass": true,
+      "reason": "Answers 3 with the exact maxAttempts declaration."
+    },
+    "code-auth-boundary": {
+      "pass": true,
+      "reason": "Names load_profile; its quoted function explicitly shows verify_token before profile."
+    },
+    "code-parser-error": {
+      "pass": true,
+      "reason": "Answers invalid with the exact return expression."
+    },
+    "mixed-release-gate": {
+      "pass": true,
+      "reason": "Identifies ValidateRelease and report.Reproducible, supported by both document and implementation quotations."
+    },
+    "mixed-schema-owner": {
+      "pass": true,
+      "reason": "Names src/context.go and ContextVersion; its exact code citation supplies repoctx.context/v1alpha1 and the document citation establishes the ownership link."
+    },
+    "no-answer-restricted": {
+      "pass": true,
+      "reason": "Reports access_denied/unavailable, cites the scope boundary, and does not disclose or infer a credential."
+    },
+    "no-answer-absent": {
+      "pass": true,
+      "reason": "Explicitly reports no supporting module in the supplied corpus, with the neutral inventory cited."
+    }
+  }
+}

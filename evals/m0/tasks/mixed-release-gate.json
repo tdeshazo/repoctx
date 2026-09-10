@@ -1,0 +1,40 @@
+{
+  "id": "mixed-release-gate",
+  "question": "Which code gate implements the documented release requirement, and what does it check?",
+  "source_files": [
+    "sources/mixed-release-gate.md",
+    "sources/mixed-release-gate.go.txt"
+  ],
+  "source_map": {
+    "sources/mixed-release-gate.md": "docs/release.md",
+    "sources/mixed-release-gate.go.txt": "src/release.go"
+  },
+  "answer_spans": [
+    {
+      "id": "s1",
+      "file": "sources/mixed-release-gate.md",
+      "start_byte": 20,
+      "end_byte": 134,
+      "text": "A release requires a reproducible validation report.\nThe implementation gate is ValidateRelease in src/release.go."
+    },
+    {
+      "id": "s2",
+      "file": "sources/mixed-release-gate.go.txt",
+      "start_byte": 60,
+      "end_byte": 132,
+      "text": "func ValidateRelease(report Report) bool {\n\treturn report.Reproducible\n}"
+    }
+  ],
+  "expected_relationships": [],
+  "allowed_scope": [
+    "docs/release.md",
+    "src/release.go"
+  ],
+  "denied_scope": [],
+  "budgets": {
+    "max_bytes": 16000,
+    "max_symbols": 8,
+    "max_tokens": null,
+    "tokenizer": null
+  }
+}

@@ -1,0 +1,3 @@
+package context
+
+const ContextVersion = "repoctx.context/v1alpha1"

@@ -1,0 +1,7 @@
+{
+  "id": "code-parser-error",
+  "question": "What literal does parse return when its input is empty?",
+  "files": [
+    "src/parser.ts"
+  ]
+}

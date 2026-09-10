@@ -1,0 +1,9 @@
+{
+  "id": "code-import-sites",
+  "question": "Where are the repository-module and external imports declared?",
+  "files": [
+    "src/imports.go",
+    "go.mod",
+    "store/store.go"
+  ]
+}

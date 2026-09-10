@@ -1,0 +1,7 @@
+{
+  "id": "doc-release-notes",
+  "question": "What limitation must accompany the release note's performance observation?",
+  "files": [
+    "docs/release.md"
+  ]
+}
