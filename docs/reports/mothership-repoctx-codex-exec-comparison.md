@@ -1,10 +1,50 @@
 # repoctx evaluation report
 
-Updated: 2026-09-09. This report brings together the paired shell trial, the
+Updated: 2026-09-10. This report brings together discovery software validation, the paired shell trial, the
 earlier full-source replay, and the Mothership comparison. Run files are supporting evidence;
 the results and their limits are summarized here.
 
-## Latest results: free-shell baseline versus repoctx-first
+## Discovery toolkit: deterministic validation, September 10
+
+The index-free `overview`, `files`, `search`, `read`, and combined `discover`
+commands were implemented on working-tree changes above `e915946`. Validation
+used Linux x86_64, Go `go1.27.0-X:nodwarf5`, and Python 3.12.13 for schema checks.
+Go tests, race tests, vet, both CLI builds, the 21 existing Python tests, and
+Draft 2020-12 validation of IR/context/discovery sample responses passed.
+The initial default Go cache was read-only; reruns used
+`GOCACHE=/tmp/repoctx-discovery-go-cache`. The default Python interpreter lacked
+`jsonschema`; schema checks used the existing M0 validation environment instead.
+
+New deterministic fixtures cover combined documentation-body/configuration
+retrieval, literal/regex matching, nested ignore precedence, scope and symlink
+boundaries, unsupported file types, batched reads, exact UTF-8/CRLF spans and
+hashes, cancellation, final payload bounds, and JSON/Markdown evidence parity.
+Discovery ran with `PATH=/nonexistent`, and the two executable entry points
+produced identical sample discovery payloads. The vendored skill validator passed.
+
+These are software checks, **not a new model trial**. The September 9 results
+below predate this toolkit and do not measure it. Index enrichment, retrieval
+quality on a broader corpus, shell-call savings, and agent outcomes remain
+unmeasured for the new commands. Usage and limitations are in the
+[README](../../README.md#repository-discovery-without-an-index).
+
+Reproduce the main checks from the repository root (use a Python environment
+with `requirements-test.txt` installed for schema validation):
+
+```sh
+go test ./...
+go test -race ./...
+go vet ./...
+go build -buildvcs=false -o /tmp/repoctx-discovery .
+go build -buildvcs=false -o /tmp/repoctx-discovery-legacy ./cmd/repoctx
+PYTHONPATH=src python3 -m unittest discover -s tests -p 'test_*.py' -v
+/tmp/repoctx-discovery discover -root examples/mixed -query 'Worker files' -o /tmp/repoctx-discovery-response.json
+/tmp/repoctx-discovery compile -root examples/mixed -o /tmp/repoctx-discovery-ir.json
+/tmp/repoctx-discovery context -root examples/mixed -query Worker.files -max-bytes 20000 -o /tmp/repoctx-discovery-context.json /tmp/repoctx-discovery-ir.json
+python3 scripts/check_schemas.py --ir-schema docs/ir.schema.json --context-schema docs/context.schema.json --ir /tmp/repoctx-discovery-ir.json --context /tmp/repoctx-discovery-context.json --discovery-schema docs/discovery.schema.json --discovery /tmp/repoctx-discovery-response.json
+```
+
+## Latest model results: free-shell baseline versus repoctx-first
 
 **Baseline passed 42/48 trials (87.5%); repoctx-first passed 43/48 (89.6%).**
 This is a one-trial difference across 12 small synthetic tasks, not convincing

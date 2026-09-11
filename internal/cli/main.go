@@ -23,6 +23,8 @@ func Main(args []string) {
 		os.Exit(2)
 	}
 	switch args[0] {
+	case "overview", "files", "search", "read", "discover":
+		discoveryCmd(args[0], args[1:])
 	case "compile":
 		compileCmd(args[1:])
 	case "stats":
@@ -46,11 +48,19 @@ func usage() {
 	fmt.Fprintln(os.Stderr, `repoctx - compile Go/Python/HTML/CSS/JavaScript/TypeScript/TSX/Markdown repositories into a compact typed IR
 
 Usage:
+  repoctx discover [-root DIR] [-query TASK] [-max-bytes 32768]
+  repoctx overview [-root DIR] [-depth 2]
+  repoctx files [-root DIR] [-glob '*.go'] [-type file|directory|all]
+  repoctx search [-root DIR] -query TEXT [-regex] [-context-lines 3]
+  repoctx read [-root DIR] -file PATH[:START:END] [-file PATH...]
   repoctx compile [-root DIR] [-o repo.ir.json.gz] [-pretty]
   repoctx stats REPO_IR
   repoctx graph [-match TEXT|-node ID] [-depth N] REPO_IR
   repoctx context -root DIR -query TEXT [-max-bytes 32768] REPO_IR
   repoctx validate REPO_IR
+
+Discovery commands need no index or external search tools. They honor local
+ignore rules and caller scope. Use COMMAND -help for visibility and budget flags.
 
 The IR contains normalized Tree-sitter AST node tables for Python, HTML, CSS,
 JavaScript, TypeScript, TSX and Markdown plus the native Go AST, stable symbols, source-linked occurrence edges,

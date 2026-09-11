@@ -1,6 +1,7 @@
 # repoctx — repository index and agent context compiler
 
-`repoctx` has **two outputs with different consumers**:
+`repoctx` supports index-free repository discovery and an indexed evidence
+workflow. The indexed workflow has **two outputs with different consumers**:
 
 1. **Repository IR (`repoctx.ir/v1alpha3`)**: compact Go/Python/HTML/CSS/JavaScript/TypeScript/TSX/Markdown ASTs, interned
    strings, symbols, occurrence edges, and dense forward/reverse CSR adjacency.
@@ -98,7 +99,91 @@ context only when needed. It assumes the `repoctx` binary is on `PATH`.
 Copy the `skills/repoctx` directory into your agent's skill directory to use it
 outside this checkout. Installing the Go binary does not install the skill.
 
+## Repository discovery without an index
+
+Discovery combines repository orientation, file finding, text matching, and
+exact excerpts. It does not require Git, ripgrep, an index, or a model API, and
+creates no cache. Use the combined command first when you need several of these
+operations; use focused commands for a known follow-up:
+
+```sh
+repoctx discover -root . -query 'retry configuration' -max-bytes 12000
+repoctx overview -root . -depth 2
+repoctx files -root . -glob '*.go'
+repoctx files -root . -type directory -glob '*test*'
+repoctx search -root . -query 'MaxAttempts' -context-lines 3
+repoctx search -root . -query '^func .*Retry' -regex -ignore-case
+repoctx read -root . -file README.md:1:30 -file go.mod
+```
+
+All arguments are named flags; `COMMAND -help` lists them. `-root` defaults to
+the current directory, never a parent Git root. `read -file PATH:START:END`
+uses inclusive one-based lines, with zero meaning the beginning/end. Repeated
+requests share file reads and overlapping or adjacent ranges are merged.
+An out-of-range line request is a usage error, not a silently shortened read.
+
+Discovery inventories regular files regardless of parser support, including
+YAML, TOML, and plain text. It honors nested repository-local `.gitignore` and
+`.ignore` rules; `.ignore` rules take precedence over `.gitignore`, and deeper
+rules override shallower rules within each kind. Supported patterns include
+negation, root anchoring, directory suffixes, escaped characters, character
+ranges, and whole-component `**`. An excluded parent directory is not traversed,
+so a child negation cannot reopen it. Global Git configuration, `.git/info/exclude`,
+and tracked status are not consulted; this is not exact `git ls-files` parity.
+
+Hidden entries are excluded unless `-hidden` is supplied. `-no-ignore` disables
+ignore rules independently of hidden visibility. Neither option bypasses
+`-allow`/`-deny` prefixes, and `.git` internals are always excluded. Scope applies
+to ignore-file reads too: unavailable rules are reported rather than read outside
+scope. Explicit `read` requests use the same visibility policy. Symlinks and
+special files are never followed/opened as content. There is no secret scanner.
+
+`search` performs literal, case-sensitive, line-by-line matching by default;
+`-regex` enables Go regular expressions. Slashless `-glob` patterns match file
+basenames; patterns containing `/` match root-relative paths. `discover` splits
+task text into distinct lowercase Unicode letter/digit terms and matches
+substrings in paths and source. Windows rank by distinct matched terms, path
+terms, and source occurrences capped at ten per term, then path and byte offset.
+It performs no stemming, embeddings, or query expansion. The returned score is
+not confidence or a guarantee of answer sufficiency. Filename-based documentation
+and configuration labels are inspection leads, not authoritative entry points.
+
+JSON is the default, with the separate
+[`repoctx.discovery/v1alpha1` contract](docs/discovery.schema.json).
+`-format markdown` renders the same records as indented JSON for safe review;
+source text is JSON-escaped and round-trips exactly. Each excerpt includes the
+observed file hash, inclusive lines, and half-open UTF-8 byte offsets. Existing
+IR and context schemas are unchanged.
+
+Default bounds are 32 KiB final output (`-max-bytes`), 2 MiB per file
+(`-max-source-bytes`), 256 MiB total content including ignore files
+(`-max-read-bytes`), 100 results (`-max-results`), and 100,000 enumerated entries
+(`-max-entries`). Overview depth defaults to two; it limits presentation, not
+the inventory scan. Query-bearing discovery includes at most 12 overview entries
+to leave room for excerpts. Both formats enforce their own final serialized
+byte bound, including escaping and metadata, not a token bound.
+
+Check `incomplete`, `omissions`, and `warnings`. Binary, non-UTF-8, oversized,
+unreadable, and unsafe content is explicitly omitted; inventory-only commands
+do not open content to classify it. Oversized evidence records are omitted whole,
+never silently turned into declaration prefixes. Scan, read, result, overview,
+and output limits have distinct reasons. If a directory exceeds the remaining
+scan budget, the retained subset depends on filesystem enumeration order; complete
+scans have deterministic ordering. Live results are not an atomic snapshot:
+concurrent writers can change the tree between reads. Linux uses descriptor-relative
+no-symlink access; other platforms require an immutable, access-controlled tree.
+
+Empty searches succeed with an empty list. Invalid options/ranges exit 2;
+execution failures exit 1. Diagnostics go to stderr and payloads to stdout, or
+an explicitly requested `-o` file written only after successful serialization.
+Discovery complements ordinary shell tools; no reduced-call or task-success
+improvement is claimed until a paired agent evaluation measures it.
+
 ## Compile, then retrieve for an agent
+
+For initial navigation without an index, start with the
+[discovery toolkit](#repository-discovery-without-an-index). Compile when you
+need indexed symbols and relationships.
 
 ```sh
 ./repoctx compile -root examples/mixed -o mixed.ir.json.gz

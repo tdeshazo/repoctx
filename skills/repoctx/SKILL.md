@@ -1,12 +1,12 @@
 ---
 name: repoctx
-description: Compile and retrieve bounded, source-linked repository context with repoctx when an agent needs focused codebase evidence before implementation or review.
+description: Discover repository files and source excerpts without an index, or retrieve indexed symbols and relationships with repoctx when focused repository evidence is needed.
 ---
 
 # Repoctx
 
-Use this skill to turn a repository into a compact index and retrieve the
-smallest task-relevant evidence bundle. Assume `repoctx` is on `PATH`.
+Use index-free discovery for repository orientation and source evidence; compile
+an index when symbol relationships are needed. Assume `repoctx` is on `PATH`.
 
 Use it for codebase exploration, implementation, debugging, or review when a
 focused source/relationship slice would improve decisions. Do not use it as a
@@ -27,7 +27,40 @@ verification requirements.
   deletion of permitted indexed files, but not new, ignored, or build/config
   inputs outside the index scope.
 
-## Retrieve focused evidence
+## Discover without compiling
+
+When several discovery steps are needed, try one combined request before
+separately listing, searching, and reading the same files:
+
+```sh
+repoctx discover -root /path/to/repo -query 'the task or error' -max-bytes 12000
+```
+
+The result combines a small overview, matched paths, and exact source windows.
+No index or external search binaries are required. Task matching is lexical,
+not semantic; inspect the returned evidence rather than treating ranking as
+confidence. Do not repeat a source read when the returned excerpt already
+answers the question.
+
+Use focused follow-ups when needed:
+
+```sh
+repoctx files -root /path/to/repo -glob '*.yaml'
+repoctx search -root /path/to/repo -query 'exact error text' -context-lines 3
+repoctx read -root /path/to/repo -file src/server.go:40:100 -file go.mod
+```
+
+`overview -depth 2` provides orientation alone. `search` defaults to literal
+matching; `-regex` and `-ignore-case` are explicit options. Read ranges are
+inclusive, and repeated `-file` requests are supported. All arguments are flags.
+
+Check `incomplete`, `omissions`, and `warnings` before concluding that something
+is absent. Local ignore rules and hidden filtering apply even to explicit reads;
+use `-hidden` or `-no-ignore` only when the task warrants broader visibility.
+Neither bypasses caller `-deny` scope. Live results are observed source, not an
+atomic snapshot. Ordinary shell fallback remains available when appropriate.
+
+## Retrieve indexed relationships
 
 Compile and validate only when an appropriate current index is not already
 available. Put generated indexes and temporary bundles outside the repository

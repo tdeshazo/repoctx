@@ -1,0 +1,105 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/tdeshazo/repoctx/docs/discovery.schema.json",
+  "title": "repoctx live repository discovery v1alpha1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "options", "usage", "overview", "results", "omissions", "incomplete", "warnings"],
+  "properties": {
+    "version": {"const": "repoctx.discovery/v1alpha1"},
+    "options": {"$ref": "#/$defs/options"},
+    "usage": {
+      "type": "object", "additionalProperties": false,
+      "required": ["entries", "files", "directories", "read_bytes"],
+      "properties": {
+        "entries": {"type": "integer", "minimum": 0},
+        "files": {"type": "integer", "minimum": 0},
+        "directories": {"type": "integer", "minimum": 0},
+        "read_bytes": {"type": "integer", "minimum": 0}
+      }
+    },
+    "overview": {"type": "array", "items": {"$ref": "#/$defs/entry"}},
+    "results": {"type": "array", "items": {"$ref": "#/$defs/result"}},
+    "omissions": {
+      "type": "array", "items": {
+        "type": "object", "additionalProperties": false, "required": ["reason"],
+        "properties": {"path": {"type": "string"}, "reason": {"type": "string", "minLength": 1}}
+      }
+    },
+    "incomplete": {"type": "boolean"},
+    "warnings": {"$ref": "#/$defs/strings"}
+  },
+  "$defs": {
+    "strings": {"type": "array", "items": {"type": "string"}},
+    "options": {
+      "type": "object", "additionalProperties": false,
+      "required": ["root", "operation", "type", "regex", "ignore_case", "hidden", "no_ignore", "allow", "deny", "reads", "depth", "context_lines", "max_bytes", "max_source_bytes", "max_read_bytes", "max_results", "max_entries", "format"],
+      "properties": {
+        "root": {"type": "string", "minLength": 1},
+        "operation": {"enum": ["overview", "files", "search", "read", "discover"]},
+        "query": {"type": "string"}, "glob": {"type": "string"},
+        "type": {"enum": ["file", "directory", "all"]},
+        "regex": {"type": "boolean"}, "ignore_case": {"type": "boolean"},
+        "hidden": {"type": "boolean"}, "no_ignore": {"type": "boolean"},
+        "allow": {"$ref": "#/$defs/strings"}, "deny": {"$ref": "#/$defs/strings"},
+        "reads": {
+          "type": "array", "items": {
+            "type": "object", "additionalProperties": false, "required": ["path"],
+            "properties": {
+              "path": {"type": "string", "minLength": 1},
+              "start_line": {"type": "integer", "minimum": 0},
+              "end_line": {"type": "integer", "minimum": 0}
+            }
+          }
+        },
+        "depth": {"type": "integer", "minimum": 0},
+        "context_lines": {"type": "integer", "minimum": 0},
+        "max_bytes": {"type": "integer", "minimum": 1},
+        "max_source_bytes": {"type": "integer", "minimum": 1},
+        "max_read_bytes": {"type": "integer", "minimum": 1},
+        "max_results": {"type": "integer", "minimum": 1},
+        "max_entries": {"type": "integer", "minimum": 1, "maximum": 10000000},
+        "format": {"enum": ["json", "markdown"]}
+      }
+    },
+    "entry": {
+      "type": "object", "additionalProperties": false, "required": ["path", "type"],
+      "properties": {
+        "path": {"type": "string", "minLength": 1},
+        "type": {"enum": ["file", "directory"]},
+        "candidate": {"enum": ["documentation", "configuration"]}
+      }
+    },
+    "result": {
+      "type": "object", "additionalProperties": false,
+      "required": ["path", "type", "matched_terms", "score"],
+      "properties": {
+        "path": {"type": "string", "minLength": 1},
+        "type": {"enum": ["file", "directory"]},
+        "candidate": {"enum": ["documentation", "configuration"]},
+        "matched_terms": {"$ref": "#/$defs/strings"},
+        "score": {
+          "type": "object", "additionalProperties": false,
+          "required": ["distinct_terms", "path_terms", "occurrences"],
+          "properties": {
+            "distinct_terms": {"type": "integer", "minimum": 0},
+            "path_terms": {"type": "integer", "minimum": 0},
+            "occurrences": {"type": "integer", "minimum": 0}
+          }
+        },
+        "evidence": {
+          "type": "object", "additionalProperties": false,
+          "required": ["sha256", "start_byte", "end_byte", "start_line", "end_line", "text"],
+          "properties": {
+            "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+            "start_byte": {"type": "integer", "minimum": 0},
+            "end_byte": {"type": "integer", "minimum": 0},
+            "start_line": {"type": "integer", "minimum": 1},
+            "end_line": {"type": "integer", "minimum": 1},
+            "text": {"type": "string"}
+          }
+        }
+      }
+    }
+  }
+}

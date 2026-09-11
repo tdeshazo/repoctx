@@ -157,6 +157,16 @@ report](docs/reports/m0-baseline.json) and [baseline contract](docs/M0_BASELINE.
 
 ## 5. M1 — Retrieve sufficient document and source evidence
 
+**Discovery foundation (2026-09-10):** The index-free `overview`, `files`,
+`search`, `read`, and combined `discover` commands add bounded live inventory
+and source-window retrieval across text/configuration files. Their shared Go
+engine, scope/ignore handling, exact-evidence tests, and separate discovery
+schema are covered by deterministic regression tests. See the
+[discovery usage and limits](README.md#repository-discovery-without-an-index).
+This supports M1/M2 but does not complete their indexed retrieval-unit,
+compilation-input identity, or freshness gates. Indexed enrichment and a new
+paired model trial remain deferred; no agent-efficiency improvement is claimed.
+
 **Objective:** A bounded bundle should contain the facts needed for its intended
 task, not merely the heading or symbol nearest those facts.
 

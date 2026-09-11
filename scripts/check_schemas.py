@@ -29,7 +29,11 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--context-schema", type=Path, required=True)
     parser.add_argument("--ir", type=Path, required=True)
     parser.add_argument("--context", type=Path, required=True)
+    parser.add_argument("--discovery-schema", type=Path)
+    parser.add_argument("--discovery", type=Path)
     args = parser.parse_args(argv)
+    if bool(args.discovery) != bool(args.discovery_schema):
+        parser.error("--discovery and --discovery-schema must be supplied together")
 
     checks: list[dict[str, Any]] = []
     try:
@@ -45,8 +49,12 @@ def main(argv: list[str] | None = None) -> int:
             from jsonschema import Draft202012Validator  # type: ignore
         except ImportError as exc:
             raise RuntimeError("jsonschema is required for full Draft 2020-12 validation; install requirements-test.txt") from exc
-        for artifact, schema_path, payload in ((args.ir, args.ir_schema, ir), (args.context, args.context_schema, context)):
+        artifacts = [(args.ir, args.ir_schema, ir), (args.context, args.context_schema, context)]
+        if args.discovery:
+            artifacts.append((args.discovery, args.discovery_schema, load_payload(args.discovery)))
+        for artifact, schema_path, payload in artifacts:
             schema = json.loads(schema_path.read_text(encoding="utf-8"))
+            Draft202012Validator.check_schema(schema)
             validator = Draft202012Validator(schema)
             errors = sorted(error.message for error in validator.iter_errors(payload))
             checks.append({"artifact": str(artifact), "schema": str(schema_path), "mode": "jsonschema-draft2020-12", "errors": errors})
