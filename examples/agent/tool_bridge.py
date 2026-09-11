@@ -37,6 +37,7 @@ class RepositoryContextTool:
         *,
         snapshot: str | None = None,
         depth: int = 1,
+        unit_ids: Sequence[str] = (),
     ) -> str:
         """Retrieve evidence; symbols are semantic IDs, not graph-array indexes.
 
@@ -49,6 +50,10 @@ class RepositoryContextTool:
             raise ValueError("Expected at most 12 symbol IDs")
         if any(not isinstance(s, str) or len(s.encode("utf-8")) > 8192 for s in symbol_ids):
             raise ValueError("Invalid symbol IDs")
+        if isinstance(unit_ids, (str, bytes)) or len(unit_ids) > 8:
+            raise ValueError("Expected at most 8 retrieval unit IDs")
+        if any(not isinstance(s, str) or len(s.encode("utf-8")) > 8192 for s in unit_ids):
+            raise ValueError("Invalid unit IDs")
         if depth not in range(0, 5):
             raise ValueError("Depth must be 0..4")
         args = [
@@ -58,6 +63,8 @@ class RepositoryContextTool:
         ]
         for symbol in symbol_ids:
             args.extend(["-symbol", symbol])
+        for unit in unit_ids:
+            args.extend(["-unit", unit])
         for prefix in self.denied_prefixes:
             args.extend(["-deny", prefix])
         if snapshot is not None:
@@ -70,7 +77,7 @@ class RepositoryContextTool:
             raise RuntimeError("Compiler exceeded the configured payload bound")
         payload = completed.stdout.decode("utf-8")
         bundle = json.loads(payload)
-        if bundle.get("version") != "repoctx.context/v1alpha1":
+        if bundle.get("version") not in {"repoctx.context/v1alpha1", "repoctx.context/v1alpha2"}:
             raise RuntimeError("Unexpected context protocol")
         if bundle.get("trust", {}).get("role") != "untrusted_repository_data":
             raise RuntimeError("Missing evidence trust classification")

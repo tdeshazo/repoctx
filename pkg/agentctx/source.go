@@ -6,6 +6,7 @@ import (
 	"encoding/hex"
 	"fmt"
 	"io/fs"
+	"regexp"
 	"sort"
 	"strings"
 	"unicode/utf8"
@@ -221,5 +222,64 @@ func addEvidence(b *Bundle, s *source, a, z int, role string) string {
 			b.Symbols[i].Evidence = id
 		}
 	}
+	for i := range b.Units {
+		refs := []string{}
+		seen := map[string]bool{}
+		for _, ref := range b.Units[i].Evidence {
+			if old[ref] {
+				ref = id
+			}
+			if !seen[ref] {
+				refs = append(refs, ref)
+				seen[ref] = true
+			}
+		}
+		b.Units[i].Evidence = refs
+	}
 	return id
+}
+
+func (s *source) queryExcerpt(a, z int, query string, limit int) (int, int) {
+	words := terms(query)
+	patterns := []*regexp.Regexp{}
+	for _, word := range words {
+		patterns = append(patterns, regexp.MustCompile("(?i)"+regexp.QuoteMeta(word)))
+	}
+	best, hit := 0, a
+	for _, line := range s.lines {
+		if line >= z {
+			break
+		}
+		if line < a {
+			continue
+		}
+		end := z
+		if next := bytes.IndexByte(s.data[line:z], '\n'); next >= 0 {
+			end = line + next
+		}
+		score, first := 0, -1
+		for _, re := range patterns {
+			if loc := re.FindIndex(s.data[line:end]); loc != nil {
+				score++
+				if first < 0 || loc[0] < first {
+					first = loc[0]
+				}
+			}
+		}
+		if score > best {
+			best, hit = score, line+first
+		}
+	}
+	if hit < a+limit {
+		return s.excerpt(a, z, limit)
+	}
+	start := max(a, hit-limit/3)
+	for start > a && !utf8.RuneStart(s.data[start]) {
+		start--
+	}
+	end := min(z, start+limit)
+	for end < z && end > start && !utf8.RuneStart(s.data[end]) {
+		end--
+	}
+	return start, end
 }

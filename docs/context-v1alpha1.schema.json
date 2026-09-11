@@ -1,11 +1,11 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://example.invalid/repoctx.context.v1alpha2.schema.json",
-  "title": "repoctx agent context v1alpha2",
+  "$id": "https://example.invalid/repoctx.context.v1alpha1.schema.json",
+  "title": "repoctx agent context v1alpha1",
   "type": "object",
   "properties": {
     "version": {
-      "const": "repoctx.context/v1alpha2"
+      "const": "repoctx.context/v1alpha1"
     },
     "snapshot": {
       "$ref": "#/$defs/snapshot"
@@ -54,12 +54,6 @@
       "items": {
         "type": "string"
       }
-    },
-    "units": {
-      "type": "array",
-      "items": {
-        "$ref": "#/$defs/unit"
-      }
     }
   },
   "required": [
@@ -72,8 +66,7 @@
     "symbols",
     "evidence",
     "omissions",
-    "warnings",
-    "units"
+    "warnings"
   ],
   "additionalProperties": false,
   "$defs": {
@@ -181,7 +174,7 @@
       "type": "object",
       "properties": {
         "strategy": {
-          "const": "body_units_and_symbols_then_bounded_graph"
+          "const": "lexical_seeds_then_bounded_graph"
         },
         "depth": {
           "type": "integer",
@@ -224,11 +217,6 @@
         "max_relations": {
           "type": "integer",
           "minimum": 0
-        },
-        "max_units": {
-          "type": "integer",
-          "minimum": 1,
-          "maximum": 64
         }
       },
       "required": [
@@ -239,8 +227,7 @@
         "max_bytes",
         "max_symbols",
         "max_candidates",
-        "max_relations",
-        "max_units"
+        "max_relations"
       ],
       "additionalProperties": false
     },
@@ -251,9 +238,7 @@
           "enum": [
             "explicit_symbol",
             "lexical_seed",
-            "graph_neighbor",
-            "lexical_unit",
-            "explicit_unit"
+            "graph_neighbor"
           ]
         },
         "depth": {
@@ -279,24 +264,6 @@
             "in",
             "out"
           ]
-        },
-        "matched_fields": {
-          "type": "array",
-          "items": {
-            "enum": [
-              "body",
-              "path",
-              "name",
-              "semantic_id"
-            ]
-          }
-        },
-        "components": {
-          "type": "object",
-          "additionalProperties": {
-            "type": "integer",
-            "minimum": 0
-          }
         }
       },
       "required": [
@@ -352,8 +319,7 @@
         "completeness": {
           "enum": [
             "full_definition",
-            "declaration_excerpt",
-            "query_excerpt"
+            "declaration_excerpt"
           ]
         },
         "reason": {
@@ -514,10 +480,6 @@
         },
         "traversal_limited": {
           "type": "boolean"
-        },
-        "unit_limit": {
-          "type": "integer",
-          "minimum": 0
         }
       },
       "required": [
@@ -527,72 +489,9 @@
         "excerpts",
         "relations",
         "imports",
-        "traversal_limited",
-        "unit_limit"
+        "traversal_limited"
       ],
       "additionalProperties": false
-    },
-    "unit": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": [
-        "id",
-        "kind",
-        "file",
-        "extent",
-        "evidence",
-        "completeness",
-        "reason"
-      ],
-      "properties": {
-        "id": {
-          "type": "string",
-          "pattern": "^u:[0-9a-f]{24}$"
-        },
-        "kind": {
-          "enum": [
-            "document",
-            "section",
-            "paragraph",
-            "list_item",
-            "checklist_item",
-            "table",
-            "code_block",
-            "source_block"
-          ]
-        },
-        "file": {
-          "type": "string"
-        },
-        "parent": {
-          "type": "string"
-        },
-        "extent": {
-          "$ref": "#/$defs/span"
-        },
-        "heading": {
-          "$ref": "#/$defs/span"
-        },
-        "content": {
-          "$ref": "#/$defs/span"
-        },
-        "evidence": {
-          "type": "array",
-          "minItems": 1,
-          "items": {
-            "type": "string"
-          }
-        },
-        "completeness": {
-          "enum": [
-            "full_unit",
-            "unit_excerpt"
-          ]
-        },
-        "reason": {
-          "$ref": "#/$defs/reason"
-        }
-      }
     }
   }
 }

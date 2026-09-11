@@ -51,7 +51,7 @@ it does not assume a specific vendor API or perform LLM inference.
 
 ## Protocol fields
 
-`version` is `repoctx.context/v1alpha1`. Use the checked-in JSON Schema and
+`version` is `repoctx.context/v1alpha2`. Use the checked-in JSON Schema and
 `Bundle.Validate` for cross-reference checks.
 
 - `snapshot.id`: SHA-256 of the normalized index JSON. It binds all indexed
@@ -59,11 +59,16 @@ it does not assume a specific vendor API or perform LLM inference.
   attestation or proof that the index came from a trusted compiler.
 - `snapshot.verification`: `sha256_all_permitted_indexed_files`. Denied files
   are not read. This does not check newly added files or unindexed build inputs.
-- `seeds`: exact semantic IDs selected for this request. Missing required seeds
+- `seeds`: required semantic symbol IDs or retrieval unit IDs for this request. Missing required seeds
   produce an error rather than unrelated fallback content.
 - `symbols`: symbol identity and language/type, source-definition coordinates,
   evidence reference, completeness and selection explanation. Ranking scores
   are deterministic retrieval signals, not confidence probabilities.
+- `units`: separate document/source retrieval extents with snapshot-bound IDs,
+  nearest containing unit ID, separate heading and section-body `content` spans, evidence references,
+  `full_unit`/`unit_excerpt` completeness, and ranking components. A parent may
+  be unselected; explicitly request its ID to expand. Heading symbols retain
+  their original, heading-only definition spans.
 - `evidence`: exact source slices. The hash is of the **whole file**. Byte offsets
   are half-open `[start_byte,end_byte)`. Lines start at one. Columns are zero-based
   UTF-8 **bytes**, not Unicode characters; end positions are exclusive.
@@ -87,13 +92,40 @@ means a prefix of that source was provided. Prefix sizes are lowered under budge
 pressure without synthesizing a summary. Read the source range and completeness
 flag before assuming the body is present. A declaration excerpt need not be a
 syntactically complete signature. Overlapping evidence ranges are coalesced;
-multiple symbols may refer to a single evidence record.
+multiple symbols or units may refer to a single evidence record.
+`query_excerpt` denotes a query-centered slice rather than a declaration prefix.
+An additional declaration lead may be a separate evidence block: the missing gap
+is not presented as continuous source. Unit extents describe the original unit,
+not a guarantee that an excerpt covers the entire extent.
 
 ## Selection and limits
 
-Explicit `-symbol` seeds take priority over lexical discovery. Otherwise, the
-query is tokenized and matched against names, semantic IDs and file paths. Up to
-three high-ranked seeds are selected; this is not an embedding model.
+Explicit `-symbol` and `-unit` seeds take priority over lexical discovery and
+may be combined. Otherwise the existing camel-case/Unicode tokenizer and stop
+list are applied to names, semantic IDs, paths, and verified source text.
+Symbol name/ID exact-query matches score 10000; per term, exact names score 100
+or substring names 50, IDs 20, paths 5. Non-Markdown symbol bodies add 30 per
+distinct matched query term. Unit bodies add 30 and paths 5 per term. Scores and
+matched fields are exposed; scores are not confidence or sufficiency guarantees.
+
+Up to three high-ranked symbol seeds within half the best symbol score seed graph
+expansion. Unit candidates are ranked by score, then shorter extent, then ID;
+already-contained lower-ranked units are deduplicated. Symbols and units are
+merged by score (stable ties), bounded by `-max-candidates`. The top lexical
+candidate is required; remaining candidates may be omitted under limits. Explicit
+seeds are all required. This is a deterministic baseline, not an embedding model.
+
+Units are derived from the existing Markdown AST and hash-verified source at
+request time, after scope filtering. Section extents begin at their heading and
+end at the next heading of equal/higher level or EOF; the heading remains a
+separate span. Nested/repeated and Setext headings, documents without headings,
+paragraphs, tables, list/checklist items, and raw fenced/indented code are covered.
+Other languages have whole-file and bounded 2048-byte source-block units.
+Fences are never recursively parsed as another language. Full extents are tried
+first; under pressure, excerpts shrink from 900 to 112 bytes around the
+highest-term-coverage source line, with deterministic earliest-line ties.
+Unit IDs bind file path/hash, kind, and offsets. No new persistent text cache is
+created. Existing indexes already contain sensitive source-derived strings.
 
 Graph expansion can follow incoming, outgoing or both directions, at depth zero
 through four. Defaults are calls and defines. No package-unit or unresolved-name
@@ -101,8 +133,23 @@ hub is traversed; otherwise a ubiquitous unresolved name such as `print` would
 connect unrelated functions. `-relations` limits expansion; the rendered adjacent
 relationship summary can still describe other observed edge kinds.
 
-Defaults: 12 selected symbols, 128 graph candidates, 48 relationship records,
+Defaults: 12 selected symbols, 8 units, 128 combined candidates, 48 relationship records,
 32768 rendered bytes. At most 100000 arcs are scanned by neighborhood expansion.
+
+### Migrating context consumers
+
+The IR stays `repoctx.ir/v1alpha3`; old v1alpha3 indexes can serve the new context
+contract without migration because retrieval units are derived from verified
+source and existing ASTs. Unit rules are part of the context implementation,
+not a new compilation-input identity. M2 freshness limitations still apply.
+
+Consumers of v1alpha1 should accept v1alpha2, the required `units` array,
+`selection.max_units`, `omissions.unit_limit`, new ranking fields/strategies,
+unit IDs in `seeds`, and `query_excerpt` symbol completeness. Do not assume
+that every required seed is in `symbols`. The model-neutral adapter accepts
+both versions and adds keyword-only `unit_ids`. Historical artifacts retain
+their version; validate them with `context-v1alpha1.schema.json` rather than
+rewriting old evaluation evidence.
 A quarter of the byte budget, capped at 4096 bytes, is reserved from source
 selection for imports and graph evidence. Token-cap integrations use corresponding
 soft reserves. This is a greedy policy, not an optimal relevance solver. Required

@@ -21,8 +21,10 @@ func contextCmd(args []string) {
 	fs := flag.NewFlagSet("context", flag.ExitOnError)
 	root := fs.String("root", "", "required path to the matching source repository")
 	query := fs.String("query", "", "task text, symbol name, or path (lexical retrieval)")
-	var symbols, allows, denies repeated
+	var symbols, units, allows, denies repeated
 	fs.Var(&symbols, "symbol", "exact semantic ID; repeat for multiple required seeds")
+	fs.Var(&units, "unit", "exact retrieval unit ID from this snapshot; repeat for required seeds")
+	maxUnits := fs.Int("max-units", 8, "maximum included retrieval units, 1..64")
 	fs.Var(&allows, "allow", "permitted relative file/directory prefix; repeat; not a glob")
 	fs.Var(&denies, "deny", "denied relative file/directory prefix; repeat; deny wins")
 	snapshot := fs.String("expect-snapshot", "", "required index snapshot digest when expanding prior context")
@@ -58,14 +60,14 @@ func contextCmd(args []string) {
 	if e != nil {
 		fatal(e)
 	}
-	result, e := agentctx.Build(repo, agentctx.Options{Root: *root, Query: *query, Symbols: symbols, ExpectedSnapshot: *snapshot, Depth: *depth, Direction: *direction, Relations: kinds, MaxSymbols: *maxSymbols, MaxCandidates: *maxCandidates, MaxRelations: *maxRelations, MaxBytes: *maxBytes, Format: *format, AllowPaths: allows, DenyPaths: denies, MaxSourceBytes: *maxSource, MaxReadBytes: *maxRead})
+	result, e := agentctx.Build(repo, agentctx.Options{Root: *root, Query: *query, Symbols: symbols, Units: units, MaxUnits: *maxUnits, ExpectedSnapshot: *snapshot, Depth: *depth, Direction: *direction, Relations: kinds, MaxSymbols: *maxSymbols, MaxCandidates: *maxCandidates, MaxRelations: *maxRelations, MaxBytes: *maxBytes, Format: *format, AllowPaths: allows, DenyPaths: denies, MaxSourceBytes: *maxSource, MaxReadBytes: *maxRead})
 	if e != nil {
 		fatal(e)
 	}
 	if e := writePayload(*out, result.Payload); e != nil {
 		fatal(e)
 	}
-	fmt.Fprintf(os.Stderr, "context: %d symbols, %d evidence blocks, %d relationships; %d bytes; approximately %d tokens (byte/4 heuristic, NOT a token bound)\n", len(result.Bundle.Symbols), len(result.Bundle.Evidence), len(result.Bundle.Relationships), result.Usage.Bytes, result.Usage.Tokens)
+	fmt.Fprintf(os.Stderr, "context: %d symbols, %d units, %d evidence blocks, %d relationships; %d bytes; approximately %d tokens (byte/4 heuristic, NOT a token bound)\n", len(result.Bundle.Symbols), len(result.Bundle.Units), len(result.Bundle.Evidence), len(result.Bundle.Relationships), result.Usage.Bytes, result.Usage.Tokens)
 }
 
 func validateCmd(args []string) {

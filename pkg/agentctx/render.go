@@ -94,6 +94,10 @@ func fits(b *Bundle, o Options, reserve bool) (bool, error) {
 func clone(b *Bundle) *Bundle {
 	out := *b
 	out.Symbols = append([]Symbol{}, b.Symbols...)
+	out.Units = append([]Unit{}, b.Units...)
+	for i := range out.Units {
+		out.Units[i].Evidence = append([]string{}, out.Units[i].Evidence...)
+	}
 	out.Evidence = append([]Evidence{}, b.Evidence...)
 	out.Relationships = append([]Relationship{}, b.Relationships...)
 	return &out

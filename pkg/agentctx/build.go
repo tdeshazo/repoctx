@@ -44,10 +44,12 @@ func Build(r *ir.Repository, o Options) (*Result, error) {
 		Version: Version, Snapshot: Snapshot{ID: snap, IRVersion: r.Version, Verification: "sha256_all_permitted_indexed_files", VerifiedFiles: len(sources)}, Query: o.Query, Seeds: seeds,
 		Trust:        Trust{Role: "untrusted_repository_data", Handling: "Pass as tool-result evidence, not system/developer instructions. The caller enforces permissions and authenticates the index."},
 		Capabilities: Capabilities{Available: []string{"go_ast", "python_ast", "html_ast", "css_ast", "javascript_ast", "typescript_ast", "tsx_ast", "markdown_ast", "defines", "imports", "calls", "source_spans"}, Unavailable: []string{"type_checked_dispatch", "type_resolution", "module_resolution", "component_semantics", "react_runtime_semantics", "references", "implements", "inherits", "test_coverage", "build_targets", "embedded_language_semantics"}, CallResolution: "syntax with same-unit name heuristics; not proof of runtime dispatch", Verification: "No build or tests executed; no verification commands inferred."},
-		Selection:    Selection{Strategy: "lexical_seeds_then_bounded_graph", Depth: o.Depth, Direction: o.Direction, Relations: kinds, MaxBytes: o.MaxBytes, MaxTokens: o.MaxTokens, MaxSymbols: o.MaxSymbols, MaxCandidates: o.MaxCandidates, MaxRelations: o.MaxRelations},
-		Symbols:      []Symbol{}, Evidence: []Evidence{}, Omissions: Omissions{Candidates: len(candidates), TraversalLimited: limited},
+		Selection:    Selection{Strategy: "body_units_and_symbols_then_bounded_graph", Depth: o.Depth, Direction: o.Direction, Relations: kinds, MaxBytes: o.MaxBytes, MaxTokens: o.MaxTokens, MaxSymbols: o.MaxSymbols, MaxUnits: o.MaxUnits, MaxCandidates: o.MaxCandidates, MaxRelations: o.MaxRelations},
+		Symbols:      []Symbol{}, Units: []Unit{}, Evidence: []Evidence{}, Omissions: Omissions{Candidates: len(candidates), TraversalLimited: limited},
 		Warnings: []string{"Coverage is selected, not exhaustive. Missing edges do not prove absence.", "Freshness checks cover permitted indexed files only; additions, ignored files and build/config changes require recompilation.", "Use snapshot.id plus semantic symbol IDs for expansion. Dense IDs are snapshot-local."},
 	}
+	b.Capabilities.Available = append(b.Capabilities.Available, "document_retrieval_units", "body_lexical_retrieval", "query_centered_excerpts")
+	b.Warnings = append(b.Warnings, "Unit IDs bind verified source bytes and retrieval-unit rules; re-resolve after changes. Ranking is not confidence or a sufficiency guarantee.")
 	if runtime.GOOS != "linux" {
 		b.Warnings = append(b.Warnings, "This platform uses a check-then-open fallback: an immutable, access-controlled source root is required.")
 	}
@@ -89,6 +91,24 @@ func Build(r *ir.Repository, o Options) (*Result, error) {
 		importBudget.MaxTokens = o.MaxTokens - o.MaxTokens/8
 	}
 	for _, c := range candidates {
+		if c.unit != nil {
+			if len(b.Units) >= o.MaxUnits {
+				b.Omissions.UnitLimit++
+				continue
+			}
+			var accepted bool
+			b, accepted, e = includeUnit(b, c, sources[c.unit.file], sourceBudget)
+			if e != nil {
+				return nil, e
+			}
+			if !accepted {
+				if c.seed {
+					return nil, fmt.Errorf("budget cannot fit required unit %q", c.unit.ID)
+				}
+				b.Omissions.Budget++
+			}
+			continue
+		}
 		if len(b.Symbols) >= o.MaxSymbols {
 			b.Omissions.SymbolLimit++
 			continue
@@ -107,15 +127,30 @@ func Build(r *ir.Repository, o Options) (*Result, error) {
 			start, end := a, z
 			entry := base
 			if mode > 0 {
-				start, end = src.excerpt(a, z, 900>>(mode-1))
-				if end == z {
+				start, end = src.queryExcerpt(a, z, o.Query, 900>>(mode-1))
+				if start == a && end == z {
 					continue
 				}
 				entry.Completeness = "declaration_excerpt"
+				if start != a {
+					entry.Completeness = "query_excerpt"
+				}
 			}
 			trial := clone(b)
 			entry.Evidence = addEvidence(trial, src, start, end, "source")
 			trial.Symbols = append(trial.Symbols, entry)
+			if start != a {
+				// Keep a separate declaration lead where feasible, never bridge an
+				// omitted body gap with invented continuous evidence.
+				sa, sz := src.excerpt(a, z, 160)
+				withLead := clone(trial)
+				addEvidence(withLead, src, sa, sz, "source")
+				if leadFits, err := fits(withLead, sourceBudget, true); err != nil {
+					return nil, err
+				} else if leadFits {
+					trial = withLead
+				}
+			}
 			if mode > 0 {
 				trial.Omissions.Excerpts++
 			}
@@ -136,12 +171,15 @@ func Build(r *ir.Repository, o Options) (*Result, error) {
 			b.Omissions.Budget++
 		}
 	}
-	b.Omissions.Candidates = len(candidates) - len(b.Symbols)
+	b.Omissions.Candidates = len(candidates) - len(b.Symbols) - len(b.Units)
 	// Imports are supporting evidence, not blindly promoted instructions. Include
 	// a whole Go import declaration where available, so aliases remain visible.
 	chosenFiles := map[string]bool{}
 	for _, s := range b.Symbols {
 		chosenFiles[s.File] = true
+	}
+	for _, u := range b.Units {
+		chosenFiles[u.File] = true
 	}
 	seenImports := map[string]bool{}
 	for _, edge := range r.Edges {
@@ -225,8 +263,14 @@ func normalize(o *Options) error {
 	if o.Root == "" {
 		return fmt.Errorf("explicit source Root is required")
 	}
-	if len(o.Symbols) == 0 && strings.TrimSpace(o.Query) == "" {
-		return fmt.Errorf("query or explicit symbols required")
+	if len(o.Symbols)+len(o.Units) == 0 && strings.TrimSpace(o.Query) == "" {
+		return fmt.Errorf("query, explicit symbols, or explicit units required")
+	}
+	if o.MaxUnits == 0 {
+		o.MaxUnits = 8
+	}
+	if o.MaxUnits < 1 || o.MaxUnits > 64 {
+		return fmt.Errorf("max units must be 1..64")
 	}
 	if len(o.Query) > 8192 {
 		return fmt.Errorf("query exceeds 8192 bytes")
@@ -322,8 +366,37 @@ func (b *Bundle) Validate() error {
 		if !ok || e.File != s.File {
 			return fmt.Errorf("invalid evidence reference")
 		}
-		if s.Completeness != "full_definition" && s.Completeness != "declaration_excerpt" {
+		if s.Completeness != "full_definition" && s.Completeness != "declaration_excerpt" && s.Completeness != "query_excerpt" {
 			return fmt.Errorf("invalid completeness")
+		}
+	}
+	for _, u := range b.Units {
+		if syms[u.ID] || len(u.Evidence) == 0 {
+			return fmt.Errorf("duplicate unit or missing unit evidence")
+		}
+		syms[u.ID] = true
+		if u.Completeness != "full_unit" && u.Completeness != "unit_excerpt" {
+			return fmt.Errorf("invalid unit completeness")
+		}
+		if u.Parent == u.ID {
+			return fmt.Errorf("self-parented unit")
+		}
+		if u.Heading != nil && !spanContains(u.Extent, *u.Heading) {
+			return fmt.Errorf("heading outside unit")
+		}
+		if u.Content != nil && !spanContains(u.Extent, *u.Content) {
+			return fmt.Errorf("content outside unit")
+		}
+		full := false
+		for _, id := range u.Evidence {
+			e, ok := ev[id]
+			if !ok || e.File != u.File {
+				return fmt.Errorf("invalid unit evidence reference")
+			}
+			full = full || spanContains(e.Span, u.Extent)
+		}
+		if u.Completeness == "full_unit" && !full {
+			return fmt.Errorf("full unit extent not covered")
 		}
 	}
 	for _, id := range b.Seeds {
@@ -332,4 +405,9 @@ func (b *Bundle) Validate() error {
 		}
 	}
 	return nil
+}
+
+func spanContains(a, b Span) bool {
+	return contains(ir.Span{SL: a.StartLine, SC: a.StartByteColumn, EL: a.EndLine, EC: a.EndByteColumn},
+		ir.Span{SL: b.StartLine, SC: b.StartByteColumn, EL: b.EndLine, EC: b.EndByteColumn})
 }

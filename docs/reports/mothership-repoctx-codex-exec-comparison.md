@@ -4,6 +4,63 @@ Updated: 2026-09-10. This report brings together discovery software validation, 
 earlier full-source replay, and the Mothership comparison. Run files are supporting evidence;
 the results and their limits are summarized here.
 
+## M1: document and body retrieval, September 10
+
+M1 adds source-backed retrieval units, body-text matching, explicit unit
+expansion, and query-centered excerpts to indexed `context`. Heading symbol
+spans remain unchanged. Units are derived after scoped source verification;
+the IR stays v1alpha3 and the context contract advances to v1alpha2.
+
+The deterministic replay compares the committed pre-M1 implementation
+`6cee74f` with working-tree M1 changes above that commit, using all 12 frozen
+M0 tasks, original questions, and unchanged fixture budgets. Each implementation
+compiled its own permitted fixture export and produced JSON and Markdown:
+48 retrievals, not 48 independent tasks. No model was called.
+
+| Retrieval measure | Before M1 | After M1 |
+| --- | ---: | ---: |
+| Fully covered answerable tasks, JSON | 4/10 | 10/10 |
+| Gold source spans covered, JSON | 8/15 | 15/15 |
+| Fully covered answerable tasks, Markdown | 4/10 | 10/10 |
+| Gold source spans covered, Markdown | 8/15 | 15/15 |
+
+All 48 payloads stayed within their final serialized byte budgets and validated
+against their respective versioned schemas. Source hashes and exact evidence
+bytes were verified, including Markdown's actual fenced bodies. The roadmap
+fixture now includes both priority/completion context and the next unmet CRLF
+criterion without manually supplying answer prose. The two non-answer tasks
+remain scope checks, not a claim that repoctx classifies answerability or access
+denial. Relationship recall and agent outcomes were not scored in this replay.
+
+Raw payloads, binary hashes, source hashes, errors, and totals are retained in
+[the M1 replay artifact](../../evals/runs/m1-retrieval-20260910.json).
+New regression tests cover nested/repeated/Setext headings, headingless prose,
+lists/checklists, tables, raw code fences, Unicode/CRLF, long sections, late
+decisive branches, explicit unit scope/budget failure, and format parity.
+Go tests, race tests, vet, both CLI builds, and 23 Python tests passed. The
+existing M0 Python environment supplied `jsonschema`; Go used the writable
+`/tmp/repoctx-discovery-go-cache` cache. The vendored skill validator passed.
+
+Dogfooding was separate from measurement: the committed discovery command
+located evidence-merging/budget code, and the new indexed context command
+retrieved its own seed/budget logic in a schema-valid bundle within 12,000 bytes. A
+discovery read of a large JSON artifact needed ordinary-file fallback after its
+wrapper exceeded the selected budget; this was not counted as trial evidence.
+
+Reproduce the comparison after building the baseline in an isolated export:
+
+```sh
+m1_baseline_dir=$(mktemp -d)
+git archive 6cee74f | tar -x -C "$m1_baseline_dir"
+go -C "$m1_baseline_dir" build -buildvcs=false -o /tmp/repoctx-m1-before .
+go build -buildvcs=false -o /tmp/repoctx-m1-after .
+python3 scripts/m1_retrieval.py --before /tmp/repoctx-m1-before --after /tmp/repoctx-m1-after --output /tmp/repoctx-m1-results.json
+```
+
+These results establish the small M1 engineering gates, not a broader benchmark
+or improved agent success. Selection remains lexical and greedy; source scope,
+budget limits, and the unresolved M2 freshness boundary still matter.
+
 ## Discovery toolkit: deterministic validation, September 10
 
 The index-free `overview`, `files`, `search`, `read`, and combined `discover`

@@ -5,7 +5,7 @@ package agentctx
 
 import "github.com/tdeshazo/repoctx/pkg/ir"
 
-const Version = "repoctx.context/v1alpha1"
+const Version = "repoctx.context/v1alpha2"
 
 // TokenCounter must count the exact supplied rendered bytes using the target
 // model's tokenizer. No generic chars/token estimate is used as a token bound.
@@ -15,6 +15,8 @@ type Options struct {
 	Root             string
 	Query            string
 	Symbols          []string      // exact semantic IDs, never persistent dense IDs
+	Units            []string      // snapshot-bound retrieval unit IDs
+	MaxUnits         int           // default 8; at most 64
 	ExpectedSnapshot string        // optional sha256: index digest, for expansion/replay
 	Depth            int           // 0 = seeds only; at most 4
 	Direction        string        // out, in, both (default)
@@ -41,6 +43,7 @@ type Bundle struct {
 	Capabilities  Capabilities   `json:"capabilities"`
 	Selection     Selection      `json:"selection"`
 	Symbols       []Symbol       `json:"symbols"`
+	Units         []Unit         `json:"units"`
 	Evidence      []Evidence     `json:"evidence"`
 	Relationships []Relationship `json:"relationships,omitempty"`
 	Omissions     Omissions      `json:"omissions"`
@@ -73,6 +76,7 @@ type Selection struct {
 	MaxSymbols    int      `json:"max_symbols"`
 	MaxCandidates int      `json:"max_candidates"`
 	MaxRelations  int      `json:"max_relations"`
+	MaxUnits      int      `json:"max_units"`
 }
 type Span struct {
 	StartLine       int `json:"start_line"`
@@ -84,12 +88,30 @@ type Span struct {
 func span(x ir.Span) Span { return Span{x.SL, x.SC, x.EL, x.EC} }
 
 type Reason struct {
-	Strategy  string `json:"strategy"`
-	Depth     int    `json:"depth"`
-	Score     int    `json:"score"` // ranking signal, not probability or confidence
-	Via       string `json:"via,omitempty"`
-	Relation  string `json:"relation,omitempty"`
-	Direction string `json:"direction,omitempty"`
+	Strategy      string         `json:"strategy"`
+	Depth         int            `json:"depth"`
+	Score         int            `json:"score"` // ranking signal, not probability or confidence
+	Via           string         `json:"via,omitempty"`
+	Relation      string         `json:"relation,omitempty"`
+	Direction     string         `json:"direction,omitempty"`
+	MatchedFields []string       `json:"matched_fields,omitempty"`
+	Components    map[string]int `json:"components,omitempty"`
+}
+
+// Unit is a source-backed retrieval extent, separate from a symbol definition.
+// Parent identifies a containing unit in the same snapshot, not necessarily
+// selected in this bundle. Evidence may be several noncontiguous exact spans.
+type Unit struct {
+	ID           string   `json:"id"`
+	Kind         string   `json:"kind"`
+	File         string   `json:"file"`
+	Parent       string   `json:"parent,omitempty"`
+	Extent       Span     `json:"extent"`
+	Heading      *Span    `json:"heading,omitempty"`
+	Content      *Span    `json:"content,omitempty"` // section body, excluding its heading
+	Evidence     []string `json:"evidence"`
+	Completeness string   `json:"completeness"`
+	Reason       Reason   `json:"reason"`
 }
 type Symbol struct {
 	ID           string `json:"id"`
@@ -134,6 +156,7 @@ type Omissions struct {
 	Relations        int  `json:"relations"`
 	Imports          int  `json:"imports"`
 	TraversalLimited bool `json:"traversal_limited"`
+	UnitLimit        int  `json:"unit_limit"`
 }
 type Usage struct {
 	Bytes       int    `json:"bytes"`

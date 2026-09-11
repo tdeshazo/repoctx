@@ -13,6 +13,7 @@ type candidate struct {
 	node   int
 	reason Reason
 	seed   bool
+	unit   *retrievalUnit
 }
 
 func terms(s string) []string {
@@ -48,7 +49,7 @@ func terms(s string) []string {
 	}
 	return clean
 }
-func choose(r *ir.Repository, o Options, sources map[int]*source) ([]candidate, []string, bool, error) {
+func chooseSymbols(r *ir.Repository, o Options, sources map[int]*source) ([]candidate, []string, bool, error) {
 	var seeds []candidate
 	byID := map[string]int{}
 	for i, s := range r.Symbols {
@@ -65,10 +66,10 @@ func choose(r *ir.Repository, o Options, sources map[int]*source) ([]candidate, 
 			}
 			if !seen[i] {
 				seen[i] = true
-				seeds = append(seeds, candidate{i, Reason{Strategy: "explicit_symbol", Score: 100000}, true})
+				seeds = append(seeds, candidate{node: i, reason: Reason{Strategy: "explicit_symbol", Score: 100000}, seed: true})
 			}
 		}
-	} else {
+	} else if len(o.Units) == 0 {
 		words := terms(o.Query)
 		var ranked []candidate
 		for i, s := range r.Symbols {
@@ -79,26 +80,55 @@ func choose(r *ir.Repository, o Options, sources map[int]*source) ([]candidate, 
 			name := strings.ToLower(r.String(s.Name))
 			qualified := strings.ToLower(id)
 			p := strings.ToLower(r.String(r.Files[s.File].Path))
-			score := 0
+			exactScore, nameScore, idScore, pathScore := 0, 0, 0, 0
 			q := strings.ToLower(strings.TrimSpace(o.Query))
 			if q == name || q == qualified {
-				score += 10000
+				exactScore = 10000
 			}
 			for _, t := range words {
 				if t == name {
-					score += 100
+					nameScore += 100
 				} else if strings.Contains(name, t) {
-					score += 50
+					nameScore += 50
 				}
 				if strings.Contains(qualified, t) {
-					score += 20
+					idScore += 20
 				}
 				if strings.Contains(p, t) {
-					score += 5
+					pathScore += 5
 				}
 			}
+			bodyScore := 0
+			if r.Files[s.File].Lang != ir.LangMarkdown {
+				a, z, err := sources[s.File].offsets(r.Files[s.File].Nodes[s.Node].Span)
+				if err != nil {
+					return nil, nil, false, err
+				}
+				body := strings.ToLower(string(sources[s.File].data[a:z]))
+				for _, word := range words {
+					if strings.Contains(body, word) {
+						bodyScore += 30
+					}
+				}
+			}
+			score := exactScore + nameScore + idScore + pathScore + bodyScore
 			if score > 0 {
-				ranked = append(ranked, candidate{i, Reason{Strategy: "lexical_seed", Score: score}, true})
+				fields := []string{}
+				if nameScore > 0 || q == name {
+					fields = append(fields, "name")
+				}
+				if idScore > 0 || q == qualified {
+					fields = append(fields, "semantic_id")
+				}
+				if pathScore > 0 {
+					fields = append(fields, "path")
+				}
+				if bodyScore > 0 {
+					fields = append(fields, "body")
+				}
+				ranked = append(ranked, candidate{node: i, reason: Reason{Strategy: "lexical_seed", Score: score,
+					MatchedFields: fields, Components: map[string]int{"exact": exactScore, "name": nameScore,
+						"semantic_id": idScore, "path": pathScore, "body": bodyScore}}, seed: true})
 			}
 		}
 		sort.Slice(ranked, func(i, j int) bool {
@@ -118,7 +148,7 @@ func choose(r *ir.Repository, o Options, sources map[int]*source) ([]candidate, 
 		}
 	}
 	if len(seeds) == 0 {
-		return nil, nil, false, fmt.Errorf("no matching symbols; use a name, path, or exact -symbol ID")
+		return nil, nil, false, nil
 	}
 	if len(seeds) > o.MaxSymbols || len(seeds) > o.MaxCandidates {
 		return nil, nil, false, fmt.Errorf("seed count exceeds symbol/candidate limit")

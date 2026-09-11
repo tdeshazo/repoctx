@@ -6,7 +6,7 @@ workflow. The indexed workflow has **two outputs with different consumers**:
 1. **Repository IR (`repoctx.ir/v1alpha3`)**: compact Go/Python/HTML/CSS/JavaScript/TypeScript/TSX/Markdown ASTs, interned
    strings, symbols, occurrence edges, and dense forward/reverse CSR adjacency.
    This is the reusable machine index, not the prompt.
-2. **Agent context (`repoctx.context/v1alpha1`)**: a selected, readable JSON or
+2. **Agent context (`repoctx.context/v1alpha2`)**: a selected, readable JSON or
    Markdown bundle with exact source, semantic IDs, provenance, selection
    reasons, bounded relationships, explicit omissions, and trust metadata.
    Pass this as **tool-result evidence**, not as system/developer instructions.
@@ -256,11 +256,30 @@ The bundle contains named types rather than opaque string-table offsets:
 - **Omissions and warnings**: budget exclusions, symbol limits, excerpts, dropped
   imports/relationships, traversal limits, diagnostics and freshness limits.
 
+Context now searches verified document bodies, comments, and source literals
+alongside symbol names and paths. Markdown documents, sections, paragraphs,
+checklist/list items, tables, and code blocks have separate retrieval units;
+heading symbol spans remain unchanged. Use a returned unit ID for expansion:
+
+```sh
+repoctx context -root /repo -unit 'u:ID_FROM_A_PREVIOUS_BUNDLE' \
+  -expect-snapshot 'sha256:PREVIOUS_SNAPSHOT' -max-units 8 /tmp/repo.ir.json.gz
+```
+
+Units are derived in memory after permitted indexed files pass hash verification,
+not persisted in a new text cache. They do not broaden compiler file discovery
+or fix the M2 compilation-input freshness boundary. The IR remains v1alpha3.
+The context schema advances to v1alpha2: consumers must accept `units`, unit IDs
+in `seeds`, ranking components, and `query_excerpt` completeness. The
+[protocol and migration notes](docs/AGENT_CONTEXT.md) describe the contract;
+[the v1alpha1 schema](docs/context-v1alpha1.schema.json) remains for old artifacts.
+
 The planner uses deterministic lexical seeds and bounded graph expansion. It
 reserves up to a quarter of the byte budget (capped at 4096 bytes) for supporting
 imports and graph evidence. It does not expand through package hubs or globally
 merged unresolved names. Oversized definitions become **explicitly marked exact
-source excerpts**, not invented summaries. A required seed that cannot fit causes
+source excerpts**, preferring query-centered windows and separate declaration
+leads where feasible, not invented summaries. A required seed that cannot fit causes
 an error. The planner is greedy and bounded, not globally optimal.
 
 ## Public Go API

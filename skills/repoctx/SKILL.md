@@ -91,6 +91,15 @@ do not prove absence.
 
 ## Expand only when needed
 
+Context v1alpha2 also returns `units`: exact document/source extents separate
+from symbol definitions. For a paragraph, section, table, or body match, reuse
+its `u:` ID with `-unit` and the previous `-expect-snapshot`. A unit's `parent`
+ID can request its containing section/document even when that parent was not
+selected. Check `full_unit` versus `unit_excerpt`; symbol `query_excerpt`
+likewise means selected body evidence, not a full declaration. Query scores
+are inspection signals, not confidence. Do not infer absent content from an
+omission or an unselected parent.
+
 Use the previous snapshot ID and an exact semantic ID to follow a dependency or
 definition without reloading unrelated code:
 

@@ -176,28 +176,28 @@ symbol-span meanings.
 
 ### Work
 
-- [ ] **M1-01 — Add document retrieval units.** Represent documents, sections,
+- [x] **M1-01 — Add document retrieval units.** Represent documents, sections,
   paragraphs, checklist items, and tables with exact spans and containment.
   Keep a heading span separate from its section-content span. Define section
   boundaries at the next heading of equal or higher level, including EOF and
   nested sections. Handle repeated headings and documents without headings.
-- [ ] **M1-02 — Add body-text lexical retrieval.** Search bounded source and
+- [x] **M1-02 — Add body-text lexical retrieval.** Search bounded source and
   document blocks, including comments and error literals, alongside existing
   name/path matching. Use a documented deterministic ranking baseline before
   adding embeddings. Report the matched fields and ranking components. Apply
   exclusions before building text indexes; protect their contents and caches as
   source-derived sensitive artifacts, not as sanitized metadata.
-- [ ] **M1-03 — Select task-relevant excerpts.** Prefer answer-bearing blocks and
+- [x] **M1-03 — Select task-relevant excerpts.** Prefer answer-bearing blocks and
   query-centered source windows over declaration prefixes alone. Preserve
   signatures or necessary local context where feasible. Noncontiguous evidence
   must remain separate exact spans; omissions must not look like continuous
   source or a complete behavioral description.
-- [ ] **M1-04 — Preserve a transparent retrieval contract.** Support explicit
+- [x] **M1-04 — Preserve a transparent retrieval contract.** Support explicit
   unit references in addition to symbols. Explain exclusions, budget tradeoffs,
   unavailable context, and no-match results. Keep required-seed failure explicit;
   do not substitute unrelated content. Keep retrieval scores distinct from
   confidence or sufficiency guarantees.
-- [ ] **M1-05 — Expand regression coverage.** Cover nested/repeated headings,
+- [x] **M1-05 — Expand regression coverage.** Cover nested/repeated headings,
   lists, tables, Unicode, long sections, errors appearing only in function
   bodies, and declarations whose decisive branch occurs near the end. Fenced
   code remains source evidence, never recursively promoted into executable
@@ -205,20 +205,31 @@ symbol-span meanings.
 
 ### Acceptance gates
 
-- [ ] A public or permission-cleared fixture equivalent to the Mothership
+- [x] A public or permission-cleared fixture equivalent to the Mothership
   question is answerable from an unmodified repoctx bundle, using the original
   question without the correct feature name or manually supplied answer prose.
-- [ ] That fixture includes both the priority/completion evidence and the exact
+- [x] That fixture includes both the priority/completion evidence and the exact
   next unmet criterion, with byte-accurate source references.
-- [ ] A literal or fact found only in a body paragraph or function body can seed
+- [x] A literal or fact found only in a body paragraph or function body can seed
   retrieval even when names and paths do not match the question.
-- [ ] JSON and Markdown deliver equivalent selected evidence and omission
+- [x] JSON and Markdown deliver equivalent selected evidence and omission
   semantics within their respective final-output budgets.
-- [ ] Relevant content that cannot fit is explicitly excerpted or omitted; the
+- [x] Relevant content that cannot fit is explicitly excerpted or omitted; the
   output never implies exhaustive coverage or guaranteed answerability.
 
 **Release artifact:** Updated schemas, migration notes for changed contracts,
 replayable fixtures, and before/after retrieval measurements.
+
+**Completion evidence (2026-09-10):** All M1 gates are covered by
+`pkg/agentctx/m1_test.go`, the context v1alpha2 schema and
+[migration contract](docs/AGENT_CONTEXT.md), and the
+[frozen M0 before/after replay](evals/runs/m1-retrieval-20260910.json).
+Full answer-span coverage increased from 4/10 to 10/10 answerable tasks in
+both formats (8/15 to 15/15 spans), using original questions and unchanged
+budgets. See the [consolidated report](docs/reports/mothership-repoctx-codex-exec-comparison.md).
+Units are derived after source verification rather than persisted in a changed
+IR; M2 compilation-input identity remains outstanding. No new agent-outcome or
+performance improvement is claimed.
 
 ## 6. M2 — Make snapshot identity cover every compilation input
 
