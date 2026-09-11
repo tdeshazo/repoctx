@@ -1,11 +1,11 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://example.invalid/repoctx.context.v1alpha3.schema.json",
-  "title": "repoctx agent context v1alpha3",
+  "$id": "https://example.invalid/repoctx.context.v1alpha2.schema.json",
+  "title": "repoctx agent context v1alpha2",
   "type": "object",
   "properties": {
     "version": {
-      "const": "repoctx.context/v1alpha3"
+      "const": "repoctx.context/v1alpha2"
     },
     "snapshot": {
       "$ref": "#/$defs/snapshot"
@@ -60,10 +60,6 @@
       "items": {
         "$ref": "#/$defs/unit"
       }
-    },
-    "task_id": {
-      "type": "string",
-      "pattern": "^sha256:[0-9a-f]{64}$"
     }
   },
   "required": [
@@ -77,8 +73,7 @@
     "evidence",
     "omissions",
     "warnings",
-    "units",
-    "task_id"
+    "units"
   ],
   "additionalProperties": false,
   "$defs": {
@@ -118,34 +113,21 @@
           "pattern": "^sha256:[0-9a-f]{64}$"
         },
         "ir_version": {
-          "const": "repoctx.ir/v1alpha4"
+          "const": "repoctx.ir/v1alpha3"
         },
         "verification": {
-          "enum": [
-            "verified-local",
-            "immutable"
-          ]
+          "const": "sha256_all_permitted_indexed_files"
         },
         "verified_files": {
           "type": "integer",
           "minimum": 0
-        },
-        "source_id": {
-          "type": "string",
-          "pattern": "^sha256:[0-9a-f]{64}$"
-        },
-        "profile_id": {
-          "type": "string",
-          "pattern": "^sha256:[0-9a-f]{64}$"
         }
       },
       "required": [
         "id",
         "ir_version",
         "verification",
-        "verified_files",
-        "source_id",
-        "profile_id"
+        "verified_files"
       ],
       "additionalProperties": false
     },

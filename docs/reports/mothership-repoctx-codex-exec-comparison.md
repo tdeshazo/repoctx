@@ -1,8 +1,60 @@
 # repoctx evaluation report
 
-Updated: 2026-09-10. This report brings together discovery software validation, the paired shell trial, the
+Updated: 2026-09-10. This report brings together M2 input-consistency and M1 retrieval validation,
+discovery software validation, the paired shell trial, the
 earlier full-source replay, and the Mothership comparison. Run files are supporting evidence;
 the results and their limits are summarized here.
+
+## M2: compilation-input consistency, September 10
+
+The prior M1 work was committed as `ef2a40c`. M2 now emits IR v1alpha4 with a
+compilation-input manifest and context v1alpha3 with separate source, profile,
+index and task identities. Root `go.mod` is declared as present, absent, or
+unavailable under caller policy; denied module bytes no longer enter the graph.
+Old indexes must be recompiled for serving. Historical schemas and trial evidence
+remain unchanged.
+
+Regression tests in `pkg/compiler/inputs_test.go`, `pkg/agentctx/m2_test.go` and
+the updated source/import tests cover:
+
+- Source additions (including untracked files), deletion, rename and modification;
+  `go.mod` introduction, modification and deletion; out-of-scope stability.
+- Auxiliary deny/allow enforcement, incompatible serving scope rejection before
+  reads, and explicit unavailable-capability disclosure without restricted names.
+- Relocation-stable identities, profile/selection/renderer/budget/tokenizer changes,
+  explicit symbol/unit keys, and rejection of malformed manifests.
+- Verified-local versus pinned caller-asserted immutable reuse, mixed-generation
+  detection, bounded enumeration/reads, and Linux directory-swap/symlink rejection.
+- Atomic JSON/gzip publication: invalid generations and failed renames leave the
+  prior complete output intact and remove temporary publication files.
+
+`go test ./...`, `go test -race ./...`, `go vet ./...`, both CLI builds, all 23
+Python tests and the vendored skill validator passed. A Darwin sourceroot test
+binary cross-compiled; it was **not executed**, and portable race resistance is
+not claimed. Full Draft 2020-12 validation passed for the dogfood IR/context and
+all 48 payloads in the frozen-fixture replay, using each payload's versioned schema.
+Dogfooding used repository discovery plus manifest-bearing indexed context; both
+CLI entry points returned byte-identical context for the same request.
+
+The existing deterministic replay harness compared M1 with M2 on the same 12
+frozen tasks, questions and byte budgets. Both versions covered **10/10 answerable
+tasks and 15/15 gold source spans**, in both JSON and Markdown. All payloads fit
+their original budgets; Markdown evidence bytes were checked by the harness.
+The two non-answer tasks remain scope checks. These are 48 retrievals over 12
+tasks, not independent agent trials; no model calls or latency/throughput claims.
+The [M2 replay artifact](../../evals/runs/m2-inputs-retrieval-20260910.json) retains
+payloads, errors, source hashes, binary hashes and totals. It reuses the M1
+retrieval artifact format and harness; “before” means M1, “after” means M2.
+
+Limits: verified-local input passes detect observed drift, not arbitrary concurrent
+or ABA writes. Caller isolation and index/binary authentication remain necessary.
+Immutable mode trusts the caller's pinned input-tree guarantee for inventory and
+auxiliary files; it still hashes indexed source. No persistent or cross-tenant
+cache was introduced. Compilation intentionally ignores repository ignore files
+and build tags and uses its declared exclusions/syntax-only profile. Input byte
+and entry bounds do not guarantee native-parser CPU time or crash isolation.
+The [protocol guide](../AGENT_CONTEXT.md#replay-source-changes-and-policy) defines
+scope migration, negative dependencies, identities and platform limitations.
 
 ## M1: document and body retrieval, September 10
 

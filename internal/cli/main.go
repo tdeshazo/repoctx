@@ -77,11 +77,16 @@ func compileCmd(args []string) {
 	pretty := fs.Bool("pretty", false, "pretty-print JSON")
 	python := fs.String("python", "", "deprecated compatibility flag; Python uses native Tree-sitter")
 	maxBytes := fs.Int64("max-bytes", 2<<20, "maximum source file size")
+	maxRead := fs.Int64("max-read-bytes", 256<<20, "total input bytes across both compilation verification passes")
+	maxEntries := fs.Int("max-entries", 100000, "maximum enumerated directory entries per inventory pass")
 	var allows, denies repeated
-	fs.Var(&allows, "allow", "permitted source file/directory prefix before indexing; repeat")
-	fs.Var(&denies, "deny", "denied source file/directory prefix before indexing; repeat")
+	fs.Var(&allows, "allow", "permitted source/auxiliary file or directory prefix before indexing; repeat")
+	fs.Var(&denies, "deny", "denied source/auxiliary file or directory prefix before indexing; repeat")
 	_ = fs.Parse(args)
-	repo, err := compiler.Compile(compiler.Options{Root: *root, Python: *python, MaxBytes: *maxBytes, AllowPaths: allows, DenyPaths: denies})
+	repo, err := compiler.Compile(compiler.Options{
+		Root: *root, Python: *python, MaxBytes: *maxBytes, MaxReadBytes: *maxRead,
+		MaxEntries: *maxEntries, AllowPaths: allows, DenyPaths: denies,
+	})
 	if err != nil {
 		fatal(err)
 	}

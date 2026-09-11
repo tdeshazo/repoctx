@@ -51,14 +51,22 @@ it does not assume a specific vendor API or perform LLM inference.
 
 ## Protocol fields
 
-`version` is `repoctx.context/v1alpha2`. Use the checked-in JSON Schema and
+`version` is `repoctx.context/v1alpha3`. Use the checked-in JSON Schema and
 `Bundle.Validate` for cross-reference checks.
 
 - `snapshot.id`: SHA-256 of the normalized index JSON. It binds all indexed
   hashes, symbols, ASTs, graph and diagnostics. It is not a Git commit, signature,
   attestation or proof that the index came from a trusted compiler.
-- `snapshot.verification`: `sha256_all_permitted_indexed_files`. Denied files
-  are not read. This does not check newly added files or unindexed build inputs.
+- `snapshot.source_id`: digest of the permitted source inventory, content hashes,
+  sizes, and present/absent/unavailable `go.mod` dependency. No Git assumption.
+- `snapshot.profile_id`: digest of compiler/frontend identities, syntax-only
+  build profile, caller scope, directory exclusions, and input limits.
+- `snapshot.ir_version`: index schema identity, currently `repoctx.ir/v1alpha4`.
+- `snapshot.verification`: `verified-local` or caller-asserted `immutable`.
+- `task_id`: cache identity binding the index, query, explicit symbols/units,
+  effective scope, selection settings, renderer version/format, consistency,
+  read/output limits and caller tokenizer identity. Host paths and timestamps
+  are excluded. No persistent cache or cross-tenant cache authorization is implied.
 - `seeds`: required semantic symbol IDs or retrieval unit IDs for this request. Missing required seeds
   produce an error rather than unrelated fallback content.
 - `symbols`: symbol identity and language/type, source-definition coordinates,
@@ -138,25 +146,27 @@ Defaults: 12 selected symbols, 8 units, 128 combined candidates, 48 relationship
 
 ### Migrating context consumers
 
-The IR stays `repoctx.ir/v1alpha3`; old v1alpha3 indexes can serve the new context
-contract without migration because retrieval units are derived from verified
-source and existing ASTs. Unit rules are part of the context implementation,
-not a new compilation-input identity. M2 freshness limitations still apply.
+M2 requires recompilation to `repoctx.ir/v1alpha4`, whose required `inputs`
+manifest declares compilation inputs and policy. Legacy indexes remain readable
+for inspection but cannot serve current context. Context consumers must accept
+v1alpha3's `task_id`, source/profile identities and consistency labels.
 
-Consumers of v1alpha1 should accept v1alpha2, the required `units` array,
+Consumers migrating from v1alpha1 also need the required `units` array,
 `selection.max_units`, `omissions.unit_limit`, new ranking fields/strategies,
 unit IDs in `seeds`, and `query_excerpt` symbol completeness. Do not assume
 that every required seed is in `symbols`. The model-neutral adapter accepts
-both versions and adds keyword-only `unit_ids`. Historical artifacts retain
-their version; validate them with `context-v1alpha1.schema.json` rather than
-rewriting old evaluation evidence.
+all three context versions and adds keyword-only `unit_ids`. Historical artifacts
+retain their version; use `context-v1alpha1.schema.json`,
+`context-v1alpha2.schema.json`, or `ir-v1alpha3.schema.json` as appropriate.
 A quarter of the byte budget, capped at 4096 bytes, is reserved from source
 selection for imports and graph evidence. Token-cap integrations use corresponding
 soft reserves. This is a greedy policy, not an optimal relevance solver. Required
 seeds may be excerpted; if they still cannot fit the command fails with no partial
 JSON. File output uses a temporary file and rename after all checks succeed.
 
-Read limits default to 2 MiB per source and 256 MiB total per request. Decoded
+Read limits default to 2 MiB per source and 256 MiB total per request, including
+both verified-local input passes and auxiliary reads. `CountTokens` requires a
+caller-owned `TokenizerID` identifying the actual implementation/version. Decoded
 IR reads are limited to 128 MiB. Larger deployments need a service cache and an
 explicit resource/isolation policy. Full source verification per request favors
 correctness over repeated-query throughput; it is not a persistent index server.
@@ -172,17 +182,59 @@ For progressive disclosure:
 Dense IDs must not be persisted across compiles. Semantic IDs can also change
 with renames, scope changes and duplicate-definition disambiguation.
 
-Use an immutable worktree for the complete compile/serve cycle. The tool checks
-all indexed files allowed by the current request, not only selected files, but
-those reads are not atomic. Newly added source files, ignored files and changed
-`go.mod` or other build configuration are outside this freshness check and require
-recompilation. No claim of complete repository freshness is made.
+`verified-local` is the default. Compilation captures permitted source bytes and
+`go.mod`, builds from those bytes, then verifies the inputs again before returning
+an index. Serving verifies two input passes before selection. Inventories bracket
+each pass. Addition, deletion, rename, content changes and optional `go.mod`
+creation/removal invalidate the generation. Untracked and dirty permitted files
+are included; Git commits are neither required nor consulted. Read or enumeration
+failures reject the operation; parse errors remain explicit diagnostics. These
+checks detect observed drift, not arbitrary concurrent/ABA writes. Isolate writers
+for the complete compile/serve cycle; they do not create a transactional snapshot.
 
-Compiler `-deny` prevents matching sources from entering a new index. Context
-`-deny` filters an existing index at serving time but cannot erase secrets already
-present in the stored artifact. Do not expose full indexes to unauthorized users.
+For a caller-managed immutable export, use `-consistency immutable` together with
+`-expect-snapshot sha256:...`. The caller must authenticate the index and guarantee
+the entire declared input tree is unchanged. This mode reuses the manifest without
+inventory/configuration scans, but still verifies every indexed source hash. A
+Git revision or an instruction found in repository text cannot make that assertion.
+
+Compilation intentionally does **not** read `.gitignore`, `.ignore`, build tags,
+workspace files, environment-dependent build settings, or external providers.
+It parses all supported extensions in scope, excluding symlinks/special files and
+these default directory basenames: `.git`, `.hg`, `.svn`, `vendor`, `node_modules`,
+`.venv`, `venv`, `__pycache__`, `dist`, `build`. The Go API can override the directory
+list; the effective list is recorded. Root `go.mod` is the only auxiliary input,
+used for syntactic module labels/import matching, not dependency/type resolution.
+When denied by allow/deny policy it is never opened and its capability is marked
+unavailable. Ignore-file changes do not change this compilation profile (unlike
+the separate index-free discovery commands). Unsupported and excluded additions
+are outside freshness; parent directory entry names may be enumerated to locate
+permitted descendants, but denied subtrees are not entered or disclosed.
+
+Compiler `-deny` prevents matching source and auxiliary reads. An explicit context
+scope must match the normalized compilation policy; otherwise recompile a separate
+index. Omitting context scope uses the authenticated index's declared scope, not
+a new broader grant. This avoids filtering an index whose derived graph already
+contains restricted metadata. Do not expose full indexes to unauthorized users.
 Path prefixes are application settings, not authority derived from repository
 comments or AGENTS files. No secret scanner is included.
+
+Compile limits: `-max-bytes` defaults to 2 MiB (hard ceiling 16 MiB),
+`-max-read-bytes` to 256 MiB (also the ceiling, across both passes), and
+`-max-entries` to 100000 (also the ceiling, per inventory). Auxiliary `go.mod` is
+additionally capped at 1 MiB. Enumeration counts even unsupported parent entries.
+No repository commands run. These are input-work bounds, not CPU/time guarantees
+for native parsers. Compiler/frontend version identifiers and grammar module
+versions/checksums enter the profile; local grammar replacements without a version
+are rejected. Implementation changes require a compiler/renderer identity bump.
+Digests never authenticate a binary, manifest, or tenant. Authenticate them in the
+caller and partition any cache by caller authorization as well as `task_id`.
+
+File publication validates the complete index, writes and syncs a temporary file
+beside the output, then renames it into place (also for gzip). A rejected update
+leaves the prior complete generation intact. Stdout is a stream, not an atomic
+publication target. Rename provides atomic visibility on supporting filesystems,
+not a guarantee of directory-entry durability across a power loss.
 
 On Linux, source reads use directory descriptors and `O_NOFOLLOW` at every
 component. Symlinks, FIFOs, devices, out-of-root paths and overlarge reads are

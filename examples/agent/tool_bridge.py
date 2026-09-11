@@ -77,7 +77,7 @@ class RepositoryContextTool:
             raise RuntimeError("Compiler exceeded the configured payload bound")
         payload = completed.stdout.decode("utf-8")
         bundle = json.loads(payload)
-        if bundle.get("version") not in {"repoctx.context/v1alpha1", "repoctx.context/v1alpha2"}:
+        if bundle.get("version") not in {"repoctx.context/v1alpha1", "repoctx.context/v1alpha2", "repoctx.context/v1alpha3"}:
             raise RuntimeError("Unexpected context protocol")
         if bundle.get("trust", {}).get("role") != "untrusted_repository_data":
             raise RuntimeError("Missing evidence trust classification")

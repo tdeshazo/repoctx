@@ -34,8 +34,15 @@ func (r *Repository) Validate() error {
 	if r == nil {
 		return fmt.Errorf("nil repository")
 	}
-	if r.Version != "repoctx.ir/v1alpha2" && r.Version != "repoctx.ir/v1alpha3" {
+	if r.Version != "repoctx.ir/v1alpha2" && r.Version != "repoctx.ir/v1alpha3" && r.Version != "repoctx.ir/v1alpha4" {
 		return fmt.Errorf("unsupported IR version %q", r.Version)
+	}
+	if r.Version == "repoctx.ir/v1alpha4" {
+		if err := r.validateInputs(); err != nil {
+			return err
+		}
+	} else if r.Inputs != nil {
+		return fmt.Errorf("legacy index cannot carry a compilation manifest")
 	}
 	str := func(n int, optional bool) bool { return (optional && n == 0) || n > 0 && n <= len(r.Strings) }
 	ref := func(f, n int) bool { return f >= 0 && f < len(r.Files) && n >= 0 && n < len(r.Files[f].Nodes) }
@@ -89,7 +96,7 @@ func (r *Repository) Validate() error {
 		}
 		// Earlier snapshots may contain colliding semantic IDs. They remain readable
 		// for stats, but context serving explicitly requires a freshly compiled v3.
-		if r.Version == "repoctx.ir/v1alpha3" && ids[id] {
+		if r.Version != "repoctx.ir/v1alpha2" && ids[id] {
 			return fmt.Errorf("symbol %d: duplicate semantic ID", i)
 		}
 		ids[id] = true

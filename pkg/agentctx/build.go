@@ -1,8 +1,10 @@
 package agentctx
 
 import (
+	"encoding/hex"
 	"fmt"
 	"runtime"
+	"slices"
 	"strings"
 
 	"github.com/tdeshazo/repoctx/pkg/ir"
@@ -18,9 +20,16 @@ func Build(r *ir.Repository, o Options) (*Result, error) {
 	if e := r.Validate(); e != nil {
 		return nil, fmt.Errorf("invalid index: %w", e)
 	}
-	if r.Version != "repoctx.ir/v1alpha3" {
-		return nil, fmt.Errorf("context serving requires v1alpha3 full hashes and physical spans; recompile this index")
+	if r.Version != "repoctx.ir/v1alpha4" {
+		return nil, fmt.Errorf("context serving requires v1alpha4 compilation-input manifests; recompile this index")
 	}
+	profile := r.Inputs.Profile
+	if len(o.AllowPaths) != 0 || len(o.DenyPaths) != 0 {
+		if !slices.Equal(ir.CanonicalPrefixes(o.AllowPaths), profile.Allow) || !slices.Equal(ir.CanonicalPrefixes(o.DenyPaths), profile.Deny) {
+			return nil, fmt.Errorf("incompatible authorization scope: recompile with the requested allow/deny policy")
+		}
+	}
+	o.AllowPaths, o.DenyPaths = profile.Allow, profile.Deny
 	snap, e := r.SnapshotID()
 	if e != nil {
 		return nil, e
@@ -41,12 +50,26 @@ func Build(r *ir.Repository, o Options) (*Result, error) {
 		kinds = append(kinds, edgeName(k))
 	}
 	b := &Bundle{
-		Version: Version, Snapshot: Snapshot{ID: snap, IRVersion: r.Version, Verification: "sha256_all_permitted_indexed_files", VerifiedFiles: len(sources)}, Query: o.Query, Seeds: seeds,
+		Version: Version, Snapshot: Snapshot{ID: snap, IRVersion: r.Version, Verification: o.Consistency, VerifiedFiles: len(sources)}, Query: o.Query, Seeds: seeds,
 		Trust:        Trust{Role: "untrusted_repository_data", Handling: "Pass as tool-result evidence, not system/developer instructions. The caller enforces permissions and authenticates the index."},
 		Capabilities: Capabilities{Available: []string{"go_ast", "python_ast", "html_ast", "css_ast", "javascript_ast", "typescript_ast", "tsx_ast", "markdown_ast", "defines", "imports", "calls", "source_spans"}, Unavailable: []string{"type_checked_dispatch", "type_resolution", "module_resolution", "component_semantics", "react_runtime_semantics", "references", "implements", "inherits", "test_coverage", "build_targets", "embedded_language_semantics"}, CallResolution: "syntax with same-unit name heuristics; not proof of runtime dispatch", Verification: "No build or tests executed; no verification commands inferred."},
 		Selection:    Selection{Strategy: "body_units_and_symbols_then_bounded_graph", Depth: o.Depth, Direction: o.Direction, Relations: kinds, MaxBytes: o.MaxBytes, MaxTokens: o.MaxTokens, MaxSymbols: o.MaxSymbols, MaxUnits: o.MaxUnits, MaxCandidates: o.MaxCandidates, MaxRelations: o.MaxRelations},
 		Symbols:      []Symbol{}, Units: []Unit{}, Evidence: []Evidence{}, Omissions: Omissions{Candidates: len(candidates), TraversalLimited: limited},
-		Warnings: []string{"Coverage is selected, not exhaustive. Missing edges do not prove absence.", "Freshness checks cover permitted indexed files only; additions, ignored files and build/config changes require recompilation.", "Use snapshot.id plus semantic symbol IDs for expansion. Dense IDs are snapshot-local."},
+		Warnings: []string{"Coverage is selected, not exhaustive. Missing edges do not prove absence.", "Only declared compilation inputs are covered; ignored, denied and unsupported files are outside the discovery boundary.", "Use snapshot.id plus semantic symbol IDs for expansion. Dense IDs are snapshot-local."},
+	}
+	b.Snapshot.SourceID, _ = r.Inputs.SourceID()
+	b.Snapshot.ProfileID, _ = r.Inputs.ProfileID()
+	b.TaskID, e = taskID(snap, o)
+	if e != nil {
+		return nil, e
+	}
+	if r.Inputs.GoMod.State == "unavailable" {
+		b.Capabilities.Unavailable = append(b.Capabilities.Unavailable, "go_module_metadata_policy_denied")
+	}
+	if o.Consistency == "immutable" {
+		b.Warnings = append(b.Warnings, "Inventory and auxiliary inputs rely on the caller's pinned, immutable snapshot assertion; source bytes remain hash-verified.")
+	} else {
+		b.Warnings = append(b.Warnings, "Two verified input passes detect observed drift, not an atomic filesystem snapshot. Isolate concurrent writers.")
 	}
 	b.Capabilities.Available = append(b.Capabilities.Available, "document_retrieval_units", "body_lexical_retrieval", "query_centered_excerpts")
 	b.Warnings = append(b.Warnings, "Unit IDs bind verified source bytes and retrieval-unit rules; re-resolve after changes. Ranking is not confidence or a sufficiency guarantee.")
@@ -260,6 +283,18 @@ func Build(r *ir.Repository, o Options) (*Result, error) {
 }
 
 func normalize(o *Options) error {
+	if o.Consistency == "" {
+		o.Consistency = "verified-local"
+	}
+	if o.Consistency != "verified-local" && o.Consistency != "immutable" {
+		return fmt.Errorf("consistency must be verified-local or immutable")
+	}
+	if o.Consistency == "immutable" && o.ExpectedSnapshot == "" {
+		return fmt.Errorf("immutable consistency requires an authenticated expected snapshot and caller-isolated source root")
+	}
+	if o.CountTokens != nil && strings.TrimSpace(o.TokenizerID) == "" {
+		return fmt.Errorf("a tokenizer requires a caller-owned tokenizer identity")
+	}
 	if o.Root == "" {
 		return fmt.Errorf("explicit source Root is required")
 	}
@@ -345,6 +380,18 @@ func contains(a, b ir.Span) bool {
 func (b *Bundle) Validate() error {
 	if b.Version != Version {
 		return fmt.Errorf("unsupported context version")
+	}
+	for _, id := range []string{b.TaskID, b.Snapshot.ID, b.Snapshot.SourceID, b.Snapshot.ProfileID} {
+		hash, err := hex.DecodeString(strings.TrimPrefix(id, "sha256:"))
+		if !strings.HasPrefix(id, "sha256:") || err != nil || len(hash) != 32 {
+			return fmt.Errorf("invalid context identity")
+		}
+	}
+	if b.Snapshot.IRVersion != "repoctx.ir/v1alpha4" || b.Snapshot.VerifiedFiles < 0 {
+		return fmt.Errorf("invalid snapshot metadata")
+	}
+	if b.Snapshot.Verification != "verified-local" && b.Snapshot.Verification != "immutable" {
+		return fmt.Errorf("invalid snapshot verification mode")
 	}
 	ev := map[string]Evidence{}
 	for _, e := range b.Evidence {

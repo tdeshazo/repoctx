@@ -25,9 +25,10 @@ func contextCmd(args []string) {
 	fs.Var(&symbols, "symbol", "exact semantic ID; repeat for multiple required seeds")
 	fs.Var(&units, "unit", "exact retrieval unit ID from this snapshot; repeat for required seeds")
 	maxUnits := fs.Int("max-units", 8, "maximum included retrieval units, 1..64")
-	fs.Var(&allows, "allow", "permitted relative file/directory prefix; repeat; not a glob")
-	fs.Var(&denies, "deny", "denied relative file/directory prefix; repeat; deny wins")
+	fs.Var(&allows, "allow", "repeat compilation allow policy exactly; omitted scope inherits index policy")
+	fs.Var(&denies, "deny", "repeat compilation deny policy exactly; repeat; deny wins")
 	snapshot := fs.String("expect-snapshot", "", "required index snapshot digest when expanding prior context")
+	consistency := fs.String("consistency", "verified-local", "verified-local or immutable; immutable asserts caller-isolated pinned inputs")
 	depth := fs.Int("depth", 1, "graph depth 0..4; never expand unit/unresolved hubs")
 	direction := fs.String("direction", "both", "in, out, or both")
 	rels := fs.String("relations", "calls,defines", "comma-separated traversal relation names")
@@ -60,7 +61,7 @@ func contextCmd(args []string) {
 	if e != nil {
 		fatal(e)
 	}
-	result, e := agentctx.Build(repo, agentctx.Options{Root: *root, Query: *query, Symbols: symbols, Units: units, MaxUnits: *maxUnits, ExpectedSnapshot: *snapshot, Depth: *depth, Direction: *direction, Relations: kinds, MaxSymbols: *maxSymbols, MaxCandidates: *maxCandidates, MaxRelations: *maxRelations, MaxBytes: *maxBytes, Format: *format, AllowPaths: allows, DenyPaths: denies, MaxSourceBytes: *maxSource, MaxReadBytes: *maxRead})
+	result, e := agentctx.Build(repo, agentctx.Options{Root: *root, Query: *query, Symbols: symbols, Units: units, MaxUnits: *maxUnits, ExpectedSnapshot: *snapshot, Consistency: *consistency, Depth: *depth, Direction: *direction, Relations: kinds, MaxSymbols: *maxSymbols, MaxCandidates: *maxCandidates, MaxRelations: *maxRelations, MaxBytes: *maxBytes, Format: *format, AllowPaths: allows, DenyPaths: denies, MaxSourceBytes: *maxSource, MaxReadBytes: *maxRead})
 	if e != nil {
 		fatal(e)
 	}

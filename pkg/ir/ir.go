@@ -3,14 +3,15 @@ package ir
 // Repository is the compact, typed representation emitted by repoctx.
 // References are integer indexes; repeated strings are interned in Strings.
 type Repository struct {
-	Version     string       `json:"v"`
-	Root        int          `json:"r,omitempty"` // string-table index
-	Files       []File       `json:"f"`
-	Symbols     []Symbol     `json:"s,omitempty"`
-	Edges       []Edge       `json:"e,omitempty"`
-	Graph       *SymbolGraph `json:"g,omitempty"`
-	Diagnostics []Diagnostic `json:"d,omitempty"`
-	Strings     []string     `json:"q,omitempty"`
+	Version     string         `json:"v"`
+	Root        int            `json:"r,omitempty"` // string-table index
+	Files       []File         `json:"f"`
+	Symbols     []Symbol       `json:"s,omitempty"`
+	Edges       []Edge         `json:"e,omitempty"`
+	Graph       *SymbolGraph   `json:"g,omitempty"`
+	Diagnostics []Diagnostic   `json:"d,omitempty"`
+	Strings     []string       `json:"q,omitempty"`
+	Inputs      *InputManifest `json:"inputs,omitempty"`
 }
 
 type Language uint8
@@ -30,7 +31,7 @@ const (
 type File struct {
 	Path  int      `json:"p"` // string-table index
 	Lang  Language `json:"l"`
-	Hash  string   `json:"h,omitempty"` // SHA-256 content hash (64 hex characters in v1alpha3)
+	Hash  string   `json:"h,omitempty"` // SHA-256 content hash (64 hex characters since v1alpha3)
 	Unit  int      `json:"u,omitempty"` // Go package / Python module string-table index
 	Nodes []Node   `json:"n,omitempty"`
 	Roots []int    `json:"a,omitempty"`

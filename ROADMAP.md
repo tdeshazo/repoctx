@@ -228,7 +228,7 @@ Full answer-span coverage increased from 4/10 to 10/10 answerable tasks in
 both formats (8/15 to 15/15 spans), using original questions and unchanged
 budgets. See the [consolidated report](docs/reports/mothership-repoctx-codex-exec-comparison.md).
 Units are derived after source verification rather than persisted in a changed
-IR; M2 compilation-input identity remains outstanding. No new agent-outcome or
+IR; compilation-input identity is handled separately by M2 below. No new agent-outcome or
 performance improvement is claimed.
 
 ## 6. M2 — Make snapshot identity cover every compilation input
@@ -241,46 +241,54 @@ confusing a source hash with a complete, authenticated snapshot.
 
 ### Work
 
-- [ ] **M2-01 — Add a compilation-input manifest.** Record the permitted source
+- [x] **M2-01 — Add a compilation-input manifest.** Record the permitted source
   inventory, hashes, configuration inputs, compiler/frontend identities, and
   effective selection/build profiles. Include inputs such as `go.mod` when they
   affect graph construction. Record relevant negative dependencies, such as an
   absent optional config file whose later creation would change compilation.
-- [ ] **M2-02 — Enforce scope on all inputs.** Apply caller-controlled policy to
+- [x] **M2-02 — Enforce scope on all inputs.** Apply caller-controlled policy to
   auxiliary configuration reads as well as indexed source. When a needed input
   is denied, fail or publish the affected capability as unavailable; do not read
   it silently. Specify whether ignore files are honored, which defaults apply,
   and what additions lie inside the discovery boundary.
-- [ ] **M2-03 — Separate identities.** Distinguish source snapshot, index schema,
+- [x] **M2-03 — Separate identities.** Distinguish source snapshot, index schema,
   compiler/provider profile, and task-bundle identity. A task cache key must also
   include query/explicit units, scope, selection settings, renderer version, and
   budget/tokenizer identity where applicable. Exclude host paths and timestamps
   from reproducibility-critical content identities.
-- [ ] **M2-04 — Define consistency modes.** Retain verified local reads; support
+- [x] **M2-04 — Define consistency modes.** Retain verified local reads; support
   immutable, caller-controlled snapshots for reuse. Git revisions may identify
   provenance, but dirty trees, untracked permitted files, configuration, and
   external provider inputs need explicit treatment. Reject incomplete or mixed
   generations and publish manifests atomically.
-- [ ] **M2-05 — Bound resource and trust exposure.** Add regression tests for
+- [x] **M2-05 — Bound resource and trust exposure.** Add regression tests for
   auxiliary-input scope, source inventory changes, path races within the stated
   platform threat model, malformed data, and total compilation/read limits.
   Do not advertise portable race resistance beyond tested guarantees.
 
 ### Acceptance gates
 
-- [ ] Adding, deleting, renaming, or modifying a discoverable permitted source
+- [x] Adding, deleting, renaming, or modifying a discoverable permitted source
   invalidates the appropriate snapshot. Changes outside declared scope have
   documented behavior rather than an implied whole-repository guarantee.
-- [ ] Modifying or introducing a graph-affecting configuration input invalidates
+- [x] Modifying or introducing a graph-affecting configuration input invalidates
   the index or its affected view before serving it as current.
-- [ ] Every byte that affects derived meaning is either a declared input or an
+- [x] Every byte that affects derived meaning is either a declared input or an
   explicitly unavailable dependency. Denied inputs never become a hidden bypass.
-- [ ] Identical inputs and compiler profiles reproduce identical canonical
+- [x] Identical inputs and compiler profiles reproduce identical canonical
   identities after relocation. A rejected update leaves the prior complete
   generation usable, not a mixture of old and new data.
-- [ ] No cache or snapshot reuse crosses incompatible authorization scopes.
+- [x] No cache or snapshot reuse crosses incompatible authorization scopes.
   Denied content, names, paths, and derived metadata remain protected according
   to the declared disclosure policy.
+
+M2 implementation and validation: `pkg/compiler/inputs_test.go` and
+`pkg/agentctx/m2_test.go` cover drift, declared scope, identities, consistency
+modes, resource bounds and publication. IR v1alpha4 and context v1alpha3 require
+recompilation/migration; older schema files remain for historical artifacts.
+The consolidated [evaluation report](docs/reports/mothership-repoctx-codex-exec-comparison.md)
+records regression results and limitations. Verified reads are not an atomic
+filesystem snapshot; caller isolation/authentication remains required.
 
 ## 7. M3 — Connect evidence to declared repository intent
 

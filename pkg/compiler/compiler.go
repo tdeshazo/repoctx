@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"io/fs"
 	"path/filepath"
-	"sort"
 	"strings"
 
 	"github.com/tdeshazo/repoctx/internal/lang/goast"
@@ -16,19 +15,20 @@ import (
 	"github.com/tdeshazo/repoctx/pkg/ir"
 )
 
-const IRVersion = "repoctx.ir/v1alpha3"
+const IRVersion = "repoctx.ir/v1alpha4"
 
 type Options struct {
-	Root       string
-	Python     string // retained for API compatibility; Python uses native Tree-sitter
-	MaxBytes   int64
-	IgnoreDirs map[string]bool
-	AllowPaths []string // optional source file/directory prefixes; not globs
-	DenyPaths  []string // evaluated before parsing/indexing
+	Root         string
+	Python       string // retained for API compatibility; Python uses native Tree-sitter
+	MaxBytes     int64
+	MaxReadBytes int64 // total bytes across both verification passes; default 256 MiB
+	MaxEntries   int   // total discovery entries per pass; default 100000
+	IgnoreDirs   map[string]bool
+	AllowPaths   []string // optional source/auxiliary file or directory prefixes; not globs
+	DenyPaths    []string // evaluated before parsing/indexing
 }
 
 type sourceFile struct {
-	abs  string
 	rel  string
 	lang ir.Language
 }
@@ -41,8 +41,20 @@ func Compile(opts Options) (*ir.Repository, error) {
 	if err != nil {
 		return nil, err
 	}
-	if opts.MaxBytes <= 0 {
+	if opts.MaxBytes == 0 {
 		opts.MaxBytes = 2 << 20
+	}
+	if opts.MaxReadBytes == 0 {
+		opts.MaxReadBytes = 256 << 20
+	}
+	if opts.MaxEntries == 0 {
+		opts.MaxEntries = 100000
+	}
+	badFileLimit := opts.MaxBytes < 1 || opts.MaxBytes > 16<<20
+	badReadLimit := opts.MaxReadBytes < 1 || opts.MaxReadBytes > 256<<20
+	badEntryLimit := opts.MaxEntries < 1 || opts.MaxEntries > 100000
+	if badFileLimit || badReadLimit || badEntryLimit {
+		return nil, fmt.Errorf("invalid compilation resource limits")
 	}
 	if opts.IgnoreDirs == nil {
 		opts.IgnoreDirs = defaultIgnoreDirs()
@@ -61,26 +73,18 @@ func Compile(opts Options) (*ir.Repository, error) {
 		return nil, err
 	}
 	defer sourceRoot.Close()
-	st := ir.NewStrings()
-	repo := &ir.Repository{Version: IRVersion, Root: st.Intern("."), Files: []ir.File{}}
-	files, walkDiags, err := discover(root, opts)
+	profile := compilationProfile(opts)
+	remaining := opts.MaxReadBytes
+	manifest, contents, err := captureInputs(sourceRoot, profile, &remaining)
 	if err != nil {
 		return nil, err
 	}
-	for _, d := range walkDiags {
-		repo.Diagnostics = append(repo.Diagnostics, ir.Diagnostic{Severity: ir.SeverityWarning, Message: st.Intern(d)})
-	}
+	st := ir.NewStrings()
+	repo := &ir.Repository{Version: IRVersion, Root: st.Intern("."), Files: []ir.File{}, Inputs: manifest}
 
-	for _, sf := range files {
-		data, err := sourceRoot.Read(sf.rel, opts.MaxBytes)
-		if err != nil {
-			repo.Diagnostics = append(repo.Diagnostics, ir.Diagnostic{Severity: ir.SeverityWarning, Message: st.Intern(fmt.Sprintf("read %s: %v", sf.rel, err))})
-			continue
-		}
-		if int64(len(data)) > opts.MaxBytes {
-			repo.Diagnostics = append(repo.Diagnostics, ir.Diagnostic{Severity: ir.SeverityWarning, Message: st.Intern(fmt.Sprintf("skip %s: %d bytes exceeds max %d", sf.rel, len(data), opts.MaxBytes))})
-			continue
-		}
+	for _, input := range manifest.Sources {
+		sf := sourceFile{rel: input.Path, lang: sourceLanguage(input.Path)}
+		data := contents[input.Path]
 		fidx := len(repo.Files)
 		f := ir.File{Path: st.Intern(sf.rel), Lang: sf.lang, Hash: fullHash(data)}
 		if sf.lang == ir.LangPython {
@@ -156,82 +160,38 @@ func Compile(opts Options) (*ir.Repository, error) {
 	linkParents(repo, st)
 	resolveEdges(repo, st)
 	assignSymbolIDs(repo, st)
-	buildSymbolGraph(repo, st, root)
+	buildSymbolGraph(repo, st, goModule(contents["go.mod"]))
 	repo.Strings = st.Values()
 	if err := repo.Validate(); err != nil {
 		return nil, fmt.Errorf("compiler invariant: %w", err)
 	}
+	if err := verifyInputs(sourceRoot, manifest, &remaining); err != nil {
+		return nil, err
+	}
 	return repo, nil
 }
 
-func discover(root string, opts Options) ([]sourceFile, []string, error) {
-	var files []sourceFile
-	var diags []string
-	err := filepath.WalkDir(root, func(path string, d fs.DirEntry, walkErr error) error {
-		rel, _ := filepath.Rel(root, path)
-		rel = filepath.ToSlash(rel)
-		for _, denied := range opts.DenyPaths {
-			denied = strings.TrimSuffix(denied, "/")
-			if rel == denied || strings.HasPrefix(rel, denied+"/") {
-				if d != nil && d.IsDir() {
-					return fs.SkipDir
-				}
-				return nil
-			}
-		}
-		if walkErr != nil {
-			diags = append(diags, fmt.Sprintf("walk %s: %v", path, walkErr))
-			if d != nil && d.IsDir() {
-				return fs.SkipDir
-			}
-			return nil
-		}
-		if d.IsDir() {
-			if path != root && opts.IgnoreDirs[d.Name()] {
-				return fs.SkipDir
-			}
-			return nil
-		}
-		if !d.Type().IsRegular() {
-			return nil
-		}
-		ext := strings.ToLower(filepath.Ext(path))
-		var lang ir.Language
-		switch ext {
-		case ".go":
-			lang = ir.LangGo
-		case ".py":
-			lang = ir.LangPython
-		case ".html", ".htm":
-			lang = ir.LangHTML
-		case ".css":
-			lang = ir.LangCSS
-		case ".js", ".mjs", ".cjs":
-			lang = ir.LangJavaScript
-		case ".ts", ".mts", ".cts":
-			lang = ir.LangTypeScript
-		case ".tsx", ".jsx":
-			lang = ir.LangTSX
-		case ".md":
-			lang = ir.LangMarkdown
-		default:
-			return nil
-		}
-		rel, relErr := filepath.Rel(root, path)
-		if relErr != nil {
-			return relErr
-		}
-		if !pathAllowed(filepath.ToSlash(rel), opts) {
-			return nil
-		}
-		files = append(files, sourceFile{abs: path, rel: filepath.ToSlash(rel), lang: lang})
-		return nil
-	})
-	if err != nil {
-		return nil, diags, err
+func sourceLanguage(path string) ir.Language {
+	switch strings.ToLower(filepath.Ext(path)) {
+	case ".go":
+		return ir.LangGo
+	case ".py":
+		return ir.LangPython
+	case ".html", ".htm":
+		return ir.LangHTML
+	case ".css":
+		return ir.LangCSS
+	case ".js", ".mjs", ".cjs":
+		return ir.LangJavaScript
+	case ".ts", ".mts", ".cts":
+		return ir.LangTypeScript
+	case ".tsx", ".jsx":
+		return ir.LangTSX
+	case ".md":
+		return ir.LangMarkdown
+	default:
+		return ir.LangUnknown
 	}
-	sort.Slice(files, func(i, j int) bool { return files[i].rel < files[j].rel })
-	return files, diags, nil
 }
 
 func treeLanguage(lang ir.Language) treeast.Language {
@@ -432,7 +392,7 @@ func semanticSymbolBase(repo *ir.Repository, idx int, values []string) string {
 	return fmt.Sprintf("%s:%s#%s", lang, unit, strings.Join(parts, "."))
 }
 
-func buildSymbolGraph(repo *ir.Repository, st *ir.Strings, root string) {
+func buildSymbolGraph(repo *ir.Repository, st *ir.Strings, goModule string) {
 	g := &ir.SymbolGraph{}
 	values := st.Values()
 	external := map[string]uint32{}
@@ -452,7 +412,6 @@ func buildSymbolGraph(repo *ir.Repository, st *ir.Strings, root string) {
 	// Build deterministic unit nodes first so top-level definitions and imports
 	// have compact source/target anchors. Go import paths use the root go.mod
 	// module name when available.
-	goModule := readGoModule(root)
 	fileUnit := make([]uint32, len(repo.Files))
 	unitByImport := map[string]uint32{}
 	for fi, f := range repo.Files {
@@ -587,16 +546,7 @@ func resolveImportedUnit(raw string, units map[string]uint32) (uint32, bool) {
 	return 0, false
 }
 
-func readGoModule(root string) string {
-	base, e := sourceroot.Open(root)
-	if e != nil {
-		return ""
-	}
-	defer base.Close()
-	data, err := base.Read("go.mod", 1<<20)
-	if err != nil {
-		return ""
-	}
+func goModule(data []byte) string {
 	for _, line := range strings.Split(string(data), "\n") {
 		line = strings.TrimSpace(line)
 		if strings.HasPrefix(line, "module ") {

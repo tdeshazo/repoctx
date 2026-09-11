@@ -5,7 +5,7 @@ package agentctx
 
 import "github.com/tdeshazo/repoctx/pkg/ir"
 
-const Version = "repoctx.context/v1alpha2"
+const Version = "repoctx.context/v1alpha3"
 
 // TokenCounter must count the exact supplied rendered bytes using the target
 // model's tokenizer. No generic chars/token estimate is used as a token bound.
@@ -26,16 +26,19 @@ type Options struct {
 	MaxRelations     int           // default 48
 	MaxBytes         int           // exact serialized payload cap; default 32768
 	Format           string        // json (default) or markdown
-	AllowPaths       []string      // repository-relative file/directory prefixes, not globs
-	DenyPaths        []string      // deny wins; applied before ranking, source reads and serving
+	AllowPaths       []string      // explicit scope must match compilation; omitted scope inherits index policy
+	DenyPaths        []string      // deny wins; explicit scope must match compilation
 	MaxSourceBytes   int64         // per-file bound; default 2 MiB
 	MaxReadBytes     int64         // total verified source bytes; default 256 MiB
 	MaxTokens        int           // optional exact payload token cap; requires CountTokens
 	CountTokens      TokenCounter
+	TokenizerID      string // caller-owned implementation/version identity when CountTokens is set
+	Consistency      string // verified-local (default) or immutable; immutable requires ExpectedSnapshot
 }
 
 type Bundle struct {
 	Version       string         `json:"version"`
+	TaskID        string         `json:"task_id"`
 	Snapshot      Snapshot       `json:"snapshot"`
 	Query         string         `json:"query,omitempty"`
 	Seeds         []string       `json:"seeds"`
@@ -55,6 +58,8 @@ type Snapshot struct {
 	IRVersion     string `json:"ir_version"`
 	Verification  string `json:"verification"`
 	VerifiedFiles int    `json:"verified_files"`
+	SourceID      string `json:"source_id"`
+	ProfileID     string `json:"profile_id"`
 }
 type Trust struct {
 	Role     string `json:"role"`

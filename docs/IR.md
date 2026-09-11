@@ -1,4 +1,4 @@
-# Repository IR v1alpha3
+# Repository IR v1alpha4
 
 This wire format is a reusable machine index. Agents should receive the separate
 [context bundle](AGENT_CONTEXT.md), not the interned AST/CSR tables.
@@ -22,7 +22,7 @@ function/class definitions. Ordinary Python comments are not AST nodes.
 
 ```go
 type Repository struct {
-    Version     string       // v: repoctx.ir/v1alpha3
+    Version     string       // v: repoctx.ir/v1alpha4
     Root        int          // r: interned ".", not an absolute host path
     Files       []File       // f
     Symbols     []Symbol     // s
@@ -30,8 +30,19 @@ type Repository struct {
     Graph       *SymbolGraph // g: collapsed traversal view
     Diagnostics []Diagnostic // d
     Strings     []string     // q
+    Inputs      *InputManifest // inputs: required in v1alpha4
 }
 ```
+
+`inputs` records sorted source paths, full hashes and byte sizes, plus root
+`go.mod` as present, absent, or unavailable under caller policy. Its profile
+records compiler/frontend versions, syntax-only build semantics, effective
+allow/deny and directory exclusions, and read/inventory limits. The source
+manifest and profile have separate digests; `Repository.SnapshotID` binds the
+complete index, including that manifest. See the
+[input, consistency and migration contract](AGENT_CONTEXT.md#replay-source-changes-and-policy).
+Older v1alpha3 artifacts remain readable with the preserved
+[v1alpha3 schema](ir-v1alpha3.schema.json), but must be recompiled for serving.
 
 Each file carries path, language (`1=Go`, `2=Python`, `3=HTML`, `4=CSS`,
 `5=JavaScript`, `6=TypeScript`, `7=TSX/JSX`, `8=Markdown`), a required full

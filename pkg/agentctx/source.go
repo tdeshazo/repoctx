@@ -11,7 +11,7 @@ import (
 	"strings"
 	"unicode/utf8"
 
-	"github.com/tdeshazo/repoctx/internal/sourceroot"
+	"github.com/tdeshazo/repoctx/pkg/compiler"
 	"github.com/tdeshazo/repoctx/pkg/ir"
 )
 
@@ -54,29 +54,17 @@ func validatePrefixes(o Options) error {
 	return nil
 }
 func loadSources(r *ir.Repository, o Options) (map[int]*source, error) {
-	root, e := sourceroot.Open(o.Root)
+	contents, e := compiler.LoadInputs(r, o.Root, o.Consistency == "immutable", o.MaxSourceBytes, o.MaxReadBytes)
 	if e != nil {
 		return nil, e
 	}
-	defer root.Close()
 	sources := map[int]*source{}
-	var total int64
 	for i, f := range r.Files {
 		p := r.String(f.Path)
 		if !allowed(p, o) {
 			continue
 		}
-		b, e := root.Read(p, o.MaxSourceBytes)
-		if e != nil {
-			return nil, fmt.Errorf("read indexed file %q: %w", p, e)
-		}
-		total += int64(len(b))
-		if total > o.MaxReadBytes {
-			return nil, fmt.Errorf("indexed source verification exceeds total read limit")
-		}
-		if hashBytes(b) != f.Hash {
-			return nil, fmt.Errorf("stale index: %q changed; recompile before serving context", p)
-		}
+		b := contents[p]
 		if !utf8.Valid(b) {
 			return nil, fmt.Errorf("source %q is not UTF-8", p)
 		}

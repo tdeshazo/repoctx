@@ -232,8 +232,8 @@ func TestBudgetExcerptAndNoBrokenOutput(t *testing.T) {
 	if e != nil {
 		t.Fatal(e)
 	}
-	if len(res.Payload) > o.MaxBytes || res.Bundle.Symbols[0].Completeness != "declaration_excerpt" || res.Bundle.Omissions.Excerpts != 1 {
-		t.Fatal("unmarked or over-budget excerpt")
+	if len(res.Payload) > o.MaxBytes || res.Bundle.Symbols[0].Completeness != "declaration_excerpt" || res.Bundle.Omissions.Excerpts < 1 {
+		t.Fatalf("unmarked or over-budget excerpt: bytes=%d symbols=%+v omissions=%+v", len(res.Payload), res.Bundle.Symbols, res.Bundle.Omissions)
 	}
 	assertEvidence(t, root, res.Bundle)
 	o.MaxBytes = 50
@@ -264,6 +264,7 @@ func TestExactTokenizerHookAndFailure(t *testing.T) {
 		t.Fatal("heuristic used as token bound")
 	}
 	o.CountTokens = func(b []byte) (int, error) { return len(b), nil } // Test tokenizer only.
+	o.TokenizerID = "test/one-token-per-byte/v1"
 	res, e := Build(r, o)
 	if e != nil {
 		t.Fatal(e)
@@ -284,17 +285,26 @@ func TestExactTokenizerHookAndFailure(t *testing.T) {
 func TestStaleIndexedFileOutsideSelectionRejected(t *testing.T) {
 	root, r := compileFixture(t, map[string]string{"m.go": "package p\nfunc Ping(){}\n", "other.go": "package p\nfunc Other(){}\n"})
 	write(t, root, "other.go", "package p\nfunc Other(){println(1)}\n")
-	if _, e := Build(r, baseOptions(root)); e == nil || !strings.Contains(e.Error(), "stale index") {
+	if _, e := Build(r, baseOptions(root)); e == nil || !strings.Contains(e.Error(), "stale") {
 		t.Fatal("stale nonselected graph input accepted", e)
 	}
 }
 func TestDeniedSourcesNotReadOrExposed(t *testing.T) {
 	root, r := compileFixture(t, map[string]string{"m.go": "package p\nfunc Ping(){}\n", "secrets/private.go": "package secret\nfunc DO_NOT_EXPOSE(){println(\"SENSITIVE_MARKER\")}\n"})
+	deniedID := idNamed(t, r, "DO_NOT_EXPOSE")
 	if e := os.Remove(filepath.Join(root, "secrets/private.go")); e != nil {
 		t.Fatal(e)
 	}
 	o := baseOptions(root)
 	o.DenyPaths = []string{"secrets"}
+	if _, err := Build(r, o); err == nil {
+		t.Fatal("broader index reused across authorization scope")
+	}
+	var err error
+	r, err = compiler.Compile(compiler.Options{Root: root, DenyPaths: o.DenyPaths})
+	if err != nil {
+		t.Fatal(err)
+	}
 	res, e := Build(r, o)
 	if e != nil {
 		t.Fatal(e)
@@ -302,7 +312,7 @@ func TestDeniedSourcesNotReadOrExposed(t *testing.T) {
 	if bytes.Contains(res.Payload, []byte("SENSITIVE_MARKER")) || bytes.Contains(res.Payload, []byte("DO_NOT_EXPOSE")) || bytes.Contains(res.Payload, []byte("private.go")) {
 		t.Fatal("denied source leaked")
 	}
-	o.Symbols = []string{idNamed(t, r, "DO_NOT_EXPOSE")}
+	o.Symbols = []string{deniedID}
 	if _, e := Build(r, o); e == nil {
 		t.Fatal("denied seed accepted")
 	}

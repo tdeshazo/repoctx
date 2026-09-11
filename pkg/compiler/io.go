@@ -12,20 +12,23 @@ import (
 )
 
 func Write(repo *ir.Repository, path string, pretty bool) error {
+	if err := repo.Validate(); err != nil {
+		return fmt.Errorf("refuse invalid generation: %w", err)
+	}
 	var w io.Writer = os.Stdout
 	var f *os.File
 	var gz *gzip.Writer
 	if path != "" && path != "-" {
 		var err error
-		f, err = os.Create(path)
+		f, err = os.CreateTemp(filepath.Dir(path), ".repoctx-index-*")
 		if err != nil {
 			return err
 		}
 		defer f.Close()
+		defer os.Remove(f.Name())
 		w = f
 		if filepath.Ext(path) == ".gz" {
 			gz = gzip.NewWriter(f)
-			defer gz.Close()
 			w = gz
 		}
 	}
@@ -37,7 +40,18 @@ func Write(repo *ir.Repository, path string, pretty bool) error {
 		return err
 	}
 	if gz != nil {
-		return gz.Close()
+		if err := gz.Close(); err != nil {
+			return err
+		}
+	}
+	if f != nil {
+		if err := f.Sync(); err != nil {
+			return err
+		}
+		if err := f.Close(); err != nil {
+			return err
+		}
+		return os.Rename(f.Name(), path)
 	}
 	return nil
 }

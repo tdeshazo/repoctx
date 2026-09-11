@@ -33,7 +33,8 @@ func (r *Root) Read(path string, maxBytes int64) ([]byte, error) {
 		return nil, fmt.Errorf("unsafe path")
 	}
 	p := r.path
-	for _, s := range strings.Split(path, "/") {
+	parts := strings.Split(path, "/")
+	for i, s := range parts {
 		p = filepath.Join(p, s)
 		info, e := os.Lstat(p)
 		if e != nil {
@@ -41,6 +42,9 @@ func (r *Root) Read(path string, maxBytes int64) ([]byte, error) {
 		}
 		if info.Mode()&os.ModeSymlink != 0 {
 			return nil, fmt.Errorf("symlink source denied")
+		}
+		if i == len(parts)-1 && !info.Mode().IsRegular() {
+			return nil, fmt.Errorf("source is not a regular file")
 		}
 	}
 	f, e := os.Open(p)
@@ -52,7 +56,7 @@ func (r *Root) Read(path string, maxBytes int64) ([]byte, error) {
 	if e != nil {
 		return nil, e
 	}
-	if !info.Mode().IsRegular() || maxBytes < 1 || info.Size() > maxBytes {
+	if !info.Mode().IsRegular() || maxBytes < 0 || info.Size() > maxBytes {
 		return nil, fmt.Errorf("invalid source type/size")
 	}
 	b, e := io.ReadAll(io.LimitReader(f, maxBytes+1))

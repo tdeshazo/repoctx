@@ -155,7 +155,7 @@ func importTargets(repo *ir.Repository, edge ir.Edge) []int {
 // the fixture helper implementation to use direct writes.
 var _ = os.FileMode(0)
 
-func TestGoModIsOutsideM0FreshnessScope(t *testing.T) {
+func TestGoModChangeInvalidatesM2Context(t *testing.T) {
 	root := t.TempDir()
 	write(t, root, "go.mod", "module old.example\n\ngo 1.23\n")
 	write(t, root, "main.go", "package main\nfunc Answer() {}\n")
@@ -175,19 +175,16 @@ func TestGoModIsOutsideM0FreshnessScope(t *testing.T) {
 	if id == "" {
 		t.Fatal("missing Answer symbol")
 	}
-	if _, err := Build(repo, Options{Root: root, Symbols: []string{id}, MaxBytes: 12000}); err != nil {
-		t.Fatalf("go.mod change should remain outside M0 freshness checks: %v", err)
+	if _, err := Build(repo, Options{Root: root, Symbols: []string{id}, MaxBytes: 12000}); err == nil {
+		t.Fatal("changed graph-affecting go.mod served as current")
 	}
 }
 
-func TestGoModDenyPrefixDoesNotBecomeAnUnstatedFreshnessGuarantee(t *testing.T) {
+func TestGoModDeniedCapabilityUnavailable(t *testing.T) {
 	root := t.TempDir()
 	write(t, root, "go.mod", "module old.example\n\ngo 1.23\n")
 	write(t, root, "main.go", "package main\nfunc Answer() {}\n")
-	// M0 records the current boundary: auxiliary module metadata is read for
-	// graph construction even when the source allow/deny scope excludes it.
-	// M2 must make this input caller-scoped; this test prevents documentation
-	// from accidentally claiming that M0 already does so.
+	// M2 applies caller scope before auxiliary reads, not merely before indexing.
 	repo, err := compiler.Compile(compiler.Options{Root: root, AllowPaths: []string{"main.go"}, DenyPaths: []string{"go.mod"}})
 	if err != nil {
 		t.Fatal(err)
@@ -197,5 +194,13 @@ func TestGoModDenyPrefixDoesNotBecomeAnUnstatedFreshnessGuarantee(t *testing.T) 
 	}
 	if repo.Graph == nil {
 		t.Fatal("missing graph for scoped go.mod test")
+	}
+	if repo.Inputs.GoMod.State != "unavailable" {
+		t.Fatal("denied dependency not marked unavailable")
+	}
+	for _, value := range repo.Strings {
+		if strings.Contains(value, "old.example") {
+			t.Fatal("denied module metadata leaked")
+		}
 	}
 }

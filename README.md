@@ -3,10 +3,10 @@
 `repoctx` supports index-free repository discovery and an indexed evidence
 workflow. The indexed workflow has **two outputs with different consumers**:
 
-1. **Repository IR (`repoctx.ir/v1alpha3`)**: compact Go/Python/HTML/CSS/JavaScript/TypeScript/TSX/Markdown ASTs, interned
+1. **Repository IR (`repoctx.ir/v1alpha4`)**: compact Go/Python/HTML/CSS/JavaScript/TypeScript/TSX/Markdown ASTs, interned
    strings, symbols, occurrence edges, and dense forward/reverse CSR adjacency.
    This is the reusable machine index, not the prompt.
-2. **Agent context (`repoctx.context/v1alpha2`)**: a selected, readable JSON or
+2. **Agent context (`repoctx.context/v1alpha3`)**: a selected, readable JSON or
    Markdown bundle with exact source, semantic IDs, provenance, selection
    reasons, bounded relationships, explicit omissions, and trust metadata.
    Pass this as **tool-result evidence**, not as system/developer instructions.
@@ -227,17 +227,19 @@ A digest mismatch or changed indexed source fails instead of returning stale
 snippets. Dense graph integers are snapshot-local and must not be durable agent
 memory. Semantic IDs also need re-resolution after renames or collisions.
 
-Caller-controlled file/directory prefixes can exclude content **before indexing**
-and again **before context selection and source reads**:
+Caller-controlled file/directory prefixes exclude source and auxiliary inputs
+before indexing. Explicit serving scope must match the index's compilation scope:
 
 ```sh
-./repoctx compile -root /repo -deny secrets -deny generated -o repo.ir.json.gz
+./repoctx compile -root /repo -allow services/payments \
+  -deny services/payments/private -o repo.ir.json.gz
 ./repoctx context -root /repo -query 'retry' \
   -allow services/payments -deny services/payments/private repo.ir.json.gz
 ```
 
-These flags take prefixes, not glob patterns. Deny wins. Filtering context does
-not scrub a previously created index: indexes contain source-derived literals
+These flags take prefixes, not glob patterns. Deny wins. Omit serving flags to
+use the authenticated index's declared policy; recompile for a different policy.
+Indexes contain source-derived literals
 and names and must be stored as sensitive artifacts. There is no secret scanner
 or automatic credential redaction.
 
@@ -266,11 +268,11 @@ repoctx context -root /repo -unit 'u:ID_FROM_A_PREVIOUS_BUNDLE' \
   -expect-snapshot 'sha256:PREVIOUS_SNAPSHOT' -max-units 8 /tmp/repo.ir.json.gz
 ```
 
-Units are derived in memory after permitted indexed files pass hash verification,
-not persisted in a new text cache. They do not broaden compiler file discovery
-or fix the M2 compilation-input freshness boundary. The IR remains v1alpha3.
-The context schema advances to v1alpha2: consumers must accept `units`, unit IDs
-in `seeds`, ranking components, and `query_excerpt` completeness. The
+Units are derived in memory after input verification, not persisted in a text
+cache. M2 adds a required compilation-input manifest in IR v1alpha4 and separate
+source/profile/index/task identities in context v1alpha3. Recompile older indexes.
+Consumers must also accept `units`, unit IDs in `seeds`, ranking components, and
+`query_excerpt` completeness. The
 [protocol and migration notes](docs/AGENT_CONTEXT.md) describe the contract;
 [the v1alpha1 schema](docs/context-v1alpha1.schema.json) remains for old artifacts.
 
@@ -308,7 +310,8 @@ if err != nil { return err }
 
 For an **exact model-token cap**, set both `MaxTokens` and `CountTokens` in the
 Go API. `CountTokens` must apply the target tokenizer to the final serialized
-payload. An exact cap without a callback is rejected. Approximate counts never
+payload, and `TokenizerID` must identify that implementation/version. An exact cap
+without a callback is rejected. Approximate counts never
 satisfy an exact token budget. Reserve system, tool-schema, history, wrapper and
 output tokens separately.
 
@@ -318,11 +321,19 @@ control. It does not call any model service.
 
 ## Source and trust boundaries
 
-- Source SHA-256 is checked for **every permitted indexed file**, including
-  files not selected for this turn. Changed/deleted indexed files fail.
-- This is not a Git snapshot manager. New files, ignored files and build/config
-  changes are not detected. Recompile after repository changes and use a pinned,
-  immutable worktree. Individual verified reads are not an atomic FS snapshot.
+- Default `verified-local` mode checks the declared inventory and all source and
+  auxiliary hashes, including nonselected files and absent optional `go.mod`.
+  Added/deleted/renamed/modified permitted source and `go.mod` changes fail.
+- Compilation does not honor ignore files or build tags; it records fixed directory
+  exclusions, caller scope, limits and syntax-only compiler/frontend identities.
+  Denied `go.mod` is never read; module metadata is explicitly unavailable.
+- `-consistency immutable -expect-snapshot sha256:...` reuses an authenticated
+  manifest under a caller-owned immutable-tree guarantee; source hashes still get
+  checked. Dirty/untracked permitted files count as inputs in either mode. Checks
+  are not an atomic filesystem snapshot; callers must isolate concurrent writers.
+- Compilation caps per-file bytes, total bytes across both passes, and inventory
+  entries, and atomically publishes complete file outputs. See the
+  [input and consistency contract](docs/AGENT_CONTEXT.md#replay-source-changes-and-policy).
 - A digest establishes consistency, not authenticity. The application must trust
   or authenticate the index and restrict the worktree and the executable.
 - On Linux, descriptor-relative `openat` plus `O_NOFOLLOW` rejects symlink

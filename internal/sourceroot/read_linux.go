@@ -63,7 +63,7 @@ func (r *Root) Read(path string, maxBytes int64) ([]byte, error) {
 	if !info.Mode().IsRegular() {
 		return nil, fmt.Errorf("evidence is not a regular file")
 	}
-	if maxBytes < 1 || info.Size() > maxBytes {
+	if maxBytes < 0 || info.Size() > maxBytes {
 		return nil, fmt.Errorf("source exceeds read limit")
 	}
 	b, e := io.ReadAll(io.LimitReader(f, maxBytes+1))

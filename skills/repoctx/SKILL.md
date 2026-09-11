@@ -23,9 +23,13 @@ verification requirements.
   paths. `-deny` wins, but it does not scrub an existing index.
 - `repoctx` never runs repository build or test commands. A clean index is not
   proof that a change works.
-- Recompile after repository changes. Freshness verification detects changes or
-  deletion of permitted indexed files, but not new, ignored, or build/config
-  inputs outside the index scope.
+- Default verification detects inventory/content drift in declared compilation
+  inputs, including optional `go.mod`. Excluded files and unsupported build
+  configuration remain outside the contract. Recompile on stale-input errors.
+- An explicit context allow/deny policy must match compilation; recompile a
+  separately scoped index when it differs. Omitted flags use the authenticated
+  index's policy. Never choose immutable mode merely because Git is clean: only
+  the caller can assert an isolated immutable tree and supply a snapshot pin.
 
 ## Discover without compiling
 
@@ -91,7 +95,9 @@ do not prove absence.
 
 ## Expand only when needed
 
-Context v1alpha2 also returns `units`: exact document/source extents separate
+Context v1alpha3 returns source/profile/task identities and requires an IR
+v1alpha4 compilation manifest; recompile legacy indexes. It also returns
+`units`: exact document/source extents separate
 from symbol definitions. For a paragraph, section, table, or body match, reuse
 its `u:` ID with `-unit` and the previous `-expect-snapshot`. A unit's `parent`
 ID can request its containing section/document even when that parent was not
