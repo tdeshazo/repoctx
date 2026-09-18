@@ -1,0 +1,306 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "version": {
+      "const": "repoctx.artifacts/v1alpha1"
+    },
+    "namespace": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]{0,62}(?![\\s\\S])"
+    },
+    "artifacts": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/artifact"
+      },
+      "maxItems": 1024,
+      "minItems": 0
+    },
+    "relationships": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/relationship"
+      },
+      "maxItems": 4096,
+      "minItems": 0
+    }
+  },
+  "required": [
+    "version",
+    "namespace",
+    "artifacts",
+    "relationships"
+  ],
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$comment": "Structural subset only. Runtime additionally checks byte lengths, JSON spelling/Unicode/duplicate members, local namespace, span ordering, depth, byte and aggregate limits. No source verification or authority is implied.",
+  "$defs": {
+    "path": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 4096,
+      "pattern": "^(?!.*[\\\\:\\x00-\\x1f\\x7f*?\\[\\]{}!])(?!(?:\\.|\\.\\.)(?:/|$))(?!.*\\/(?:\\.|\\.\\.)(?:/|$))[^/]+(?:/[^/]+)*(?![\\s\\S])"
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]{0,62}:[a-z][a-z0-9._-]{0,127}(?![\\s\\S])"
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}(?![\\s\\S])"
+    },
+    "span": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "path": {
+          "$ref": "#/$defs/path"
+        },
+        "sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "start_byte": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "end_byte": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "start_line": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "end_line": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "start_byte_column": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "end_byte_column": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        }
+      },
+      "required": [
+        "path",
+        "sha256",
+        "start_byte",
+        "end_byte",
+        "start_line",
+        "end_line",
+        "start_byte_column",
+        "end_byte_column"
+      ]
+    },
+    "applicability": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": [
+            "file",
+            "subtree"
+          ]
+        },
+        "path": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/path"
+            },
+            {
+              "const": "."
+            }
+          ]
+        }
+      },
+      "required": [
+        "kind",
+        "path"
+      ],
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "file"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "path": {
+                "$ref": "#/$defs/path"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "input": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "path": {
+          "$ref": "#/$defs/path"
+        },
+        "role": {
+          "type": "string",
+          "enum": [
+            "source",
+            "configuration"
+          ]
+        },
+        "required": {
+          "type": "boolean"
+        },
+        "sha256": {
+          "$ref": "#/$defs/sha256"
+        }
+      },
+      "required": [
+        "path",
+        "role",
+        "required"
+      ]
+    },
+    "artifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "kind": {
+          "type": "string",
+          "enum": [
+            "component",
+            "decision",
+            "contract",
+            "requirement",
+            "verification_obligation"
+          ]
+        },
+        "owner": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "applies_to": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/applicability"
+          },
+          "maxItems": 64,
+          "minItems": 0
+        },
+        "lifecycle": {
+          "type": "string",
+          "enum": [
+            "draft",
+            "active",
+            "deprecated",
+            "superseded",
+            "retired"
+          ]
+        },
+        "sources": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/span"
+          },
+          "maxItems": 16,
+          "minItems": 1
+        },
+        "declared_inputs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/input"
+          },
+          "maxItems": 64,
+          "minItems": 0
+        },
+        "runner_check_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]*(?![\\s\\S])"
+        }
+      },
+      "required": [
+        "id",
+        "kind",
+        "applies_to",
+        "lifecycle",
+        "sources",
+        "declared_inputs"
+      ],
+      "allOf": [
+        {
+          "if": {
+            "required": [
+              "runner_check_id"
+            ]
+          },
+          "then": {
+            "properties": {
+              "kind": {
+                "const": "verification_obligation"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "relationship": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "from": {
+          "$ref": "#/$defs/id"
+        },
+        "to": {
+          "$ref": "#/$defs/id"
+        },
+        "kind": {
+          "type": "string",
+          "enum": [
+            "contains",
+            "references",
+            "governed_by",
+            "depends_on",
+            "supersedes",
+            "verifies"
+          ]
+        },
+        "resolution": {
+          "const": "declared"
+        },
+        "sources": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/span"
+          },
+          "maxItems": 16,
+          "minItems": 1
+        }
+      },
+      "required": [
+        "from",
+        "to",
+        "kind",
+        "resolution",
+        "sources"
+      ]
+    }
+  }
+}

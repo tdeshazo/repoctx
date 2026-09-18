@@ -1,219 +1,157 @@
 # M3-01 evidence and continuation handoff
 
-Date: 2026-09-18. Iteration: 1 of 12.
-Owner: this workflow's implementation role.
-Status: **DESIGN_REWORK revised — awaiting next iteration's independent design review.**
-This is readiness for the next M3-01 step, not implementation completion or
-independent review approval. No code, schema implementation or roadmap checkbox
-changes are authorized in this iteration. No blocker prevents design review.
+Date: 2026-09-18. Owner: this workflow's implementation role.
+Design verdict: **accepted for implementation**, from the supplied independent
+review of `252686b`. Completion verdict: **not accepted; leave M3-01 unchecked**
+until independent implementation/evidence review. M3-02–M3-05 remain deferred.
+No material wire-contract change was made; any future material change must return
+through design review before implementation.
 
-## Exact scope
+## Scope and revisions
 
-The selected item in [ROADMAP.md](../../ROADMAP.md) remains unchecked:
+Entry HEAD: `252686b` (`docs(m3-01): clarify input claims and resource evidence`).
+That revision contained only two Markdown documents. Its previous design-rework
+status is superseded by the supplied review, not by a self-issued design approval.
+Earlier prerequisite baseline: `69df7f840fa1c74212166bc64302c1b8c5e55333` (M2).
 
-> **M3-01 — Define a minimal optional artifact schema.** Support stable IDs,
-> artifact kind, owner, applicability, lifecycle, source spans, declared inputs,
-> and relationships. Start with components, decisions, contracts, requirements,
-> and verification obligations. Preserve the ordinary source-only workflow.
+The implementing revision is the commit containing the new `pkg/artifacts`
+package and this handoff, titled `feat(artifacts): implement bounded declaration
+contract`. Its exact hash will be recorded below after committing. This report
+is persisted before the subsequent baseline-runner tool step. No implementation
+was present at entry; all implementation evidence below is from this iteration.
 
-Read M3's work and acceptance gates, the cross-cutting gates in section 11 and
-execution rules in section 13. M3-02 through M3-05 remain out of scope, including
-authority resolution, grounded adapters, obligation retrieval and dogfooding.
-The roadmap YAML is illustrative, not an existing parser/API contract.
+Reviewed scope: standalone `repoctx.artifacts/v1alpha1` model, strict bounded
+`Decode([]byte, Limits)`, Draft 2020-12 schema subset, API documentation,
+independent fixtures, decoder/schema tests, and source-only regression tests.
+The Go API and file locations were implementation choices explicitly left open
+by the accepted design. No new module dependency was added.
 
-## Baseline and pre-existing work
+No repository or ancestor AGENTS.md applies. Go routing, style, error handling,
+documentation and conventional-commit skills were used. The referenced optional
+Go testing skill was not installed; no skill-specific test result is claimed.
+The final diff was reviewed locally against the accepted contract; independent
+implementation review is still pending.
 
-Inspection baseline: `69df7f840fa1c74212166bc64302c1b8c5e55333`
-(`feat(snapshot)!: implement M2 compilation-input consistency`). This differs
-from the roadmap's original planning baseline
-`6c303125e2a7864f944dc7e83716518fb3bb24a6`.
+Preserved pre-existing untracked files: `docs/workflows/next-roadmap-item.md` and
+`next-roadmap-item.yaml`. They are excluded from commits. ROADMAP.md, existing
+IR/context schemas, source compilation, context production, CLI, Python launcher,
+and the baseline runner are unchanged.
 
-Initial `git status --porcelain=v1 --untracked-files=all`:
+## Finding dispositions
 
-```text
-?? docs/workflows/next-roadmap-item.md
-?? next-roadmap-item.yaml
-```
-
-There were no tracked modifications. Preserve both pre-existing untracked files;
-neither is an instruction to expand this task. Neither this report nor
-`docs/design/m3-01-artifact-schema.md` existed, so there was no unfinished M3-01
-artifact to recover. Recent commits also include `ef2a40c` (M1), `6cee74f`
-(discovery), `e915946` (M0) and `f6bf293` (roadmap).
-
-No AGENTS.md was found in the repository (including hidden paths) or along the
-workspace's ancestor chain through `/`. Read the `golang-how-to` routing skill
-and applied `golang-documentation` to this bounded design-document task. No Go
-code or exported Go names are being introduced.
-
-## Prerequisite evidence inspected
-
-The roadmap records M0–M2 work and acceptance gates as complete. The following
-retained artifacts support proceeding with design. They are historical evidence;
-this iteration does not certify a fresh baseline or independently rerun replays.
-
-| Prerequisite | Evidence inspected | Result and limitation |
+| Supplied finding | Implementation and evidence | Disposition |
 | --- | --- | --- |
-| M0 | [baseline contract](../M0_BASELINE.md), [JSON report](m0-baseline.json) | Report has 17/17 passing commands, zero failures, clean temporary revision `3a0b7378c5ab9ae7f05a41c04eef081e281f06cc`, toolchains/platform and tree digest. Its original fixture inventory predates the current v2 corpus. |
-| M1 | [replay](../../evals/runs/m1-retrieval-20260910.json), [tests](../../pkg/agentctx/m1_test.go), [consolidated report](mothership-repoctx-codex-exec-comparison.md) | 12 distinct fixtures; after JSON and Markdown each cover 10/10 answerable tasks and 15/15 spans within budgets. Before: 4/10 tasks and 8/15 spans. Artifact records working-tree changes above `6cee74fe431e414d9768676da95331bb81ca4852`, not a clean final M1 revision. |
-| M2 | [replay](../../evals/runs/m2-inputs-retrieval-20260910.json), [compiler tests](../../pkg/compiler/inputs_test.go), [context tests](../../pkg/agentctx/m2_test.go), consolidated report above | Both conditions retain 10/10 tasks and 15/15 spans in each format within budgets. Artifact records working-tree changes above `ef2a40cd0470c677e4d5908c1b4f5c77258b5b69`. Tests cover drift, scope, identities, bounded reads and publication; their presence is not a fresh pass. |
+| Missing stable model, five kinds, owner, lifecycle | `pkg/artifacts/types.go`; shared `testdata/claims.json`; `TestRoundTripClaims` retains duplicate IDs and stable identity through moved/edited provenance; every kind/lifecycle round-trips, owner remains optional | Implemented; pending independent review |
+| Missing applicability/path enforcement and no-read evidence | `validPath`, strict file/subtree claims and root subtree; `TestPathsAndEnums`; Linux inotify watches actual declared-file accesses, including unavailable and mode-000 input claims | Implemented; no observed access |
+| Missing exact-span fixtures | `TestIndependentSourceCoordinates` independently checks literal UTF-8 bytes, full SHA-256, disjoint slices, CRLF, EOF with/without final LF, and expected coordinates; deliberately inconsistent unverified claims remain structurally accepted | Implemented; source verification stays deferred |
+| Optionality/round trips and ordered duplicates | Pointer optionals, required arrays and booleans; `TestRoundTripClaims` and `TestInputDesignVariantsAndUnresolvedClaims` preserve all five reviewed input entries and independent pin/role/requiredness conflicts, duplicate edges and cycles | Implemented; no authority resolution |
+| Missing malformed-input rejection | Bounded syntax scan, surrogate validation, exact-case closed object shape, integer spelling/range and semantic constraints; `TestStrictJSON`, nested missing/null/type cases, path/enum/input variants, Python schema negatives | Implemented; whole-document rejection |
+| Missing resource evidence | Production reader/tokenizer/validator tests in `limits_test.go`; layered evidence below; every reader rejection helper requires nil catalog and diagnostic at most 256 bytes | Implemented; masked limits explicitly distinguished |
+| Missing source-only compatibility evidence | `TestArtifactLikeMetadataDoesNotActivateCatalog` compares serialized IR and context before/after invalid artifact-like JSON files at three plausible names | Pass; no automatic activation |
+| Artifact trust/non-execution missing | Byte-only public API; no filesystem or process package in production artifact code; Linux access watch and executable check-ID marker test | Pass on Linux; no source grounding or execution claim |
 
-The replay JSON was parsed and only metadata/summaries printed; oversized trial
-payloads were not dumped. Binary hashes and trial payloads remain in the original
-artifacts. No agent-outcome, latency or generalization claim follows from these
-small retrieval fixtures. M2 verified-local mode detects observed drift and is
-not an atomic filesystem snapshot; portable race resistance remains limited.
+`docs/artifacts.schema.json` is a documented structural subset, not a replacement
+for decoder checks. Runtime additionally enforces duplicate keys, Unicode escape
+validity, integer spelling, UTF-8 byte lengths, envelope namespace equality, span
+ordering, depth/bytes and combined counters. JSON Schema regex end anchors reject
+terminal newlines. Existing closed IR/context contracts remain unchanged.
 
-## Current contracts and reconciliation
+## Targeted checks and outcomes
 
-Inspected [IR documentation](../IR.md), [context contract](../AGENT_CONTEXT.md),
-the current and historical JSON schemas, and these implementation surfaces:
-`pkg/ir/ir.go`, `pkg/ir/inputs.go`, `pkg/compiler/compiler.go`,
-`pkg/compiler/inputs.go`, `pkg/compiler/io.go`, `pkg/agentctx/types.go`,
-`pkg/agentctx/build.go` and `pkg/agentctx/source.go`.
+All commands below ran from the repository root; no assertions or accepted
+criteria were weakened. No failed targeted check was hidden or skipped.
 
-Current IR is `repoctx.ir/v1alpha4` with required compilation inputs; context is
-`repoctx.context/v1alpha3` with source/profile/task identities. Discovery remains
-`repoctx.discovery/v1alpha1`. All current top-level schemas reject extra fields.
-Historical IR v1alpha3 and context v1alpha1/v1alpha2 schemas remain available.
-`Build` explicitly requires IR v1alpha4. Compiler inputs currently account for
-supported source inventory and root `go.mod`; they are not an arbitrary catalog
-loader. Span coordinates are physical, byte-based and end-exclusive.
+- `go test ./pkg/artifacts ./pkg/agentctx`: exit 0, including the final additional
+  EOF, mode-000 dependency and lower-counter fixtures.
+- `go test -race ./pkg/artifacts ./pkg/agentctx`: exit 0 before the final test-only
+  additions; the subsequent baseline will rerun the full race suite.
+- `go test ./pkg/artifacts -run '^$' -fuzz FuzzDecode -fuzztime 10s -parallel 2`:
+  exit 0, 77,617 executions, 110 newly interesting inputs; no crash, partial result,
+  oversized diagnostic or unstable accepted round trip found. This bounded run
+  is not an exhaustive proof.
+- `/tmp/repoctx-m3-venv/bin/python -m unittest discover -s tests -p
+  test_artifacts_schema.py -v`: exit 0, 4 tests; schema validity, shared positive
+  declarations, required/closed fields, paths, types and enums checked.
+- `go test ./pkg/artifacts -run
+  'TestReaderResourceBoundaries|TestIsolatedProductionCountersAndMaskedReader|TestScalarBoundaries'
+  -v`: exit 0. Verbose local log: `/tmp/repoctx-m3-resources.log`; durable test cases
+  and summarized observations below are the reproducible evidence.
+- Initial `git diff --cached --check`: flagged the deliberate CRLF in the exact
+  source-byte fixture. Added a file-specific `.gitattributes` entry preserving
+  raw bytes (`-text`) and recognizing CR-at-EOL while retaining default whitespace
+  checks. The exact-byte/hash assertions were unchanged. Final staged whitespace
+  check and local scope review passed before committing.
 
-Known documentation discrepancy: lower sections of `docs/IR.md` still say new
-files/configuration are not detected and describe serving version 3. Those
-paragraphs predate M2 and conflict with its header, current schemas,
-`agentctx.Build`, `compiler.LoadInputs` and the M2 context migration contract.
-Use the latter for this design. No unrelated contract documentation was edited.
-Historical M0 limitations likewise describe M0, not current M2 behavior.
+## Layered resource observations
 
-## Plan and acceptance criteria
+All listed pairs passed their asserted expected acceptance/rejection. Counts are
+inclusive. Zero API limits select ceilings; negative/above-ceiling limits fail.
+Allocations based on wire content occur only after the 1 MiB byte guard. Syntax
+scanning enforces depth before shape decoding, whose allocations remain bounded
+by that input cap. No public structural-only bypass is exposed.
 
-1. Establish the baseline, preserve existing work and confirm prerequisite
-   records — done by source/report inspection above.
-2. Define the additive public contract before implementation — drafted in the
-   [design record](../design/m3-01-artifact-schema.md).
-3. Check design completeness and handoff consistency — checked against the
-   requested fields, trust boundaries, compatibility and test matrix.
-4. Next iteration: review the design, settle implementation locations, implement
-   only the M3-01 structural contract when authorized, and retain test evidence.
-   Do not select another roadmap item on resume.
+| Layer / configured limit | Accepted observation | Rejected observation / actual reason |
+| --- | --- | --- |
+| Reader bytes / 1,048,576 | Empty envelope padded to 1,048,576 bytes | 1,048,577 bytes: byte limit |
+| Reader bytes / 90 | 90-byte envelope | 91 bytes: byte limit |
+| Reader artifacts / 1024 | 1024, 296,025 bytes | 1025, 296,314 bytes: artifacts count |
+| Reader applicability / 64 | 64, 2,297 bytes | 65, 2,327 bytes: applies_to count |
+| Reader inputs / 64 | 64, 3,321 bytes | 65, 3,367 bytes: declared_inputs count |
+| Reader artifact sources / 16 | 16, 3,183 bytes | 17, 3,370 bytes: sources count |
+| Reader relationship sources / 16 | 16, 3,449 bytes | 17, 3,636 bytes: sources count |
+| Reader relationships / caller 2 | 2 relationships | 3, 1,178 bytes: relationships count |
+| Reader combined entries / caller 2 | One source plus one input | One source plus two inputs, 469 bytes: nested_entries count |
+| Reader other counters / caller 1 | One artifact/applicability/input/source | Two of the selected kind: corresponding count |
+| Reader depth / caller 5 then 4 | Same valid depth-5 catalog | At limit 4: depth limit |
+| Isolated production validator / 4096 relationships | 4096 | 4097: relationships count |
+| Isolated production validator / 16384 nested entries | 1024 artifacts with 16 sources each | Add one input: nested_entries count |
+| Isolated production tokenizer / depth 16 | 16 open arrays | 17: depth limit |
+| Reader masked relationships | No accepted hard-boundary claim | 4096 minimal edges, 1,093,721 bytes: byte limit |
+| Reader masked aggregate | No accepted hard-boundary claim | 16,384 sources, 3,168,345 bytes: byte limit |
+| Reader shape-invalid depth fixtures | No accepted-catalog claim | Depth 16, 33 bytes: expected object; depth 17, 35 bytes: depth limit |
+| Reader scalar lengths | namespace 63, local ID 128, owner 256 UTF-8 bytes, check ID 256 ASCII bytes, path 4096 UTF-8 bytes | One more and empty values: corresponding grammar/length error |
+| Reader coordinate range | 9,007,199,254,740,991 | One more in end byte/line/column: integer range; zero lines: positive-line rule |
 
-The design specifies stable namespaced IDs, five initial kinds, optional claimed
-owner, explicit file/subtree applicability, lifecycle claims, exact source spans,
-declared inputs and source-grounded relationship declarations. It specifies
-required/optional fields, strict versions/unknown fields, malformed-input
-handling, bounded decoding and source-only behavior. It separates structural
-acceptance from source verification and later effective authority. No commands,
-scope grants or verification-result fields are introduced.
+Source/hash minimum, wrong digest spellings, forbidden paths, malformed optional
+fields, bounds and integer spelling are covered separately from resource counters.
+The 60,102-byte unknown-member diagnostic test does not echo its secret name/value.
+Syntax errors identify container ordinals, while structural errors use trusted
+field/index paths; neither includes arbitrary repository strings.
 
-Compatibility decision: standalone proposed `repoctx.artifacts/v1alpha1`; no
-existing IR/context changes, migration, automatic manifest discovery, new cache
-or catalog enrichment. Later integration must separately review input/generation
-identity and wire versions. The design includes a positive/negative test matrix;
-none of those future tests are represented as executed.
+## Toolchains, dependencies and next direct baseline step
 
-## Validation and remaining work
+Go: `go1.27.0-X:nodwarf5 linux/amd64`. C: GCC `16.2.1 20260810`.
+Native parser dependencies compiled successfully in targeted tests. Default Python
+is 3.14. Initially it lacked pip/build; this was a prerequisite gap, not a product
+failure. Required packages were installed first in `/tmp/repoctx-m3-venv`, then
+into the user's Python site-packages so direct `python3` works without activation.
+Versions: build 1.6.1, jsonschema 4.26.0, pip 26.2.1, setuptools 84.0.0, wheel 0.48.0.
+No system-owned package files or dependency requirements were changed.
 
-This iteration's checks: inspected Git status/history; parsed retained report
-JSON and schema metadata; inspected relevant APIs/test cases; checked new-document
-relative links, exact roadmap item wording, whitespace and unchanged tracked
-files. No full Go/Python test suite was run for these two documentation additions.
+Next command, using the existing runner directly:
 
-Files created: this handoff and the design record only. The pre-existing workflow
-files and ROADMAP.md remain unchanged. No new implementing revision exists yet.
-
-Remaining evidence before checking M3-01: independent design review, implemented
-schema/structural decoder, accepted and rejected fixtures, resource-limit and
-source-only regression results, and an implementing revision. These are planned
-work, not a current environmental blocker. M3-02 duplicate/reference/conflict
-diagnostics and every other M3 item remain deferred.
-
-## DESIGN_REWORK continuation (2026-09-18)
-
-The supplied independent review requested two changes: define true/false
-input dependency claims and duplicate-path wire behavior; replace impossible
-reader-only resource boundary coverage with achievable layered evidence.
-The design now defines necessary versus optional claimed dependencies, preserves
-all repeated inputs (including conflicting pins, roles and requiredness), and
-embeds a five-entry JSON design fixture plus positive/negative variants.
-Resource evidence now separates reachable reader boundaries, lower caller-limit
-pairs, isolated production validator/tokenizer pairs, and masked rejections.
-
-Review disposition: revised for re-review, **not accepted**. Next iteration must
-obtain independent design acceptance before implementing M3-01. No implementation,
-schema, implementation test files, M3-02–M3-05 features, or checkbox changes were made.
-Existing source-only regression and conformance requirements remain outstanding;
-historical evidence and its limitations above are unchanged. No migration is
-needed for this documentation revision; the proposed standalone version and
-future integration restrictions remain unchanged.
-
-At entry, both this report and the design were already untracked handoff files.
-Their historical iteration-1 account above is retained. The other untracked files
-were `docs/workflows/next-roadmap-item.md` and `next-roadmap-item.yaml`; preserve
-them outside this commit. Baseline HEAD remains `69df7f840fa1c74212166bc64302c1b8c5e55333`.
-No repository or ancestor AGENTS.md applies. Documentation and conventional-commit
-skills apply to this bounded revision. No external blocker was found.
-
-Validation commands, outcomes and revision are recorded below. Design JSON and
-size calculations are documentation checks only, not implementation conformance.
-
-### Revision checks
-
-- `git status --porcelain=v1 --untracked-files=all` and
-  `git log -1 --format='%H %s'`: exit 0; four untracked files, baseline above.
-- Repository/ancestor instruction search and roadmap sections 7, 11, 13
-  inspection: exit 0; no applicable AGENTS.md; M3-01 remains unchecked.
-- Initial `python3 - <<'PY'` documentation check: exit 1 before Python ran;
-  sandbox could not create the shell here-document temporary file. Retried with
-  approved filesystem escalation: exit 0. Parsed five fixture entries, checked
-  independent duplicate/conflict cases and pin lengths, verified all relative
-  links and trailing whitespace, and reproduced 1,093,721 bytes. No persistent
-  blocker or code change resulted.
-
-Reproducible compact check (run from repository root; stdout is the artifact):
-
-```python
-import json, re
-from pathlib import Path
-p = Path("docs/design/m3-01-artifact-schema.md")
-entries = json.loads(re.search(r"```json\n(.*?)\n```", p.read_text(), re.S)[1])
-assert len(entries) == 5 and entries[0] == entries[1]
-for index, field in [(2, "sha256"), (3, "role"), (4, "required")]:
-    assert entries[index][field] != entries[0][field]
-assert all(re.fullmatch("[0-9a-f]{64}", x["sha256"]) for x in entries)
-span = dict(path="a", sha256="0" * 64, start_byte=0, end_byte=1,
-            start_line=1, end_line=1, start_byte_column=0, end_byte_column=1)
-edge = {"from": "a:a", "to": "a:a", "kind": "contains",
-        "resolution": "declared", "sources": [span]}
-wire = json.dumps(dict(version="repoctx.artifacts/v1alpha1", namespace="a",
-                       artifacts=[], relationships=[edge] * 4096),
-                  separators=(",", ":")).encode()
-assert len(wire) == 1093721 and len(wire) > 1048576
-for file in [p, Path("docs/reports/m3-01-evidence.md")]:
-    text = file.read_text()
-    assert text.endswith("\n")
-    assert all(line == line.rstrip() for line in text.splitlines())
-    for target in re.findall(r"\]\(([^)]+)\)", text):
-        if "://" not in target:
-            assert (file.parent / target.split("#")[0]).exists(), target
-print("PASS: design fixtures, 1093721-byte catalog, relative links, whitespace")
+```sh
+python3 scripts/m0_baseline.py --output /tmp/repoctx-m3-baseline.json
 ```
 
-Run the retained check with:
-`python3 -c 'import pathlib,re; s=pathlib.Path("docs/reports/m3-01-evidence.md").read_text(); exec(re.search(r"```python\n(.*?)\n```",s,re.S)[1])'`.
+At this pre-run handoff, full baseline results are **pending**, not inferred from
+schema/targeted passes. The runner itself is unchanged and unavailable checks must
+remain failures. The implementing hash and actual baseline outcome will be
+appended after the command. No external blocker is currently established.
 
-No Go tests, schema conformance tests or source-only regressions were run:
-implementation is explicitly deferred by DESIGN_REWORK. The two Markdown files
-are the only revision artifacts. The design-only commit is identifiable with
-`git log -1 --format=%H -- docs/design/m3-01-artifact-schema.md` immediately after
-this handoff commit; it is not an implementing revision. An implementing revision
-and independent design acceptance remain outstanding.
+## Pending work and retained limitations
 
-The retained compact check above ran with exit 0 and printed
-`PASS: design fixtures, 1093721-byte catalog, relative links, whitespace`.
-`git diff --cached --check` exited 0. The full staged diff was inspected with
-`git diff --cached -- docs/design/m3-01-artifact-schema.md docs/reports/m3-01-evidence.md`
-(exit 0); only these two documentation files were staged. Inspection corrected
-the depth example to five containers: root, envelope array, record, source array,
-source object. This depth is accepted at caller limit 5 and rejected at limit 4.
+Independent review must evaluate the implementing revision and this evidence;
+M3-01 must remain unchecked. M3-02 duplicate/reference/conflict resolution,
+M3-03 grounded adapters, M3-04 obligation selection/results and M3-05 dogfooding
+remain out of scope. Exact-byte verification against caller-authorized files is
+not performed by structural decoding. Namespace uniqueness and historical ID
+non-reuse cannot be proved here. Lower caller limits do not grant authority.
+
+Prior M0–M2 evidence remains historical: M0 recorded 17 passing commands; M1/M2
+replay reports recorded 10/10 answerable tasks and 15/15 spans within budgets.
+Those small retrieval fixtures do not establish agent outcomes, performance or
+generalization. M2 verified-local mode is not an atomic filesystem snapshot and
+portable race resistance remains limited. Earlier documentation discrepancies in
+lower `docs/IR.md` sections remain unrelated, unedited work; current contracts
+and code take precedence. No pre-existing external blocker was supplied or lost.

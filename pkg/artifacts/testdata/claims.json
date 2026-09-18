@@ -1,0 +1,463 @@
+{
+  "version": "repoctx.artifacts/v1alpha1",
+  "namespace": "demo",
+  "artifacts": [
+    {
+      "id": "demo:stable",
+      "kind": "component",
+      "applies_to": [
+        {
+          "kind": "subtree",
+          "path": "."
+        },
+        {
+          "kind": "file",
+          "path": "docs/é.txt"
+        }
+      ],
+      "lifecycle": "draft",
+      "sources": [
+        {
+          "path": "docs/original.txt",
+          "sha256": "a6c1fe91a626133737d0a052d9366c9d80a5314fe8f51bc13c306c813cf86f27",
+          "start_byte": 1,
+          "end_byte": 3,
+          "start_line": 1,
+          "end_line": 1,
+          "start_byte_column": 1,
+          "end_byte_column": 3
+        },
+        {
+          "path": "docs/original.txt",
+          "sha256": "a6c1fe91a626133737d0a052d9366c9d80a5314fe8f51bc13c306c813cf86f27",
+          "start_byte": 5,
+          "end_byte": 10,
+          "start_line": 2,
+          "end_line": 3,
+          "start_byte_column": 0,
+          "end_byte_column": 0
+        }
+      ],
+      "declared_inputs": [
+        {
+          "path": "config.json",
+          "role": "source",
+          "required": true,
+          "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+        },
+        {
+          "path": "config.json",
+          "role": "source",
+          "required": true,
+          "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+        },
+        {
+          "path": "config.json",
+          "role": "source",
+          "required": true,
+          "sha256": "1111111111111111111111111111111111111111111111111111111111111111"
+        },
+        {
+          "path": "config.json",
+          "role": "configuration",
+          "required": true,
+          "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+        },
+        {
+          "path": "config.json",
+          "role": "source",
+          "required": false,
+          "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+        }
+      ]
+    },
+    {
+      "id": "demo:stable",
+      "kind": "decision",
+      "applies_to": [
+        {
+          "kind": "subtree",
+          "path": "."
+        },
+        {
+          "kind": "file",
+          "path": "docs/é.txt"
+        }
+      ],
+      "lifecycle": "active",
+      "sources": [
+        {
+          "path": "docs/original.txt",
+          "sha256": "a6c1fe91a626133737d0a052d9366c9d80a5314fe8f51bc13c306c813cf86f27",
+          "start_byte": 1,
+          "end_byte": 3,
+          "start_line": 1,
+          "end_line": 1,
+          "start_byte_column": 1,
+          "end_byte_column": 3
+        },
+        {
+          "path": "docs/original.txt",
+          "sha256": "a6c1fe91a626133737d0a052d9366c9d80a5314fe8f51bc13c306c813cf86f27",
+          "start_byte": 5,
+          "end_byte": 10,
+          "start_line": 2,
+          "end_line": 3,
+          "start_byte_column": 0,
+          "end_byte_column": 0
+        }
+      ],
+      "declared_inputs": [
+        {
+          "path": "config.json",
+          "role": "source",
+          "required": true,
+          "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+        },
+        {
+          "path": "config.json",
+          "role": "source",
+          "required": true,
+          "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+        },
+        {
+          "path": "config.json",
+          "role": "source",
+          "required": true,
+          "sha256": "1111111111111111111111111111111111111111111111111111111111111111"
+        },
+        {
+          "path": "config.json",
+          "role": "configuration",
+          "required": true,
+          "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+        },
+        {
+          "path": "config.json",
+          "role": "source",
+          "required": false,
+          "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+        }
+      ]
+    },
+    {
+      "id": "demo:stable",
+      "kind": "contract",
+      "applies_to": [
+        {
+          "kind": "subtree",
+          "path": "."
+        },
+        {
+          "kind": "file",
+          "path": "docs/é.txt"
+        }
+      ],
+      "lifecycle": "deprecated",
+      "sources": [
+        {
+          "path": "docs/original.txt",
+          "sha256": "a6c1fe91a626133737d0a052d9366c9d80a5314fe8f51bc13c306c813cf86f27",
+          "start_byte": 1,
+          "end_byte": 3,
+          "start_line": 1,
+          "end_line": 1,
+          "start_byte_column": 1,
+          "end_byte_column": 3
+        },
+        {
+          "path": "docs/original.txt",
+          "sha256": "a6c1fe91a626133737d0a052d9366c9d80a5314fe8f51bc13c306c813cf86f27",
+          "start_byte": 5,
+          "end_byte": 10,
+          "start_line": 2,
+          "end_line": 3,
+          "start_byte_column": 0,
+          "end_byte_column": 0
+        }
+      ],
+      "declared_inputs": [
+        {
+          "path": "config.json",
+          "role": "source",
+          "required": true,
+          "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+        },
+        {
+          "path": "config.json",
+          "role": "source",
+          "required": true,
+          "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+        },
+        {
+          "path": "config.json",
+          "role": "source",
+          "required": true,
+          "sha256": "1111111111111111111111111111111111111111111111111111111111111111"
+        },
+        {
+          "path": "config.json",
+          "role": "configuration",
+          "required": true,
+          "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+        },
+        {
+          "path": "config.json",
+          "role": "source",
+          "required": false,
+          "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+        }
+      ]
+    },
+    {
+      "id": "demo:stable",
+      "kind": "requirement",
+      "applies_to": [
+        {
+          "kind": "subtree",
+          "path": "."
+        },
+        {
+          "kind": "file",
+          "path": "docs/é.txt"
+        }
+      ],
+      "lifecycle": "superseded",
+      "sources": [
+        {
+          "path": "docs/original.txt",
+          "sha256": "a6c1fe91a626133737d0a052d9366c9d80a5314fe8f51bc13c306c813cf86f27",
+          "start_byte": 1,
+          "end_byte": 3,
+          "start_line": 1,
+          "end_line": 1,
+          "start_byte_column": 1,
+          "end_byte_column": 3
+        },
+        {
+          "path": "docs/original.txt",
+          "sha256": "a6c1fe91a626133737d0a052d9366c9d80a5314fe8f51bc13c306c813cf86f27",
+          "start_byte": 5,
+          "end_byte": 10,
+          "start_line": 2,
+          "end_line": 3,
+          "start_byte_column": 0,
+          "end_byte_column": 0
+        }
+      ],
+      "declared_inputs": [
+        {
+          "path": "config.json",
+          "role": "source",
+          "required": true,
+          "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+        },
+        {
+          "path": "config.json",
+          "role": "source",
+          "required": true,
+          "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+        },
+        {
+          "path": "config.json",
+          "role": "source",
+          "required": true,
+          "sha256": "1111111111111111111111111111111111111111111111111111111111111111"
+        },
+        {
+          "path": "config.json",
+          "role": "configuration",
+          "required": true,
+          "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+        },
+        {
+          "path": "config.json",
+          "role": "source",
+          "required": false,
+          "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+        }
+      ]
+    },
+    {
+      "id": "demo:stable",
+      "kind": "verification_obligation",
+      "applies_to": [
+        {
+          "kind": "subtree",
+          "path": "."
+        },
+        {
+          "kind": "file",
+          "path": "docs/é.txt"
+        }
+      ],
+      "lifecycle": "retired",
+      "sources": [
+        {
+          "path": "docs/original.txt",
+          "sha256": "a6c1fe91a626133737d0a052d9366c9d80a5314fe8f51bc13c306c813cf86f27",
+          "start_byte": 1,
+          "end_byte": 3,
+          "start_line": 1,
+          "end_line": 1,
+          "start_byte_column": 1,
+          "end_byte_column": 3
+        },
+        {
+          "path": "docs/original.txt",
+          "sha256": "a6c1fe91a626133737d0a052d9366c9d80a5314fe8f51bc13c306c813cf86f27",
+          "start_byte": 5,
+          "end_byte": 10,
+          "start_line": 2,
+          "end_line": 3,
+          "start_byte_column": 0,
+          "end_byte_column": 0
+        }
+      ],
+      "declared_inputs": [
+        {
+          "path": "config.json",
+          "role": "source",
+          "required": true,
+          "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+        },
+        {
+          "path": "config.json",
+          "role": "source",
+          "required": true,
+          "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+        },
+        {
+          "path": "config.json",
+          "role": "source",
+          "required": true,
+          "sha256": "1111111111111111111111111111111111111111111111111111111111111111"
+        },
+        {
+          "path": "config.json",
+          "role": "configuration",
+          "required": true,
+          "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+        },
+        {
+          "path": "config.json",
+          "role": "source",
+          "required": false,
+          "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+        }
+      ],
+      "runner_check_id": "bin/check",
+      "owner": "team é"
+    }
+  ],
+  "relationships": [
+    {
+      "from": "demo:stable",
+      "to": "external:missing",
+      "kind": "contains",
+      "resolution": "declared",
+      "sources": [
+        {
+          "path": "docs/original.txt",
+          "sha256": "a6c1fe91a626133737d0a052d9366c9d80a5314fe8f51bc13c306c813cf86f27",
+          "start_byte": 1,
+          "end_byte": 3,
+          "start_line": 1,
+          "end_line": 1,
+          "start_byte_column": 1,
+          "end_byte_column": 3
+        }
+      ]
+    },
+    {
+      "from": "demo:stable",
+      "to": "external:missing",
+      "kind": "references",
+      "resolution": "declared",
+      "sources": [
+        {
+          "path": "docs/original.txt",
+          "sha256": "a6c1fe91a626133737d0a052d9366c9d80a5314fe8f51bc13c306c813cf86f27",
+          "start_byte": 1,
+          "end_byte": 3,
+          "start_line": 1,
+          "end_line": 1,
+          "start_byte_column": 1,
+          "end_byte_column": 3
+        }
+      ]
+    },
+    {
+      "from": "demo:stable",
+      "to": "external:missing",
+      "kind": "governed_by",
+      "resolution": "declared",
+      "sources": [
+        {
+          "path": "docs/original.txt",
+          "sha256": "a6c1fe91a626133737d0a052d9366c9d80a5314fe8f51bc13c306c813cf86f27",
+          "start_byte": 1,
+          "end_byte": 3,
+          "start_line": 1,
+          "end_line": 1,
+          "start_byte_column": 1,
+          "end_byte_column": 3
+        }
+      ]
+    },
+    {
+      "from": "demo:stable",
+      "to": "external:missing",
+      "kind": "depends_on",
+      "resolution": "declared",
+      "sources": [
+        {
+          "path": "docs/original.txt",
+          "sha256": "a6c1fe91a626133737d0a052d9366c9d80a5314fe8f51bc13c306c813cf86f27",
+          "start_byte": 1,
+          "end_byte": 3,
+          "start_line": 1,
+          "end_line": 1,
+          "start_byte_column": 1,
+          "end_byte_column": 3
+        }
+      ]
+    },
+    {
+      "from": "demo:stable",
+      "to": "external:missing",
+      "kind": "supersedes",
+      "resolution": "declared",
+      "sources": [
+        {
+          "path": "docs/original.txt",
+          "sha256": "a6c1fe91a626133737d0a052d9366c9d80a5314fe8f51bc13c306c813cf86f27",
+          "start_byte": 1,
+          "end_byte": 3,
+          "start_line": 1,
+          "end_line": 1,
+          "start_byte_column": 1,
+          "end_byte_column": 3
+        }
+      ]
+    },
+    {
+      "from": "demo:stable",
+      "to": "external:missing",
+      "kind": "verifies",
+      "resolution": "declared",
+      "sources": [
+        {
+          "path": "docs/original.txt",
+          "sha256": "a6c1fe91a626133737d0a052d9366c9d80a5314fe8f51bc13c306c813cf86f27",
+          "start_byte": 1,
+          "end_byte": 3,
+          "start_line": 1,
+          "end_line": 1,
+          "start_byte_column": 1,
+          "end_byte_column": 3
+        }
+      ]
+    }
+  ]
+}

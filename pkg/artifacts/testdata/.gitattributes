@@ -1,0 +1,2 @@
+# Preserve exact provenance bytes; CRLF is deliberate in this fixture.
+source.txt -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol

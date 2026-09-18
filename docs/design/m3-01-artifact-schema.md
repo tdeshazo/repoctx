@@ -1,12 +1,13 @@
 # M3-01: minimal optional artifact contract
 
-Status: revised after DESIGN_REWORK; awaiting independent design review.
-No supported schema or API yet.
+Status: accepted for implementation by the supplied independent review of
+`252686b`. M3-01 completion is not accepted; implementation evidence must be
+reviewed separately. See the current [handoff](../reports/m3-01-evidence.md).
 Date: 2026-09-18. Owner: this workflow's implementation role.
 Baseline: `69df7f840fa1c74212166bc64302c1b8c5e55333`.
 Prerequisites: recorded M0, M1 and M2 completion, inspected as described in the
-[evidence handoff](../reports/m3-01-evidence.md). Independent design review and
-implementation evidence remain outstanding. This document does not complete M3.
+[evidence handoff](../reports/m3-01-evidence.md). Design acceptance is recorded;
+independent review of implementation evidence remains outstanding. This document does not complete M3.
 
 ## Decision and scope
 
@@ -282,7 +283,8 @@ The next M3-01 implementation would add a standalone schema, a bounded decoder
 and structural validator, documentation and fixtures in locations selected after
 review. Existing `pkg/ir.Repository`, `compiler.Compile`/`Read`/`LoadInputs`,
 `agentctx.Build`, selection/rendering, CLI, Python launcher and source-root access
-need no change. This iteration changes only this design and its evidence handoff.
+need no change. The original design iteration changed only this document and its
+evidence handoff.
 
 ## Acceptance matrix for the next implementation
 
