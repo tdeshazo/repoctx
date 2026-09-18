@@ -301,10 +301,11 @@ contracts before committing to package names or a manifest filename.
 
 ### Work
 
-- [ ] **M3-01 — Define a minimal optional artifact schema.** Support stable IDs,
+- [x] **M3-01 — Define a minimal optional artifact schema.** Support stable IDs,
   artifact kind, owner, applicability, lifecycle, source spans, declared inputs,
   and relationships. Start with components, decisions, contracts, requirements,
   and verification obligations. Preserve the ordinary source-only workflow.
+  Evidence: [accepted M3-01 contract and final review](docs/reports/m3-01-evidence.md).
 - [ ] **M3-02 — Separate declarations from effective authority.** Repository
   metadata may claim normative status, scope, or supersession. Only trusted
   caller configuration determines whether those claims apply. Detect duplicate

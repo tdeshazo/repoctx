@@ -1,9 +1,10 @@
-# M3-01 evidence and continuation handoff
+# M3-01 accepted implementation evidence
 
 Date: 2026-09-18. Owner: this workflow's implementation role.
 Design verdict: **accepted for implementation**, from the supplied independent
-review of `252686b`. Completion verdict: **not accepted; leave M3-01 unchecked**
-until independent implementation/evidence review. M3-02–M3-05 remain deferred.
+review of `252686b`. Completion verdict: **ACCEPTED — the whole M3-01 item**, from the supplied
+[final independent review](m3-01-final-review.md). No unresolved in-scope
+findings or external blockers remain. M3-02–M3-05 remain deferred.
 No material wire-contract change was made; any future material change must return
 through design review before implementation.
 
@@ -29,11 +30,11 @@ by the accepted design. No new module dependency was added.
 No repository or ancestor AGENTS.md applies. Go routing, style, error handling,
 documentation and conventional-commit skills were used. The referenced optional
 Go testing skill was not installed; no skill-specific test result is claimed.
-The final diff was reviewed locally against the accepted contract; independent
-implementation review is still pending.
+The final independent review accepted the implementation and evidence against
+the accepted contract; see [final review](m3-01-final-review.md).
 
 Preserved pre-existing untracked files: `docs/workflows/next-roadmap-item.md` and
-`next-roadmap-item.yaml`. They are excluded from commits. ROADMAP.md, existing
+`next-roadmap-item.yaml`. They are excluded from commits. Only M3-01 is now checked in ROADMAP.md. Existing
 IR/context schemas, source compilation, context production, CLI, Python launcher,
 and the baseline runner are unchanged.
 
@@ -41,7 +42,7 @@ and the baseline runner are unchanged.
 
 | Supplied finding | Implementation and evidence | Disposition |
 | --- | --- | --- |
-| Missing stable model, five kinds, owner, lifecycle | `pkg/artifacts/types.go`; shared `testdata/claims.json`; `TestRoundTripClaims` retains duplicate IDs and stable identity through moved/edited provenance; every kind/lifecycle round-trips, owner remains optional | Implemented; pending independent review |
+| Missing stable model, five kinds, owner, lifecycle | `pkg/artifacts/types.go`; shared `testdata/claims.json`; `TestRoundTripClaims` retains duplicate IDs and stable identity through moved/edited provenance; every kind/lifecycle round-trips, owner remains optional | Accepted in final independent review |
 | Missing applicability/path enforcement and no-read evidence | `validPath`, strict file/subtree claims and root subtree; `TestPathsAndEnums`; Linux inotify watches actual declared-file accesses, including unavailable and mode-000 input claims | Implemented; no observed access |
 | Missing exact-span fixtures | `TestIndependentSourceCoordinates` independently checks literal UTF-8 bytes, full SHA-256, disjoint slices, CRLF, EOF with/without final LF, and expected coordinates; deliberately inconsistent unverified claims remain structurally accepted | Implemented; source verification stays deferred |
 | Optionality/round trips and ordered duplicates | Pointer optionals, required arrays and booleans; `TestRoundTripClaims` and `TestInputDesignVariantsAndUnresolvedClaims` preserve all five reviewed input entries and independent pin/role/requiredness conflicts, duplicate edges and cycles | Implemented; no authority resolution |
@@ -139,10 +140,10 @@ pending. The direct run subsequently passed **17/17 checks, zero failures**, exi
 0; see the execution record below. The runner itself is unchanged. No external
 blocker is currently established.
 
-## Pending work and retained limitations
+## Remaining work and retained limitations
 
-Independent review must evaluate the implementing revision and this evidence;
-M3-01 must remain unchecked. M3-02 duplicate/reference/conflict resolution,
+M3-01 is accepted and has no remaining in-scope work. All M3 milestone
+acceptance gates remain unchecked and unchanged. M3-02 duplicate/reference/conflict resolution,
 M3-03 grounded adapters, M3-04 obligation selection/results and M3-05 dogfooding
 remain out of scope. Exact-byte verification against caller-authorized files is
 not performed by structural decoding. Namespace uniqueness and historical ID
@@ -156,37 +157,72 @@ portable race resistance remains limited. Earlier documentation discrepancies in
 lower `docs/IR.md` sections remain unrelated, unedited work; current contracts
 and code take precedence. No pre-existing external blocker was supplied or lost.
 
-## Baseline execution record
+## Final review and retained baseline
 
-The implementing revision above was committed and the full handoff, including
-its exact hash, was persisted before invoking the runner. Default `python3`
-imports all required dependencies successfully. The direct command exited 0:
-**17 passed, 0 failed**. Full machine-readable output is retained in
-[m3-01-baseline.json](m3-01-baseline.json); its original output path was
-`/tmp/repoctx-m3-baseline.json`.
+The [final independent review](m3-01-final-review.md) accepts the whole M3-01
+item and supports every [finding disposition](#finding-dispositions) above.
+The [accepted design and design-review record](../design/m3-01-artifact-schema.md)
+records acceptance of design revision
+[`252686b67d2870882d4488469a019e055b125758`](https://github.com/tdeshazo/repoctx/commit/252686b67d2870882d4488469a019e055b125758).
 
-The 17 successful commands cover `go test ./...`, `go test -race ./...`,
-`go vet ./...`, root and legacy CLI builds, compile/validate/context, existing
-IR/context schema validation, wheel/sdist build, both installs and launcher
-smokes, fixture inventory, Python unittest discovery (including artifact schema
-tests), and the isolated launcher smoke. This reruns the final test additions
-under race checking. No prerequisite was skipped or replaced by a claim.
+Revision provenance:
 
-The runner-created untracked `build/` and `src/repoctx.egg-info/` directories were
-removed after confirming they contained no tracked files and were absent before
-the run. Pre-existing workflow files were preserved. The final evidence-only
-commit retains this report and the raw baseline result; it changes no production
-code or accepted criteria.
+- Implementation and final test additions:
+  [`eedacb52f2d0faa60224e8aabc5cbc9f03cac816`](https://github.com/tdeshazo/repoctx/commit/eedacb52f2d0faa60224e8aabc5cbc9f03cac816),
+  Git tree `225e80a2662bec47d0bce1ccbc8ed643b49d8586`.
+- Tested and independently reviewed HEAD:
+  [`35d91867426323d05f37b285bebac784b427a190`](https://github.com/tdeshazo/repoctx/commit/35d91867426323d05f37b285bebac784b427a190).
+  Its changes after implementation contain only evidence documentation/reports.
+- This acceptance-record commit is subsequent documentation-only bookkeeping.
+  It does not claim a new execution of the baseline against its own revision.
 
-Provenance limitation found while the baseline ran: its existing `source_digest`
-excludes every path containing a directory segment named `artifacts`, including
-`pkg/artifacts`. Therefore that digest alone does not identify the new package.
-Use implementation commit `eedacb52f2d0faa60224e8aabc5cbc9f03cac816` and its Git
-tree `225e80a2662bec47d0bce1ccbc8ed643b49d8586` for the exact reviewed source and
-fixtures. This does not skip compilation or tests; the runner's Go commands still
-include the package. The runner was left unchanged as requested. Its entry Git
-state includes this report's pending evidence update and the two pre-existing
-workflow files; it is not represented as a clean-tree baseline.
+The fresh command `python3 scripts/m0_baseline.py --output
+artifacts/m3-01-baseline.json` passed **17/17 checks**, all exit codes zero.
+The [machine-readable report](m3-01-baseline.json) is retained byte-for-byte;
+its original revision, digest, environment, results and `report` path are intact.
+It supersedes the earlier run described in the historical targeted-check and
+baseline-step sections above. The earlier report remains available in Git at
+`35d91867426323d05f37b285bebac784b427a190:docs/reports/m3-01-baseline.json`.
 
-Final disposition: ready for independent implementation/evidence review.
-M3-01 remains unchecked; M3-02–M3-05 remain deferred. No external blocker.
+Checks include full Go tests and race tests, vet, both builds,
+compile/context/schema checks, packaging, installation and launcher checks.
+All four artifact-schema tests passed within baseline discovery. The final
+review also records an independent rerun of `python3 -B -m unittest discover
+-s tests -p test_artifacts_schema.py -v`: **4/4 passed**, and a passing
+`git diff --check`. Thus the current baseline covers all final test additions,
+including the race suite. Historical targeted runs are not relabeled as new runs.
+
+Targeted contract evidence:
+
+- [Types](../../pkg/artifacts/types.go), [strict decoder](../../pkg/artifacts/decode.go),
+  [validator](../../pkg/artifacts/validate.go), and [schema](../artifacts.schema.json).
+- [Contract and exact-coordinate tests](../../pkg/artifacts/decode_test.go),
+  [shared five-kind claims](../../pkg/artifacts/testdata/claims.json), and
+  [exact source bytes](../../pkg/artifacts/testdata/source.txt).
+- [Production resource boundary tests](../../pkg/artifacts/limits_test.go) and
+  [layered observations](#layered-resource-observations), including masked limits.
+- [Linux no-read/non-execution tests](../../pkg/artifacts/io_linux_test.go),
+  [source-only compatibility tests](../../pkg/agentctx/artifacts_test.go), and
+  [dedicated artifact-schema tests](../../tests/test_artifacts_schema.py).
+
+The report records the two pre-existing untracked workflow files and
+`clean_checkout: false`. Its source digest is
+`2f832ff804781cf76ee4c857ed88bfb50f6e283aa60ebc572daf7ba3d857d60d`.
+The final reviewer reconstructed that pre-packaging digest and reported that
+the fresh output preceded that review invocation's stdin file by about 13 ms.
+These are reviewer observations, not a new freshness claim for this commit.
+
+**Digest limitation:** the unchanged runner excludes every directory named
+`artifacts`, including `pkg/artifacts`; its digest alone is insufficient provenance.
+The final reviewer independently verified all ten tracked package files
+byte-for-byte against HEAD and confirmed implementation, schema and tests were
+unchanged since the implementation commit. Use those Git revisions together
+with the baseline and targeted evidence. Platform-specific observations remain
+limited to the recorded Linux environment; a bounded fuzz run is not exhaustive.
+Structural validity grants no effective authority and does not verify source
+claims, execute checks, or complete M3.
+
+At handoff, the untracked baseline output, packaging-generated `build/` and
+`src/repoctx.egg-info/`, and two pre-existing workflow files remain outside this
+commit. No implementation, test, schema or baseline-runner file is changed.
+M3-02–M3-05 and all M3 acceptance gates remain deferred and unchanged.

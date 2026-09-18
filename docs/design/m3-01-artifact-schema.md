@@ -1,13 +1,14 @@
 # M3-01: minimal optional artifact contract
 
 Status: accepted for implementation by the supplied independent review of
-`252686b`. M3-01 completion is not accepted; implementation evidence must be
-reviewed separately. See the current [handoff](../reports/m3-01-evidence.md).
+`252686b`. M3-01 completion is now ACCEPTED by the
+[final independent review](../reports/m3-01-final-review.md). See the current
+[evidence](../reports/m3-01-evidence.md).
 Date: 2026-09-18. Owner: this workflow's implementation role.
 Baseline: `69df7f840fa1c74212166bc64302c1b8c5e55333`.
 Prerequisites: recorded M0, M1 and M2 completion, inspected as described in the
 [evidence handoff](../reports/m3-01-evidence.md). Design acceptance is recorded;
-independent review of implementation evidence remains outstanding. This document does not complete M3.
+independent implementation review is accepted. This document does not complete M3.
 
 ## Decision and scope
 
