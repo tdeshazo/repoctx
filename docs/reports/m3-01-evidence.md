@@ -14,10 +14,10 @@ That revision contained only two Markdown documents. Its previous design-rework
 status is superseded by the supplied review, not by a self-issued design approval.
 Earlier prerequisite baseline: `69df7f840fa1c74212166bc64302c1b8c5e55333` (M2).
 
-The implementing revision is the commit containing the new `pkg/artifacts`
-package and this handoff, titled `feat(artifacts): implement bounded declaration
-contract`. Its exact hash will be recorded below after committing. This report
-is persisted before the subsequent baseline-runner tool step. No implementation
+The implementing revision is `eedacb52f2d0faa60224e8aabc5cbc9f03cac816`
+(`feat(artifacts): implement bounded declaration contract`). It contains the new
+`pkg/artifacts` package, schema, tests, API documentation and pre-run handoff. This report
+was persisted before the subsequent baseline-runner tool step. No implementation
 was present at entry; all implementation evidence below is from this iteration.
 
 Reviewed scope: standalone `repoctx.artifacts/v1alpha1` model, strict bounded
@@ -118,7 +118,7 @@ The 60,102-byte unknown-member diagnostic test does not echo its secret name/val
 Syntax errors identify container ordinals, while structural errors use trusted
 field/index paths; neither includes arbitrary repository strings.
 
-## Toolchains, dependencies and next direct baseline step
+## Toolchains, dependencies and direct baseline step
 
 Go: `go1.27.0-X:nodwarf5 linux/amd64`. C: GCC `16.2.1 20260810`.
 Native parser dependencies compiled successfully in targeted tests. Default Python
@@ -128,16 +128,16 @@ into the user's Python site-packages so direct `python3` works without activatio
 Versions: build 1.6.1, jsonschema 4.26.0, pip 26.2.1, setuptools 84.0.0, wheel 0.48.0.
 No system-owned package files or dependency requirements were changed.
 
-Next command, using the existing runner directly:
+Executed command, using the existing runner directly:
 
 ```sh
 python3 scripts/m0_baseline.py --output /tmp/repoctx-m3-baseline.json
 ```
 
-At this pre-run handoff, full baseline results are **pending**, not inferred from
-schema/targeted passes. The runner itself is unchanged and unavailable checks must
-remain failures. The implementing hash and actual baseline outcome will be
-appended after the command. No external blocker is currently established.
+Before that tool step, this handoff explicitly recorded baseline results as
+pending. The direct run subsequently passed **17/17 checks, zero failures**, exit
+0; see the execution record below. The runner itself is unchanged. No external
+blocker is currently established.
 
 ## Pending work and retained limitations
 
@@ -155,3 +155,38 @@ generalization. M2 verified-local mode is not an atomic filesystem snapshot and
 portable race resistance remains limited. Earlier documentation discrepancies in
 lower `docs/IR.md` sections remain unrelated, unedited work; current contracts
 and code take precedence. No pre-existing external blocker was supplied or lost.
+
+## Baseline execution record
+
+The implementing revision above was committed and the full handoff, including
+its exact hash, was persisted before invoking the runner. Default `python3`
+imports all required dependencies successfully. The direct command exited 0:
+**17 passed, 0 failed**. Full machine-readable output is retained in
+[m3-01-baseline.json](m3-01-baseline.json); its original output path was
+`/tmp/repoctx-m3-baseline.json`.
+
+The 17 successful commands cover `go test ./...`, `go test -race ./...`,
+`go vet ./...`, root and legacy CLI builds, compile/validate/context, existing
+IR/context schema validation, wheel/sdist build, both installs and launcher
+smokes, fixture inventory, Python unittest discovery (including artifact schema
+tests), and the isolated launcher smoke. This reruns the final test additions
+under race checking. No prerequisite was skipped or replaced by a claim.
+
+The runner-created untracked `build/` and `src/repoctx.egg-info/` directories were
+removed after confirming they contained no tracked files and were absent before
+the run. Pre-existing workflow files were preserved. The final evidence-only
+commit retains this report and the raw baseline result; it changes no production
+code or accepted criteria.
+
+Provenance limitation found while the baseline ran: its existing `source_digest`
+excludes every path containing a directory segment named `artifacts`, including
+`pkg/artifacts`. Therefore that digest alone does not identify the new package.
+Use implementation commit `eedacb52f2d0faa60224e8aabc5cbc9f03cac816` and its Git
+tree `225e80a2662bec47d0bce1ccbc8ed643b49d8586` for the exact reviewed source and
+fixtures. This does not skip compilation or tests; the runner's Go commands still
+include the package. The runner was left unchanged as requested. Its entry Git
+state includes this report's pending evidence update and the two pre-existing
+workflow files; it is not represented as a clean-tree baseline.
+
+Final disposition: ready for independent implementation/evidence review.
+M3-01 remains unchecked; M3-02–M3-05 remain deferred. No external blocker.
