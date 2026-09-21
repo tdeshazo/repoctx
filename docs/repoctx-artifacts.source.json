@@ -75,10 +75,10 @@
       "end": "M2 provides a sound invalidation model."
     },
     {
-      "id": "m5-02",
+      "id": "m5-03",
       "path": "ROADMAP.md",
-      "start": "- [ ] **M5-02 — Add content-addressed incremental artifacts.** Cache per-file",
-      "end": "  graph IDs remain snapshot-local even when individual fragments are reused."
+      "start": "- [ ] **M5-03 — Reuse verified immutable sources.** Avoid rereading every source",
+      "end": "  the largest atomic latency stage."
     }
   ],
   "artifacts": [
@@ -343,7 +343,7 @@
       "declared_inputs": []
     },
     {
-      "id": "repoctx:requirement.m5-02-incremental-artifacts",
+      "id": "repoctx:requirement.m5-03-immutable-sources",
       "kind": "requirement",
       "applies_to": [
         {
@@ -353,7 +353,7 @@
       ],
       "lifecycle": "active",
       "sources": [
-        "m5-02"
+        "m5-03"
       ],
       "declared_inputs": []
     }
@@ -424,11 +424,11 @@
     },
     {
       "from": "repoctx:milestone.m5-amortization",
-      "to": "repoctx:requirement.m5-02-incremental-artifacts",
+      "to": "repoctx:requirement.m5-03-immutable-sources",
       "kind": "contains",
       "resolution": "declared",
       "sources": [
-        "m5-02"
+        "m5-03"
       ]
     }
   ]

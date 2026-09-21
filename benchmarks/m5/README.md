@@ -41,6 +41,10 @@ the working directory, where live discovery can mistake it for repository input.
 - `ranking` runs selection over already verified sources.
 - `complete_compilation` includes discovery, reads, parsing, linking,
   validation, and the compiler's second verification pass, but no serialization.
+- `warm_incremental_compilation` has the same boundary as complete compilation,
+  but starts from a populated caller-owned parse cache. It still inventories,
+  reads and verifies source, and rebuilds all global strings, links, and graphs.
+  Its `cache-bytes` metric counts unique fragments referenced by that generation.
 - `context_materialization` is the complete verified-local `Build`, including
   validation, source verification, ranking, bounded selection, rendering, and
   bundle validation. It is a composite measure, not an atomic stage.

@@ -57,7 +57,7 @@ Usage:
   repoctx files [-root DIR] [-glob '*.go'] [-type file|directory|all]
   repoctx search [-root DIR] -query TEXT [-regex] [-context-lines 3]
   repoctx read [-root DIR] -file PATH[:START:END] [-file PATH...]
-  repoctx compile [-root DIR] [-o repo.ir.json.gz] [-pretty]
+  repoctx compile [-root DIR] [-o repo.ir.json.gz] [-pretty] [-cache-dir DIR]
   repoctx artifacts -source FILE [-root DIR] [-o FILE] [-check]
   repoctx stats REPO_IR
   repoctx graph [-match TEXT|-node ID] [-depth N] REPO_IR
@@ -85,19 +85,25 @@ func compileCmd(args []string) {
 	maxBytes := fs.Int64("max-bytes", 2<<20, "maximum source file size")
 	maxRead := fs.Int64("max-read-bytes", 256<<20, "total input bytes across both compilation verification passes")
 	maxEntries := fs.Int("max-entries", 100000, "maximum enumerated directory entries per inventory pass")
+	cacheDir := fs.String("cache-dir", "", "trusted parse-fragment cache outside the repository")
 	var allows, denies repeated
 	fs.Var(&allows, "allow", "permitted source/auxiliary file or directory prefix before indexing; repeat")
 	fs.Var(&denies, "deny", "denied source/auxiliary file or directory prefix before indexing; repeat")
 	_ = fs.Parse(args)
-	repo, err := compiler.Compile(compiler.Options{
+	repo, cacheStats, err := compiler.CompileWithStats(compiler.Options{
 		Root: *root, Python: *python, MaxBytes: *maxBytes, MaxReadBytes: *maxRead,
-		MaxEntries: *maxEntries, AllowPaths: allows, DenyPaths: denies,
+		MaxEntries: *maxEntries, AllowPaths: allows, DenyPaths: denies, CacheDir: *cacheDir,
 	})
 	if err != nil {
 		fatal(err)
 	}
 	if err := compiler.Write(repo, *out, *pretty); err != nil {
 		fatal(err)
+	}
+	if *cacheDir != "" {
+		fmt.Fprintf(os.Stderr, "parse cache: hits=%d misses=%d invalid=%d read=%d written=%d referenced=%d bytes\n",
+			cacheStats.Hits, cacheStats.Misses, cacheStats.Invalid, cacheStats.ReadBytes,
+			cacheStats.WrittenBytes, cacheStats.ReferencedBytes)
 	}
 }
 

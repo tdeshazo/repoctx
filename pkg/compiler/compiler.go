@@ -20,6 +20,7 @@ const IRVersion = "repoctx.ir/v1alpha4"
 type Options struct {
 	Root         string
 	Python       string // retained for API compatibility; Python uses native Tree-sitter
+	CacheDir     string // optional trusted, caller-owned parse-fragment cache outside Root
 	MaxBytes     int64
 	MaxReadBytes int64 // total bytes across both verification passes; default 256 MiB
 	MaxEntries   int   // total discovery entries per pass; default 100000
@@ -34,12 +35,23 @@ type sourceFile struct {
 }
 
 func Compile(opts Options) (*ir.Repository, error) {
+	repo, _, err := compile(opts)
+	return repo, err
+}
+
+// CompileWithStats compiles identically to Compile and reports optional
+// content-addressed parse-fragment cache use.
+func CompileWithStats(opts Options) (*ir.Repository, CacheStats, error) {
+	return compile(opts)
+}
+
+func compile(opts Options) (*ir.Repository, CacheStats, error) {
 	if opts.Root == "" {
 		opts.Root = "."
 	}
 	root, err := filepath.Abs(opts.Root)
 	if err != nil {
-		return nil, err
+		return nil, CacheStats{}, err
 	}
 	if opts.MaxBytes == 0 {
 		opts.MaxBytes = 2 << 20
@@ -54,7 +66,7 @@ func Compile(opts Options) (*ir.Repository, error) {
 	badReadLimit := opts.MaxReadBytes < 1 || opts.MaxReadBytes > 256<<20
 	badEntryLimit := opts.MaxEntries < 1 || opts.MaxEntries > 100000
 	if badFileLimit || badReadLimit || badEntryLimit {
-		return nil, fmt.Errorf("invalid compilation resource limits")
+		return nil, CacheStats{}, fmt.Errorf("invalid compilation resource limits")
 	}
 	if opts.IgnoreDirs == nil {
 		opts.IgnoreDirs = defaultIgnoreDirs()
@@ -64,111 +76,292 @@ func Compile(opts Options) (*ir.Repository, error) {
 		for _, p := range group {
 			q := strings.TrimSuffix(p, "/")
 			if !fs.ValidPath(q) || q == "." || strings.ContainsAny(q, "\\\x00:*") {
-				return nil, fmt.Errorf("invalid path prefix %q", p)
+				return nil, CacheStats{}, fmt.Errorf("invalid path prefix %q", p)
 			}
 		}
 	}
 	sourceRoot, err := sourceroot.Open(root)
 	if err != nil {
-		return nil, err
+		return nil, CacheStats{}, err
 	}
 	defer sourceRoot.Close()
 	profile := compilationProfile(opts)
 	remaining := opts.MaxReadBytes
 	manifest, contents, err := captureInputs(sourceRoot, profile, &remaining)
 	if err != nil {
-		return nil, err
+		return nil, CacheStats{}, err
 	}
-	repo, st := parseInputs(opts, manifest, contents)
+	profileID, err := manifest.ProfileID()
+	if err != nil {
+		return nil, CacheStats{}, err
+	}
+	cache, err := newParseCache(root, opts.CacheDir, profileID)
+	if err != nil {
+		return nil, CacheStats{}, err
+	}
+	var repo *ir.Repository
+	var st *ir.Strings
+	if cache == nil {
+		repo, st = parseInputs(opts, manifest, contents)
+	} else {
+		repo, st, err = parseInputsCached(opts, manifest, contents, cache)
+		if err != nil {
+			return nil, CacheStats{}, err
+		}
+	}
 	linkRepository(repo, st, goModule(contents["go.mod"]))
 	if err := repo.Validate(); err != nil {
-		return nil, fmt.Errorf("compiler invariant: %w", err)
+		return nil, CacheStats{}, fmt.Errorf("compiler invariant: %w", err)
 	}
 	if err := verifyInputs(sourceRoot, manifest, &remaining); err != nil {
-		return nil, err
+		return nil, CacheStats{}, err
 	}
-	return repo, nil
+	stats := CacheStats{}
+	if cache != nil {
+		stats = cache.stats
+	}
+	return repo, stats, nil
 }
 
 func parseInputs(opts Options, manifest *ir.InputManifest, contents map[string][]byte) (*ir.Repository, *ir.Strings) {
+	st := ir.NewStrings()
+	repo := &ir.Repository{Version: IRVersion, Root: st.Intern("."), Files: []ir.File{}, Inputs: manifest}
+	for _, input := range manifest.Sources {
+		sf := sourceFile{rel: input.Path, lang: sourceLanguage(input.Path)}
+		data := contents[input.Path]
+		fidx := len(repo.Files)
+		file := ir.File{Path: st.Intern(sf.rel), Lang: sf.lang, Hash: input.SHA256}
+		switch sf.lang {
+		case ir.LangPython:
+			file.Unit = st.Intern(pythonModule(sf.rel))
+		case ir.LangHTML, ir.LangCSS, ir.LangJavaScript, ir.LangTypeScript, ir.LangTSX, ir.LangMarkdown:
+			file.Unit = st.Intern(strings.TrimSuffix(sf.rel, filepath.Ext(sf.rel)))
+		}
+		appendDiagnostic := func(err error) {
+			repo.Diagnostics = append(repo.Diagnostics, ir.Diagnostic{
+				Severity: ir.SeverityError, File: fidx + 1, Message: st.Intern(err.Error()),
+			})
+		}
+		appendSymbols := func(symbols []treeast.LocalSymbol) {
+			base := len(repo.Symbols)
+			for _, symbol := range symbols {
+				parent := symbol.Parent
+				if parent > 0 {
+					parent += base
+				}
+				repo.Symbols = append(repo.Symbols, ir.Symbol{
+					Name: st.Intern(symbol.Name), Kind: symbol.Kind, File: fidx,
+					Node: symbol.Node, Parent: parent,
+				})
+			}
+		}
+		appendEdges := func(edges []treeast.LocalEdge) {
+			for _, edge := range edges {
+				repo.Edges = append(repo.Edges, ir.Edge{
+					Kind: edge.Kind, From: ir.Ref{File: fidx, Node: edge.Node},
+					Text: st.Intern(edge.Text),
+				})
+			}
+		}
+		switch sf.lang {
+		case ir.LangGo:
+			result, err := goast.Parse(data, st)
+			if err != nil {
+				appendDiagnostic(err)
+				break
+			}
+			file.Nodes, file.Roots, file.Unit = result.Nodes, result.Roots, st.Intern(result.Unit)
+			base := len(repo.Symbols)
+			for _, symbol := range result.Symbols {
+				parent := symbol.Parent
+				if parent > 0 {
+					parent += base
+				}
+				repo.Symbols = append(repo.Symbols, ir.Symbol{
+					Name: st.Intern(symbol.Name), Kind: symbol.Kind, File: fidx,
+					Node: symbol.Node, Parent: parent, Receiver: st.Intern(symbol.Receiver),
+				})
+			}
+			for _, edge := range result.Edges {
+				repo.Edges = append(repo.Edges, ir.Edge{
+					Kind: edge.Kind, From: ir.Ref{File: fidx, Node: edge.Node},
+					Text: st.Intern(edge.Text),
+				})
+			}
+		case ir.LangPython:
+			result, err := pyast.Parse(opts.Python, data, st)
+			if err != nil {
+				appendDiagnostic(err)
+				break
+			}
+			file.Nodes, file.Roots = result.Nodes, result.Roots
+			appendSymbols(result.Symbols)
+			appendEdges(result.Edges)
+		case ir.LangHTML, ir.LangCSS, ir.LangJavaScript, ir.LangTypeScript, ir.LangTSX, ir.LangMarkdown:
+			result, err := treeast.Parse(treeLanguage(sf.lang), data, st)
+			if err != nil {
+				appendDiagnostic(err)
+				break
+			}
+			file.Nodes, file.Roots = result.Nodes, result.Roots
+			appendSymbols(result.Symbols)
+			appendEdges(result.Edges)
+		}
+		repo.Files = append(repo.Files, file)
+	}
+	return repo, st
+}
+
+func parseInputsCached(opts Options, manifest *ir.InputManifest, contents map[string][]byte, cache *parseCache) (*ir.Repository, *ir.Strings, error) {
 	st := ir.NewStrings()
 	repo := &ir.Repository{Version: IRVersion, Root: st.Intern("."), Files: []ir.File{}, Inputs: manifest}
 
 	for _, input := range manifest.Sources {
 		sf := sourceFile{rel: input.Path, lang: sourceLanguage(input.Path)}
 		data := contents[input.Path]
-		fidx := len(repo.Files)
-		f := ir.File{Path: st.Intern(sf.rel), Lang: sf.lang, Hash: fullHash(data)}
-		if sf.lang == ir.LangPython {
-			f.Unit = st.Intern(pythonModule(sf.rel))
-		} else if sf.lang == ir.LangHTML || sf.lang == ir.LangCSS || sf.lang == ir.LangJavaScript || sf.lang == ir.LangTypeScript || sf.lang == ir.LangTSX || sf.lang == ir.LangMarkdown {
-			// Web-language units are deliberately file-scoped: cross-file links are
-			// unresolved unless a future front end proves the module relationship.
-			f.Unit = st.Intern(strings.TrimSuffix(sf.rel, filepath.Ext(sf.rel)))
-		}
-
-		switch sf.lang {
-		case ir.LangGo:
-			res, err := goast.Parse(data, st)
+		var fragment parseFragment
+		hit := false
+		var err error
+		if cache != nil {
+			fragment, hit, err = cache.load(sf.lang, input.SHA256)
 			if err != nil {
-				repo.Diagnostics = append(repo.Diagnostics, ir.Diagnostic{Severity: ir.SeverityError, File: fidx + 1, Message: st.Intern(err.Error())})
-				repo.Files = append(repo.Files, f)
-				continue
-			}
-			f.Nodes, f.Roots, f.Unit = res.Nodes, res.Roots, st.Intern(res.Unit)
-			base := len(repo.Symbols)
-			for _, s := range res.Symbols {
-				parent := 0
-				if s.Parent > 0 {
-					parent = base + s.Parent
-				}
-				repo.Symbols = append(repo.Symbols, ir.Symbol{Name: st.Intern(s.Name), Kind: s.Kind, File: fidx, Node: s.Node, Parent: parent, Receiver: st.Intern(s.Receiver)})
-			}
-			for _, e := range res.Edges {
-				repo.Edges = append(repo.Edges, ir.Edge{Kind: e.Kind, From: ir.Ref{File: fidx, Node: e.Node}, Text: st.Intern(e.Text)})
-			}
-		case ir.LangPython:
-			res, err := pyast.Parse(opts.Python, data, st)
-			if err != nil {
-				repo.Diagnostics = append(repo.Diagnostics, ir.Diagnostic{Severity: ir.SeverityError, File: fidx + 1, Message: st.Intern(err.Error())})
-				repo.Files = append(repo.Files, f)
-				continue
-			}
-			f.Nodes, f.Roots = res.Nodes, res.Roots
-			base := len(repo.Symbols)
-			for _, s := range res.Symbols {
-				parent := 0
-				if s.Parent > 0 {
-					parent = base + s.Parent
-				}
-				repo.Symbols = append(repo.Symbols, ir.Symbol{Name: st.Intern(s.Name), Kind: s.Kind, File: fidx, Node: s.Node, Parent: parent})
-			}
-			for _, e := range res.Edges {
-				repo.Edges = append(repo.Edges, ir.Edge{Kind: e.Kind, From: ir.Ref{File: fidx, Node: e.Node}, Text: st.Intern(e.Text)})
-			}
-		case ir.LangHTML, ir.LangCSS, ir.LangJavaScript, ir.LangTypeScript, ir.LangTSX, ir.LangMarkdown:
-			res, err := treeast.Parse(treeLanguage(sf.lang), data, st)
-			if err != nil {
-				repo.Diagnostics = append(repo.Diagnostics, ir.Diagnostic{Severity: ir.SeverityError, File: fidx + 1, Message: st.Intern(err.Error())})
-				repo.Files = append(repo.Files, f)
-				continue
-			}
-			f.Nodes, f.Roots = res.Nodes, res.Roots
-			base := len(repo.Symbols)
-			for _, s := range res.Symbols {
-				parent := 0
-				if s.Parent > 0 {
-					parent = base + s.Parent
-				}
-				repo.Symbols = append(repo.Symbols, ir.Symbol{Name: st.Intern(s.Name), Kind: s.Kind, File: fidx, Node: s.Node, Parent: parent})
-			}
-			for _, e := range res.Edges {
-				repo.Edges = append(repo.Edges, ir.Edge{Kind: e.Kind, From: ir.Ref{File: fidx, Node: e.Node}, Text: st.Intern(e.Text)})
+				return nil, nil, err
 			}
 		}
-		repo.Files = append(repo.Files, f)
+		if !hit {
+			fragment = parseSource(opts, sf.lang, data, input.SHA256)
+			if cache != nil {
+				if err := cache.store(fragment); err != nil {
+					return nil, nil, err
+				}
+			}
+		}
+		materializeFragment(repo, st, sf.rel, fragment)
 	}
-	return repo, st
+	return repo, st, nil
+}
+
+func parseSource(opts Options, language ir.Language, data []byte, sourceSHA string) parseFragment {
+	st := ir.NewStrings()
+	fragment := parseFragment{Version: parseFragmentVersion, SourceSHA: sourceSHA,
+		Language: language, File: ir.File{Lang: language, Hash: sourceSHA},
+		Symbols: []ir.Symbol{}, Edges: []ir.Edge{}, Diagnostics: []ir.Diagnostic{}}
+	appendDiagnostic := func(err error) {
+		fragment.Diagnostics = append(fragment.Diagnostics, ir.Diagnostic{
+			Severity: ir.SeverityError, File: 1, Message: st.Intern(err.Error()),
+		})
+	}
+	appendSymbols := func(symbols []treeast.LocalSymbol) {
+		for _, symbol := range symbols {
+			fragment.Symbols = append(fragment.Symbols, ir.Symbol{
+				Name: st.Intern(symbol.Name), Kind: symbol.Kind, Node: symbol.Node,
+				Parent: symbol.Parent,
+			})
+		}
+	}
+	appendEdges := func(edges []treeast.LocalEdge) {
+		for _, edge := range edges {
+			fragment.Edges = append(fragment.Edges, ir.Edge{
+				Kind: edge.Kind, From: ir.Ref{Node: edge.Node}, Text: st.Intern(edge.Text),
+			})
+		}
+	}
+
+	switch language {
+	case ir.LangGo:
+		result, err := goast.Parse(data, st)
+		if err != nil {
+			appendDiagnostic(err)
+			break
+		}
+		fragment.File.Nodes, fragment.File.Roots = result.Nodes, result.Roots
+		fragment.File.Unit = st.Intern(result.Unit)
+		for _, symbol := range result.Symbols {
+			fragment.Symbols = append(fragment.Symbols, ir.Symbol{
+				Name: st.Intern(symbol.Name), Kind: symbol.Kind, Node: symbol.Node,
+				Parent: symbol.Parent, Receiver: st.Intern(symbol.Receiver),
+			})
+		}
+		for _, edge := range result.Edges {
+			fragment.Edges = append(fragment.Edges, ir.Edge{
+				Kind: edge.Kind, From: ir.Ref{Node: edge.Node}, Text: st.Intern(edge.Text),
+			})
+		}
+	case ir.LangPython:
+		result, err := pyast.Parse(opts.Python, data, st)
+		if err != nil {
+			appendDiagnostic(err)
+			break
+		}
+		fragment.File.Nodes, fragment.File.Roots = result.Nodes, result.Roots
+		appendSymbols(result.Symbols)
+		appendEdges(result.Edges)
+	case ir.LangHTML, ir.LangCSS, ir.LangJavaScript, ir.LangTypeScript, ir.LangTSX, ir.LangMarkdown:
+		result, err := treeast.Parse(treeLanguage(language), data, st)
+		if err != nil {
+			appendDiagnostic(err)
+			break
+		}
+		fragment.File.Nodes, fragment.File.Roots = result.Nodes, result.Roots
+		appendSymbols(result.Symbols)
+		appendEdges(result.Edges)
+	}
+	fragment.Strings = st.Values()
+	return fragment
+}
+
+func materializeFragment(repo *ir.Repository, st *ir.Strings, path string, fragment parseFragment) {
+	localString := func(ref int) string {
+		if ref <= 0 || ref > len(fragment.Strings) {
+			return ""
+		}
+		return fragment.Strings[ref-1]
+	}
+	fileIndex := len(repo.Files)
+	file := fragment.File
+	file.Path = st.Intern(path)
+	switch file.Lang {
+	case ir.LangPython:
+		file.Unit = st.Intern(pythonModule(path))
+	case ir.LangHTML, ir.LangCSS, ir.LangJavaScript, ir.LangTypeScript, ir.LangTSX, ir.LangMarkdown:
+		// Web-language units remain file-scoped; a renamed fragment must receive
+		// the current path rather than retaining a cached generation's unit.
+		file.Unit = st.Intern(strings.TrimSuffix(path, filepath.Ext(path)))
+	}
+	file.Nodes = append([]ir.Node(nil), fragment.File.Nodes...)
+	for index := range file.Nodes {
+		file.Nodes[index].Kind = st.Intern(localString(file.Nodes[index].Kind))
+		file.Nodes[index].Text = st.Intern(localString(file.Nodes[index].Text))
+		file.Nodes[index].Children = append([]int(nil), file.Nodes[index].Children...)
+	}
+	file.Roots = append([]int(nil), fragment.File.Roots...)
+	if file.Lang == ir.LangGo {
+		file.Unit = st.Intern(localString(fragment.File.Unit))
+	}
+	base := len(repo.Symbols)
+	for _, cached := range fragment.Symbols {
+		symbol := cached
+		symbol.Name = st.Intern(localString(cached.Name))
+		symbol.Receiver = st.Intern(localString(cached.Receiver))
+		symbol.File = fileIndex
+		if symbol.Parent > 0 {
+			symbol.Parent += base
+		}
+		repo.Symbols = append(repo.Symbols, symbol)
+	}
+	for _, cached := range fragment.Edges {
+		edge := cached
+		edge.From.File = fileIndex
+		edge.Text = st.Intern(localString(cached.Text))
+		repo.Edges = append(repo.Edges, edge)
+	}
+	for _, cached := range fragment.Diagnostics {
+		diagnostic := cached
+		diagnostic.File = fileIndex + 1
+		diagnostic.Message = st.Intern(localString(cached.Message))
+		repo.Diagnostics = append(repo.Diagnostics, diagnostic)
+	}
+	repo.Files = append(repo.Files, file)
 }
 
 func linkRepository(repo *ir.Repository, st *ir.Strings, goModulePath string) {

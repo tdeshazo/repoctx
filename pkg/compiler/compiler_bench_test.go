@@ -21,6 +21,7 @@ func BenchmarkM5CompilerPath(b *testing.B) {
 	for _, files := range []int{10, 100, 1000} {
 		b.Run(fmt.Sprintf("files=%d", files), func(b *testing.B) {
 			root := b.TempDir()
+			cache := b.TempDir()
 			sourceBytes, err := benchfixture.Write(root, files)
 			if err != nil {
 				b.Fatal(err)
@@ -117,6 +118,32 @@ func BenchmarkM5CompilerPath(b *testing.B) {
 					benchmarkRepository, err = Compile(opts)
 					if err != nil {
 						b.Fatal(err)
+					}
+				}
+			})
+			b.Run("warm_incremental_compilation", func(b *testing.B) {
+				cached := opts
+				cached.CacheDir = cache
+				_, coldStats, err := CompileWithStats(cached)
+				if err != nil {
+					b.Fatal(err)
+				}
+				if coldStats.Hits+coldStats.Misses != files {
+					b.Fatalf("cache lookups = %d, want %d", coldStats.Hits+coldStats.Misses, files)
+				}
+				b.ReportAllocs()
+				b.ResetTimer()
+				reportScale(b)
+				b.ReportMetric(float64(coldStats.ReferencedBytes), "cache-bytes")
+				b.ReportMetric(float64(coldStats.ReferencedBytes)/float64(len(artifact)), "cache/IR")
+				for i := 0; i < b.N; i++ {
+					var stats CacheStats
+					benchmarkRepository, stats, err = CompileWithStats(cached)
+					if err != nil {
+						b.Fatal(err)
+					}
+					if stats.Hits != files || stats.Misses != 0 {
+						b.Fatalf("warm cache stats = %+v", stats)
 					}
 				}
 			})

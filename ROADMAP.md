@@ -545,29 +545,43 @@ performance target. Do not build a daemon merely to complete this milestone.
   the working directory unless `-o` is explicit; the profiling workflow keeps
   binaries and reports outside the indexed repository. Evidence:
   [complete-path profile](docs/reports/m5-01-evidence.md).
-- [ ] **M5-02 — Add content-addressed incremental artifacts.** Cache per-file
-  parsing and dependent views under complete input/profile identities. Handle
-  reverse dependencies, deleted files, and configuration changes. Global dense
-  graph IDs remain snapshot-local even when individual fragments are reused.
+- [x] **M5-02 — Add content-addressed incremental artifacts.** Cache per-file
+  parsing and dependent views under complete input/profile identities, starting
+  with the parsing allocation bottleneck. Reuse unchanged parse fragments while
+  rebuilding affected links, graphs, and query-independent candidate views.
+  Handle reverse dependencies, additions, deletions, renames, and configuration
+  changes. Avoid duplicating global strings, graphs, or manifests in fragments;
+  global dense graph IDs remain snapshot-local even when fragments are reused.
+  Evidence: [incremental artifact report](docs/reports/m5-02-evidence.md).
 - [ ] **M5-03 — Reuse verified immutable sources.** Avoid rereading every source
   on every query only when the caller provides an enforceable immutable snapshot
   or equivalent validated generation. Metadata timestamps alone are not proof of
-  content identity. Keep strict local verification available.
+  content identity. Authenticate and scope the reused generation, retain exact
+  content identities, and keep strict local verification available. Optimize
+  this path before weaker freshness shortcuts: M5-01 identified verification as
+  the largest atomic latency stage.
 - [ ] **M5-04 — Add serving only where justified.** A library cache or optional
   service must support bounded memory, eviction, cancellation, atomic generation
   swaps, and authorization-scoped identities. A daemon may be deferred if a
-  simpler local design meets the measured need.
+  simpler local design meets the measured need. If ranking remains material after
+  M5-02 and M5-03, prefer a reusable, query-independent candidate index with
+  bounded lookup work before introducing a service. M5-02 also found that one
+  JSON file per fragment is inefficient for many tiny files; benchmark a bounded
+  packed generation or in-memory aggregate before making it the warm serving path.
 
 ### Acceptance gates
 
-- [ ] Incremental and clean builds produce identical canonical semantic outputs
+- [x] Incremental and clean builds produce identical canonical semantic outputs
   for the same inputs/profile, including add/delete/rename/configuration tests.
+- [ ] On the declared 1,000-file workload, the warm p95 complete-path component
+  sum and median allocation volume are at most 50% of the M5-01 cold baseline.
+  Incremental storage is at most 1.25 times canonical IR bytes; bounded context
+  output is not accepted as a substitute for bounded ranking work. Meet the
+  target without violating evidence fidelity, freshness, resource, or quality
+  gates, and publish warm and cold results rather than only the favorable case.
 - [ ] Eviction, restart, cancellation, and interrupted publication cannot expose
   mixed generations or evidence from another caller's scope.
-- [ ] The measured target is met on the declared workload without violating
-  evidence fidelity, freshness, resource, or quality gates. Publish warm and cold
-  results rather than only the favorable case.
-- [ ] The local CLI remains usable without a service or external database.
+- [x] The local CLI remains usable without a service or external database.
 
 ## 10. M6 — Stabilize contracts and distribution
 

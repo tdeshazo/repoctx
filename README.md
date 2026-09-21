@@ -238,6 +238,19 @@ need indexed symbols and relationships.
   mixed.ir.json.gz
 ```
 
+Repeated compilation may opt into a caller-owned, content-addressed parse cache:
+
+```sh
+./repoctx compile -root examples/mixed \
+  -cache-dir /tmp/repoctx-parse-cache -o mixed.ir.json.gz
+```
+
+The cache must be a private real directory outside the indexed repository. It
+contains source-derived names and literals, is not authenticated storage, and
+must not be shared across callers with different trust scopes. repoctx validates
+cached records and rebuilds all snapshot-local links and graphs; omit the flag
+for a clean build. Cache statistics go to stderr, leaving stdout deterministic.
+
 JSON is the default. Status and approximate token usage go to stderr, so stdout
 contains only the payload. All flags must precede the final index argument.
 `-max-bytes` limits the **whole rendered, uncompressed output**, including JSON

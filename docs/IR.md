@@ -44,6 +44,20 @@ complete index, including that manifest. See the
 Older v1alpha3 artifacts remain readable with the preserved
 [v1alpha3 schema](ir-v1alpha3.schema.json), but must be recompiled for serving.
 
+Compilation can optionally reuse content-addressed, file-local parse fragments.
+The fragment identity binds the parser format, complete compilation profile,
+language, and source hash. A reused fragment never supplies repository-global
+string offsets, symbol IDs, links, graphs, manifests, or paths: compilation
+remaps local strings and rebuilds those snapshot-local structures from the
+current manifest. This makes additions, deletions, renames, `go.mod` changes,
+and reverse-link changes converge on the same canonical output as a clean build.
+
+The cache is derived, source-sensitive data rather than authoritative evidence.
+It must be a private caller-owned real directory outside the indexed root.
+Records are size-bounded and integrity-checked before use, but their hashes do
+not authenticate a malicious cache owner. Delete the cache or compile without
+it whenever its custody is uncertain.
+
 Each file carries path, language (`1=Go`, `2=Python`, `3=HTML`, `4=CSS`,
 `5=JavaScript`, `6=TypeScript`, `7=TSX/JSX`, `8=Markdown`), a required full
 SHA-256 content hash, optional unit identity, normalized node table and roots.
