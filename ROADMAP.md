@@ -425,10 +425,11 @@ integration and evaluation gaps.
   provider usage fields. Do not double-count cached input or reasoning tokens
   that are subsets of other usage fields. Evidence:
   [complete accounting contract](docs/reports/m4-04-evidence.md).
-- [ ] **M4-05 — Predeclare decision rules.** Choose primary metrics, quality
+- [x] **M4-05 — Predeclare decision rules.** Choose primary metrics, quality
   tolerances, uncertainty reporting, and practical improvement thresholds before
   evaluating the held-out set. Treat an underpowered result as inconclusive,
-  not as proof of equivalence or non-regression.
+  not as proof of equivalence or non-regression. Evidence:
+  [predeclared decision rules](docs/reports/m4-05-evidence.md).
 - [ ] **M4-06 — Prototype optional file-reference delivery.** Extend
   `examples/agent/tool_bridge.py` with an opt-in persisted-bundle response and a
   bounded retrieval operation. Return a caller-controlled handle, snapshot

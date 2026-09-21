@@ -1,0 +1,94 @@
+{
+  "version": "repoctx.m4.decisions/v1alpha1",
+  "freeze": "before held-out trial execution or inspection",
+  "uncertainty": {
+    "method": "paired_task_cluster_bootstrap",
+    "confidence": 0.95,
+    "resamples": 10000,
+    "seed": 20260921,
+    "cluster": "task_id",
+    "stratify": ["track", "cache_state"],
+    "interval": "percentile"
+  },
+  "sample_rules": {
+    "minimum_paired_tasks": 30,
+    "maximum_missing_fraction": 0.05,
+    "failures_and_timeouts": "score as task failure and retain measured costs",
+    "abstentions": "score against the declared outcome; do not drop",
+    "underpowered": "inconclusive; never equivalence or non-regression"
+  },
+  "primary_metrics": {
+    "end_to_end": "verified_task_success",
+    "evidence_only": "required_span_recall"
+  },
+  "quality_tolerances": {
+    "verified_task_success_absolute_delta": -0.05,
+    "required_span_recall_absolute_delta": -0.05
+  },
+  "practical_thresholds": {
+    "input_plus_output_tokens_relative_reduction": 0.15,
+    "tool_calls_relative_reduction": 0.20,
+    "trial_wall_ms_relative_reduction": 0.15,
+    "selected_evidence_bytes_relative_reduction": 0.15,
+    "required_span_recall_absolute_improvement": 0.03
+  },
+  "claim_rule": "quality guard must pass; report each efficiency metric separately; overall support requires at least one supported efficiency metric and no inconclusive efficiency metric",
+  "comparisons": [
+    {
+      "id": "end_to_end_repoctx_graph_vs_ordinary",
+      "track": "end_to_end",
+      "candidate": "repoctx_graph",
+      "reference": "ordinary_tools",
+      "eligibility": "all",
+      "decision": "efficiency_with_quality_guard",
+      "quality_metric": "verified_task_success_absolute_delta",
+      "efficiency_metrics": ["input_plus_output_tokens_relative_reduction", "tool_calls_relative_reduction", "trial_wall_ms_relative_reduction"],
+      "attribution": "repoctx_with_graph"
+    },
+    {
+      "id": "evidence_repoctx_no_graph_vs_lexical",
+      "track": "evidence_only",
+      "candidate": "repoctx_no_graph",
+      "reference": "bounded_lexical",
+      "eligibility": "all",
+      "decision": "efficiency_with_quality_guard",
+      "quality_metric": "required_span_recall_absolute_delta",
+      "efficiency_metrics": ["selected_evidence_bytes_relative_reduction"],
+      "attribution": "repoctx_selection_without_graph"
+    },
+    {
+      "id": "evidence_graph_vs_no_graph",
+      "track": "evidence_only",
+      "candidate": "repoctx_graph",
+      "reference": "repoctx_no_graph",
+      "eligibility": "all",
+      "decision": "quality_superiority",
+      "quality_metric": "required_span_recall_absolute_delta",
+      "efficiency_metrics": [],
+      "attribution": "repoctx_graph_expansion"
+    },
+    {
+      "id": "artifact_aware_vs_repoctx_graph",
+      "track": "evidence_only",
+      "candidate": "artifact_aware",
+      "reference": "repoctx_graph",
+      "eligibility": "declared_catalog",
+      "decision": "descriptive_only",
+      "quality_metric": "required_span_recall_absolute_delta",
+      "efficiency_metrics": [],
+      "attribution": "repository_declarations_and_harness_selection"
+    },
+    {
+      "id": "human_oracle_upper_bound",
+      "track": "evidence_only",
+      "candidate": "human_oracle",
+      "reference": "repoctx_graph",
+      "eligibility": "all",
+      "decision": "descriptive_only",
+      "quality_metric": "required_span_recall_absolute_delta",
+      "efficiency_metrics": [],
+      "attribution": "human_gold"
+    }
+  ],
+  "decision_states": ["supported", "threshold_not_met", "quality_harm", "inconclusive", "inconclusive_underpowered", "inconclusive_missing", "descriptive_only"]
+}

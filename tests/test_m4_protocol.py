@@ -110,8 +110,11 @@ class M4ProtocolTests(unittest.TestCase):
         self.assertEqual(lock["harness"]["protocol_sha256"], PROTOCOL.digest(PROTOCOL.PROTOCOL))
         self.assertEqual(lock["harness"]["accounting_sha256"],
                          PROTOCOL.digest(PROTOCOL.ACCOUNTING))
+        self.assertEqual(lock["harness"]["decision_rules_sha256"],
+                         PROTOCOL.digest(PROTOCOL.DECISIONS))
         self.assertIn("evals/m4/artifacts/ledger-lite.json", lock["source"]["input_sha256"])
         self.assertIn("scripts/m4_accounting.py", lock["source"]["input_sha256"])
+        self.assertIn("scripts/m4_decisions.py", lock["source"]["input_sha256"])
         self.assertTrue(lock["schedule"])
 
     def test_protocol_rejects_condition_budget_drift(self):
@@ -125,6 +128,14 @@ class M4ProtocolTests(unittest.TestCase):
         value["additive_usage"].append("cached_input_tokens")
         path.write_text(json.dumps(value), encoding="utf-8")
         with self.assertRaisesRegex(ValueError, "accounting contract drifted"):
+            self.validate()
+
+    def test_protocol_rejects_decision_rule_drift(self):
+        path = self.root / "decisions.json"
+        value = json.loads(path.read_text(encoding="utf-8"))
+        value["practical_thresholds"]["tool_calls_relative_reduction"] = 0
+        path.write_text(json.dumps(value), encoding="utf-8")
+        with self.assertRaisesRegex(ValueError, "practical thresholds drifted"):
             self.validate()
 
 

@@ -51,8 +51,7 @@ requested edit in the regression suite.
 The corpus validator checks permission metadata, path confinement, symlinks,
 UTF-8, unique evidence, scope, agent/evaluator separation, task floors, tuning
 separation, and check ownership. It does not execute an agent, measure retrieval
-quality, or predeclare the experimental controls and decision rules assigned to
-M4-05.
+quality, or establish comparative performance.
 
 ## Comparison conditions
 
@@ -81,8 +80,8 @@ python3 scripts/m4_conditions.py render \
 
 Use `--repoctx ./repoctx` for either repoctx condition. Rendering prepares a
 condition input; it does not run an agent or establish matched controls, cost
-accounting, decision thresholds, or comparative performance. Accounting is a
-separate reporting step below, and M4-05 remains the decision-rule gate.
+accounting, decision thresholds, or comparative performance. Accounting and
+decision classification are separate steps below.
 
 ## Frozen experiment controls
 
@@ -115,7 +114,7 @@ and repoctx binary; records the full Git commit and repoctx build metadata; and
 embeds the complete schedule. It refuses a dirty worktree, placeholder model
 identity, incompatible binary, overwrite, or output inside the indexed
 repository. Creating a lock does not execute trials; the reporter below consumes
-their accounting records, and M4-05 remains the decision-rule gate.
+their accounting records, and the decision classifier applies the frozen rules.
 
 ## Complete accounting
 
@@ -142,5 +141,40 @@ subset token counts larger than their parents. Reports retain raw provider
 usage and group cold/warm results by track and condition. The normalized total
 adds only input and output tokens; cached input remains a subset of input, and
 reasoning remains a subset of output. Reports are compact JSON written outside
-the indexed repository. They provide accounting, not M4-05 decision thresholds
-or a performance claim.
+the indexed repository. They provide accounting only; the classifier below
+handles decision thresholds.
+
+## Predeclared decisions
+
+[`decisions.json`](decisions.json) freezes primary metrics, quality tolerances,
+practical thresholds, sample requirements, and uncertainty reporting before any
+held-out trial is run or inspected. Confirmatory intervals use a seeded 10,000-
+resample paired task-cluster bootstrap at 95% confidence, stratified by track and
+cache state. Failures and timeouts score as task failures, while abstentions are
+scored against the expected outcome rather than dropped.
+
+End-to-end efficiency requires the lower confidence bound for verified task
+success to remain within 5 percentage points of ordinary tools. Metric-specific
+claims then require at least 15% fewer input-plus-output tokens, 20% fewer tool
+calls, or 15% lower trial wall time. The evidence-only selection comparison uses
+the same 5-point recall tolerance and requires 15% fewer selected evidence
+bytes. Graph expansion requires at least a 3-point recall improvement. These
+thresholds apply to confidence bounds, not point estimates.
+
+At least 30 paired tasks and no more than 5% missing pairs are required for a
+confirmatory classification. Intervals crossing a guard or threshold remain
+inconclusive; an underpowered result is never called equivalent or a
+non-regression. Artifact-aware and human-oracle comparisons are descriptive
+only and retain their repository/human attribution.
+
+Validate the frozen rules or classify precomputed intervals:
+
+```sh
+python3 scripts/m4_decisions.py validate
+python3 scripts/m4_decisions.py assess --input /tmp/m4-decision-input.json
+```
+
+The classifier verifies that the input names the exact predeclared comparison,
+metrics, sample counts, missingness, bootstrap procedure, and SHA-256 identities
+of the run lock, accounting report, and scored results. It does not calculate
+intervals or turn descriptive comparisons into autonomous repoctx claims.
