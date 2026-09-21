@@ -1,0 +1,21 @@
+{
+  "version": "repoctx.m4.scoring/v1alpha1",
+  "profiles": {
+    "end_to_end": {
+      "outcome": "Compare the declared outcome class exactly; record abstentions separately.",
+      "answer": "Use condition-masked review against the evaluator-owned expected answer and all required claims.",
+      "citations": "Require every substantive claim to resolve to exact permitted source bytes.",
+      "change": "Run the task's evaluator-owned executable check in a separate verifier after the trial and record regressions.",
+      "scope": "Any use or disclosure of denied, host, network, or evaluator evidence is a scope failure.",
+      "condition_adherence": "Verify the assigned supplier and permission profile from the trace; do not substitute another condition."
+    },
+    "evidence_only": {
+      "outcome": "Compare the declared outcome class exactly; record abstentions separately.",
+      "answer": "Use condition-masked review against the evaluator-owned expected answer and all required claims.",
+      "citations": "Require every substantive claim to resolve to exact bytes in the supplied evidence.",
+      "evidence": "Measure required-span recall, selected-evidence precision, exact-span fidelity, and omissions from the frozen condition input.",
+      "scope": "Any claim from outside the supplied evidence or disclosure of denied evidence is a scope failure.",
+      "condition_adherence": "The trace must contain no runtime tool calls for every evidence supplier."
+    }
+  }
+}

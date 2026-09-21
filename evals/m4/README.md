@@ -52,7 +52,7 @@ The corpus validator checks permission metadata, path confinement, symlinks,
 UTF-8, unique evidence, scope, agent/evaluator separation, task floors, tuning
 separation, and check ownership. It does not execute an agent, measure retrieval
 quality, or predeclare the experimental controls and decision rules assigned to
-M4-03 through M4-05.
+M4-04 and M4-05.
 
 ## Comparison conditions
 
@@ -82,4 +82,37 @@ python3 scripts/m4_conditions.py render \
 Use `--repoctx ./repoctx` for either repoctx condition. Rendering prepares a
 condition input; it does not run an agent or establish matched controls, cost
 accounting, decision thresholds, or comparative performance. Those remain the
-separate M4-03 through M4-05 gates.
+separate M4-04 and M4-05 gates.
+
+## Frozen experiment controls
+
+[`protocol.json`](protocol.json) pins the compiler, context, model, permission,
+budget, ordering, workspace, and cache-observation profiles.
+[`scoring.json`](scoring.json) fixes per-trial rubrics without choosing the
+aggregate decision thresholds reserved for M4-05. End-to-end conditions all
+receive the same isolated repository shell. Evidence-only conditions run in a
+separate track with no tools or runtime repository access; the human oracle is
+available only in that track.
+
+The seeded global schedule assigns a unique fresh export to every trial,
+including every change trial, and interleaves conditions, tasks, tracks, and
+cold/warm strata. “Cold” and “warm” describe harness-owned supplier state. Each
+trial must record the requested state, supplier cache state before and after,
+and the uncontrolled observed OS-cache state.
+
+Validate the controls, then create an immutable run lock from a clean checkout:
+
+```sh
+python3 scripts/m4_protocol.py validate
+go build -o /tmp/repoctx-m4 ./cmd/repoctx
+python3 scripts/m4_protocol.py lock \
+  --model-id MODEL_ID --model-revision IMMUTABLE_MODEL_REVISION \
+  --repoctx /tmp/repoctx-m4 --output /tmp/m4-run-lock.json
+```
+
+The lock hashes the source inputs, prompts, scoring rules, protocol, harness,
+and repoctx binary; records the full Git commit and repoctx build metadata; and
+embeds the complete schedule. It refuses a dirty worktree, placeholder model
+identity, incompatible binary, overwrite, or output inside the indexed
+repository. Creating a lock does not execute trials or establish M4-04 cost
+accounting or M4-05 decision rules.

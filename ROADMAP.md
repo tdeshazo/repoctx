@@ -412,12 +412,13 @@ integration and evaluation gaps.
   with graph expansion. Add artifact-aware and human-curated oracle conditions
   separately when relevant. Do not attribute manual curation to repoctx.
   Evidence: [comparison-condition harness](docs/reports/m4-02-evidence.md).
-- [ ] **M4-03 — Control experiments.** Pin commits, compiler/provider profiles,
+- [x] **M4-03 — Control experiments.** Pin commits, compiler/provider profiles,
   model/harness configuration, permissions, budgets, and scoring rules. Use fresh
   workspaces for change tasks; randomize or interleave trial order and record
   cache state. Give matched end-to-end conditions the same tool permissions.
   Run evidence-only tests as a separate track with the same no-tools constraint
-  for all compared evidence suppliers.
+  for all compared evidence suppliers. Evidence:
+  [frozen experiment controls](docs/reports/m4-03-evidence.md).
 - [ ] **M4-04 — Publish complete accounting.** Capture compilation, update,
   retrieval, agent, and verification costs separately. Report cold and warm
   workloads, all permitted tool calls, failures, timeouts, abstentions, and raw

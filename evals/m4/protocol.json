@@ -1,0 +1,74 @@
+{
+  "version": "repoctx.m4.protocol/v1alpha1",
+  "seed": 20260921,
+  "repetitions": 1,
+  "cache_states": ["cold", "warm"],
+  "compiler_profile": {
+    "id": "repoctx-source-v1",
+    "ir_contract": "repoctx.ir/v1alpha4",
+    "provider": "source",
+    "allow": ["."],
+    "deny": [],
+    "max_source_bytes": 2097152,
+    "max_total_source_bytes": 536870912
+  },
+  "context_profile": {
+    "contract": "repoctx.context/v1alpha3",
+    "max_symbols": 64,
+    "direction": "both"
+  },
+  "model_profile": {
+    "reasoning_effort": "medium",
+    "max_output_tokens": 4096,
+    "timeout_seconds": 180
+  },
+  "budgets": {
+    "condition_output_bytes": 12000,
+    "tool_output_bytes_per_call": 12000,
+    "max_tool_calls": 32,
+    "tool_timeout_seconds": 30,
+    "trial_timeout_seconds": 300
+  },
+  "permissions": {
+    "matched_repository": {
+      "tools": ["repository_shell"],
+      "repository": "fresh_export_read_write",
+      "scratch": "trial_private",
+      "network": false,
+      "host_files": false,
+      "evaluator_files": false
+    },
+    "evidence_only": {
+      "tools": [],
+      "repository": "no_runtime_access",
+      "scratch": "none",
+      "network": false,
+      "host_files": false,
+      "evaluator_files": false
+    }
+  },
+  "tracks": [
+    {
+      "id": "end_to_end",
+      "permission_profile": "matched_repository",
+      "prompt": "prompts/end_to_end.txt",
+      "scoring_profile": "end_to_end",
+      "conditions": ["ordinary_tools", "bounded_lexical", "repoctx_no_graph", "repoctx_graph", "artifact_aware"]
+    },
+    {
+      "id": "evidence_only",
+      "permission_profile": "evidence_only",
+      "prompt": "prompts/evidence_only.txt",
+      "scoring_profile": "evidence_only",
+      "conditions": ["bounded_lexical", "repoctx_no_graph", "repoctx_graph", "artifact_aware", "human_oracle"]
+    }
+  ],
+  "ordering": "seeded_global_shuffle",
+  "workspace_policy": "fresh_export_per_trial",
+  "cache_observation": {
+    "cold": "empty harness-owned supplier cache before the trial",
+    "warm": "same-task and same-condition supplier input prepared once before the trial",
+    "os_cache": "uncontrolled; record observed state and do not relabel it",
+    "required_trace_fields": ["requested", "supplier_cache_before", "supplier_cache_after", "os_cache"]
+  }
+}
