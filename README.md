@@ -32,6 +32,17 @@ repoctx version
 repoctx version -format json
 ```
 
+Artifact maintainers can generate exact hashes and source coordinates from a
+compact semantic declaration instead of authoring deterministic fields:
+
+```sh
+repoctx artifacts -root . -source docs/repoctx-artifacts.source.json \
+  -o docs/repoctx-artifacts.json
+```
+
+Use `-check` with the same arguments to detect stale output without writing it.
+See [the artifact documentation](docs/ARTIFACTS.md#repository-dogfood-catalog).
+
 The JSON form uses `repoctx.build/v1alpha1` and reports the release, source
 revision and modified state when the Go toolchain supplied them, distribution,
 Go/platform versions, and supported IR/context/discovery/artifact/obligation

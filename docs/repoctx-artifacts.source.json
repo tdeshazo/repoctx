@@ -1,0 +1,435 @@
+{
+  "version": "repoctx.artifact-authoring/v1alpha1",
+  "namespace": "repoctx",
+  "source_anchors": [
+    {
+      "id": "compiler-package",
+      "path": "pkg/compiler/compiler.go",
+      "start": "package compiler",
+      "end": "package compiler"
+    },
+    {
+      "id": "context-package",
+      "path": "pkg/agentctx/types.go",
+      "start": "// Package agentctx lowers a repository index into bounded, readable evidence",
+      "end": "package agentctx"
+    },
+    {
+      "id": "discovery-package",
+      "path": "pkg/discovery/types.go",
+      "start": "// Package discovery provides bounded, index-free repository navigation.",
+      "end": "package discovery"
+    },
+    {
+      "id": "artifacts-package",
+      "path": "pkg/artifacts/types.go",
+      "start": "// Package artifacts decodes untrusted, opt-in artifact declarations and exposes",
+      "end": "package artifacts"
+    },
+    {
+      "id": "obligation-package",
+      "path": "pkg/obligation/types.go",
+      "start": "// Package obligation builds a bounded, non-executing handoff of applicable",
+      "end": "package obligation"
+    },
+    {
+      "id": "ir-contract",
+      "path": "docs/IR.md",
+      "start": "# Repository IR v1alpha4",
+      "end": "[context bundle](AGENT_CONTEXT.md), not the interned AST/CSR tables."
+    },
+    {
+      "id": "context-contract",
+      "path": "docs/AGENT_CONTEXT.md",
+      "start": "# Agent context handoff contract",
+      "end": "strings, base64 relationship vectors, or dense node IDs."
+    },
+    {
+      "id": "discovery-contract",
+      "path": "docs/discovery.schema.json",
+      "start": "\"title\": \"repoctx live repository discovery v1alpha1\"",
+      "end": "\"title\": \"repoctx live repository discovery v1alpha1\""
+    },
+    {
+      "id": "artifacts-contract",
+      "path": "docs/ARTIFACTS.md",
+      "start": "# Optional artifact declarations",
+      "end": "The [accepted design](design/m3-01-artifact-schema.md) defines the contract."
+    },
+    {
+      "id": "obligations-contract",
+      "path": "docs/obligations.schema.json",
+      "start": "\"title\": \"repoctx obligation handoff v1alpha1\"",
+      "end": "\"title\": \"repoctx obligation handoff v1alpha1\""
+    },
+    {
+      "id": "development-verification",
+      "path": "README.md",
+      "start": "## Build and test",
+      "end": "go build -o repoctx-cmd ./cmd/repoctx"
+    },
+    {
+      "id": "m4-milestone",
+      "path": "ROADMAP.md",
+      "start": "## 8. M4 — Demonstrate retrieval quality and downstream outcomes",
+      "end": "structure, declared artifacts, or reduced tool use."
+    },
+    {
+      "id": "m4-01",
+      "path": "ROADMAP.md",
+      "start": "- [ ] **M4-01 — Build a held-out task set.** Use an initial target of at least 30",
+      "end": "  generalization. Keep tuning tasks separate."
+    }
+  ],
+  "artifacts": [
+    {
+      "id": "repoctx:component.compiler",
+      "kind": "component",
+      "applies_to": [
+        {
+          "kind": "subtree",
+          "path": "pkg/compiler"
+        }
+      ],
+      "lifecycle": "active",
+      "sources": [
+        "compiler-package"
+      ],
+      "declared_inputs": [
+        {
+          "path": "go.mod",
+          "role": "configuration",
+          "required": true
+        }
+      ]
+    },
+    {
+      "id": "repoctx:component.agent-context",
+      "kind": "component",
+      "applies_to": [
+        {
+          "kind": "subtree",
+          "path": "pkg/agentctx"
+        }
+      ],
+      "lifecycle": "active",
+      "sources": [
+        "context-package"
+      ],
+      "declared_inputs": [
+        {
+          "path": "go.mod",
+          "role": "configuration",
+          "required": true
+        }
+      ]
+    },
+    {
+      "id": "repoctx:component.discovery",
+      "kind": "component",
+      "applies_to": [
+        {
+          "kind": "subtree",
+          "path": "pkg/discovery"
+        }
+      ],
+      "lifecycle": "active",
+      "sources": [
+        "discovery-package"
+      ],
+      "declared_inputs": [
+        {
+          "path": "go.mod",
+          "role": "configuration",
+          "required": true
+        }
+      ]
+    },
+    {
+      "id": "repoctx:component.artifacts",
+      "kind": "component",
+      "applies_to": [
+        {
+          "kind": "subtree",
+          "path": "pkg/artifacts"
+        }
+      ],
+      "lifecycle": "active",
+      "sources": [
+        "artifacts-package"
+      ],
+      "declared_inputs": [
+        {
+          "path": "go.mod",
+          "role": "configuration",
+          "required": true
+        }
+      ]
+    },
+    {
+      "id": "repoctx:component.obligation-handoff",
+      "kind": "component",
+      "applies_to": [
+        {
+          "kind": "subtree",
+          "path": "pkg/obligation"
+        }
+      ],
+      "lifecycle": "active",
+      "sources": [
+        "obligation-package"
+      ],
+      "declared_inputs": [
+        {
+          "path": "go.mod",
+          "role": "configuration",
+          "required": true
+        }
+      ]
+    },
+    {
+      "id": "repoctx:contract.ir-v1alpha4",
+      "kind": "contract",
+      "applies_to": [
+        {
+          "kind": "subtree",
+          "path": "pkg/compiler"
+        }
+      ],
+      "lifecycle": "active",
+      "sources": [
+        "ir-contract"
+      ],
+      "declared_inputs": []
+    },
+    {
+      "id": "repoctx:contract.context-v1alpha3",
+      "kind": "contract",
+      "applies_to": [
+        {
+          "kind": "subtree",
+          "path": "pkg/agentctx"
+        }
+      ],
+      "lifecycle": "active",
+      "sources": [
+        "context-contract"
+      ],
+      "declared_inputs": []
+    },
+    {
+      "id": "repoctx:contract.discovery-v1alpha1",
+      "kind": "contract",
+      "applies_to": [
+        {
+          "kind": "subtree",
+          "path": "pkg/discovery"
+        }
+      ],
+      "lifecycle": "active",
+      "sources": [
+        "discovery-contract"
+      ],
+      "declared_inputs": []
+    },
+    {
+      "id": "repoctx:contract.artifacts-v1alpha1",
+      "kind": "contract",
+      "applies_to": [
+        {
+          "kind": "subtree",
+          "path": "pkg/artifacts"
+        }
+      ],
+      "lifecycle": "active",
+      "sources": [
+        "artifacts-contract"
+      ],
+      "declared_inputs": []
+    },
+    {
+      "id": "repoctx:contract.obligations-v1alpha1",
+      "kind": "contract",
+      "applies_to": [
+        {
+          "kind": "subtree",
+          "path": "pkg/obligation"
+        }
+      ],
+      "lifecycle": "active",
+      "sources": [
+        "obligations-contract"
+      ],
+      "declared_inputs": []
+    },
+    {
+      "id": "repoctx:requirement.development-verification",
+      "kind": "requirement",
+      "applies_to": [
+        {
+          "kind": "subtree",
+          "path": "."
+        }
+      ],
+      "lifecycle": "active",
+      "sources": [
+        "development-verification"
+      ],
+      "declared_inputs": [
+        {
+          "path": "go.mod",
+          "role": "configuration",
+          "required": true
+        }
+      ]
+    },
+    {
+      "id": "repoctx:check.go-test-all",
+      "kind": "verification_obligation",
+      "applies_to": [
+        {
+          "kind": "subtree",
+          "path": "."
+        }
+      ],
+      "lifecycle": "active",
+      "sources": [
+        "development-verification"
+      ],
+      "declared_inputs": [
+        {
+          "path": "go.mod",
+          "role": "configuration",
+          "required": true
+        }
+      ],
+      "runner_check_id": "go-test-all"
+    },
+    {
+      "id": "repoctx:check.go-vet-all",
+      "kind": "verification_obligation",
+      "applies_to": [
+        {
+          "kind": "subtree",
+          "path": "."
+        }
+      ],
+      "lifecycle": "active",
+      "sources": [
+        "development-verification"
+      ],
+      "declared_inputs": [
+        {
+          "path": "go.mod",
+          "role": "configuration",
+          "required": true
+        }
+      ],
+      "runner_check_id": "go-vet-all"
+    },
+    {
+      "id": "repoctx:milestone.m4-evaluation",
+      "kind": "component",
+      "applies_to": [
+        {
+          "kind": "file",
+          "path": "ROADMAP.md"
+        }
+      ],
+      "lifecycle": "active",
+      "sources": [
+        "m4-milestone"
+      ],
+      "declared_inputs": []
+    },
+    {
+      "id": "repoctx:requirement.m4-01-held-out-task-set",
+      "kind": "requirement",
+      "applies_to": [
+        {
+          "kind": "file",
+          "path": "ROADMAP.md"
+        }
+      ],
+      "lifecycle": "active",
+      "sources": [
+        "m4-01"
+      ],
+      "declared_inputs": []
+    }
+  ],
+  "relationships": [
+    {
+      "from": "repoctx:component.compiler",
+      "to": "repoctx:contract.ir-v1alpha4",
+      "kind": "governed_by",
+      "resolution": "declared",
+      "sources": [
+        "ir-contract"
+      ]
+    },
+    {
+      "from": "repoctx:component.agent-context",
+      "to": "repoctx:contract.context-v1alpha3",
+      "kind": "governed_by",
+      "resolution": "declared",
+      "sources": [
+        "context-contract"
+      ]
+    },
+    {
+      "from": "repoctx:component.discovery",
+      "to": "repoctx:contract.discovery-v1alpha1",
+      "kind": "governed_by",
+      "resolution": "declared",
+      "sources": [
+        "discovery-contract"
+      ]
+    },
+    {
+      "from": "repoctx:component.artifacts",
+      "to": "repoctx:contract.artifacts-v1alpha1",
+      "kind": "governed_by",
+      "resolution": "declared",
+      "sources": [
+        "artifacts-contract"
+      ]
+    },
+    {
+      "from": "repoctx:component.obligation-handoff",
+      "to": "repoctx:contract.obligations-v1alpha1",
+      "kind": "governed_by",
+      "resolution": "declared",
+      "sources": [
+        "obligations-contract"
+      ]
+    },
+    {
+      "from": "repoctx:check.go-test-all",
+      "to": "repoctx:requirement.development-verification",
+      "kind": "verifies",
+      "resolution": "declared",
+      "sources": [
+        "development-verification"
+      ]
+    },
+    {
+      "from": "repoctx:check.go-vet-all",
+      "to": "repoctx:requirement.development-verification",
+      "kind": "verifies",
+      "resolution": "declared",
+      "sources": [
+        "development-verification"
+      ]
+    },
+    {
+      "from": "repoctx:milestone.m4-evaluation",
+      "to": "repoctx:requirement.m4-01-held-out-task-set",
+      "kind": "contains",
+      "resolution": "declared",
+      "sources": [
+        "m4-01"
+      ]
+    }
+  ]
+}

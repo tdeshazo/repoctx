@@ -2,13 +2,10 @@ package main
 
 import (
 	"bytes"
-	"crypto/sha256"
-	"fmt"
 	"os"
 	"path/filepath"
 	"strings"
 	"testing"
-	"unicode/utf8"
 
 	"github.com/tdeshazo/repoctx/pkg/agentctx"
 	"github.com/tdeshazo/repoctx/pkg/artifacts"
@@ -18,12 +15,23 @@ import (
 
 func TestRepositoryArtifactCatalog(t *testing.T) {
 	root := "."
+	authoring, err := os.ReadFile(filepath.Join(root, "docs/repoctx-artifacts.source.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
 	wire, err := os.ReadFile(filepath.Join(root, "docs/repoctx-artifacts.json"))
 	if err != nil {
 		t.Fatal(err)
 	}
+	generated, err := artifacts.Generate(root, authoring, artifacts.Limits{})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !bytes.Equal(generated, wire) {
+		t.Fatal("docs/repoctx-artifacts.json is stale; regenerate it with repoctx artifacts")
+	}
 	for _, duplicatedInstruction := range [][]byte{[]byte("go test ./..."), []byte("go vet ./...")} {
-		if bytes.Contains(wire, duplicatedInstruction) {
+		if bytes.Contains(authoring, duplicatedInstruction) {
 			t.Fatalf("catalog copied development command %q", duplicatedInstruction)
 		}
 	}
@@ -31,8 +39,6 @@ func TestRepositoryArtifactCatalog(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	verifyCatalogSources(t, root, catalog)
-
 	authority := artifacts.Authority{
 		AcceptedIDs: artifactIDs(catalog),
 		Scopes:      []artifacts.Applicability{{Kind: "subtree", Path: "."}},
@@ -85,60 +91,6 @@ func TestRepositoryArtifactCatalog(t *testing.T) {
 			t.Fatalf("%s lacks exact expanded evidence: %+v", id, artifact.Sources)
 		}
 	}
-}
-
-func verifyCatalogSources(t *testing.T, root string, catalog *artifacts.Catalog) {
-	t.Helper()
-	contents := map[string][]byte{}
-	verify := func(span artifacts.Span) {
-		data, ok := contents[span.Path]
-		if !ok {
-			var err error
-			data, err = os.ReadFile(filepath.Join(root, filepath.FromSlash(span.Path)))
-			if err != nil {
-				t.Fatal(err)
-			}
-			contents[span.Path] = data
-		}
-		digest := sha256.Sum256(data)
-		if fmt.Sprintf("%x", digest) != span.SHA256 {
-			t.Fatalf("stale catalog hash for %s", span.Path)
-		}
-		if span.StartByte < 0 || span.EndByte > int64(len(data)) || span.StartByte >= span.EndByte {
-			t.Fatalf("invalid catalog byte range for %s", span.Path)
-		}
-		if !utf8.Valid(data[span.StartByte:span.EndByte]) {
-			t.Fatalf("catalog span splits utf-8 in %s", span.Path)
-		}
-		startLine, startColumn := physicalPosition(data, int(span.StartByte))
-		endLine, endColumn := physicalPosition(data, int(span.EndByte))
-		if int64(startLine) != span.StartLine || int64(startColumn) != span.StartByteColumn ||
-			int64(endLine) != span.EndLine || int64(endColumn) != span.EndByteColumn {
-			t.Fatalf("stale catalog coordinates for %s", span.Path)
-		}
-	}
-	for _, artifact := range catalog.Artifacts {
-		for _, span := range artifact.Sources {
-			verify(span)
-		}
-	}
-	for _, relationship := range catalog.Relationships {
-		for _, span := range relationship.Sources {
-			verify(span)
-		}
-	}
-}
-
-func physicalPosition(data []byte, offset int) (int, int) {
-	line, column := 1, 0
-	for _, value := range data[:offset] {
-		if value == '\n' {
-			line, column = line+1, 0
-			continue
-		}
-		column++
-	}
-	return line, column
 }
 
 func artifactIDs(catalog *artifacts.Catalog) []string {

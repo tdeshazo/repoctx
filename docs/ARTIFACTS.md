@@ -2,8 +2,8 @@
 
 `pkg/artifacts.Decode(data, artifacts.Limits{})` accepts caller-supplied JSON
 under `repoctx.artifacts/v1alpha1`. It returns a `*Catalog` or a nil catalog with
-a bounded error. No CLI flag, reserved catalog filename, discovery, source
-reading, source verification, command execution or context enrichment is added.
+a bounded error. Decoding adds no reserved catalog filename, discovery, source
+reading, source verification, command execution or context enrichment.
 The [accepted design](design/m3-01-artifact-schema.md) defines the contract.
 
 The model preserves declaration array order and duplicates, including conflicting
@@ -126,15 +126,34 @@ passing status. See the [M3-04 decision](design/m3-04-obligation-handoff.md).
 
 ## Repository dogfood catalog
 
-[`repoctx-artifacts.json`](repoctx-artifacts.json) is an explicit fixture for
-repoctx's own components, wire contracts, development checks, and roadmap
-requirements. It is not a reserved filename and is never discovered or loaded
-automatically. The declarations point to canonical source and documentation
-rather than copying their prose or commands.
+[`repoctx-artifacts.source.json`](repoctx-artifacts.source.json) is the maintained
+dogfood declaration. It records semantic declarations and named, unique source
+anchors once; it contains no hashes, byte offsets, line coordinates, or copied
+commands. `repoctx artifacts` resolves those anchors beneath an explicit root
+and deterministically emits the strict
+[`repoctx-artifacts.json`](repoctx-artifacts.json) wire catalog:
 
-The root dogfood test decodes the catalog, verifies every whole-file hash and
-physical source span, resolves every endpoint under explicit caller authority,
-and exercises catalog-guided progressive disclosure of the current incomplete
-milestone and its next unmet gate. Editing a referenced file intentionally makes
-the test fail until its exact provenance is refreshed; there is no second
-roadmap or command registry to synchronize.
+```sh
+repoctx artifacts -root . -source docs/repoctx-artifacts.source.json \
+  -o docs/repoctx-artifacts.json
+repoctx artifacts -root . -source docs/repoctx-artifacts.source.json \
+  -o docs/repoctx-artifacts.json -check
+```
+
+The authoring input uses `repoctx.artifact-authoring/v1alpha1`. Start and end
+anchor text must each occur exactly once in a UTF-8 regular file; equal values
+select that single occurrence. Files are read through the same root-confined,
+symlink-rejecting reader used for source evidence. Named anchors prevent repeated
+provenance declarations. Generation preserves declaration order, computes the
+whole-file SHA-256 and exclusive physical span, validates the emitted artifact
+contract, and atomically writes only after success. Its stable line-oriented
+JSON keeps each declaration independently retrievable. `-check` performs no
+write and fails when the committed output differs.
+
+Neither file is reserved, discovered, or loaded automatically. The root dogfood
+test regenerates and byte-compares the catalog before decoding it, resolving all
+endpoints under explicit caller authority, and exercising catalog-guided
+progressive disclosure of the current incomplete milestone and its next unmet
+gate. Editing a referenced file therefore makes the generated-output check fail
+without requiring an agent to calculate provenance or maintain a second roadmap
+or command registry.

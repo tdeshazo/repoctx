@@ -27,6 +27,8 @@ func Main(args []string) {
 		discoveryCmd(args[0], args[1:])
 	case "compile":
 		compileCmd(args[1:])
+	case "artifacts":
+		artifactsCmd(args[1:])
 	case "stats":
 		statsCmd(args[1:])
 	case "context":
@@ -56,6 +58,7 @@ Usage:
   repoctx search [-root DIR] -query TEXT [-regex] [-context-lines 3]
   repoctx read [-root DIR] -file PATH[:START:END] [-file PATH...]
   repoctx compile [-root DIR] [-o repo.ir.json.gz] [-pretty]
+  repoctx artifacts -source FILE [-root DIR] [-o FILE] [-check]
   repoctx stats REPO_IR
   repoctx graph [-match TEXT|-node ID] [-depth N] REPO_IR
   repoctx context -root DIR -query TEXT [-max-bytes 32768] REPO_IR
