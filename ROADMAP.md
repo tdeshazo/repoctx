@@ -569,12 +569,13 @@ positive agent-performance claim.
   checksums/provenance, license and dependency notices, a security-reporting
   process, and contributor guidance. Keep skill instructions, examples, schemas,
   validation reports, and claims synchronized with released behavior.
-- [ ] **M6-05 — Make executable provenance inspectable.** Dogfooding found an
+- [x] **M6-05 — Make executable provenance inspectable.** Dogfooding found an
   older `repoctx` on `PATH` whose help omitted checkout-documented commands.
   Add a stable version/build-info surface and an agent-skill preflight that can
   distinguish the running executable from checkout source before retrieval.
   Cover development builds and packaged binaries without claiming that version
   output alone authenticates an executable or proves source equivalence.
+  Evidence: [ranked dogfood findings and disposition](docs/reports/dogfood-priority-2026-09-21.md).
 
 ### Acceptance gates
 

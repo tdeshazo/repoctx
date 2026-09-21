@@ -22,6 +22,8 @@ internal/cli/context.go
 internal/cli/discovery.go
 internal/cli/discovery_test.go
 internal/cli/main.go
+internal/cli/version.go
+internal/cli/version_test.go
 internal/lang/goast/goast.go
 internal/lang/goast/goast_test.go
 internal/lang/pyast/pyast.go

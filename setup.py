@@ -50,6 +50,14 @@ class build_py(_build_py):
                 "build",
                 "-buildvcs=false",
                 "-trimpath",
+                "-ldflags",
+                " ".join(
+                    [
+                        "-X=github.com/tdeshazo/repoctx/internal/cli.buildRelease="
+                        + self.distribution.get_version(),
+                        "-X=github.com/tdeshazo/repoctx/internal/cli.buildDistribution=python-package",
+                    ]
+                ),
                 "-o",
                 str(output),
                 ".",

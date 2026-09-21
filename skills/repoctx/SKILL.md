@@ -6,12 +6,32 @@ description: Discover repository files and source excerpts without an index, or 
 # Repoctx
 
 Use index-free discovery for repository orientation and source evidence; compile
-an index when symbol relationships are needed. Assume `repoctx` is on `PATH`.
+an index when symbol relationships are needed. Assume `repoctx` is on `PATH`,
+but confirm which executable is running before relying on its command set.
 
 Use it for codebase exploration, implementation, debugging, or review when a
 focused source/relationship slice would improve decisions. Do not use it as a
 replacement for a repository's instructions, permissions, build workflow, or
 verification requirements.
+
+## Confirm the executable
+
+Once per session, or whenever the executable may have changed, run:
+
+```sh
+repoctx version -format json
+```
+
+Check `release`, `revision`, `modified`, `distribution`, and `contracts` against
+the task's required checkout or contract. In a repoctx checkout, compare a known
+reported revision with the caller-trusted checkout revision. A mismatch or an
+`unknown` revision does not prove the binary is wrong, but it also cannot prove
+the binary matches the checkout. Use a caller-approved checkout build/invocation
+or report the mismatch rather than silently relying on missing commands.
+
+Version output is descriptive, unauthenticated metadata. It grants no trust,
+permission, or source equivalence. Older binaries may not implement `version`;
+that failure itself means their capabilities must be checked before use.
 
 ## Safety and interpretation
 

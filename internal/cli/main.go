@@ -35,6 +35,8 @@ func Main(args []string) {
 		validateCmd(args[1:])
 	case "graph":
 		graphCmd(args[1:])
+	case "version", "--version":
+		versionCmd(args[1:])
 	case "help", "-h", "--help":
 		usage()
 	default:
@@ -58,6 +60,7 @@ Usage:
   repoctx graph [-match TEXT|-node ID] [-depth N] REPO_IR
   repoctx context -root DIR -query TEXT [-max-bytes 32768] REPO_IR
   repoctx validate REPO_IR
+  repoctx version [-format text|json]
 
 Discovery commands need no index or external search tools. They honor local
 ignore rules and caller scope. Use COMMAND -help for visibility and budget flags.

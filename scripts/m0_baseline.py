@@ -167,7 +167,7 @@ def main(argv: list[str] | None = None) -> int:
             if wheel_install["ok"]:
                 wheel_env = dict(env)
                 wheel_env["PYTHONPATH"] = str(wheel_target)
-                check([sys.executable, "-m", "repoctx_cli", "--help"], command_env=wheel_env)
+                check([sys.executable, "-m", "repoctx_cli", "version", "-format", "json"], command_env=wheel_env)
         else:
             commands.append({"command": [sys.executable, "-m", "pip", "install", "<wheel>"], "cwd": str(ROOT), "exit_code": 127, "ok": False, "duration_seconds": 0, "stdout_tail": "", "stderr_tail": "wheel build unavailable"})
         if dist_build["ok"] and sdist is not None:
@@ -176,7 +176,7 @@ def main(argv: list[str] | None = None) -> int:
             if sdist_install["ok"]:
                 sdist_env = dict(env)
                 sdist_env["PYTHONPATH"] = str(sdist_target)
-                check([sys.executable, "-m", "repoctx_cli", "--help"], command_env=sdist_env)
+                check([sys.executable, "-m", "repoctx_cli", "version", "-format", "json"], command_env=sdist_env)
         else:
             commands.append({"command": [sys.executable, "-m", "pip", "install", "<sdist>"], "cwd": str(ROOT), "exit_code": 127, "ok": False, "duration_seconds": 0, "stdout_tail": "", "stderr_tail": "sdist build unavailable"})
         check([sys.executable, str(ROOT / "scripts" / "check_fixtures.py")])

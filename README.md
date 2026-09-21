@@ -20,6 +20,21 @@ go build -o repoctx .
 go build -o repoctx-cmd ./cmd/repoctx
 ```
 
+Inspect the executable before relying on commands or wire-contract versions:
+
+```sh
+repoctx version
+repoctx version -format json
+```
+
+The JSON form uses `repoctx.build/v1alpha1` and reports the release, source
+revision and modified state when the Go toolchain supplied them, distribution,
+Go/platform versions, and supported IR/context/discovery/artifact contracts.
+Local `go run` and builds made with `-buildvcs=false` can report `unknown`
+revision state. Version output is descriptive metadata, not authentication or
+proof that a binary matches a checkout; compare it with a caller-trusted release
+or source revision when that distinction matters.
+
 Install the module-root command from its published module path:
 
 ```sh
@@ -88,13 +103,15 @@ not claimed unless their Go, CGO, and Tree-sitter toolchains succeed.
 The Python launcher only forwards arguments and inherited standard streams to
 the bundled executable. It does not reimplement indexing, and its Markdown
 fence behavior is therefore exactly the Go CLI's raw-context policy described
-above.
+above. Python-built binaries report the Python project release and
+`python-package` distribution through `repoctx version`; source revision remains
+`unknown` because package metadata alone does not authenticate source identity.
 
 ## Agent skill
 
 The vendored [repoctx skill](skills/repoctx/SKILL.md) teaches agents to compile
-an index, retrieve bounded evidence, check freshness and limitations, and expand
-context only when needed. It assumes the `repoctx` binary is on `PATH`.
+an index, retrieve bounded evidence, check executable provenance, check freshness
+and limitations, and expand context only when needed.
 
 Copy the `skills/repoctx` directory into your agent's skill directory to use it
 outside this checkout. Installing the Go binary does not install the skill.
