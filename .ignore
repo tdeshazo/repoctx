@@ -1,0 +1,10 @@
+# Retained audit material is opt-in during repoctx development discovery.
+/artifacts/
+/build/
+/evals/runs/
+/src/*.egg-info/
+/docs/reports/*.json
+/docs/reports/m0-terra-replay-*/
+/docs/reports/m3-01-evidence.md
+/docs/reports/m3-01-final-review.md
+/docs/reports/mothership-repoctx-codex-exec-comparison.md

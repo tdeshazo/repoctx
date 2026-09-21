@@ -17,9 +17,12 @@ The runner records `git rev-parse HEAD`, clean/dirty status, a source-tree
 digest, Go/C/Python toolchains, platform, pinned Tree-sitter grammar lines from
 `go.mod`, every command, exit code, duration, and bounded stdout/stderr tails.
 Failures remain in the JSON report; independent checks continue after a
-failure. The report is a generated run artifact and should be retained with
-the revision under evaluation, not silently replaced by historical coverage
-numbers.
+failure. The report is a generated run artifact. Keep routine runs in temporary
+or CI artifact storage with the revision under evaluation; do not copy their
+command output into completion reports. Commit an exact report only when it is
+required as durable evaluation or release evidence, and keep such retained
+artifacts outside default development retrieval. Never silently replace a
+historical report's coverage numbers.
 
 The command sequence is:
 
@@ -94,7 +97,9 @@ for a complete compilation-input manifest and scope-aware freshness. Callers
 must recompile after build/config changes and must not treat the current index
 as a whole-repository snapshot.
 
-The retained [baseline report](reports/m0-baseline.json) records the clean
-temporary snapshot revision, source-tree digest, platform, toolchains, and
-pinned grammar dependencies for its own run. Its four measurements deliberately
-mark retrieval quality and agent outcomes as `not_measured`.
+The retained historical [baseline report](reports/m0-baseline.json) records the
+clean temporary snapshot revision, source-tree digest, platform, toolchains, and
+pinned grammar dependencies for its own run. It is an explicit durable-evidence
+exception and is excluded from default development discovery. Its four
+measurements deliberately mark retrieval quality and agent outcomes as
+`not_measured`.

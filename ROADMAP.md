@@ -650,6 +650,21 @@ scope through review. Do not convert a skipped gate into an implied success.
 Update this file when dependencies or priorities change, and retain the rationale
 for deferred work.
 
+Keep completion reports navigational. A report should identify the outcome,
+material decisions, unresolved limits, verification commands with concise
+results, and links to the implementing revision, design, and tests. Do not copy
+roadmap requirements, design prose, diffs, or command output into the report.
+Use 4 KiB as a review threshold: a longer report needs a stated audit or study
+reason and remains opt-in for ordinary development retrieval. Store raw baseline
+JSON, transcripts, and trial results as generated run artifacts rather than
+routine report prose; commit them only when their exact bytes are required as
+durable evaluation or release evidence.
+
+The root `.ignore` keeps retained audit artifacts out of ordinary index-free
+development discovery; use `-no-ignore` only for an explicit audit. Indexed
+self-dogfooding must apply equivalent caller `-deny` scope because compilation
+deliberately does not interpret repository ignore files.
+
 **Definition of progress:** More tasks can be answered or changed correctly from
 traceable, bounded evidence, with complete input identity and visible limitations.
 More indexed bytes, more graph edges, or fewer tokens alone do not establish it.
