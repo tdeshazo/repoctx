@@ -75,10 +75,10 @@
       "end": "structure, declared artifacts, or reduced tool use."
     },
     {
-      "id": "m4-01",
+      "id": "m4-02",
       "path": "ROADMAP.md",
-      "start": "- [ ] **M4-01 — Build a held-out task set.** Use an initial target of at least 30",
-      "end": "  generalization. Keep tuning tasks separate."
+      "start": "- [ ] **M4-02 — Compare appropriate conditions.** Include ordinary repository",
+      "end": "  separately when relevant. Do not attribute manual curation to repoctx."
     }
   ],
   "artifacts": [
@@ -343,7 +343,7 @@
       "declared_inputs": []
     },
     {
-      "id": "repoctx:requirement.m4-01-held-out-task-set",
+      "id": "repoctx:requirement.m4-02-condition-comparison",
       "kind": "requirement",
       "applies_to": [
         {
@@ -353,7 +353,7 @@
       ],
       "lifecycle": "active",
       "sources": [
-        "m4-01"
+        "m4-02"
       ],
       "declared_inputs": []
     }
@@ -424,11 +424,11 @@
     },
     {
       "from": "repoctx:milestone.m4-evaluation",
-      "to": "repoctx:requirement.m4-01-held-out-task-set",
+      "to": "repoctx:requirement.m4-02-condition-comparison",
       "kind": "contains",
       "resolution": "declared",
       "sources": [
-        "m4-01"
+        "m4-02"
       ]
     }
   ]

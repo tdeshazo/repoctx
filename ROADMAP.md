@@ -400,12 +400,13 @@ integration and evaluation gaps.
 
 ### Work
 
-- [ ] **M4-01 — Build a held-out task set.** Use an initial target of at least 30
+- [x] **M4-01 — Build a held-out task set.** Use an initial target of at least 30
   distinct answerable tasks across at least three permission-cleared repositories,
   plus no-answer, contradictory-evidence, and denied-scope cases. Include
   documentation lookup, code localization, cross-file analysis, and changes with
   executable checks. This is a pilot floor, not evidence of broad statistical
-  generalization. Keep tuning tasks separate.
+  generalization. Keep tuning tasks separate. Evidence:
+  [held-out pilot task set](docs/reports/m4-01-evidence.md).
 - [ ] **M4-02 — Compare appropriate conditions.** Include ordinary repository
   tools, bounded lexical snippets, repoctx without graph expansion, and repoctx
   with graph expansion. Add artifact-aware and human-curated oracle conditions
