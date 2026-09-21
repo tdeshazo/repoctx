@@ -1,0 +1,38 @@
+{
+  "version": "repoctx.m4.failure-cases/v1alpha1",
+  "records": [
+    {
+      "id": "dogfood-m4-06-identifier-noise",
+      "source_revision": "3a30dc0f41e0b5e3b5072a8b9a45d7b8f206918e",
+      "operation": "discover",
+      "arguments": {"query": "M4-07", "max_bytes": 5000, "deny": []},
+      "required_evidence": {"path": "ROADMAP.md", "marker_sha256": "1356de697ce6895b0d77f4f67a64b60bfe9e59cb7540713b09f8b650b658e7b9", "available": true},
+      "trace": {"candidate_found": false, "selected": false, "materialized": false, "retained": false, "irrelevant_selected_bytes": 2940, "result_count": 1, "incomplete": true, "omissions": ["overview_limit", "result_limit", "output_limit"], "observed": "A generated artifact JSON window matched split identifier tokens; the roadmap requirement was absent."},
+      "tags": ["over_retrieved", "buried"],
+      "contributors": {"inventory": ["noisy_generated_input"], "discovery": ["query_tokenization", "lexical_ranking"], "selection": [], "budget": ["output_limit", "result_limit"]},
+      "impact": {"outcome": "diagnostic_only", "evidence_loss": "complete"}
+    },
+    {
+      "id": "dogfood-m4-07-window-does-not-fit",
+      "source_revision": "cfda41be2b1e7848d52477c4a389fca697aa862c",
+      "operation": "discover",
+      "arguments": {"query": "M4-08 persisted evidence evaluation", "max_bytes": 8000, "deny": []},
+      "required_evidence": {"path": "ROADMAP.md", "marker_sha256": "c0576e49fe0ae8223e86fd3659e7e7ed0684209efa8895dcd6b42164a372be2b", "available": true},
+      "trace": {"candidate_found": true, "selected": true, "materialized": true, "retained": false, "irrelevant_selected_bytes": 0, "result_count": 0, "incomplete": true, "omissions": ["overview_limit", "result_limit", "output_limit"], "observed": "The relevant roadmap window plus response envelope exceeded the output budget, leaving no result."},
+      "tags": ["under_retrieved", "buried"],
+      "contributors": {"inventory": [], "discovery": [], "selection": ["window_size"], "budget": ["output_limit"]},
+      "impact": {"outcome": "diagnostic_only", "evidence_loss": "complete"}
+    },
+    {
+      "id": "dogfood-m4-08-action-clipped",
+      "source_revision": "bdd212b1c001d77f4765276282ba22bfaaeb0f7b",
+      "operation": "discover",
+      "arguments": {"query": "M4-09 context failure diagnosis", "max_bytes": 12000, "deny": []},
+      "required_evidence": {"path": "ROADMAP.md", "marker_sha256": "6d82ec4c8bd50b7a09ab9b5f3a097321b86430ce9e76cc7e6dfbaca8b8f8baea", "available": true},
+      "trace": {"candidate_found": true, "selected": true, "materialized": true, "retained": false, "irrelevant_selected_bytes": 0, "result_count": 1, "incomplete": true, "omissions": ["overview_limit", "result_limit", "output_limit"], "observed": "The retained roadmap window contained an earlier planning mention but clipped the actionable requirement."},
+      "tags": ["under_retrieved", "buried"],
+      "contributors": {"inventory": [], "discovery": [], "selection": ["window_boundary"], "budget": ["output_limit"]},
+      "impact": {"outcome": "diagnostic_only", "evidence_loss": "partial"}
+    }
+  ]
+}

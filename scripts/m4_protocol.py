@@ -21,6 +21,8 @@ SCORING = ROOT / "scoring.json"
 ACCOUNTING = ROOT / "accounting.json"
 DECISIONS = ROOT / "decisions.json"
 PERSISTENCE = ROOT / "persistence.json"
+FAILURES = ROOT / "failures.json"
+FAILURE_CASES = ROOT / "failure-cases.json"
 PLACEHOLDERS = {"", "unknown", "latest", "main", "head", "devel"}
 TRACK_CONDITIONS = {
     "end_to_end": {"ordinary_tools", "bounded_lexical", "repoctx_no_graph",
@@ -173,6 +175,11 @@ def validate_protocol(protocol_path: Path = PROTOCOL) -> tuple[dict[str, Any], d
     persistence_module = load_module("m4_persistence_for_protocol",
                                      PROJECT / "scripts/m4_persistence.py")
     persistence_module.validate_config(root / "persistence.json")
+    failures_module = load_module("m4_failures_for_protocol", PROJECT / "scripts/m4_failures.py")
+    failure_config = root / "failures.json"
+    failure_cases = root / "failure-cases.json"
+    failures_module.build_report(failures_module.load_cases(failure_cases),
+                                 config_path=failure_config, cases_path=failure_cases)
     return protocol, scoring
 
 
@@ -212,9 +219,10 @@ def build_schedule(protocol: dict[str, Any], records: dict[str, dict[str, Any]],
 
 def input_hashes() -> dict[str, str]:
     paths = [PROTOCOL, CONDITIONS, SCORING, ACCOUNTING, DECISIONS, PERSISTENCE,
+             FAILURES, FAILURE_CASES,
              PROJECT / "scripts/check_m4_tasks.py", PROJECT / "scripts/m4_conditions.py",
              PROJECT / "scripts/m4_accounting.py", PROJECT / "scripts/m4_decisions.py",
-             PROJECT / "scripts/m4_persistence.py",
+             PROJECT / "scripts/m4_persistence.py", PROJECT / "scripts/m4_failures.py",
              Path(__file__).resolve()]
     paths.extend(sorted((ROOT / "prompts").glob("*.txt")))
     paths.extend(sorted((ROOT / "artifacts").rglob("*")))
@@ -274,6 +282,8 @@ def create_lock(model_id: str, model_revision: str, binary: Path) -> dict[str, A
                     "scoring_sha256": digest(SCORING), "accounting_sha256": digest(ACCOUNTING),
                     "decision_rules_sha256": digest(DECISIONS),
                     "persistence_contract_sha256": digest(PERSISTENCE),
+                    "failure_contract_sha256": digest(FAILURES),
+                    "failure_cases_sha256": digest(FAILURE_CASES),
                     "seed": protocol["seed"],
                     "ordering": protocol["ordering"], "budgets": protocol["budgets"],
                     "cache_observation": protocol["cache_observation"]},

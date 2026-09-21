@@ -114,11 +114,18 @@ class M4ProtocolTests(unittest.TestCase):
                          PROTOCOL.digest(PROTOCOL.DECISIONS))
         self.assertEqual(lock["harness"]["persistence_contract_sha256"],
                          PROTOCOL.digest(PROTOCOL.PERSISTENCE))
+        self.assertEqual(lock["harness"]["failure_contract_sha256"],
+                         PROTOCOL.digest(PROTOCOL.FAILURES))
+        self.assertEqual(lock["harness"]["failure_cases_sha256"],
+                         PROTOCOL.digest(PROTOCOL.FAILURE_CASES))
         self.assertIn("evals/m4/artifacts/ledger-lite.json", lock["source"]["input_sha256"])
         self.assertIn("scripts/m4_accounting.py", lock["source"]["input_sha256"])
         self.assertIn("scripts/m4_decisions.py", lock["source"]["input_sha256"])
         self.assertIn("scripts/m4_persistence.py", lock["source"]["input_sha256"])
         self.assertIn("evals/m4/persistence.json", lock["source"]["input_sha256"])
+        self.assertIn("evals/m4/failures.json", lock["source"]["input_sha256"])
+        self.assertIn("evals/m4/failure-cases.json", lock["source"]["input_sha256"])
+        self.assertIn("scripts/m4_failures.py", lock["source"]["input_sha256"])
         self.assertTrue(lock["schedule"])
 
     def test_protocol_rejects_condition_budget_drift(self):

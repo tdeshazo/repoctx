@@ -460,7 +460,7 @@ integration and evaluation gaps.
   tokens saved. Keep any benefits experimental until the paired results meet
   M4-05's quality and efficiency rules. Evidence:
   [persisted-evidence evaluation contract](docs/reports/m4-08-evidence.md).
-- [ ] **M4-09 — Diagnose context failures.** Tag failures as missing (needed
+- [x] **M4-09 — Diagnose context failures.** Tag failures as missing (needed
   evidence absent from available inputs), under-retrieved (available evidence
   omitted or insufficiently expanded), over-retrieved (irrelevant evidence
   consumes budget), or buried (discovery fails to locate available evidence).
@@ -473,6 +473,7 @@ integration and evaluation gaps.
   output budget and discovery returned no result beyond omission signals. Also
   include the M4-08 trace where an exact `M4-09` query retained an earlier
   planning mention but clipped the actionable roadmap item from its window.
+  Evidence: [context-failure diagnosis](docs/reports/m4-09-evidence.md).
 - [x] **M4-10 — Diversify bounded discovery results.** Dogfooding a broad M3-02
   query exhausted result/output limits on repeated high-overlap windows from a
   few documentation files before surfacing the implementation package. Broad

@@ -211,3 +211,26 @@ latency, delivery/read overhead, and storage. They also summarize recovery and
 expected rejection behavior. The report remains `experimental_unassessed`.
 Only the predeclared `persisted_file_reference_vs_inline` comparison, paired
 bootstrap intervals, and M4-05 quality/efficiency gates can support a benefit.
+
+## Context-failure diagnosis
+
+[`failures.json`](failures.json) fixes four non-exclusive failure tags and the
+allowed inventory, discovery, selection, and budget contributors. Tags are
+derived from trace facts rather than assigned free-form. The compact historical
+cases in [`failure-cases.json`](failure-cases.json) preserve replay arguments,
+source revisions, evidence-marker hashes, omission signals, and observations;
+they are not full transcripts.
+
+Validate the cases or write a deterministic priority report outside the indexed
+repository:
+
+```sh
+python3 scripts/m4_failures.py validate
+python3 scripts/m4_failures.py report --output /tmp/m4-failure-report.json
+```
+
+Priority combines observed task impact, evidence loss, and the highest-weighted
+diagnosis, with record ID as the stable tie-breaker. Contributors are aggregated
+separately so prioritization points to the responsible layer instead of treating
+every context failure as a ranking defect. A diagnosis records observed behavior;
+it does not claim that a remediation improves downstream task quality.

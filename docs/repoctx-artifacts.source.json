@@ -69,16 +69,16 @@
       "end": "go build -o repoctx-cmd ./cmd/repoctx"
     },
     {
-      "id": "m4-milestone",
+      "id": "m5-milestone",
       "path": "ROADMAP.md",
-      "start": "## 8. M4 — Demonstrate retrieval quality and downstream outcomes",
-      "end": "structure, declared artifacts, or reduced tool use."
+      "start": "## 9. M5 — Amortize verified compilation and serving",
+      "end": "M2 provides a sound invalidation model."
     },
     {
-      "id": "m4-09",
+      "id": "m5-01",
       "path": "ROADMAP.md",
-      "start": "- [ ] **M4-09 — Diagnose context failures.** Tag failures as missing (needed",
-      "end": "  planning mention but clipped the actionable roadmap item from its window."
+      "start": "- [ ] **M5-01 — Profile the complete path.** Measure discovery, parsing, linking,",
+      "end": "  across repository sizes. Attribute time, memory, and artifact growth."
     }
   ],
   "artifacts": [
@@ -328,7 +328,7 @@
       "runner_check_id": "go-vet-all"
     },
     {
-      "id": "repoctx:milestone.m4-evaluation",
+      "id": "repoctx:milestone.m5-amortization",
       "kind": "component",
       "applies_to": [
         {
@@ -338,12 +338,12 @@
       ],
       "lifecycle": "active",
       "sources": [
-        "m4-milestone"
+        "m5-milestone"
       ],
       "declared_inputs": []
     },
     {
-      "id": "repoctx:requirement.m4-09-context-failure-diagnosis",
+      "id": "repoctx:requirement.m5-01-profile-complete-path",
       "kind": "requirement",
       "applies_to": [
         {
@@ -353,7 +353,7 @@
       ],
       "lifecycle": "active",
       "sources": [
-        "m4-09"
+        "m5-01"
       ],
       "declared_inputs": []
     }
@@ -423,12 +423,12 @@
       ]
     },
     {
-      "from": "repoctx:milestone.m4-evaluation",
-      "to": "repoctx:requirement.m4-09-context-failure-diagnosis",
+      "from": "repoctx:milestone.m5-amortization",
+      "to": "repoctx:requirement.m5-01-profile-complete-path",
       "kind": "contains",
       "resolution": "declared",
       "sources": [
-        "m4-09"
+        "m5-01"
       ]
     }
   ]
