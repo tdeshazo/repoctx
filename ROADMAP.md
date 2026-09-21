@@ -449,7 +449,7 @@ integration and evaluation gaps.
   or silently invalidate active references. Keep temporary bundles outside the
   indexed repository so generated evidence cannot become fresh source input.
   Evidence: [checkpoint and evidence lifecycle](docs/reports/m4-07-evidence.md).
-- [ ] **M4-08 — Evaluate persisted evidence across turns and compaction.**
+- [x] **M4-08 — Evaluate persisted evidence across turns and compaction.**
   Pair inline delivery with M4-06 file-reference delivery under matched tasks,
   permissions, budgets, and compaction policy. Include a follow-up whose decisive
   detail is absent from the checkpoint but remains in stored evidence, a source
@@ -458,7 +458,8 @@ integration and evaluation gaps.
   reads, repeated evidence, reference/preview overhead, model usage, latency,
   and storage cost. Report whole-task savings; original output size alone is not
   tokens saved. Keep any benefits experimental until the paired results meet
-  M4-05's quality and efficiency rules.
+  M4-05's quality and efficiency rules. Evidence:
+  [persisted-evidence evaluation contract](docs/reports/m4-08-evidence.md).
 - [ ] **M4-09 — Diagnose context failures.** Tag failures as missing (needed
   evidence absent from available inputs), under-retrieved (available evidence
   omitted or insufficiently expanded), over-retrieved (irrelevant evidence
@@ -469,7 +470,9 @@ integration and evaluation gaps.
   Include the M4-06 dogfood trace where the exact `M4-07` identifier was split
   into common tokens and buried by incidental generated-JSON hash matches, and
   the M4-07 trace where a relevant roadmap window exceeded the remaining 8 KiB
-  output budget and discovery returned no result beyond omission signals.
+  output budget and discovery returned no result beyond omission signals. Also
+  include the M4-08 trace where an exact `M4-09` query retained an earlier
+  planning mention but clipped the actionable roadmap item from its window.
 - [x] **M4-10 — Diversify bounded discovery results.** Dogfooding a broad M3-02
   query exhausted result/output limits on repeated high-overlap windows from a
   few documentation files before surfacing the implementation package. Broad

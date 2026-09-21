@@ -75,10 +75,10 @@
       "end": "structure, declared artifacts, or reduced tool use."
     },
     {
-      "id": "m4-08",
+      "id": "m4-09",
       "path": "ROADMAP.md",
-      "start": "- [ ] **M4-08 — Evaluate persisted evidence across turns and compaction.**",
-      "end": "  M4-05's quality and efficiency rules."
+      "start": "- [ ] **M4-09 — Diagnose context failures.** Tag failures as missing (needed",
+      "end": "  planning mention but clipped the actionable roadmap item from its window."
     }
   ],
   "artifacts": [
@@ -343,7 +343,7 @@
       "declared_inputs": []
     },
     {
-      "id": "repoctx:requirement.m4-08-persisted-evidence-evaluation",
+      "id": "repoctx:requirement.m4-09-context-failure-diagnosis",
       "kind": "requirement",
       "applies_to": [
         {
@@ -353,7 +353,7 @@
       ],
       "lifecycle": "active",
       "sources": [
-        "m4-08"
+        "m4-09"
       ],
       "declared_inputs": []
     }
@@ -424,11 +424,11 @@
     },
     {
       "from": "repoctx:milestone.m4-evaluation",
-      "to": "repoctx:requirement.m4-08-persisted-evidence-evaluation",
+      "to": "repoctx:requirement.m4-09-context-failure-diagnosis",
       "kind": "contains",
       "resolution": "declared",
       "sources": [
-        "m4-08"
+        "m4-09"
       ]
     }
   ]

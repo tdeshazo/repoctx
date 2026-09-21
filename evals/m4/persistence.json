@@ -1,0 +1,22 @@
+{
+  "version": "repoctx.m4.persistence/v1alpha1",
+  "conditions": ["inline", "file_reference"],
+  "minimum_quality_pairs": 30,
+  "required_scenarios": ["recovery", "source_mutation", "missing_handle", "expired_handle"],
+  "quality_task_outcome": "answerable",
+  "resilience_tasks": {
+    "source_mutation": "edge-contradictory-timeout",
+    "missing_handle": "edge-no-answer-blockchain",
+    "expired_handle": "edge-denied-admin-token"
+  },
+  "compaction_policy": {
+    "remove_prior_evidence": true,
+    "retain_checkpoint_only": true,
+    "decisive_detail_in_checkpoint": false
+  },
+  "matched_controls": ["task_sha256", "permission_profile", "budgets_sha256", "model_profile_sha256", "compaction_policy_sha256"],
+  "measurements": ["verified_task_success", "detail_recovered", "stale_evidence_rejected", "reference_error", "reads", "repeated_evidence_bytes", "reference_bytes", "preview_bytes", "checkpoint_bytes", "provider_usage", "wall_ms", "storage_byte_milliseconds"],
+  "quality_metric": "verified_task_success_absolute_delta",
+  "efficiency_metrics": ["input_plus_output_tokens_relative_reduction", "tool_calls_relative_reduction", "trial_wall_ms_relative_reduction"],
+  "claim_policy": "unassessed until a locked held-out run meets the M4-05 sample, quality, uncertainty, and practical-threshold rules"
+}

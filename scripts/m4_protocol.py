@@ -20,6 +20,7 @@ CONDITIONS = ROOT / "conditions.json"
 SCORING = ROOT / "scoring.json"
 ACCOUNTING = ROOT / "accounting.json"
 DECISIONS = ROOT / "decisions.json"
+PERSISTENCE = ROOT / "persistence.json"
 PLACEHOLDERS = {"", "unknown", "latest", "main", "head", "devel"}
 TRACK_CONDITIONS = {
     "end_to_end": {"ordinary_tools", "bounded_lexical", "repoctx_no_graph",
@@ -169,6 +170,9 @@ def validate_protocol(protocol_path: Path = PROTOCOL) -> tuple[dict[str, Any], d
     accounting_module.validate_config(root / "accounting.json")
     decisions_module = load_module("m4_decisions_for_protocol", PROJECT / "scripts/m4_decisions.py")
     decisions_module.validate_config(root / "decisions.json")
+    persistence_module = load_module("m4_persistence_for_protocol",
+                                     PROJECT / "scripts/m4_persistence.py")
+    persistence_module.validate_config(root / "persistence.json")
     return protocol, scoring
 
 
@@ -207,9 +211,10 @@ def build_schedule(protocol: dict[str, Any], records: dict[str, dict[str, Any]],
 
 
 def input_hashes() -> dict[str, str]:
-    paths = [PROTOCOL, CONDITIONS, SCORING, ACCOUNTING, DECISIONS,
+    paths = [PROTOCOL, CONDITIONS, SCORING, ACCOUNTING, DECISIONS, PERSISTENCE,
              PROJECT / "scripts/check_m4_tasks.py", PROJECT / "scripts/m4_conditions.py",
              PROJECT / "scripts/m4_accounting.py", PROJECT / "scripts/m4_decisions.py",
+             PROJECT / "scripts/m4_persistence.py",
              Path(__file__).resolve()]
     paths.extend(sorted((ROOT / "prompts").glob("*.txt")))
     paths.extend(sorted((ROOT / "artifacts").rglob("*")))
@@ -268,6 +273,7 @@ def create_lock(model_id: str, model_revision: str, binary: Path) -> dict[str, A
         "harness": {"protocol_sha256": digest(PROTOCOL), "conditions_sha256": digest(CONDITIONS),
                     "scoring_sha256": digest(SCORING), "accounting_sha256": digest(ACCOUNTING),
                     "decision_rules_sha256": digest(DECISIONS),
+                    "persistence_contract_sha256": digest(PERSISTENCE),
                     "seed": protocol["seed"],
                     "ordering": protocol["ordering"], "budgets": protocol["budgets"],
                     "cache_observation": protocol["cache_observation"]},

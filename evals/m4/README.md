@@ -178,3 +178,36 @@ The classifier verifies that the input names the exact predeclared comparison,
 metrics, sample counts, missingness, bootstrap procedure, and SHA-256 identities
 of the run lock, accounting report, and scored results. It does not calculate
 intervals or turn descriptive comparisons into autonomous repoctx claims.
+
+## Persisted evidence across compaction
+
+[`persistence.json`](persistence.json) freezes the optional file-reference
+comparison before its held-out run. All 30 answerable tasks receive matched
+inline and file-reference recovery trials. Their decisive evidence is removed
+with prior tool results and is forbidden from the retained checkpoint. The
+three edge tasks predeclare source-mutation, missing-handle, and expired-handle
+trials, so the harness cannot choose fault cases after observing outcomes.
+
+Every JSONL trial record identifies the task, model, permissions, budgets, and
+compaction policy; records the initial bundle/reference/preview bytes,
+checkpoint size, every subsequent bounded read and repeated byte, normalized
+and raw model usage, end-to-end latency, and time-integrated storage. It also
+records task success, recovery, stale rejection, explicit reference errors, and
+whether rejected evidence was subsequently used. Pair controls and their
+identities must match exactly.
+
+Validate the frozen contract or summarize a complete 33-pair run:
+
+```sh
+python3 scripts/m4_persistence.py validate
+python3 scripts/m4_persistence.py report \
+  --records /tmp/m4-persistence.jsonl \
+  --output /tmp/m4-persistence-report.json
+```
+
+Reports bind the contract, task manifest, protocol, and canonical trial records;
+separate inline and file-reference totals cover whole-task model usage, calls,
+latency, delivery/read overhead, and storage. They also summarize recovery and
+expected rejection behavior. The report remains `experimental_unassessed`.
+Only the predeclared `persisted_file_reference_vs_inline` comparison, paired
+bootstrap intervals, and M4-05 quality/efficiency gates can support a benefit.

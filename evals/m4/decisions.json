@@ -19,7 +19,8 @@
   },
   "primary_metrics": {
     "end_to_end": "verified_task_success",
-    "evidence_only": "required_span_recall"
+    "evidence_only": "required_span_recall",
+    "persistence": "verified_task_success"
   },
   "quality_tolerances": {
     "verified_task_success_absolute_delta": -0.05,
@@ -88,6 +89,17 @@
       "quality_metric": "required_span_recall_absolute_delta",
       "efficiency_metrics": [],
       "attribution": "human_gold"
+    },
+    {
+      "id": "persisted_file_reference_vs_inline",
+      "track": "persistence",
+      "candidate": "file_reference",
+      "reference": "inline",
+      "eligibility": "all",
+      "decision": "efficiency_with_quality_guard",
+      "quality_metric": "verified_task_success_absolute_delta",
+      "efficiency_metrics": ["input_plus_output_tokens_relative_reduction", "tool_calls_relative_reduction", "trial_wall_ms_relative_reduction"],
+      "attribution": "repoctx_optional_file_reference_adapter"
     }
   ],
   "decision_states": ["supported", "threshold_not_met", "quality_harm", "inconclusive", "inconclusive_underpowered", "inconclusive_missing", "descriptive_only"]

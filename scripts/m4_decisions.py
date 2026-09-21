@@ -63,6 +63,15 @@ EXPECTED_COMPARISONS = {
         "quality_metric": "required_span_recall_absolute_delta", "efficiency_metrics": [],
         "attribution": "human_gold",
     },
+    "persisted_file_reference_vs_inline": {
+        "track": "persistence", "candidate": "file_reference", "reference": "inline",
+        "eligibility": "all", "decision": "efficiency_with_quality_guard",
+        "quality_metric": "verified_task_success_absolute_delta",
+        "efficiency_metrics": ["input_plus_output_tokens_relative_reduction",
+                               "tool_calls_relative_reduction",
+                               "trial_wall_ms_relative_reduction"],
+        "attribution": "repoctx_optional_file_reference_adapter",
+    },
 }
 
 
@@ -99,7 +108,8 @@ def validate_config(path: Path = CONFIG) -> dict[str, Any]:
         "underpowered": "inconclusive; never equivalence or non-regression",
     }, "sample and missingness rules drifted")
     require(value["primary_metrics"] == {"end_to_end": "verified_task_success",
-                                          "evidence_only": "required_span_recall"},
+                                          "evidence_only": "required_span_recall",
+                                          "persistence": "verified_task_success"},
             "primary metrics drifted")
     require(value["quality_tolerances"] == QUALITY_TOLERANCES,
             "quality tolerances drifted")

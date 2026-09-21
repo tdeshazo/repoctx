@@ -45,6 +45,8 @@ class M4DecisionTests(unittest.TestCase):
         self.assertEqual(indexed["artifact_aware_vs_repoctx_graph"]["decision"],
                          "descriptive_only")
         self.assertEqual(indexed["human_oracle_upper_bound"]["attribution"], "human_gold")
+        self.assertEqual(indexed["persisted_file_reference_vs_inline"]["track"],
+                         "persistence")
         self.assertEqual(rules["sample_rules"]["underpowered"],
                          "inconclusive; never equivalence or non-regression")
 
@@ -108,6 +110,17 @@ class M4DecisionTests(unittest.TestCase):
         self.assertEqual(result["attribution"],
                          "repository_declarations_and_harness_selection")
         self.assertEqual(result["sources"]["run_lock_sha256"], "a" * 64)
+
+    def test_persistence_comparison_reuses_quality_and_efficiency_guards(self):
+        value = decision_input("persisted_file_reference_vs_inline", {
+            "verified_task_success_absolute_delta": interval(0.0, -0.02, 0.03),
+            "input_plus_output_tokens_relative_reduction": interval(0.20, 0.16, 0.25),
+            "tool_calls_relative_reduction": interval(0.25, 0.21, 0.30),
+            "trial_wall_ms_relative_reduction": interval(0.20, 0.16, 0.25),
+        })
+        result = DECISIONS.assess(value)
+        self.assertEqual(result["overall"], "supported")
+        self.assertEqual(result["attribution"], "repoctx_optional_file_reference_adapter")
 
 
 if __name__ == "__main__":
