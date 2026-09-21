@@ -430,7 +430,7 @@ integration and evaluation gaps.
   evaluating the held-out set. Treat an underpowered result as inconclusive,
   not as proof of equivalence or non-regression. Evidence:
   [predeclared decision rules](docs/reports/m4-05-evidence.md).
-- [ ] **M4-06 — Prototype optional file-reference delivery.** Extend
+- [x] **M4-06 — Prototype optional file-reference delivery.** Extend
   `examples/agent/tool_bridge.py` with an opt-in persisted-bundle response and a
   bounded retrieval operation. Return a caller-controlled handle, snapshot
   identity, byte size, relevant symbol/unit IDs, and explicit trust and
@@ -438,6 +438,7 @@ integration and evaluation gaps.
   separately labeled and cannot substitute for evidence. Keep inline delivery
   available and budget both references and subsequent reads. Do not assume a
   filename or a leading-lines preview provides sufficient retrieval guidance.
+  Evidence: [optional file-reference prototype](docs/reports/m4-06-evidence.md).
 - [ ] **M4-07 — Document checkpoint and evidence lifecycle.** Extend the
   adapter example and vendored skill with a harness-owned checkpoint containing
   the task, bundle handles, snapshot identity, relevant IDs, unresolved questions,
@@ -464,6 +465,8 @@ integration and evaluation gaps.
   Record the supporting trace and contributing inventory, discovery, selection,
   or budget behavior; allow multiple tags. Use these diagnoses to prioritize
   changes rather than assuming every failure requires a ranking change.
+  Include the M4-06 dogfood trace where the exact `M4-07` identifier was split
+  into common tokens and buried by incidental generated-JSON hash matches.
 - [x] **M4-10 — Diversify bounded discovery results.** Dogfooding a broad M3-02
   query exhausted result/output limits on repeated high-overlap windows from a
   few documentation files before surfacing the implementation package. Broad

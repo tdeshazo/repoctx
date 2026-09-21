@@ -357,7 +357,21 @@ output tokens separately.
 
 See `examples/agent/tool_bridge.py` for a model-neutral Python adapter that keeps
 the binary, root, index, exclusion policy and output cap under application
-control. It does not call any model service.
+control. It does not call any model service. Inline delivery remains the
+default. Callers may instead configure a bundle directory outside the indexed
+repository and request `delivery="file_reference"` with their own opaque,
+run-unique handle. The response contains snapshot identity, exact byte size and
+digest, relevant symbol/unit IDs, trust, omissions, and bounded-read limits; it
+does not expose a filesystem path or substitute a preview for evidence.
+
+`read_context(handle, offset=..., max_bytes=...)` returns an integrity-checked,
+base64 byte range whose source-byte and serialized-response sizes are both
+bounded. Concatenating decoded ranges reconstructs the exact original context
+payload, including ranges that divide a UTF-8 character. The adapter rejects
+unknown/reused handles, changed stored bytes, and bundle directories within the
+source root. The embedding harness owns store creation, handle namespace,
+retention, and cleanup; checkpoint and resume lifecycle is not part of this
+prototype.
 
 ## Source and trust boundaries
 
