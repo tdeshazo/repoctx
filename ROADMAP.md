@@ -582,11 +582,11 @@ positive agent-performance claim.
   Cover development builds and packaged binaries without claiming that version
   output alone authenticates an executable or proves source equivalence.
   Evidence: [ranked dogfood findings and disposition](docs/reports/dogfood-priority-2026-09-21.md).
-- [ ] **M6-06 — Reject stale roadmap automation targets.** M3-03 dogfooding found
-  `next-roadmap-item.yaml` and its workflow guide still identify completed M3-01
-  as the first unchecked item. Make target selection generated or validated
-  against `ROADMAP.md`, and fail preflight when a pinned item is already complete,
-  so automation cannot confidently execute an obsolete plan.
+- [x] **M6-06 — Retire stale roadmap automation.** M3-03 dogfooding found
+  `next-roadmap-item.yaml` and its workflow guide still identified completed
+  M3-01 as the first unchecked item. The workflow is no longer used, so remove
+  both surfaces rather than preserving an executable obsolete plan. Evidence:
+  [retirement and reference audit](docs/reports/m6-06-evidence.md).
 
 ### Acceptance gates
 
