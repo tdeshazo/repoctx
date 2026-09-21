@@ -75,10 +75,10 @@
       "end": "structure, declared artifacts, or reduced tool use."
     },
     {
-      "id": "m4-02",
+      "id": "m4-03",
       "path": "ROADMAP.md",
-      "start": "- [ ] **M4-02 — Compare appropriate conditions.** Include ordinary repository",
-      "end": "  separately when relevant. Do not attribute manual curation to repoctx."
+      "start": "- [ ] **M4-03 — Control experiments.** Pin commits, compiler/provider profiles,",
+      "end": "  for all compared evidence suppliers."
     }
   ],
   "artifacts": [
@@ -343,7 +343,7 @@
       "declared_inputs": []
     },
     {
-      "id": "repoctx:requirement.m4-02-condition-comparison",
+      "id": "repoctx:requirement.m4-03-experiment-controls",
       "kind": "requirement",
       "applies_to": [
         {
@@ -353,7 +353,7 @@
       ],
       "lifecycle": "active",
       "sources": [
-        "m4-02"
+        "m4-03"
       ],
       "declared_inputs": []
     }
@@ -424,11 +424,11 @@
     },
     {
       "from": "repoctx:milestone.m4-evaluation",
-      "to": "repoctx:requirement.m4-02-condition-comparison",
+      "to": "repoctx:requirement.m4-03-experiment-controls",
       "kind": "contains",
       "resolution": "declared",
       "sources": [
-        "m4-02"
+        "m4-03"
       ]
     }
   ]

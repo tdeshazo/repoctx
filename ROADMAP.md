@@ -407,10 +407,11 @@ integration and evaluation gaps.
   executable checks. This is a pilot floor, not evidence of broad statistical
   generalization. Keep tuning tasks separate. Evidence:
   [held-out pilot task set](docs/reports/m4-01-evidence.md).
-- [ ] **M4-02 — Compare appropriate conditions.** Include ordinary repository
+- [x] **M4-02 — Compare appropriate conditions.** Include ordinary repository
   tools, bounded lexical snippets, repoctx without graph expansion, and repoctx
   with graph expansion. Add artifact-aware and human-curated oracle conditions
   separately when relevant. Do not attribute manual curation to repoctx.
+  Evidence: [comparison-condition harness](docs/reports/m4-02-evidence.md).
 - [ ] **M4-03 — Control experiments.** Pin commits, compiler/provider profiles,
   model/harness configuration, permissions, budgets, and scoring rules. Use fresh
   workspaces for change tasks; randomize or interleave trial order and record

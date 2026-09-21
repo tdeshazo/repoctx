@@ -1,0 +1,16 @@
+{
+  "version": "repoctx.artifacts/v1alpha1",
+  "namespace": "ledger",
+  "artifacts": [
+    {"id":"ledger:component.config","kind":"component","applies_to":[{"kind":"file","path":"ledger/config.py"}],"lifecycle":"active","sources":[{"path":"ledger/config.py","sha256":"01b6bc6b19c6824db9874af8943c0c321a30e3ef780442985f011c5069e90e09","start_byte":0,"end_byte":80,"start_line":1,"end_line":3,"start_byte_column":0,"end_byte_column":28}],"declared_inputs":[]},
+    {"id":"ledger:component.pricing","kind":"component","applies_to":[{"kind":"file","path":"ledger/pricing.py"}],"lifecycle":"active","sources":[{"path":"ledger/pricing.py","sha256":"30f52304d0d0e9a2f6754972619e97d5cce726e256cde6906c834bcba82e4762","start_byte":0,"end_byte":278,"start_line":1,"end_line":8,"start_byte_column":0,"end_byte_column":36}],"declared_inputs":[]},
+    {"id":"ledger:component.service","kind":"component","applies_to":[{"kind":"file","path":"ledger/service.py"}],"lifecycle":"active","sources":[{"path":"ledger/service.py","sha256":"29c7f779724021a6331fcf3c8ca2242a0218876e075b5bb151e338e1b9c70552","start_byte":0,"end_byte":520,"start_line":1,"end_line":17,"start_byte_column":0,"end_byte_column":44}],"declared_inputs":[]},
+    {"id":"ledger:component.storage","kind":"component","applies_to":[{"kind":"file","path":"ledger/storage.py"}],"lifecycle":"active","sources":[{"path":"ledger/storage.py","sha256":"42cd1ced5a0ba956a2ac1c270ac0e3b03beed25e338c3d8c620e32a6b51cd499","start_byte":0,"end_byte":153,"start_line":1,"end_line":7,"start_byte_column":0,"end_byte_column":17}],"declared_inputs":[]},
+    {"id":"ledger:requirement.operations","kind":"requirement","applies_to":[{"kind":"file","path":"docs/operations.md"}],"lifecycle":"active","sources":[{"path":"docs/operations.md","sha256":"1b35c75fc71d6d8cb6de0806afc2d0b0c8929d2f4862743df82b0139b7d96c74","start_byte":0,"end_byte":211,"start_line":1,"end_line":5,"start_byte_column":0,"end_byte_column":56}],"declared_inputs":[]}
+  ],
+  "relationships": [
+    {"from":"ledger:component.service","to":"ledger:component.config","kind":"depends_on","resolution":"declared","sources":[{"path":"ledger/service.py","sha256":"29c7f779724021a6331fcf3c8ca2242a0218876e075b5bb151e338e1b9c70552","start_byte":0,"end_byte":520,"start_line":1,"end_line":17,"start_byte_column":0,"end_byte_column":44}]},
+    {"from":"ledger:component.service","to":"ledger:component.pricing","kind":"depends_on","resolution":"declared","sources":[{"path":"ledger/service.py","sha256":"29c7f779724021a6331fcf3c8ca2242a0218876e075b5bb151e338e1b9c70552","start_byte":0,"end_byte":520,"start_line":1,"end_line":17,"start_byte_column":0,"end_byte_column":44}]},
+    {"from":"ledger:component.service","to":"ledger:component.storage","kind":"depends_on","resolution":"declared","sources":[{"path":"ledger/service.py","sha256":"29c7f779724021a6331fcf3c8ca2242a0218876e075b5bb151e338e1b9c70552","start_byte":0,"end_byte":520,"start_line":1,"end_line":17,"start_byte_column":0,"end_byte_column":44}]}
+  ]
+}

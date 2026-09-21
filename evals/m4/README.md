@@ -52,4 +52,34 @@ The corpus validator checks permission metadata, path confinement, symlinks,
 UTF-8, unique evidence, scope, agent/evaluator separation, task floors, tuning
 separation, and check ownership. It does not execute an agent, measure retrieval
 quality, or predeclare the experimental controls and decision rules assigned to
-M4-02 through M4-05.
+M4-03 through M4-05.
+
+## Comparison conditions
+
+[`conditions.json`](conditions.json) defines six explicitly attributed inputs:
+ordinary filesystem tools without preselected evidence, independent bounded
+lexical windows, repoctx context at graph depths zero and one, an optional
+declared-artifact condition, and a human-curated evidence oracle. The latter two
+are separate conditions: repository declarations plus harness selection are not
+reported as autonomous repoctx retrieval, and human gold spans are never
+reported as repoctx output. A missing repository catalog makes the
+artifact-aware condition unavailable rather than silently substituting another
+supplier.
+
+Every evidence condition uses the same bounded output envelope. The lexical
+selector is implemented independently in Python. Repoctx conditions use an
+exported repository and require an explicit checkout-built binary. The oracle
+contains only permitted source spans, not expected answers. Validate the matrix
+or render one exported input with:
+
+```sh
+python3 scripts/m4_conditions.py validate
+python3 scripts/m4_conditions.py render \
+  --task l-cross-quote --condition bounded_lexical \
+  --repository "$trial/repository"
+```
+
+Use `--repoctx ./repoctx` for either repoctx condition. Rendering prepares a
+condition input; it does not run an agent or establish matched controls, cost
+accounting, decision thresholds, or comparative performance. Those remain the
+separate M4-03 through M4-05 gates.

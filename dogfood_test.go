@@ -15,21 +15,12 @@ import (
 
 func TestRepositoryArtifactCatalog(t *testing.T) {
 	root := "."
-	authoring, err := os.ReadFile(filepath.Join(root, "docs/repoctx-artifacts.source.json"))
-	if err != nil {
-		t.Fatal(err)
-	}
-	wire, err := os.ReadFile(filepath.Join(root, "docs/repoctx-artifacts.json"))
-	if err != nil {
-		t.Fatal(err)
-	}
-	generated, err := artifacts.Generate(root, authoring, artifacts.Limits{})
-	if err != nil {
-		t.Fatal(err)
-	}
-	if !bytes.Equal(generated, wire) {
-		t.Fatal("docs/repoctx-artifacts.json is stale; regenerate it with repoctx artifacts")
-	}
+	authoring, wire := generatedArtifactCatalog(
+		t,
+		root,
+		"docs/repoctx-artifacts.source.json",
+		"docs/repoctx-artifacts.json",
+	)
 	for _, duplicatedInstruction := range [][]byte{[]byte("go test ./..."), []byte("go vet ./...")} {
 		if bytes.Contains(authoring, duplicatedInstruction) {
 			t.Fatalf("catalog copied development command %q", duplicatedInstruction)
@@ -91,6 +82,40 @@ func TestRepositoryArtifactCatalog(t *testing.T) {
 			t.Fatalf("%s lacks exact expanded evidence: %+v", id, artifact.Sources)
 		}
 	}
+}
+
+func TestEvaluationArtifactCatalog(t *testing.T) {
+	generatedArtifactCatalog(
+		t,
+		"evals/m4/repositories/ledger-lite",
+		"evals/m4/artifacts/ledger-lite.source.json",
+		"evals/m4/artifacts/ledger-lite.json",
+	)
+}
+
+func generatedArtifactCatalog(
+	t *testing.T,
+	root string,
+	authoringPath string,
+	catalogPath string,
+) ([]byte, []byte) {
+	t.Helper()
+	authoring, err := os.ReadFile(authoringPath)
+	if err != nil {
+		t.Fatal(err)
+	}
+	wire, err := os.ReadFile(catalogPath)
+	if err != nil {
+		t.Fatal(err)
+	}
+	generated, err := artifacts.Generate(root, authoring, artifacts.Limits{})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !bytes.Equal(generated, wire) {
+		t.Fatalf("%s is stale; regenerate it with repoctx artifacts", catalogPath)
+	}
+	return authoring, wire
 }
 
 func artifactIDs(catalog *artifacts.Catalog) []string {

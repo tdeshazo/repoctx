@@ -1,0 +1,12 @@
+{
+  "version": "repoctx.m4.conditions/v1alpha1",
+  "max_output_bytes": 12000,
+  "conditions": [
+    {"id":"ordinary_tools","mode":"interactive","supplier":"filesystem_tools","repoctx":false,"graph_depth":null,"curation":"none","eligibility":"all"},
+    {"id":"bounded_lexical","mode":"evidence","supplier":"independent_lexical_windows","repoctx":false,"graph_depth":null,"curation":"none","eligibility":"all"},
+    {"id":"repoctx_no_graph","mode":"evidence","supplier":"repoctx_context","repoctx":true,"graph_depth":0,"curation":"none","eligibility":"all"},
+    {"id":"repoctx_graph","mode":"evidence","supplier":"repoctx_context","repoctx":true,"graph_depth":1,"curation":"none","eligibility":"all"},
+    {"id":"artifact_aware","mode":"evidence","supplier":"declared_artifact_spans","repoctx":false,"graph_depth":null,"curation":"repository_declarations","eligibility":"declared_catalog","catalogs":{"ledger-lite":"artifacts/ledger-lite.json"}},
+    {"id":"human_oracle","mode":"evidence","supplier":"required_evidence_spans","repoctx":false,"graph_depth":null,"curation":"human_gold","eligibility":"all"}
+  ]
+}
