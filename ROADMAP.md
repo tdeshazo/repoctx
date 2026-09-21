@@ -419,11 +419,12 @@ integration and evaluation gaps.
   Run evidence-only tests as a separate track with the same no-tools constraint
   for all compared evidence suppliers. Evidence:
   [frozen experiment controls](docs/reports/m4-03-evidence.md).
-- [ ] **M4-04 — Publish complete accounting.** Capture compilation, update,
+- [x] **M4-04 — Publish complete accounting.** Capture compilation, update,
   retrieval, agent, and verification costs separately. Report cold and warm
   workloads, all permitted tool calls, failures, timeouts, abstentions, and raw
   provider usage fields. Do not double-count cached input or reasoning tokens
-  that are subsets of other usage fields.
+  that are subsets of other usage fields. Evidence:
+  [complete accounting contract](docs/reports/m4-04-evidence.md).
 - [ ] **M4-05 — Predeclare decision rules.** Choose primary metrics, quality
   tolerances, uncertainty reporting, and practical improvement thresholds before
   evaluating the held-out set. Treat an underpowered result as inconclusive,

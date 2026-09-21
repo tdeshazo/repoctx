@@ -108,12 +108,23 @@ class M4ProtocolTests(unittest.TestCase):
         self.assertEqual(lock["repoctx"]["binary_sha256"], "b" * 64)
         self.assertEqual(lock["model"]["revision"], "model-build-2026-09-21")
         self.assertEqual(lock["harness"]["protocol_sha256"], PROTOCOL.digest(PROTOCOL.PROTOCOL))
+        self.assertEqual(lock["harness"]["accounting_sha256"],
+                         PROTOCOL.digest(PROTOCOL.ACCOUNTING))
         self.assertIn("evals/m4/artifacts/ledger-lite.json", lock["source"]["input_sha256"])
+        self.assertIn("scripts/m4_accounting.py", lock["source"]["input_sha256"])
         self.assertTrue(lock["schedule"])
 
     def test_protocol_rejects_condition_budget_drift(self):
         self.mutate(lambda value: value["budgets"].update(condition_output_bytes=11999))
         with self.assertRaisesRegex(ValueError, "budgets disagree"):
+            self.validate()
+
+    def test_protocol_rejects_accounting_contract_drift(self):
+        path = self.root / "accounting.json"
+        value = json.loads(path.read_text(encoding="utf-8"))
+        value["additive_usage"].append("cached_input_tokens")
+        path.write_text(json.dumps(value), encoding="utf-8")
+        with self.assertRaisesRegex(ValueError, "accounting contract drifted"):
             self.validate()
 
 

@@ -52,7 +52,7 @@ The corpus validator checks permission metadata, path confinement, symlinks,
 UTF-8, unique evidence, scope, agent/evaluator separation, task floors, tuning
 separation, and check ownership. It does not execute an agent, measure retrieval
 quality, or predeclare the experimental controls and decision rules assigned to
-M4-04 and M4-05.
+M4-05.
 
 ## Comparison conditions
 
@@ -81,8 +81,8 @@ python3 scripts/m4_conditions.py render \
 
 Use `--repoctx ./repoctx` for either repoctx condition. Rendering prepares a
 condition input; it does not run an agent or establish matched controls, cost
-accounting, decision thresholds, or comparative performance. Those remain the
-separate M4-04 and M4-05 gates.
+accounting, decision thresholds, or comparative performance. Accounting is a
+separate reporting step below, and M4-05 remains the decision-rule gate.
 
 ## Frozen experiment controls
 
@@ -114,5 +114,33 @@ The lock hashes the source inputs, prompts, scoring rules, protocol, harness,
 and repoctx binary; records the full Git commit and repoctx build metadata; and
 embeds the complete schedule. It refuses a dirty worktree, placeholder model
 identity, incompatible binary, overwrite, or output inside the indexed
-repository. Creating a lock does not execute trials or establish M4-04 cost
-accounting or M4-05 decision rules.
+repository. Creating a lock does not execute trials; the reporter below consumes
+their accounting records, and M4-05 remains the decision-rule gate.
+
+## Complete accounting
+
+[`accounting.json`](accounting.json) defines five non-overlapping cost stages:
+compilation, update, retrieval, agent, and verification. Each trial record also
+contains end-to-end wall time, its observed cache state, outcome, every permitted
+tool call, and both raw and normalized provider usage. Stage and tool-call times
+may be nested and are never added to end-to-end latency. Missing measurements
+remain `null`; failed calls and stages, timeouts, and abstentions remain explicit
+records. Every trial must affirm that its tool trace is complete.
+
+Generate a complete report only after every locked trial has one JSONL record:
+
+```sh
+python3 scripts/m4_accounting.py validate
+python3 scripts/m4_accounting.py report \
+  --run-lock /tmp/m4-run-lock.json --records /tmp/m4-records.jsonl \
+  --output /tmp/m4-accounting.json
+```
+
+The validator rejects missing or duplicate trials, cache labels inconsistent
+with the schedule, evidence-only tool calls, malformed stage measurements, and
+subset token counts larger than their parents. Reports retain raw provider
+usage and group cold/warm results by track and condition. The normalized total
+adds only input and output tokens; cached input remains a subset of input, and
+reasoning remains a subset of output. Reports are compact JSON written outside
+the indexed repository. They provide accounting, not M4-05 decision thresholds
+or a performance claim.

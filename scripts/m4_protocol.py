@@ -18,6 +18,7 @@ ROOT = PROJECT / "evals" / "m4"
 PROTOCOL = ROOT / "protocol.json"
 CONDITIONS = ROOT / "conditions.json"
 SCORING = ROOT / "scoring.json"
+ACCOUNTING = ROOT / "accounting.json"
 PLACEHOLDERS = {"", "unknown", "latest", "main", "head", "devel"}
 TRACK_CONDITIONS = {
     "end_to_end": {"ordinary_tools", "bounded_lexical", "repoctx_no_graph",
@@ -162,6 +163,9 @@ def validate_protocol(protocol_path: Path = PROTOCOL) -> tuple[dict[str, Any], d
             "cache observation policy is incomplete")
     scoring = load_json(root / "scoring.json")
     validate_scoring(scoring)
+    accounting_module = load_module("m4_accounting_for_protocol",
+                                    PROJECT / "scripts/m4_accounting.py")
+    accounting_module.validate_config(root / "accounting.json")
     return protocol, scoring
 
 
@@ -200,8 +204,9 @@ def build_schedule(protocol: dict[str, Any], records: dict[str, dict[str, Any]],
 
 
 def input_hashes() -> dict[str, str]:
-    paths = [PROTOCOL, CONDITIONS, SCORING, PROJECT / "scripts/check_m4_tasks.py",
-             PROJECT / "scripts/m4_conditions.py", Path(__file__).resolve()]
+    paths = [PROTOCOL, CONDITIONS, SCORING, ACCOUNTING,
+             PROJECT / "scripts/check_m4_tasks.py", PROJECT / "scripts/m4_conditions.py",
+             PROJECT / "scripts/m4_accounting.py", Path(__file__).resolve()]
     paths.extend(sorted((ROOT / "prompts").glob("*.txt")))
     paths.extend(sorted((ROOT / "artifacts").rglob("*")))
     paths.extend(sorted((ROOT / "repositories").rglob("*")))
@@ -257,7 +262,8 @@ def create_lock(model_id: str, model_revision: str, binary: Path) -> dict[str, A
         "model": {"id": model_id, "revision": model_revision,
                   "profile": protocol["model_profile"]},
         "harness": {"protocol_sha256": digest(PROTOCOL), "conditions_sha256": digest(CONDITIONS),
-                    "scoring_sha256": digest(SCORING), "seed": protocol["seed"],
+                    "scoring_sha256": digest(SCORING), "accounting_sha256": digest(ACCOUNTING),
+                    "seed": protocol["seed"],
                     "ordering": protocol["ordering"], "budgets": protocol["budgets"],
                     "cache_observation": protocol["cache_observation"]},
         "schedule": schedule,

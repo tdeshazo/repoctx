@@ -1,0 +1,25 @@
+{
+  "version": "repoctx.m4.accounting/v1alpha1",
+  "stages": ["compilation", "update", "retrieval", "agent", "verification"],
+  "stage_statuses": ["success", "failed", "timeout", "not_applicable"],
+  "stage_metrics": ["wall_ms", "cpu_ms", "peak_rss_bytes", "input_bytes", "output_bytes"],
+  "stage_boundaries": {
+    "compilation": "initial full repository compilation only",
+    "update": "incremental refresh or warm preparation after initial compilation",
+    "retrieval": "condition generation excluding compilation and update",
+    "agent": "model and harness execution after condition delivery",
+    "verification": "evaluator scoring and executable checks after agent execution"
+  },
+  "trial_metrics": ["wall_ms"],
+  "trial_outcomes": ["completed", "failed", "timeout", "abstained"],
+  "tool_statuses": ["success", "failed", "timeout"],
+  "normalized_usage": ["input_tokens", "output_tokens", "cached_input_tokens", "reasoning_tokens"],
+  "additive_usage": ["input_tokens", "output_tokens"],
+  "subset_usage": {
+    "cached_input_tokens": "input_tokens",
+    "reasoning_tokens": "output_tokens"
+  },
+  "group_by": ["track", "condition", "cache_state"],
+  "aggregation_note": "trial wall time is end-to-end; stage and tool-call times may be nested and are never added to it",
+  "null_measurement": "not reported by the harness or provider; never coerce to zero"
+}
