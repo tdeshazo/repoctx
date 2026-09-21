@@ -123,3 +123,18 @@ coordinates; all other provenance remains `declared_unverified`. Declared
 obligation may expose its opaque `runner_check_id`, but the handoff cannot
 register or execute it and contains no command, exit status, check result, or
 passing status. See the [M3-04 decision](design/m3-04-obligation-handoff.md).
+
+## Repository dogfood catalog
+
+[`repoctx-artifacts.json`](repoctx-artifacts.json) is an explicit fixture for
+repoctx's own components, wire contracts, development checks, and roadmap
+requirements. It is not a reserved filename and is never discovered or loaded
+automatically. The declarations point to canonical source and documentation
+rather than copying their prose or commands.
+
+The root dogfood test decodes the catalog, verifies every whole-file hash and
+physical source span, resolves every endpoint under explicit caller authority,
+and exercises catalog-guided progressive disclosure of the current incomplete
+milestone and its next unmet gate. Editing a referenced file intentionally makes
+the test fail until its exact provenance is refreshed; there is no second
+roadmap or command registry to synchronize.

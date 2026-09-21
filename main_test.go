@@ -30,10 +30,11 @@ func TestRootAndLegacyVersionMatch(t *testing.T) {
 		Modified     string `json:"modified"`
 		Distribution string `json:"distribution"`
 		Contracts    struct {
-			IR        string `json:"ir"`
-			Context   string `json:"context"`
-			Discovery string `json:"discovery"`
-			Artifacts string `json:"artifacts"`
+			IR          string `json:"ir"`
+			Context     string `json:"context"`
+			Discovery   string `json:"discovery"`
+			Artifacts   string `json:"artifacts"`
+			Obligations string `json:"obligations"`
 		} `json:"contracts"`
 	}
 	if err := json.Unmarshal(root, &info); err != nil {
@@ -43,7 +44,7 @@ func TestRootAndLegacyVersionMatch(t *testing.T) {
 		info.Release == "" || info.Revision == "" || info.Modified == "" ||
 		info.Distribution != "go" || info.Contracts.IR == "" ||
 		info.Contracts.Context == "" || info.Contracts.Discovery == "" ||
-		info.Contracts.Artifacts == "" {
+		info.Contracts.Artifacts == "" || info.Contracts.Obligations == "" {
 		t.Fatalf("incomplete version output: %+v", info)
 	}
 	if got := runCommand(t, ".", "--version"); !bytes.HasPrefix(got, []byte("repoctx ")) {

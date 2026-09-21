@@ -331,10 +331,11 @@ contracts before committing to package names or a manifest filename.
   runner may return results bound to commit, environment, command/check identity,
   exit status, and artifacts; repoctx must not manufacture a passing status.
   Evidence: [bounded obligation handoff and checks](docs/reports/m3-04-evidence.md).
-- [ ] **M3-05 — Dogfood the model.** Describe repoctx's own packages, contracts,
+- [x] **M3-05 — Dogfood the model.** Describe repoctx's own packages, contracts,
   development commands, and roadmap requirements using the proposed artifacts.
   Verify links mechanically and retrieve an incomplete milestone plus its next
   unmet gate without answer-informed prompts or duplicate instruction manuals.
+  Evidence: [repository catalog dogfood](docs/reports/m3-05-evidence.md).
 
 ### Minimum artifact sketch — design only
 
