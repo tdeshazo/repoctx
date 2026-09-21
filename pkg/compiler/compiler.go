@@ -79,6 +79,18 @@ func Compile(opts Options) (*ir.Repository, error) {
 	if err != nil {
 		return nil, err
 	}
+	repo, st := parseInputs(opts, manifest, contents)
+	linkRepository(repo, st, goModule(contents["go.mod"]))
+	if err := repo.Validate(); err != nil {
+		return nil, fmt.Errorf("compiler invariant: %w", err)
+	}
+	if err := verifyInputs(sourceRoot, manifest, &remaining); err != nil {
+		return nil, err
+	}
+	return repo, nil
+}
+
+func parseInputs(opts Options, manifest *ir.InputManifest, contents map[string][]byte) (*ir.Repository, *ir.Strings) {
 	st := ir.NewStrings()
 	repo := &ir.Repository{Version: IRVersion, Root: st.Intern("."), Files: []ir.File{}, Inputs: manifest}
 
@@ -156,19 +168,15 @@ func Compile(opts Options) (*ir.Repository, error) {
 		}
 		repo.Files = append(repo.Files, f)
 	}
+	return repo, st
+}
 
+func linkRepository(repo *ir.Repository, st *ir.Strings, goModulePath string) {
 	linkParents(repo, st)
 	resolveEdges(repo, st)
 	assignSymbolIDs(repo, st)
-	buildSymbolGraph(repo, st, goModule(contents["go.mod"]))
+	buildSymbolGraph(repo, st, goModulePath)
 	repo.Strings = st.Values()
-	if err := repo.Validate(); err != nil {
-		return nil, fmt.Errorf("compiler invariant: %w", err)
-	}
-	if err := verifyInputs(sourceRoot, manifest, &remaining); err != nil {
-		return nil, err
-	}
-	return repo, nil
 }
 
 func sourceLanguage(path string) ir.Language {

@@ -538,9 +538,13 @@ performance target. Do not build a daemon merely to complete this milestone.
 
 ### Work
 
-- [ ] **M5-01 — Profile the complete path.** Measure discovery, parsing, linking,
+- [x] **M5-01 — Profile the complete path.** Measure discovery, parsing, linking,
   validation, serialization, source verification, ranking, and materialization
   across repository sizes. Attribute time, memory, and artifact growth.
+  Dogfooding also found that Go CPU profiling leaves a package test binary in
+  the working directory unless `-o` is explicit; the profiling workflow keeps
+  binaries and reports outside the indexed repository. Evidence:
+  [complete-path profile](docs/reports/m5-01-evidence.md).
 - [ ] **M5-02 — Add content-addressed incremental artifacts.** Cache per-file
   parsing and dependent views under complete input/profile identities. Handle
   reverse dependencies, deleted files, and configuration changes. Global dense

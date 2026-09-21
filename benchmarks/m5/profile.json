@@ -1,0 +1,29 @@
+{
+  "version": "repoctx.m5.profile/v1alpha1",
+  "sizes": [10, 100, 1000],
+  "samples": 10,
+  "benchtime": "3x",
+  "workload": {
+    "language": "go",
+    "files_per_directory": 1,
+    "symbols_per_file": 3,
+    "calls_per_file": 1,
+    "query": "Compute helper Record",
+    "context_max_bytes": 32768,
+    "consistency": "verified-local"
+  },
+  "stages": {
+    "compiler": ["source_discovery", "parsing", "linking", "validation", "serialization", "source_verification", "complete_compilation"],
+    "context": ["ranking", "context_materialization"]
+  },
+  "atomic_stages": ["source_discovery", "parsing", "linking", "validation", "serialization", "source_verification", "ranking"],
+  "complete_path": ["complete_compilation", "serialization", "context_materialization"],
+  "target": {
+    "applies_to_files": 1000,
+    "warm_complete_path_p95_ratio_max": 0.5,
+    "warm_allocated_bytes_ratio_max": 0.5,
+    "incremental_artifact_to_canonical_ir_bytes_ratio_max": 1.25,
+    "canonical_semantic_output": "identical",
+    "source_freshness": "verified"
+  }
+}

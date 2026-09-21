@@ -75,10 +75,10 @@
       "end": "M2 provides a sound invalidation model."
     },
     {
-      "id": "m5-01",
+      "id": "m5-02",
       "path": "ROADMAP.md",
-      "start": "- [ ] **M5-01 — Profile the complete path.** Measure discovery, parsing, linking,",
-      "end": "  across repository sizes. Attribute time, memory, and artifact growth."
+      "start": "- [ ] **M5-02 — Add content-addressed incremental artifacts.** Cache per-file",
+      "end": "  graph IDs remain snapshot-local even when individual fragments are reused."
     }
   ],
   "artifacts": [
@@ -343,7 +343,7 @@
       "declared_inputs": []
     },
     {
-      "id": "repoctx:requirement.m5-01-profile-complete-path",
+      "id": "repoctx:requirement.m5-02-incremental-artifacts",
       "kind": "requirement",
       "applies_to": [
         {
@@ -353,7 +353,7 @@
       ],
       "lifecycle": "active",
       "sources": [
-        "m5-01"
+        "m5-02"
       ],
       "declared_inputs": []
     }
@@ -424,11 +424,11 @@
     },
     {
       "from": "repoctx:milestone.m5-amortization",
-      "to": "repoctx:requirement.m5-01-profile-complete-path",
+      "to": "repoctx:requirement.m5-02-incremental-artifacts",
       "kind": "contains",
       "resolution": "declared",
       "sources": [
-        "m5-01"
+        "m5-02"
       ]
     }
   ]
