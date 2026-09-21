@@ -54,6 +54,12 @@ it does not assume a specific vendor API or perform LLM inference.
 `version` is `repoctx.context/v1alpha3`. Use the checked-in JSON Schema and
 `Bundle.Validate` for cross-reference checks.
 
+Applicable repository contracts and verification obligations use the separate,
+opt-in [`repoctx.obligations/v1alpha1`](obligations.schema.json) handoff. It
+references this bundle's task, snapshot, and evidence IDs rather than changing
+the source-context contract or copying source text. Its check IDs are opaque;
+only a separate trusted runner can produce execution results.
+
 - `snapshot.id`: SHA-256 of the normalized index JSON. It binds all indexed
   hashes, symbols, ASTs, graph and diagnostics. It is not a Git commit, signature,
   attestation or proof that the index came from a trusted compiler.

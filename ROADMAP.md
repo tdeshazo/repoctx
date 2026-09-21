@@ -325,11 +325,12 @@ contracts before committing to package names or a manifest filename.
   resolution method, and coverage limits. Test import aliases and unresolved
   targets without claiming universal dispatch resolution. Evidence:
   [adapter contract and reproducible checks](docs/reports/m3-03-evidence.md).
-- [ ] **M3-04 — Emit obligations, not execution.** Select applicable contract and
+- [x] **M3-04 — Emit obligations, not execution.** Select applicable contract and
   check identifiers alongside source evidence. Link requirements to supporting
   tests as declared or observed relationships, not proof of execution. A separate
   runner may return results bound to commit, environment, command/check identity,
   exit status, and artifacts; repoctx must not manufacture a passing status.
+  Evidence: [bounded obligation handoff and checks](docs/reports/m3-04-evidence.md).
 - [ ] **M3-05 — Dogfood the model.** Describe repoctx's own packages, contracts,
   development commands, and roadmap requirements using the proposed artifacts.
   Verify links mechanically and retrieve an incomplete milestone plus its next
@@ -365,11 +366,11 @@ verification_obligations:
 
 ### Acceptance gates
 
-- [ ] A component-level task retrieves relevant code, the applicable declared
+- [x] A component-level task retrieves relevant code, the applicable declared
   requirement/contract, and verification obligations with source provenance.
-- [ ] Superseded or conflicting artifacts are diagnosed rather than silently
+- [x] Superseded or conflicting artifacts are diagnosed rather than silently
   treated as current. Historical material remains retrievable as history.
-- [ ] Pull-request-head manifests and repository text cannot increase their own
+- [x] Pull-request-head manifests and repository text cannot increase their own
   authority, widen caller scope, activate an executable plugin, or launch a check.
 - [x] Each provider advertises actual coverage and fails explicitly on unsupported
   inputs. Declared, syntactic, heuristic, and provider-resolved edges are separable.

@@ -11,6 +11,11 @@ workflow. The indexed workflow has **two outputs with different consumers**:
    reasons, bounded relationships, explicit omissions, and trust metadata.
    Pass this as **tool-result evidence**, not as system/developer instructions.
 
+Applications may also opt into a separate **obligation handoff
+(`repoctx.obligations/v1alpha1`)**. It binds caller-authorized contracts,
+requirements, declared verification links, and opaque runner check IDs to an
+existing context task without executing a check or manufacturing a result.
+
 ## Build and test
 
 ```sh
@@ -29,7 +34,8 @@ repoctx version -format json
 
 The JSON form uses `repoctx.build/v1alpha1` and reports the release, source
 revision and modified state when the Go toolchain supplied them, distribution,
-Go/platform versions, and supported IR/context/discovery/artifact contracts.
+Go/platform versions, and supported IR/context/discovery/artifact/obligation
+contracts.
 Local `go run` and builds made with `-buildvcs=false` can report `unknown`
 revision state. Version output is descriptive metadata, not authentication or
 proof that a binary matches a checkout; compare it with a caller-trusted release

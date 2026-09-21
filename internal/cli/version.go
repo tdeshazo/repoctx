@@ -12,6 +12,7 @@ import (
 	"github.com/tdeshazo/repoctx/pkg/artifacts"
 	"github.com/tdeshazo/repoctx/pkg/compiler"
 	"github.com/tdeshazo/repoctx/pkg/discovery"
+	"github.com/tdeshazo/repoctx/pkg/obligation"
 )
 
 const buildInfoVersion = "repoctx.build/v1alpha1"
@@ -26,10 +27,11 @@ var (
 )
 
 type contractVersions struct {
-	IR        string `json:"ir"`
-	Context   string `json:"context"`
-	Discovery string `json:"discovery"`
-	Artifacts string `json:"artifacts"`
+	IR          string `json:"ir"`
+	Context     string `json:"context"`
+	Discovery   string `json:"discovery"`
+	Artifacts   string `json:"artifacts"`
+	Obligations string `json:"obligations"`
 }
 
 type buildInfo struct {
@@ -101,10 +103,11 @@ func currentBuildInfo() buildInfo {
 		GoVersion:    runtime.Version(),
 		Platform:     runtime.GOOS + "/" + runtime.GOARCH,
 		Contracts: contractVersions{
-			IR:        compiler.IRVersion,
-			Context:   agentctx.Version,
-			Discovery: discovery.Version,
-			Artifacts: artifacts.Version,
+			IR:          compiler.IRVersion,
+			Context:     agentctx.Version,
+			Discovery:   discovery.Version,
+			Artifacts:   artifacts.Version,
+			Obligations: obligation.Version,
 		},
 	}
 }
@@ -124,10 +127,11 @@ func writeBuildInfoText(info buildInfo) {
 	fmt.Printf("go: %s\n", info.GoVersion)
 	fmt.Printf("platform: %s\n", info.Platform)
 	fmt.Printf(
-		"contracts: ir=%s context=%s discovery=%s artifacts=%s\n",
+		"contracts: ir=%s context=%s discovery=%s artifacts=%s obligations=%s\n",
 		info.Contracts.IR,
 		info.Contracts.Context,
 		info.Contracts.Discovery,
 		info.Contracts.Artifacts,
+		info.Contracts.Obligations,
 	)
 }

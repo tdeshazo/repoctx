@@ -1,0 +1,127 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/repoctx.obligations.v1alpha1.schema.json",
+  "title": "repoctx obligation handoff v1alpha1",
+  "type": "object",
+  "properties": {
+    "version": {"const": "repoctx.obligations/v1alpha1"},
+    "id": {"$ref": "#/$defs/identity"},
+    "source_task_id": {"$ref": "#/$defs/identity"},
+    "source_snapshot": {"$ref": "#/$defs/identity"},
+    "evidence": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1}
+    },
+    "artifacts": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/artifact"}
+    },
+    "relationships": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/relationship"}
+    },
+    "diagnostics": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/diagnostic"}
+    },
+    "omissions": {"$ref": "#/$defs/omissions"},
+    "capabilities": {"$ref": "#/$defs/capabilities"}
+  },
+  "required": [
+    "version", "id", "source_task_id", "source_snapshot", "evidence",
+    "artifacts", "relationships", "diagnostics", "omissions", "capabilities"
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "identity": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "scope": {
+      "type": "object",
+      "properties": {
+        "kind": {"enum": ["file", "subtree"]},
+        "path": {"type": "string", "minLength": 1, "maxLength": 4096}
+      },
+      "required": ["kind", "path"],
+      "additionalProperties": false
+    },
+    "source": {
+      "type": "object",
+      "properties": {
+        "path": {"type": "string", "minLength": 1, "maxLength": 4096},
+        "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "start_byte": {"type": "integer", "minimum": 0},
+        "end_byte": {"type": "integer", "minimum": 1},
+        "start_line": {"type": "integer", "minimum": 1},
+        "end_line": {"type": "integer", "minimum": 1},
+        "start_byte_column": {"type": "integer", "minimum": 0},
+        "end_byte_column": {"type": "integer", "minimum": 0},
+        "evidence_id": {"type": "string", "minLength": 1},
+        "verification": {"enum": ["context_exact", "declared_unverified"]}
+      },
+      "required": [
+        "path", "sha256", "start_byte", "end_byte", "start_line", "end_line",
+        "start_byte_column", "end_byte_column", "verification"
+      ],
+      "additionalProperties": false
+    },
+    "artifact": {
+      "type": "object",
+      "properties": {
+        "id": {"type": "string", "minLength": 1},
+        "kind": {"enum": ["component", "decision", "contract", "requirement", "verification_obligation"]},
+        "lifecycle_claim": {"enum": ["draft", "active", "deprecated", "superseded", "retired"]},
+        "scopes": {"type": "array", "items": {"$ref": "#/$defs/scope"}},
+        "sources": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/source"}},
+        "runner_check_id": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,255}$"}
+      },
+      "required": ["id", "kind", "lifecycle_claim", "scopes", "sources"],
+      "additionalProperties": false
+    },
+    "relationship": {
+      "type": "object",
+      "properties": {
+        "from": {"type": "string", "minLength": 1},
+        "to": {"type": "string", "minLength": 1},
+        "kind": {"enum": ["contains", "references", "governed_by", "depends_on", "supersedes", "verifies"]},
+        "resolution": {"const": "declared"},
+        "sources": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/source"}}
+      },
+      "required": ["from", "to", "kind", "resolution", "sources"],
+      "additionalProperties": false
+    },
+    "diagnostic": {
+      "type": "object",
+      "properties": {
+        "code": {"type": "string", "minLength": 1},
+        "artifact_ids": {"type": "array", "items": {"type": "string"}},
+        "artifact_indexes": {"type": "array", "items": {"type": "integer", "minimum": 0}},
+        "relationship_indexes": {"type": "array", "items": {"type": "integer", "minimum": 0}},
+        "path": {"type": "string"}
+      },
+      "required": ["code", "artifact_ids", "artifact_indexes", "relationship_indexes"],
+      "additionalProperties": false
+    },
+    "omissions": {
+      "type": "object",
+      "properties": {
+        "artifacts": {"type": "integer", "minimum": 0},
+        "relationships": {"type": "integer", "minimum": 0},
+        "diagnostics": {"type": "integer", "minimum": 0},
+        "budget": {"type": "integer", "minimum": 0}
+      },
+      "required": ["artifacts", "relationships", "diagnostics", "budget"],
+      "additionalProperties": false
+    },
+    "capabilities": {
+      "type": "object",
+      "properties": {
+        "available": {"type": "array", "items": {"type": "string"}},
+        "unavailable": {"type": "array", "items": {"type": "string"}}
+      },
+      "required": ["available", "unavailable"],
+      "additionalProperties": false
+    }
+  }
+}

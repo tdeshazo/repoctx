@@ -23,7 +23,8 @@ func TestCurrentBuildInfoUsesInjectedProvenance(t *testing.T) {
 		info.Modified != buildModified || info.Distribution != buildDistribution {
 		t.Fatalf("injected provenance lost: %+v", info)
 	}
-	if info.Version != buildInfoVersion || info.Contracts.IR != "repoctx.ir/v1alpha4" {
+	if info.Version != buildInfoVersion || info.Contracts.IR != "repoctx.ir/v1alpha4" ||
+		info.Contracts.Obligations != "repoctx.obligations/v1alpha1" {
 		t.Fatalf("build contract incomplete: %+v", info)
 	}
 }

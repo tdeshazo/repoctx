@@ -106,3 +106,20 @@ limits produce exact omission counts and `Incomplete`, never silent truncation.
 The stage performs no filesystem, network, Go-tool, plugin, or process access.
 It does not turn heuristic call edges into provider-resolved dependencies and
 does not prove that an import is used at runtime.
+
+## Select verification obligations
+
+`pkg/obligation.Build` creates an opt-in `repoctx.obligations/v1alpha1` handoff
+from an existing `agentctx.Result`, a catalog, and trusted caller authority. It
+selects only accepted declarations whose effective scope contains source
+evidence in that context task, retains authority diagnostics, and binds the
+result to the context task and snapshot. The standalone
+[JSON Schema](obligations.schema.json) leaves context v1alpha3 unchanged.
+
+Artifact and relationship spans are labeled `context_exact` only when the
+existing context evidence covers the exact range with matching hash and physical
+coordinates; all other provenance remains `declared_unverified`. Declared
+`verifies` relationships stay declared claims. An applicable verification
+obligation may expose its opaque `runner_check_id`, but the handoff cannot
+register or execute it and contains no command, exit status, check result, or
+passing status. See the [M3-04 decision](design/m3-04-obligation-handoff.md).
