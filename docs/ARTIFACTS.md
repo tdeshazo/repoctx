@@ -29,7 +29,34 @@ Use the decoder for strict JSON spelling, Unicode, duplicate keys, decoded UTF-8
 byte lengths, namespace equality, span ordering, and aggregate/transport limits.
 Schema validity and decoder acceptance both leave hashes, coordinates, ownership,
 lifecycle, dependency claims and check IDs unverified. Source-byte verification
-and authority/reference handling remain separate, deferred stages.
+remains a separate, deferred stage.
+
+## Resolve trusted authority
+
+`pkg/artifacts.Resolve(catalog, artifacts.Authority{...})` performs the M3-02
+authority stage without filesystem or process access. Both `AcceptedIDs` and
+`Scopes` are trusted caller inputs. An empty list grants nothing. Effective
+scope is the intersection of each accepted declaration's `applies_to` claims
+and the caller scopes; repository content cannot add an ID or widen that
+intersection. Lifecycle values remain labeled claims: `active` does not grant
+authority, and `retired` does not override an explicit caller choice.
+
+Resolution reports duplicate IDs, missing or ambiguous relationship endpoints,
+invalid effective scopes, supersession cycles, simultaneously accepted sides of
+a supersession claim, and accepted requirements with contradictory declarations
+for the same input path. Ambiguous or conflicting declarations are withheld
+from the effective result. Supersession never selects a winner, and declaration
+array order does not determine authority. Relationships remain unresolved
+repository claims for later grounded adapters; resolution does not turn a
+`runner_check_id` into a command or registered check.
+
+Trusted authority is validated independently and bounded by the artifact and
+scope ceilings. IDs must be local to the decoded catalog namespace, scopes use
+the same exact file/subtree grammar, and duplicate accepted IDs are caller
+errors. Diagnostics contain stable codes and declaration indexes without
+copying repository prose. Callers should treat `Resolution.Artifacts` as scoped
+effective declarations and retain `Resolution.Diagnostics` with the original
+catalog for inspection.
 
 Run conformance and source-only compatibility checks with:
 

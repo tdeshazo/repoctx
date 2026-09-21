@@ -1,0 +1,2 @@
+[console_scripts]
+repoctx = repoctx_cli:main

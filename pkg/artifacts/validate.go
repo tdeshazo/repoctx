@@ -59,6 +59,12 @@ func validate(c *Catalog, l Limits) error {
 	if !namespacePattern.MatchString(c.Namespace) {
 		return failure("$.namespace", "invalid namespace")
 	}
+	if c.Artifacts == nil {
+		return failure("$.artifacts", "required array missing")
+	}
+	if c.Relationships == nil {
+		return failure("$.relationships", "required array missing")
+	}
 	if err := count("$.artifacts", len(c.Artifacts), l.Artifacts); err != nil {
 		return err
 	}
@@ -74,7 +80,7 @@ func validate(c *Catalog, l Limits) error {
 		if !oneOf(a.Kind, "component", "decision", "contract", "requirement", "verification_obligation") {
 			return failure(p+".kind", "unknown kind")
 		}
-		if a.Owner != nil && (len(*a.Owner) == 0 || len(*a.Owner) > 256) {
+		if a.Owner != nil && (len(*a.Owner) == 0 || len(*a.Owner) > 256 || !utf8.ValidString(*a.Owner)) {
 			return failure(p+".owner", "invalid byte length")
 		}
 		if !oneOf(a.Lifecycle, "draft", "active", "deprecated", "superseded", "retired") {
@@ -87,6 +93,12 @@ func validate(c *Catalog, l Limits) error {
 			if len(*a.RunnerCheckID) > 256 || !checkPattern.MatchString(*a.RunnerCheckID) {
 				return failure(p+".runner_check_id", "invalid check ID")
 			}
+		}
+		if a.AppliesTo == nil {
+			return failure(p+".applies_to", "required array missing")
+		}
+		if a.DeclaredInputs == nil {
+			return failure(p+".declared_inputs", "required array missing")
 		}
 		if err := count(p+".applies_to", len(a.AppliesTo), l.Applicability); err != nil {
 			return err

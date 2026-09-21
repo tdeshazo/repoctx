@@ -32,6 +32,12 @@ verification (OIR) remain harness-owned. repoctx may describe obligations and
 consume externally produced evidence without granting permissions or executing
 repository commands.
 
+Optional file-backed evidence integration belongs in the model-neutral adapter
+and agent workflow documentation. The harness owns session checkpoints, plans,
+storage permissions, retention, and cleanup. Persisted bundles remain untrusted
+evidence; a saved file or summary does not establish current source freshness.
+The repository artifact declaration model is not a session evidence store.
+
 ### Preserve these invariants
 
 1. **Separate index from context.** Compact AST/string/graph storage is for
@@ -306,11 +312,12 @@ contracts before committing to package names or a manifest filename.
   and relationships. Start with components, decisions, contracts, requirements,
   and verification obligations. Preserve the ordinary source-only workflow.
   Evidence: [accepted M3-01 contract and final review](docs/reports/m3-01-evidence.md).
-- [ ] **M3-02 — Separate declarations from effective authority.** Repository
+- [x] **M3-02 — Separate declarations from effective authority.** Repository
   metadata may claim normative status, scope, or supersession. Only trusted
   caller configuration determines whether those claims apply. Detect duplicate
   IDs, broken references, invalid scopes, supersession cycles, and conflicting
   accepted requirements; never resolve normative conflicts by file order alone.
+  Evidence: [authority-resolution contract and reproducible checks](docs/reports/m3-02-evidence.md).
 - [ ] **M3-03 — Add grounded relationship adapters.** Resolve repository-local
   document links and pilot one demand-driven language/build provider. Distinguish
   containment, references, declared ownership, and provider-resolved dependencies
@@ -375,6 +382,18 @@ structure, declared artifacts, or reduced tool use.
 
 **Prerequisite distinction:** Core retrieval evaluation needs M1/M2. Claims about
 repository-intent features need M3. Evaluation tooling and fixtures begin in M0.
+The optional file-reference adapter experiment needs M1/M2, not M3 or an M5
+cache/service. Start with the adapter example and paired evaluation before
+proposing changes to core protocols.
+
+**Planning input (2026-09-21):** The
+[filesystem-context skill](https://github.com/muratcankoylan/Agent-Skills-for-Context-Engineering/blob/main/skills/filesystem-context/SKILL.md)
+motivates M4-06 through M4-09: selective retrieval from persisted evidence,
+recovery after context refresh, explicit storage lifecycle, and context-failure
+diagnosis. Its examples and suggested savings targets are design inspiration,
+not measured repoctx results. Existing discovery, bounded reads, file output,
+and snapshot-pinned expansion remain the foundation; these tasks address the
+integration and evaluation gaps.
 
 ### Work
 
@@ -403,6 +422,53 @@ repository-intent features need M3. Evaluation tooling and fixtures begin in M0.
   tolerances, uncertainty reporting, and practical improvement thresholds before
   evaluating the held-out set. Treat an underpowered result as inconclusive,
   not as proof of equivalence or non-regression.
+- [ ] **M4-06 — Prototype optional file-reference delivery.** Extend
+  `examples/agent/tool_bridge.py` with an opt-in persisted-bundle response and a
+  bounded retrieval operation. Return a caller-controlled handle, snapshot
+  identity, byte size, relevant symbol/unit IDs, and explicit trust and
+  incompleteness signals. Preserve the exact bundle bytes; any preview is
+  separately labeled and cannot substitute for evidence. Keep inline delivery
+  available and budget both references and subsequent reads. Do not assume a
+  filename or a leading-lines preview provides sufficient retrieval guidance.
+- [ ] **M4-07 — Document checkpoint and evidence lifecycle.** Extend the
+  adapter example and vendored skill with a harness-owned checkpoint containing
+  the task, bundle handles, snapshot identity, relevant IDs, unresolved questions,
+  and next retrieval. Revalidate source identity on resume before using saved
+  evidence as current. Specify run ownership, unique handles, atomic publication,
+  bounded storage, retention, and explicit missing/expired-reference errors.
+  Isolate writers and caller scopes; cleanup must not remove another run's files
+  or silently invalidate active references. Keep temporary bundles outside the
+  indexed repository so generated evidence cannot become fresh source input.
+- [ ] **M4-08 — Evaluate persisted evidence across turns and compaction.**
+  Pair inline delivery with M4-06 file-reference delivery under matched tasks,
+  permissions, budgets, and compaction policy. Include a follow-up whose decisive
+  detail is absent from the checkpoint but remains in stored evidence, a source
+  mutation before resumption, and missing/expired handles. Measure successful
+  recovery and stale-evidence rejection alongside task quality, all subsequent
+  reads, repeated evidence, reference/preview overhead, model usage, latency,
+  and storage cost. Report whole-task savings; original output size alone is not
+  tokens saved. Keep any benefits experimental until the paired results meet
+  M4-05's quality and efficiency rules.
+- [ ] **M4-09 — Diagnose context failures.** Tag failures as missing (needed
+  evidence absent from available inputs), under-retrieved (available evidence
+  omitted or insufficiently expanded), over-retrieved (irrelevant evidence
+  consumes budget), or buried (discovery fails to locate available evidence).
+  Record the supporting trace and contributing inventory, discovery, selection,
+  or budget behavior; allow multiple tags. Use these diagnoses to prioritize
+  changes rather than assuming every failure requires a ranking change.
+- [ ] **M4-10 — Diversify bounded discovery results.** Dogfooding a broad M3-02
+  query exhausted result/output limits on repeated high-overlap windows from a
+  few documentation files before surfacing the implementation package. Evaluate
+  per-file caps or a distinct-file first pass against held-out tasks; preserve
+  deterministic ranking and exact omission signals, and adopt a change only if
+  M4-05's task-quality criteria improve rather than assuming diversity is always
+  preferable to multiple answer-bearing excerpts from one file.
+- [ ] **M4-11 — Preserve readable excerpt boundaries.** Indexed M3-02
+  dogfooding returned an exact Go evidence span beginning in the middle of a
+  token before the selected function. Evaluate line- or syntax-aligned expansion
+  for query excerpts, or an explicit partial-line marker when budget prevents
+  expansion. Preserve exact byte coordinates and final-payload bounds; measure
+  task use before claiming that visually cleaner excerpts improve outcomes.
 
 ### Required measurements
 
@@ -414,6 +480,8 @@ repository-intent features need M3. Evaluation tooling and fixtures begin in M0.
 | Did the task succeed? | Answer correctness or verified patch outcome, regressions, required checks, unresolved obligations |
 | Was the system efficient? | End-to-end time, p50/p95 retrieval latency, model usage, tool calls, cold/warm compilation cost, memory |
 | Was it safe within its stated scope? | Unauthorized evidence served, scope-crossing cache reuse, instruction-promotion failures, resource-limit behavior |
+| Did persisted evidence remain usable? | Post-compaction evidence recovery, stale-evidence rejection, expired/missing handle behavior, repeated reads, storage growth |
+| Why did context fail? | Trace-backed missing, under-retrieved, over-retrieved, and buried-context categories |
 
 ### Acceptance gates
 
@@ -427,6 +495,15 @@ repository-intent features need M3. Evaluation tooling and fixtures begin in M0.
   review criteria. Read-only question answering is not relabeled coding success.
 - [ ] The report records uncertainty, failure categories, cache effects, and
   unmeasured costs. An inconclusive result keeps the claim experimental.
+- [ ] Optional file-reference delivery preserves exact evidence and visible
+  trust/omission metadata through bounded follow-up reads. Scope isolation,
+  interrupted publication, cleanup, and missing/expired handles have reproducible
+  checks; no reference grants additional filesystem access.
+- [ ] Compaction trials demonstrate recovery of a withheld checkpoint detail
+  from stored evidence and rejection of stale evidence after source changes.
+  Paired reports include reference overhead and later retrieval costs, with no
+  savings claim based solely on a smaller initial response or estimated original
+  token count.
 
 ## 9. M5 — Amortize verified compilation and serving
 
@@ -492,6 +569,12 @@ positive agent-performance claim.
   checksums/provenance, license and dependency notices, a security-reporting
   process, and contributor guidance. Keep skill instructions, examples, schemas,
   validation reports, and claims synchronized with released behavior.
+- [ ] **M6-05 — Make executable provenance inspectable.** Dogfooding found an
+  older `repoctx` on `PATH` whose help omitted checkout-documented commands.
+  Add a stable version/build-info surface and an agent-skill preflight that can
+  distinguish the running executable from checkout source before retrieval.
+  Cover development builds and packaged binaries without claiming that version
+  output alone authenticates an executable or proves source equivalence.
 
 ### Acceptance gates
 

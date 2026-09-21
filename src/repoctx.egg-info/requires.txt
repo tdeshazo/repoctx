@@ -1,0 +1,6 @@
+
+[test]
+build>=1.2
+jsonschema<5,>=4.20
+setuptools>=69
+wheel>=0.43

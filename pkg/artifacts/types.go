@@ -75,6 +75,40 @@ type Limits struct {
 	NestedEntries int
 }
 
+// Authority is trusted caller configuration for resolving repository claims.
+// Artifact declarations cannot add accepted IDs or widen these scopes.
+type Authority struct {
+	AcceptedIDs []string
+	Scopes      []Applicability
+}
+
+// EffectiveArtifact is an unambiguous declaration accepted by the caller for
+// the listed intersections of declared and caller-controlled scope.
+type EffectiveArtifact struct {
+	ID               string
+	Kind             string
+	LifecycleClaim   string
+	DeclarationIndex int
+	Scopes           []Applicability
+}
+
+// Diagnostic describes a declaration problem without copying repository text.
+// Index fields identify the original ordered declarations when applicable.
+type Diagnostic struct {
+	Code                string
+	ArtifactIDs         []string
+	ArtifactIndexes     []int
+	RelationshipIndexes []int
+	Path                string
+}
+
+// Resolution contains caller-authorized artifacts and deterministic diagnostics.
+// Diagnostics never grant authority and relationships remain declarations.
+type Resolution struct {
+	Artifacts   []EffectiveArtifact
+	Diagnostics []Diagnostic
+}
+
 func ceilings() Limits {
 	return Limits{Bytes: 1 << 20, Depth: 16, Artifacts: 1024, Relationships: 4096,
 		Applicability: 64, Inputs: 64, Sources: 16, NestedEntries: 16384}
