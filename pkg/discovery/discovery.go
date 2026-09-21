@@ -30,6 +30,11 @@ type engine struct {
 	omissionLimit bool
 }
 
+const (
+	diversityMinTopTerms = 4
+	diversityPrefixLimit = 8
+)
+
 // Run discovers live source using caller scope and returns a bounded payload.
 // Cancellation fails the operation rather than presenting a complete response.
 func Run(ctx context.Context, options Options) (ResultSet, error) {
@@ -78,6 +83,9 @@ func Run(ctx context.Context, options Options) (ResultSet, error) {
 	if err := e.walk(".", nil, nil); err != nil {
 		return ResultSet{}, err
 	}
+	if o.Operation == "discover" && o.Query != "" {
+		e.response.Results = diversifyDiscoveryResults(e.response.Results)
+	}
 	for _, r := range o.Reads {
 		if !e.found[r.Path] {
 			e.omit(r.Path, "not_available_in_visible_inventory")
@@ -90,6 +98,64 @@ func Run(ctx context.Context, options Options) (ResultSet, error) {
 		e.response.Omissions = append(e.response.Omissions, Omission{Reason: "additional_omissions"})
 	}
 	return render(e.response)
+}
+
+// diversifyDiscoveryResults gives broad, bounded discovery responses a small
+// coverage prefix without admitting weak matches. The first pass retains the
+// best result from each answer-bearing content class; the second retains the
+// best result from distinct files. Everything else keeps its original rank.
+func diversifyDiscoveryResults(results []Result) []Result {
+	if len(results) < 2 || results[0].Score.DistinctTerms < diversityMinTopTerms {
+		return results
+	}
+
+	minTerms := (results[0].Score.DistinctTerms + 1) / 2
+	limit := min(diversityPrefixLimit, len(results))
+	selected := make([]bool, len(results))
+	prefix := make([]Result, 0, limit)
+	classes := make(map[string]struct{}, 3)
+	paths := make(map[string]struct{}, limit)
+	selectResult := func(i int) {
+		selected[i] = true
+		prefix = append(prefix, results[i])
+		paths[results[i].Path] = struct{}{}
+	}
+	class := func(result Result) string {
+		if result.Candidate == "" {
+			return "source"
+		}
+		return result.Candidate
+	}
+
+	for i, result := range results {
+		if len(prefix) == limit || result.Score.DistinctTerms < minTerms {
+			break
+		}
+		kind := class(result)
+		if _, ok := classes[kind]; ok {
+			continue
+		}
+		classes[kind] = struct{}{}
+		selectResult(i)
+	}
+	for i, result := range results {
+		if len(prefix) == limit || result.Score.DistinctTerms < minTerms {
+			break
+		}
+		if selected[i] {
+			continue
+		}
+		if _, ok := paths[result.Path]; ok {
+			continue
+		}
+		selectResult(i)
+	}
+	for i, result := range results {
+		if !selected[i] {
+			prefix = append(prefix, result)
+		}
+	}
+	return prefix
 }
 
 func (e *engine) omit(p, reason string) {

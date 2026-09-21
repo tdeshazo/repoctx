@@ -172,6 +172,40 @@ func TestDiscoverAnswerBearingBodies(t *testing.T) {
 	}
 }
 
+func TestDiscoverDiversifiesBroadRelevantResults(t *testing.T) {
+	results := []Result{
+		{Entry: Entry{Path: "docs/a.md", Candidate: "documentation"}, Score: Score{DistinctTerms: 8}},
+		{Entry: Entry{Path: "docs/a.md", Candidate: "documentation"}, Score: Score{DistinctTerms: 7}},
+		{Entry: Entry{Path: "docs/b.md", Candidate: "documentation"}, Score: Score{DistinctTerms: 6}},
+		{Entry: Entry{Path: "pkg/answer.go"}, Score: Score{DistinctTerms: 5}},
+		{Entry: Entry{Path: "settings.yaml", Candidate: "configuration"}, Score: Score{DistinctTerms: 4}},
+		{Entry: Entry{Path: "pkg/noise.go"}, Score: Score{DistinctTerms: 3}},
+	}
+
+	got := diversifyDiscoveryResults(results)
+	want := []string{"docs/a.md", "pkg/answer.go", "settings.yaml", "docs/b.md", "docs/a.md", "pkg/noise.go"}
+	if !reflect.DeepEqual(resultPaths(got), want) {
+		t.Fatalf("diversified paths = %v, want %v", resultPaths(got), want)
+	}
+	if got[0].Score.DistinctTerms != 8 || got[len(got)-1].Score.DistinctTerms != 3 {
+		t.Fatal("diversity admitted weak evidence into the coverage prefix")
+	}
+
+	shortQuery := append([]Result(nil), results...)
+	shortQuery[0].Score.DistinctTerms = diversityMinTopTerms - 1
+	if got := diversifyDiscoveryResults(shortQuery); !reflect.DeepEqual(got, shortQuery) {
+		t.Fatal("short-query ranking changed")
+	}
+}
+
+func resultPaths(results []Result) []string {
+	paths := make([]string, 0, len(results))
+	for _, result := range results {
+		paths = append(paths, result.Path)
+	}
+	return paths
+}
+
 func TestSearchLiteralRegexAndEmpty(t *testing.T) {
 	o := DefaultOptions()
 	o.Root = fixture(t, map[string]string{"a.txt": "Hello.*\nhello world\n", "b.txt": "other"})

@@ -456,13 +456,15 @@ integration and evaluation gaps.
   Record the supporting trace and contributing inventory, discovery, selection,
   or budget behavior; allow multiple tags. Use these diagnoses to prioritize
   changes rather than assuming every failure requires a ranking change.
-- [ ] **M4-10 — Diversify bounded discovery results.** Dogfooding a broad M3-02
+- [x] **M4-10 — Diversify bounded discovery results.** Dogfooding a broad M3-02
   query exhausted result/output limits on repeated high-overlap windows from a
-  few documentation files before surfacing the implementation package. Evaluate
-  per-file caps or a distinct-file first pass against held-out tasks; preserve
-  deterministic ranking and exact omission signals, and adopt a change only if
-  M4-05's task-quality criteria improve rather than assuming diversity is always
-  preferable to multiple answer-bearing excerpts from one file.
+  few documentation files before surfacing the implementation package. Broad
+  queries now receive a bounded, relevance-qualified coverage prefix across
+  evidence classes and distinct files; short queries, weak alternatives, the
+  remaining rank order, and exact omission signals are preserved. Targeted
+  fixtures and repository dogfooding are recorded in
+  [`docs/reports/m4-10-discovery-diversity.md`](docs/reports/m4-10-discovery-diversity.md).
+  M4-05 remains the gate for claims about downstream task-quality improvement.
 - [ ] **M4-11 — Preserve readable excerpt boundaries.** Indexed M3-02
   dogfooding returned an exact Go evidence span beginning in the middle of a
   token before the selected function. Evaluate line- or syntax-aligned expansion
