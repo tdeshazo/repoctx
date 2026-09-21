@@ -244,6 +244,7 @@ func Build(r *ir.Repository, o Options) (*Result, error) {
 			b.Omissions.Imports++
 		}
 	}
+	markPartialQueryExcerpts(b, sources)
 	rels, omittedRelations := relationships(r, b, sources, o.MaxRelations)
 	b.Omissions.Relations += omittedRelations
 	for _, rel := range rels {
@@ -280,6 +281,36 @@ func Build(r *ir.Repository, o Options) (*Result, error) {
 		return nil, fmt.Errorf("bundle invariant: %w", e)
 	}
 	return &Result{Bundle: b, Payload: p, Usage: u}, nil
+}
+
+func markPartialQueryExcerpts(b *Bundle, sources map[int]*source) {
+	evidenceByID := make(map[string]Evidence, len(b.Evidence))
+	sourcesByPath := make(map[string]*source, len(sources))
+	for _, evidence := range b.Evidence {
+		evidenceByID[evidence.ID] = evidence
+	}
+	for _, src := range sources {
+		sourcesByPath[src.path] = src
+	}
+	for _, symbol := range b.Symbols {
+		if symbol.Completeness != "query_excerpt" {
+			continue
+		}
+		evidence := evidenceByID[symbol.Evidence]
+		src := sourcesByPath[evidence.File]
+		if src == nil {
+			continue
+		}
+		partialStart := evidence.Span.StartByteColumn != 0
+		partialEnd := evidence.EndByte < len(src.data) && src.data[evidence.EndByte] != '\n'
+		if !partialStart && !partialEnd {
+			continue
+		}
+		const warning = "One or more exact query excerpts use partial source-line boundaries; " +
+			"non-zero span byte columns identify them and byte coordinates remain exact."
+		b.Warnings = append(b.Warnings, warning)
+		return
+	}
 }
 
 func normalize(o *Options) error {

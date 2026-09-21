@@ -124,16 +124,50 @@ func TestM1DecisiveBranchAtEnd(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	found, lead := false, false
+	found, lead, aligned := false, false, false
 	for _, e := range res.Bundle.Evidence {
 		found = found || strings.Contains(e.Text, "zephyr rejected")
 		lead = lead || strings.Contains(e.Text, "func Evaluate")
+		if strings.Contains(e.Text, "zephyr rejected") {
+			aligned = aligned || e.Span.StartByteColumn == 0
+		}
 	}
-	if !found || !lead {
-		t.Fatal("decisive body or declaration lead omitted")
+	if !found || !lead || !aligned {
+		t.Fatal("decisive body, declaration lead, or readable start boundary omitted")
 	}
 	if res.Bundle.Omissions.Excerpts == 0 {
 		t.Fatal("excerpt not marked")
+	}
+	assertEvidence(t, root, res.Bundle)
+}
+
+func TestM1LongLineMarksPartialQueryExcerpt(t *testing.T) {
+	code := "package p\nfunc Evaluate() string {\n return \"" +
+		strings.Repeat("padding", 1800) +
+		"zephyr\"\n}\n"
+	root, r := compileFixture(t, map[string]string{"main.go": code})
+	o := baseOptions(root)
+	o.Query, o.MaxBytes = "zephyr", 7000
+	res, err := Build(r, o)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	partial, warned := false, false
+	for _, evidence := range res.Bundle.Evidence {
+		if strings.Contains(evidence.Text, "zephyr") {
+			partial = evidence.Span.StartByteColumn != 0
+		}
+	}
+	for _, warning := range res.Bundle.Warnings {
+		warned = warned || strings.Contains(warning, "exact query excerpts use partial source-line boundaries")
+	}
+	if !partial || !warned {
+		t.Fatalf(
+			"unavoidable partial line was not marked: evidence=%+v warnings=%v",
+			res.Bundle.Evidence,
+			res.Bundle.Warnings,
+		)
 	}
 	assertEvidence(t, root, res.Bundle)
 }

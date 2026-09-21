@@ -465,12 +465,15 @@ integration and evaluation gaps.
   fixtures and repository dogfooding are recorded in
   [`docs/reports/m4-10-discovery-diversity.md`](docs/reports/m4-10-discovery-diversity.md).
   M4-05 remains the gate for claims about downstream task-quality improvement.
-- [ ] **M4-11 — Preserve readable excerpt boundaries.** Indexed M3-02
+- [x] **M4-11 — Preserve readable excerpt boundaries.** Indexed M3-02
   dogfooding returned an exact Go evidence span beginning in the middle of a
-  token before the selected function. Evaluate line- or syntax-aligned expansion
-  for query excerpts, or an explicit partial-line marker when budget prevents
-  expansion. Preserve exact byte coordinates and final-payload bounds; measure
-  task use before claiming that visually cleaner excerpts improve outcomes.
+  token before the selected function. Query-centered excerpts now prefer complete
+  source lines and trim trailing context to a line boundary without changing the
+  evidence bytes or coordinates. An explicit warning marks unavoidable partial
+  lines that exceed the excerpt window. The replay and boundary regressions are
+  recorded in
+  [`docs/reports/m4-11-excerpt-boundaries.md`](docs/reports/m4-11-excerpt-boundaries.md);
+  no downstream task-quality improvement is claimed before M4-05 evaluation.
 
 ### Required measurements
 

@@ -103,8 +103,12 @@ syntactically complete signature. Overlapping evidence ranges are coalesced;
 multiple symbols or units may refer to a single evidence record.
 `query_excerpt` denotes a query-centered slice rather than a declaration prefix.
 An additional declaration lead may be a separate evidence block: the missing gap
-is not presented as continuous source. Unit extents describe the original unit,
-not a guarantee that an excerpt covers the entire extent.
+is not presented as continuous source. Query excerpts prefer complete source-line
+boundaries while keeping the highest-coverage line and exact byte coordinates.
+When a single line is too long to fit, a warning marks the unavoidable partial
+line; non-zero span byte columns locate the boundary without altering evidence
+text. Unit extents describe the original unit, not a guarantee that an excerpt
+covers the entire extent.
 
 ## Selection and limits
 

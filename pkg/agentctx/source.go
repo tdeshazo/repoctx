@@ -233,7 +233,7 @@ func (s *source) queryExcerpt(a, z int, query string, limit int) (int, int) {
 	for _, word := range words {
 		patterns = append(patterns, regexp.MustCompile("(?i)"+regexp.QuoteMeta(word)))
 	}
-	best, hit := 0, a
+	best, hit, hitLine := 0, a, a
 	for _, line := range s.lines {
 		if line >= z {
 			break
@@ -255,19 +255,31 @@ func (s *source) queryExcerpt(a, z int, query string, limit int) (int, int) {
 			}
 		}
 		if score > best {
-			best, hit = score, line+first
+			best, hit, hitLine = score, line+first, line
 		}
 	}
 	if hit < a+limit {
 		return s.excerpt(a, z, limit)
 	}
-	start := max(a, hit-limit/3)
+	start := hitLine
+	if hit-start >= limit {
+		// A single source line can exceed every excerpt size. Retain the query
+		// in that case; its non-zero byte column explicitly marks a partial line.
+		start = max(a, hit-limit/3)
+	}
 	for start > a && !utf8.RuneStart(s.data[start]) {
 		start--
 	}
 	end := min(z, start+limit)
 	for end < z && end > start && !utf8.RuneStart(s.data[end]) {
 		end--
+	}
+	// Prefer a complete trailing line after the match. If the match is on a
+	// line longer than the window, the exact end column remains the marker.
+	if end < z && hit+1 < end {
+		if newline := bytes.LastIndexByte(s.data[hit+1:end], '\n'); newline >= 0 {
+			end = hit + 1 + newline + 1
+		}
 	}
 	return start, end
 }
