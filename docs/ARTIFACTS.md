@@ -70,3 +70,39 @@ The shared positive fixture and original source bytes are under
 reachable/lower/isolated/masked resource boundaries. The Linux-specific inotify
 test detects actual access to declared files and checks that an executable opaque
 check ID is never run. Other platforms retain all portable structural tests.
+
+## Ground repository relationships
+
+`pkg/artifacts.GroundRelationships` is an optional, non-executing M3-03 stage
+over a validated IR repository and an optional catalog. With no catalog or
+adapters requested it returns an empty, complete result, preserving the normal
+source-only workflow. Repository declarations cannot activate either adapter.
+
+Catalog relationships with unique local endpoints remain `declared`; owner
+labels become separate `declared_ownership` claims. Missing and duplicate
+endpoints produce diagnostics instead of edges. Neither form inherits the
+caller authority accepted by `Resolve`.
+
+The caller may explicitly request two bounded adapters:
+
+- document links resolve indexed Markdown destinations to exact repository files
+  as `syntactic` references; external URIs remain outside coverage, local
+  destinations absent from the IR are reported as unavailable rather than
+  asserted absent, and fragments are retained without claiming the heading exists;
+- the pilot Go-import provider accepts caller-supplied `go.mod` bytes, verifies
+  them against the compilation manifest, and resolves exact same-module import
+  declarations as `provider_resolved` dependencies. It preserves explicit
+  aliases and diagnoses missing or ambiguous package targets. Test files are not
+  import targets. Standard-library/external imports, build tags, types, and
+  runtime dispatch are outside its advertised coverage.
+
+Each requested provider reports its implementation version, a content-derived
+input identity bound to the IR snapshot and verified configuration, resolution
+kinds, and coverage limits. Relationship sites carry indexed file hashes and
+source coordinates; declared sites remain visibly unverified claims. Parse-
+incomplete inputs fail explicitly. Caller-selected relationship and diagnostic
+limits produce exact omission counts and `Incomplete`, never silent truncation.
+
+The stage performs no filesystem, network, Go-tool, plugin, or process access.
+It does not turn heuristic call edges into provider-resolved dependencies and
+does not prove that an import is used at runtime.

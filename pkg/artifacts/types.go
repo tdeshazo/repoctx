@@ -1,6 +1,7 @@
-// Package artifacts decodes untrusted, opt-in artifact declarations. Acceptance
-// proves structure only: it does not verify source bytes, resolve claims, read
-// declared paths, discover catalogs, or execute runner check IDs.
+// Package artifacts decodes untrusted, opt-in artifact declarations and exposes
+// explicit, non-executing authority and relationship stages. Structural
+// acceptance does not verify source bytes, grant authority, discover catalogs,
+// read declared paths, activate providers, or execute runner check IDs.
 package artifacts
 
 // Version identifies the standalone artifact wire contract.

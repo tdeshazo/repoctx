@@ -318,12 +318,13 @@ contracts before committing to package names or a manifest filename.
   IDs, broken references, invalid scopes, supersession cycles, and conflicting
   accepted requirements; never resolve normative conflicts by file order alone.
   Evidence: [authority-resolution contract and reproducible checks](docs/reports/m3-02-evidence.md).
-- [ ] **M3-03 — Add grounded relationship adapters.** Resolve repository-local
+- [x] **M3-03 — Add grounded relationship adapters.** Resolve repository-local
   document links and pilot one demand-driven language/build provider. Distinguish
   containment, references, declared ownership, and provider-resolved dependencies
   from heuristic calls. Include provider version, input identity, evidence sites,
   resolution method, and coverage limits. Test import aliases and unresolved
-  targets without claiming universal dispatch resolution.
+  targets without claiming universal dispatch resolution. Evidence:
+  [adapter contract and reproducible checks](docs/reports/m3-03-evidence.md).
 - [ ] **M3-04 — Emit obligations, not execution.** Select applicable contract and
   check identifiers alongside source evidence. Link requirements to supporting
   tests as declared or observed relationships, not proof of execution. A separate
@@ -370,9 +371,9 @@ verification_obligations:
   treated as current. Historical material remains retrievable as history.
 - [ ] Pull-request-head manifests and repository text cannot increase their own
   authority, widen caller scope, activate an executable plugin, or launch a check.
-- [ ] Each provider advertises actual coverage and fails explicitly on unsupported
+- [x] Each provider advertises actual coverage and fails explicitly on unsupported
   inputs. Declared, syntactic, heuristic, and provider-resolved edges are separable.
-- [ ] Source-only repositories still compile and serve without mandatory catalog
+- [x] Source-only repositories still compile and serve without mandatory catalog
   metadata, model services, or a build environment.
 
 ## 8. M4 — Demonstrate retrieval quality and downstream outcomes
@@ -581,6 +582,11 @@ positive agent-performance claim.
   Cover development builds and packaged binaries without claiming that version
   output alone authenticates an executable or proves source equivalence.
   Evidence: [ranked dogfood findings and disposition](docs/reports/dogfood-priority-2026-09-21.md).
+- [ ] **M6-06 — Reject stale roadmap automation targets.** M3-03 dogfooding found
+  `next-roadmap-item.yaml` and its workflow guide still identify completed M3-01
+  as the first unchecked item. Make target selection generated or validated
+  against `ROADMAP.md`, and fail preflight when a pinned item is already complete,
+  so automation cannot confidently execute an obsolete plan.
 
 ### Acceptance gates
 
