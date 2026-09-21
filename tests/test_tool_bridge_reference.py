@@ -64,12 +64,13 @@ class FileReferenceTests(unittest.TestCase):
     def tearDown(self):
         self.temporary.cleanup()
 
-    def tool(self, **options):
+    def tool(self, run_id="run-1", **options):
         return BRIDGE.RepositoryContextTool(
             str(self.binary),
             str(self.root),
             str(self.index),
             bundle_directory=str(self.store),
+            run_id=run_id,
             **options,
         )
 
@@ -88,7 +89,7 @@ class FileReferenceTests(unittest.TestCase):
         tool = self.tool(max_reference_bytes=2048)
         reference = self.retrieve(tool, payload)
 
-        stored = self.store / "caller-run-1.context.json"
+        stored = self.store / "run-1" / "caller-run-1.context.json"
         self.assertEqual(stored.read_bytes(), payload)
         self.assertEqual(os.stat(stored).st_mode & 0o777, 0o600)
         self.assertEqual(reference["handle"], "caller-run-1")
@@ -153,7 +154,7 @@ class FileReferenceTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             self.retrieve(tool, payload, "../escape")
 
-        collision = self.store / "occupied.context.json"
+        collision = self.store / "run-1" / "occupied.context.json"
         collision.write_bytes(b"keep me")
         with self.assertRaisesRegex(ValueError, "already exists"):
             self.retrieve(tool, payload, "occupied")
@@ -162,7 +163,9 @@ class FileReferenceTests(unittest.TestCase):
         self.retrieve(tool, payload)
         with self.assertRaisesRegex(ValueError, "already exists"):
             self.retrieve(tool, payload)
-        self.assertEqual((self.store / "caller-run-1.context.json").read_bytes(), payload)
+        self.assertEqual(
+            (self.store / "run-1" / "caller-run-1.context.json").read_bytes(), payload
+        )
 
     def test_rejects_in_repository_store_and_detects_mutation(self):
         nested = self.root / "generated"
@@ -171,11 +174,12 @@ class FileReferenceTests(unittest.TestCase):
             BRIDGE.RepositoryContextTool(
                 str(self.binary), str(self.root), str(self.index),
                 bundle_directory=str(nested),
+                run_id="nested",
             )
 
         tool = self.tool()
         self.retrieve(tool, context_payload())
-        (self.store / "caller-run-1.context.json").write_bytes(b"changed")
+        (self.store / "run-1" / "caller-run-1.context.json").write_bytes(b"changed")
         with self.assertRaisesRegex(RuntimeError, "identity changed"):
             tool.read_context("caller-run-1")
 

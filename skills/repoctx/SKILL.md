@@ -142,6 +142,31 @@ If the snapshot check fails, do not use the old bundle as current evidence:
 recompile or investigate the changed source first. Semantic IDs can change after
 renames or collisions, and dense numeric graph IDs are snapshot-local.
 
+## Persisted evidence and checkpoints
+
+When the harness uses `examples/agent/tool_bridge.py` file-reference delivery,
+give each caller an access-controlled store outside the indexed repository and
+each run a unique `run_id`. The adapter creates an exclusive owner-only run
+directory, atomically publishes exact bundles, rejects reused handles, and
+enforces caller-set byte, bundle-count, read, response, and retention limits.
+Treat a handle as opaque; never infer evidence or a filesystem path from it.
+
+Before context is compacted or handed off, have the harness call
+`create_checkpoint` with the current task, unresolved questions, and the next
+bounded retrieval. The returned checkpoint records bundle handles, snapshot
+identity, relevant symbol/unit IDs, expiry, and trust. It is harness state, not
+repository evidence: authenticate it as appropriate for the caller and do not
+write it into the indexed repository.
+
+On resume, attach to the same caller/run scope with `resume_run=True` and call
+`resume_checkpoint` before reading a handle. Resume verifies each bundle's exact
+bytes and performs a snapshot-pinned context request against the current source;
+missing, expired, changed, cross-run, or stale evidence must not be used as
+current. Only `cleanup_expired` may remove registered bundles, and it is scoped
+to expired evidence in that run so active references and other runs remain
+valid. The harness owns unique run IDs, retention policy, checkpoint storage,
+and eventual removal of empty run directories.
+
 ## Budget and handoff
 
 `-max-bytes` limits the whole rendered, uncompressed payload, not model tokens;

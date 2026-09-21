@@ -439,7 +439,7 @@ integration and evaluation gaps.
   available and budget both references and subsequent reads. Do not assume a
   filename or a leading-lines preview provides sufficient retrieval guidance.
   Evidence: [optional file-reference prototype](docs/reports/m4-06-evidence.md).
-- [ ] **M4-07 — Document checkpoint and evidence lifecycle.** Extend the
+- [x] **M4-07 — Document checkpoint and evidence lifecycle.** Extend the
   adapter example and vendored skill with a harness-owned checkpoint containing
   the task, bundle handles, snapshot identity, relevant IDs, unresolved questions,
   and next retrieval. Revalidate source identity on resume before using saved
@@ -448,6 +448,7 @@ integration and evaluation gaps.
   Isolate writers and caller scopes; cleanup must not remove another run's files
   or silently invalidate active references. Keep temporary bundles outside the
   indexed repository so generated evidence cannot become fresh source input.
+  Evidence: [checkpoint and evidence lifecycle](docs/reports/m4-07-evidence.md).
 - [ ] **M4-08 — Evaluate persisted evidence across turns and compaction.**
   Pair inline delivery with M4-06 file-reference delivery under matched tasks,
   permissions, budgets, and compaction policy. Include a follow-up whose decisive
@@ -466,7 +467,9 @@ integration and evaluation gaps.
   or budget behavior; allow multiple tags. Use these diagnoses to prioritize
   changes rather than assuming every failure requires a ranking change.
   Include the M4-06 dogfood trace where the exact `M4-07` identifier was split
-  into common tokens and buried by incidental generated-JSON hash matches.
+  into common tokens and buried by incidental generated-JSON hash matches, and
+  the M4-07 trace where a relevant roadmap window exceeded the remaining 8 KiB
+  output budget and discovery returned no result beyond omission signals.
 - [x] **M4-10 — Diversify bounded discovery results.** Dogfooding a broad M3-02
   query exhausted result/output limits on repeated high-overlap windows from a
   few documentation files before surfacing the implementation package. Broad
