@@ -69,16 +69,16 @@
       "end": "go build -o repoctx-cmd ./cmd/repoctx"
     },
     {
-      "id": "m7-milestone",
+      "id": "bounded-retrieval",
       "path": "ROADMAP.md",
-      "start": "## 11. M7 — Compile a canonical repository model",
-      "end": "the existing deterministic artifact-authoring workflow."
+      "start": "## 1. Next roadmap priority: make bounded retrieval useful",
+      "end": "reference to the actionable requirement."
     },
     {
-      "id": "m7-04",
+      "id": "m4-12",
       "path": "ROADMAP.md",
-      "start": "- [ ] **M7-04 — Expand compilation identity.** Record optional Git revision and",
-      "end": "  Git and distinguish reproducibility metadata from authentication."
+      "start": "- [ ] **M4-12 \u2014 Reproduce and fix remaining bounded-retrieval failures.** Replay",
+      "end": "  and budget failures; retain focused regression coverage for the decisive evidence."
     }
   ],
   "artifacts": [
@@ -354,7 +354,7 @@
       "runner_check_id": "go-vet-all"
     },
     {
-      "id": "repoctx:milestone.m7-canonical-model",
+      "id": "repoctx:milestone.bounded-retrieval",
       "kind": "component",
       "owner": "repoctx:maintainers",
       "applies_to": [
@@ -366,12 +366,12 @@
       "lifecycle": "active",
       "sensitivity": "public",
       "sources": [
-        "m7-milestone"
+        "bounded-retrieval"
       ],
       "declared_inputs": []
     },
     {
-      "id": "repoctx:requirement.m7-04-compilation-identity",
+      "id": "repoctx:requirement.m4-12-bounded-retrieval",
       "kind": "requirement",
       "owner": "repoctx:maintainers",
       "applies_to": [
@@ -383,7 +383,7 @@
       "lifecycle": "active",
       "sensitivity": "public",
       "sources": [
-        "m7-04"
+        "m4-12"
       ],
       "declared_inputs": []
     }
@@ -453,12 +453,12 @@
       ]
     },
     {
-      "from": "repoctx:milestone.m7-canonical-model",
-      "to": "repoctx:requirement.m7-04-compilation-identity",
+      "from": "repoctx:milestone.bounded-retrieval",
+      "to": "repoctx:requirement.m4-12-bounded-retrieval",
       "kind": "contains",
       "resolution": "declared",
       "sources": [
-        "m7-04"
+        "m4-12"
       ]
     }
   ]

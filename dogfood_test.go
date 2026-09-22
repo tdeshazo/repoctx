@@ -42,7 +42,7 @@ func TestRepositoryArtifactCatalog(t *testing.T) {
 		t.Fatalf("catalog did not resolve completely: %+v", resolution)
 	}
 
-	denyPaths := []string{"docs/reports", "dogfood_test.go"}
+	denyPaths := []string{"docs/reports", "docs/history", "dogfood_test.go"}
 	repo, err := compiler.Compile(compiler.Options{Root: root, DenyPaths: denyPaths})
 	if err != nil {
 		t.Fatal(err)
