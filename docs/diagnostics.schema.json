@@ -1,0 +1,164 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/tdeshazo/repoctx/docs/diagnostics.schema.json",
+  "title": "repoctx diagnostic report v1alpha1",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "version": {
+      "const": "repoctx.diagnostics/v1alpha1"
+    },
+    "diagnostics": {
+      "type": "array",
+      "minItems": 0,
+      "maxItems": 4096,
+      "items": {
+        "$ref": "#/$defs/record"
+      }
+    }
+  },
+  "required": [
+    "version",
+    "diagnostics"
+  ],
+  "$comment": "Structural validation only. The Go contract additionally enforces byte lengths, UTF-8, coordinate agreement, and the selected output byte limit. A report is untrusted data and does not prove source authenticity, authority, execution, coverage, or verification.",
+  "$defs": {
+    "identifier": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 64,
+      "pattern": "^[a-z][a-z0-9_.-]{0,63}(?![\\s\\S])"
+    },
+    "provider": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "^[a-z][a-z0-9_.-]{0,127}(?![\\s\\S])"
+    },
+    "path": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 4096,
+      "pattern": "^(?!.*[\\\\:\\x00-\\x1f\\x7f])(?!(?:\\.|\\.\\.)(?:/|$))(?!.*\\/(?:\\.|\\.\\.)(?:/|$))[^/]+(?:/[^/]+)*(?![\\s\\S])"
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}(?![\\s\\S])"
+    },
+    "coordinate": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 9007199254740991
+    },
+    "line": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 9007199254740991
+    },
+    "location": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "path": {
+          "$ref": "#/$defs/path"
+        },
+        "sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "start_byte": {
+          "$ref": "#/$defs/coordinate"
+        },
+        "end_byte": {
+          "$ref": "#/$defs/coordinate"
+        },
+        "start_line": {
+          "$ref": "#/$defs/line"
+        },
+        "end_line": {
+          "$ref": "#/$defs/line"
+        },
+        "start_byte_column": {
+          "$ref": "#/$defs/coordinate"
+        },
+        "end_byte_column": {
+          "$ref": "#/$defs/coordinate"
+        }
+      },
+      "required": [
+        "path",
+        "sha256",
+        "start_byte",
+        "end_byte",
+        "start_line",
+        "end_line",
+        "start_byte_column",
+        "end_byte_column"
+      ]
+    },
+    "record": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "code": {
+          "type": "string",
+          "enum": [
+            "repoctx.syntax_error",
+            "repoctx.invalid_input",
+            "repoctx.input_unavailable",
+            "repoctx.unresolved_reference",
+            "repoctx.stale_input",
+            "repoctx.policy_denied",
+            "repoctx.provider_unavailable",
+            "repoctx.limit_exceeded",
+            "repoctx.internal_error"
+          ]
+        },
+        "severity": {
+          "type": "string",
+          "enum": [
+            "info",
+            "warning",
+            "error"
+          ]
+        },
+        "message": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 8192
+        },
+        "pass": {
+          "$ref": "#/$defs/identifier"
+        },
+        "provider": {
+          "$ref": "#/$defs/provider"
+        },
+        "capability": {
+          "$ref": "#/$defs/identifier"
+        },
+        "remediation": {
+          "type": "string",
+          "enum": [
+            "fix_source",
+            "fix_configuration",
+            "refresh_inputs",
+            "review_policy",
+            "provide_capability",
+            "reduce_scope",
+            "report_bug"
+          ]
+        },
+        "location": {
+          "$ref": "#/$defs/location"
+        }
+      },
+      "required": [
+        "code",
+        "severity",
+        "message",
+        "pass",
+        "capability",
+        "remediation"
+      ]
+    }
+  }
+}

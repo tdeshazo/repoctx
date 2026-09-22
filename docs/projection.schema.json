@@ -1,0 +1,495 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/tdeshazo/repoctx/docs/projection.schema.json",
+  "title": "repoctx projection negotiation v1alpha1",
+  "oneOf": [
+    {
+      "$ref": "#/$defs/contract"
+    },
+    {
+      "$ref": "#/$defs/projection"
+    }
+  ],
+  "$comment": "The root accepts either the caller-approved Contract input or the negotiated Projection output. Target is the second Negotiate input and is defined under $defs/target. Structural validation only: Go additionally enforces byte lengths, UTF-8, cross-reference agreement, and payload limits. Contract validation caps the aggregate at 8,192 items and 8 MiB of aggregate text. All lanes are data; no authority, command, credential, vendor file, execution result, or verification claim is represented.",
+  "$defs": {
+    "id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256,
+      "pattern": "^[^\\s/\\\\\\x00-\\x1f\\x7f]+$"
+    },
+    "text": {
+      "type": "string",
+      "maxLength": 1048576
+    },
+    "lane": {
+      "type": "string",
+      "enum": [
+        "imperative_core",
+        "task_contract",
+        "repository_evidence",
+        "execution_affordances",
+        "verification_obligations"
+      ]
+    },
+    "capability": {
+      "type": "string",
+      "enum": [
+        "imperative_core",
+        "task_contract",
+        "repository_evidence",
+        "execution_affordances",
+        "verification_obligations",
+        "escaping",
+        "source_maps"
+      ]
+    },
+    "escape": {
+      "type": "string",
+      "enum": [
+        "none",
+        "json"
+      ]
+    },
+    "limits": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "max_bytes": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1048576
+        },
+        "max_items": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4096
+        },
+        "max_evidence_bytes": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1048576
+        },
+        "max_source_maps": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4096
+        }
+      },
+      "required": [
+        "max_bytes",
+        "max_items",
+        "max_evidence_bytes",
+        "max_source_maps"
+      ]
+    },
+    "target": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "capabilities": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "$ref": "#/$defs/capability"
+          },
+          "uniqueItems": true,
+          "maxItems": 7
+        },
+        "limits": {
+          "$ref": "#/$defs/limits"
+        },
+        "escape": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/escape"
+            },
+            {
+              "const": ""
+            }
+          ]
+        }
+      },
+      "required": [
+        "id",
+        "capabilities",
+        "limits",
+        "escape"
+      ]
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "path": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^(?!.*[\\\\:\\x00-\\x1f\\x7f])(?!(?:\\.|\\.\\.)(?:/|$))(?!.*\\/(?:\\.|\\.\\.)(?:/|$))[^/]+(?:/[^/]+)*(?![\\s\\S])"
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "start_byte": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "end_byte": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "start_line": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "end_line": {
+          "type": "integer",
+          "minimum": 1
+        }
+      },
+      "required": [
+        "path",
+        "start_byte",
+        "end_byte",
+        "start_line",
+        "end_line"
+      ]
+    },
+    "core_item": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "kind": {
+          "$ref": "#/$defs/text"
+        },
+        "text": {
+          "$ref": "#/$defs/text"
+        }
+      },
+      "required": [
+        "id",
+        "kind",
+        "text"
+      ]
+    },
+    "task_item": {
+      "$ref": "#/$defs/core_item"
+    },
+    "evidence_item": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "kind": {
+          "$ref": "#/$defs/text"
+        },
+        "text": {
+          "$ref": "#/$defs/text"
+        },
+        "source": {
+          "$ref": "#/$defs/source"
+        }
+      },
+      "required": [
+        "id",
+        "kind",
+        "text",
+        "source"
+      ]
+    },
+    "execution_item": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "kind": {
+          "$ref": "#/$defs/text"
+        },
+        "value": {
+          "$ref": "#/$defs/text"
+        }
+      },
+      "required": [
+        "id",
+        "kind",
+        "value"
+      ]
+    },
+    "verification_item": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "kind": {
+          "$ref": "#/$defs/text"
+        },
+        "target": {
+          "$ref": "#/$defs/text"
+        },
+        "expected": {
+          "$ref": "#/$defs/text"
+        }
+      },
+      "required": [
+        "id",
+        "kind",
+        "target",
+        "expected"
+      ]
+    },
+    "source_map": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "lane": {
+          "$ref": "#/$defs/lane"
+        },
+        "item_id": {
+          "$ref": "#/$defs/id"
+        },
+        "source": {
+          "$ref": "#/$defs/source"
+        }
+      },
+      "required": [
+        "lane",
+        "item_id",
+        "source"
+      ]
+    },
+    "contract": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "version": {
+          "const": "repoctx.projection/v1alpha1"
+        },
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "imperative_core": {
+          "type": ["array", "null"],
+          "items": {
+            "$ref": "#/$defs/core_item"
+          },
+          "maxItems": 4096
+        },
+        "task_contract": {
+          "type": ["array", "null"],
+          "items": {
+            "$ref": "#/$defs/task_item"
+          },
+          "maxItems": 4096
+        },
+        "repository_evidence": {
+          "type": ["array", "null"],
+          "items": {
+            "$ref": "#/$defs/evidence_item"
+          },
+          "maxItems": 4096
+        },
+        "execution_affordances": {
+          "type": ["array", "null"],
+          "items": {
+            "$ref": "#/$defs/execution_item"
+          },
+          "maxItems": 4096
+        },
+        "verification_obligations": {
+          "type": ["array", "null"],
+          "items": {
+            "$ref": "#/$defs/verification_item"
+          },
+          "maxItems": 4096
+        },
+        "source_maps": {
+          "type": ["array", "null"],
+          "items": {
+            "$ref": "#/$defs/source_map"
+          },
+          "maxItems": 4096
+        }
+      },
+      "required": [
+        "version",
+        "id",
+        "imperative_core",
+        "task_contract",
+        "repository_evidence",
+        "execution_affordances",
+        "verification_obligations",
+        "source_maps"
+      ]
+    },
+    "capabilities": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "available": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/capability"
+          },
+          "uniqueItems": true,
+          "maxItems": 7
+        },
+        "unavailable": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/capability"
+          },
+          "uniqueItems": true,
+          "maxItems": 7
+        }
+      },
+      "required": [
+        "available",
+        "unavailable"
+      ]
+    },
+    "omission": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "lane": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/lane"
+            },
+            {
+              "const": ""
+            }
+          ]
+        },
+        "feature": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "count": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 4096
+        },
+        "reason": {
+          "type": "string",
+          "enum": [
+            "unsupported",
+            "item_limit",
+            "evidence_byte_limit",
+            "source_map_limit",
+            "item_not_projected",
+            "byte_limit"
+          ]
+        }
+      },
+      "required": [
+        "lane",
+        "feature",
+        "count",
+        "reason"
+      ]
+    },
+    "projection": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "version": {
+          "const": "repoctx.projection/v1alpha1"
+        },
+        "target": {
+          "$ref": "#/$defs/id"
+        },
+        "escape": {
+          "$ref": "#/$defs/escape"
+        },
+        "capabilities": {
+          "$ref": "#/$defs/capabilities"
+        },
+        "imperative_core": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/core_item"
+          },
+          "maxItems": 4096
+        },
+        "task_contract": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/task_item"
+          },
+          "maxItems": 4096
+        },
+        "repository_evidence": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/evidence_item"
+          },
+          "maxItems": 4096
+        },
+        "execution_affordances": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/execution_item"
+          },
+          "maxItems": 4096
+        },
+        "verification_obligations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/verification_item"
+          },
+          "maxItems": 4096
+        },
+        "source_maps": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/source_map"
+          },
+          "maxItems": 4096
+        },
+        "omissions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/omission"
+          },
+          "maxItems": 4096
+        },
+        "incomplete": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "version",
+        "target",
+        "escape",
+        "capabilities",
+        "imperative_core",
+        "task_contract",
+        "repository_evidence",
+        "execution_affordances",
+        "verification_obligations",
+        "source_maps",
+        "omissions",
+        "incomplete"
+      ]
+    }
+  }
+}

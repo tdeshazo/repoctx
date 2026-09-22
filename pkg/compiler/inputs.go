@@ -60,6 +60,21 @@ func compilationProfile(o Options) ir.CompilationProfile {
 	}
 }
 
+func repositoryIdentity(o Options) (*ir.RepositoryIdentity, error) {
+	if o.RepositoryRevision == "" && o.RepositoryDirty == nil {
+		return nil, nil
+	}
+	identity := &ir.RepositoryIdentity{Revision: o.RepositoryRevision}
+	if o.RepositoryDirty != nil {
+		dirty := *o.RepositoryDirty
+		identity.Dirty = &dirty
+	}
+	if err := identity.Validate(); err != nil {
+		return nil, fmt.Errorf("invalid repository consistency metadata: %w", err)
+	}
+	return identity, nil
+}
+
 func compatibleProfile(p ir.CompilationProfile) bool {
 	return p.Compiler == compilerIdentity && p.Build == buildProfile &&
 		slices.Equal(p.Frontends, frontends()) && !slices.Contains(p.Frontends, "unidentified-local-frontend")

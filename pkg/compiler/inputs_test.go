@@ -146,6 +146,58 @@ func TestM2ReproducibleIdentitiesAndProfileSeparation(t *testing.T) {
 	}
 }
 
+func TestM7CallerRepositoryIdentityIsOptionalConsistencyMetadata(t *testing.T) {
+	root, sourceOnly := inputFixture(t, Options{})
+	if sourceOnly.Inputs.Repository != nil {
+		t.Fatalf("source-only compilation unexpectedly recorded repository metadata: %+v", sourceOnly.Inputs.Repository)
+	}
+
+	dirty := false
+	annotated, err := Compile(Options{
+		Root:               root,
+		RepositoryRevision: strings.Repeat("a", 40),
+		RepositoryDirty:    &dirty,
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if annotated.Inputs.Repository == nil || annotated.Inputs.Repository.Revision != strings.Repeat("a", 40) ||
+		annotated.Inputs.Repository.Dirty == nil || *annotated.Inputs.Repository.Dirty {
+		t.Fatalf("caller repository metadata was not retained: %+v", annotated.Inputs.Repository)
+	}
+	sourceID, _ := sourceOnly.Inputs.SourceID()
+	annotatedSourceID, _ := annotated.Inputs.SourceID()
+	if sourceID != annotatedSourceID {
+		t.Fatal("repository metadata changed content source identity")
+	}
+	plainSnapshot, _ := sourceOnly.SnapshotID()
+	annotatedSnapshot, _ := annotated.SnapshotID()
+	if plainSnapshot == annotatedSnapshot {
+		t.Fatal("repository metadata did not distinguish complete snapshot identity")
+	}
+
+	dirty = true
+	if *annotated.Inputs.Repository.Dirty {
+		t.Fatal("compiler retained caller-owned dirty-state pointer")
+	}
+	if _, err := LoadInputs(annotated, root, false, 2<<20, 256<<20); err != nil {
+		t.Fatalf("annotated index failed local verification: %v", err)
+	}
+}
+
+func TestM7RepositoryIdentityRequiresCanonicalRevision(t *testing.T) {
+	root := t.TempDir()
+	mustWrite(t, filepath.Join(root, "main.go"), "package main\n")
+	for _, revision := range []string{
+		"deadbeef", strings.Repeat("A", 40), strings.Repeat("0", 39), strings.Repeat("0", 65),
+		"sha1:" + strings.Repeat("0", 40),
+	} {
+		if _, err := Compile(Options{Root: root, RepositoryRevision: revision}); err == nil {
+			t.Fatalf("noncanonical revision %q was accepted", revision)
+		}
+	}
+}
+
 func TestM2ResourceLimitsFailClosed(t *testing.T) {
 	root, r := inputFixture(t, Options{})
 	if _, err := Compile(Options{Root: root, MaxReadBytes: 2 * r.Inputs.Sources[0].Bytes}); err != nil {

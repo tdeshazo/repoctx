@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://example.invalid/repoctx.ir.v1alpha4.schema.json",
-  "title": "repoctx IR v1alpha4",
+  "$id": "https://example.invalid/repoctx.ir.v1alpha5.schema.json",
+  "title": "repoctx IR v1alpha5",
   "type": "object",
   "required": [
     "v",
@@ -10,7 +10,7 @@
   ],
   "properties": {
     "v": {
-      "const": "repoctx.ir/v1alpha4"
+      "const": "repoctx.ir/v1alpha5"
     },
     "r": {
       "type": "integer",
@@ -413,6 +413,20 @@
         }
       ]
     },
+    "repositoryIdentity": {
+      "type": "object",
+      "properties": {
+        "revision": {
+          "type": "string",
+          "pattern": "^(?:[0-9a-f]{40}|[0-9a-f]{64})$"
+        },
+        "dirty": {
+          "type": "boolean"
+        }
+      },
+      "minProperties": 1,
+      "additionalProperties": false
+    },
     "compilationProfile": {
       "type": "object",
       "properties": {
@@ -574,6 +588,9 @@
       "properties": {
         "profile": {
           "$ref": "#/$defs/compilationProfile"
+        },
+        "repository": {
+          "$ref": "#/$defs/repositoryIdentity"
         },
         "sources": {
           "type": "array",

@@ -1,11 +1,11 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://github.com/tdeshazo/repoctx/docs/manifest.schema.json",
-  "title": "repoctx repository manifest v1alpha2",
+  "title": "repoctx repository manifest v1alpha3",
   "type": "object",
   "additionalProperties": false,
   "properties": {
-    "version": {"const": "repoctx.manifest/v1alpha2"},
+    "version": {"const": "repoctx.manifest/v1alpha3"},
     "namespace": {
       "type": "string",
       "pattern": "^[a-z][a-z0-9-]{0,62}(?![\\s\\S])"
@@ -157,6 +157,10 @@
         },
         "artifact_sources": {"$ref": "#/$defs/id_list"},
         "provider_inputs": {"$ref": "#/$defs/id_list"},
+        "depends_on": {
+          "$ref": "#/$defs/id_list",
+          "description": "Optional authored dependencies on other components declared in this manifest. Runtime rejects unknown targets and self references. Compiled edges remain exact-source declarations; they do not establish runtime dependencies, transitive relationships, or execution order. This field does not ingest component.yaml or CODEOWNERS files."
+        },
         "owners": {"$ref": "#/$defs/id_list"},
         "scopes": {
           "type": "array",

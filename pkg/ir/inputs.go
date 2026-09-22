@@ -6,16 +6,40 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/fs"
+	"regexp"
 	"slices"
 	"strings"
 )
 
 // InputManifest declares all filesystem bytes and negative dependencies used
-// by compilation. It is content identity, not authentication or provenance.
+// by compilation. Optional repository metadata is caller-supplied consistency
+// context; content identity remains separate from authentication or provenance.
 type InputManifest struct {
-	Profile CompilationProfile `json:"profile"`
-	Sources []Input            `json:"sources"`
-	GoMod   Input              `json:"go_mod"`
+	Profile    CompilationProfile  `json:"profile"`
+	Repository *RepositoryIdentity `json:"repository,omitempty"`
+	Sources    []Input             `json:"sources"`
+	GoMod      Input               `json:"go_mod"`
+}
+
+// RepositoryIdentity is optional caller-supplied consistency metadata. A
+// revision is a complete Git object ID when present; Dirty distinguishes an
+// explicitly reported clean or modified worktree. Neither field authenticates
+// the repository or replaces content verification.
+type RepositoryIdentity struct {
+	Revision string `json:"revision,omitempty"`
+	Dirty    *bool  `json:"dirty,omitempty"`
+}
+
+// Validate checks the canonical shape of optional repository consistency
+// metadata. It does not inspect Git or authenticate the caller's assertion.
+func (identity *RepositoryIdentity) Validate() error {
+	if identity != nil && identity.Revision == "" && identity.Dirty == nil {
+		return fmt.Errorf("revision or dirty state is required")
+	}
+	if !validRepositoryIdentity(identity) {
+		return fmt.Errorf("revision must be a lowercase 40- or 64-character Git object ID")
+	}
+	return nil
 }
 
 // Input contains metadata only; unavailable inputs reveal no observed content.
@@ -76,10 +100,22 @@ func validInputPath(p string) bool {
 	return fs.ValidPath(p) && p != "." && !strings.ContainsAny(p, "\\\x00:*")
 }
 
+var gitRevisionPattern = regexp.MustCompile(`^(?:[0-9a-f]{40}|[0-9a-f]{64})$`)
+
+func validRepositoryIdentity(identity *RepositoryIdentity) bool {
+	if identity == nil {
+		return true
+	}
+	return identity.Revision == "" || gitRevisionPattern.MatchString(identity.Revision)
+}
+
 func (r *Repository) validateInputs() error {
 	m := r.Inputs
 	if m == nil {
 		return fmt.Errorf("missing compilation-input manifest")
+	}
+	if err := m.Repository.Validate(); err != nil {
+		return fmt.Errorf("invalid repository consistency metadata: %w", err)
 	}
 	p := m.Profile
 	if p.Compiler == "" || len(p.Frontends) == 0 || p.Build == "" {

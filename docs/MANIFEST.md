@@ -76,7 +76,7 @@ entities:
 # Canonical repository manifest
 
 `agent-context.yaml` is the repository-authored entry point for the canonical
-repository model. The current contract is `repoctx.manifest/v1alpha2`, described
+repository model. The current contract is `repoctx.manifest/v1alpha3`, described
 by [the JSON Schema](manifest.schema.json) and enforced by `pkg/manifest`.
 Typed Markdown declarations use `repoctx.frontmatter/v1alpha1` and its
 [frontmatter schema](frontmatter.schema.json).
@@ -88,6 +88,7 @@ The manifest declares an authored repository namespace plus:
 - named Markdown inputs containing typed semantic frontmatter;
 - semantic artifact-authoring inputs and their contract;
 - components and their source, artifact, and provider inputs;
+- declaration-only component dependencies via `depends_on`;
 - supported derived views over those components; and
 - the capabilities the repository expects the current compiler to provide.
 
@@ -125,6 +126,11 @@ compact declarations can carry multiple exact source anchors and declared
 relationships. Duplicate entity IDs across manifest components, artifact
 authoring, or Markdown frontmatter reject the whole compilation; source order
 never selects a winner.
+
+Component `depends_on` entries are namespace-qualified declaration-only
+relationships. They must name another component in this manifest and cannot
+name the component itself; they do not establish execution order, runtime
+dependency resolution, or transitive closure.
 
 ## Authored versus generated data
 

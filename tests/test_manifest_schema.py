@@ -17,7 +17,7 @@ class ManifestSchemaTests(TestCase):
         Draft202012Validator.check_schema(schema)
         self.validator = Draft202012Validator(schema)
         self.fixture = {
-            "version": "repoctx.manifest/v1alpha2",
+            "version": "repoctx.manifest/v1alpha3",
             "namespace": "demo",
             "source_roots": [{"id": "source", "path": "."}],
             "document_sources": [],

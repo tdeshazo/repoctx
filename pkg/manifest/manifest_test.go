@@ -7,7 +7,7 @@ import (
 	"testing"
 )
 
-const validManifest = `version: repoctx.manifest/v1alpha2
+const validManifest = `version: repoctx.manifest/v1alpha3
 namespace: demo
 source_roots:
   - id: source
@@ -134,15 +134,15 @@ func TestLoadFileConfinesManifestToRoot(t *testing.T) {
 
 func TestRejectsUnsafeYAMLAndClosedShape(t *testing.T) {
 	cases := map[string]string{
-		"duplicate":                   strings.Replace(validManifest, "version: repoctx.manifest/v1alpha2", "version: repoctx.manifest/v1alpha2\nversion: repoctx.manifest/v1alpha2", 1),
+		"duplicate":                   strings.Replace(validManifest, "version: repoctx.manifest/v1alpha3", "version: repoctx.manifest/v1alpha3\nversion: repoctx.manifest/v1alpha3", 1),
 		"alias":                       strings.Replace(validManifest, "- id: source", "- &root\n    id: source", 1),
-		"explicit tag":                strings.Replace(validManifest, "version: repoctx.manifest/v1alpha2", "version: !!str repoctx.manifest/v1alpha2", 1),
+		"explicit tag":                strings.Replace(validManifest, "version: repoctx.manifest/v1alpha3", "version: !!str repoctx.manifest/v1alpha3", 1),
 		"unknown":                     strings.Replace(validManifest, "capabilities:", "generated_sha256: nope\ncapabilities:", 1),
 		"unsafe path":                 strings.Replace(validManifest, "path: claims.json", "path: ../claims.json", 1),
 		"unknown reference":           strings.Replace(validManifest, "source_roots: [source]", "source_roots: [missing]", 1),
 		"duplicate identity":          strings.Replace(validManifest, "id: claims", "id: source", 1),
 		"unsupported version":         strings.Replace(validManifest, Version, "repoctx.manifest/v0", 1),
-		"scalar coercion":             strings.Replace(validManifest, "version: repoctx.manifest/v1alpha2", "version: 1", 1),
+		"scalar coercion":             strings.Replace(validManifest, "version: repoctx.manifest/v1alpha3", "version: 1", 1),
 		"missing provider capability": strings.Replace(validManifest, "capabilities: [syntax_graph, semantic_entities, artifact_declarations, go_imports]", "capabilities: [syntax_graph, semantic_entities, artifact_declarations]", 1),
 	}
 	root := t.TempDir()

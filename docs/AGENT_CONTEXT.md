@@ -67,7 +67,7 @@ only a separate trusted runner can produce execution results.
   sizes, and present/absent/unavailable `go.mod` dependency. No Git assumption.
 - `snapshot.profile_id`: digest of compiler/frontend identities, syntax-only
   build profile, caller scope, directory exclusions, and input limits.
-- `snapshot.ir_version`: index schema identity, currently `repoctx.ir/v1alpha4`.
+- `snapshot.ir_version`: index schema identity, currently `repoctx.ir/v1alpha5`.
 - `snapshot.verification`: `verified-local` or caller-asserted `immutable`.
 - `task_id`: cache identity binding the index, query, explicit symbols/units,
   effective scope, selection settings, renderer version/format, consistency,
@@ -156,7 +156,7 @@ Defaults: 12 selected symbols, 8 units, 128 combined candidates, 48 relationship
 
 ### Updating context consumers
 
-Current context generation requires `repoctx.ir/v1alpha4`, whose `inputs`
+Current context generation requires `repoctx.ir/v1alpha5`, whose `inputs`
 manifest declares compilation inputs and policy. Recompile any older index.
 Consumers must accept v1alpha3's `task_id`, source/profile identities,
 consistency labels, required `units` array, `selection.max_units`,

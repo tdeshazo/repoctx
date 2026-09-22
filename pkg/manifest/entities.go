@@ -92,12 +92,21 @@ func CompileEntities(root, path string, limits Limits, permit func(string) bool)
 		Version: ir.EntityVersion, Namespace: doc.Namespace,
 		Entities: []ir.Entity{}, Relationships: []ir.EntityRelationship{},
 	}
-	componentNodes := sequenceMappings(node, "components")
+	componentSources := componentSourceSpans(path, data, node)
 	for i, component := range doc.Components {
-		if i >= len(componentNodes) {
+		if i >= len(componentSources) {
 			return nil, fail("$.components", "source mapping unavailable")
 		}
-		model.Entities = append(model.Entities, componentEntity(doc.Namespace, path, data, componentNodes[i], component))
+		model.Entities = append(model.Entities, componentEntity(doc.Namespace, component, componentSources[i]))
+		for _, dependency := range component.DependsOn {
+			model.Relationships = append(model.Relationships, ir.EntityRelationship{
+				From: qualify(doc.Namespace, component.ID), To: qualify(doc.Namespace, dependency),
+				Kind: "depends_on",
+				Declaration: ir.Declaration{
+					Status: "declared", Sources: []ir.SourceSpan{componentSources[i]},
+				},
+			})
+		}
 	}
 	for i, source := range doc.ArtifactSources {
 		authoring, err := sources.Read(source.Path, 1<<20)
@@ -149,14 +158,41 @@ func compareRelationships(a, b ir.EntityRelationship) int {
 	return strings.Compare(a.To, b.To)
 }
 
-func componentEntity(namespace, path string, data []byte, node *yaml.Node, component Component) ir.Entity {
+func componentEntity(namespace string, component Component, source ir.SourceSpan) ir.Entity {
 	return ir.Entity{
 		ID: qualify(namespace, component.ID), Kind: "component",
 		Owners: qualifyAll(namespace, component.Owners), Scopes: irScopes(component.Scopes),
 		Lifecycle: component.Lifecycle, Supersedes: qualifyAll(namespace, component.Supersedes),
 		Sensitivity: component.Sensitivity, Freshness: ir.Freshness{Inputs: slices.Clone(component.Freshness.Inputs)},
-		Declaration: ir.Declaration{Status: "declared", Sources: []ir.SourceSpan{sourceSpan(path, data, node, 0)}},
+		Declaration: ir.Declaration{Status: "declared", Sources: []ir.SourceSpan{source}},
 	}
+}
+
+func componentSourceSpans(path string, data []byte, node *yaml.Node) []ir.SourceSpan {
+	components := sequenceMappings(node, "components")
+	starts := lineStarts(data)
+	end := len(data)
+	for i := 0; i+2 < len(node.Content); i += 2 {
+		if node.Content[i].Value == "components" {
+			end = starts[node.Content[i+2].Line-1]
+			break
+		}
+	}
+	result := make([]ir.SourceSpan, len(components))
+	for i, component := range components {
+		span := sourceSpan(path, data, component, 0)
+		boundary := end
+		if i+1 < len(components) {
+			boundary = starts[components[i+1].Line-1]
+		}
+		// Nodes record scalar starts, not ends. A sibling boundary also includes
+		// folded and continued scalars; shared flow-style lines remain whole.
+		span.EndByte = max(span.EndByte, int64(boundary))
+		line, column := position(data, int(span.EndByte))
+		span.EndLine, span.EndByteColumn = int64(line), int64(column)
+		result[i] = span
+	}
+	return result
 }
 
 func decodeFrontmatter(namespace, path string, data []byte, limits Limits) ([]ir.Entity, error) {

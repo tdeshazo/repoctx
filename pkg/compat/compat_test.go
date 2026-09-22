@@ -7,10 +7,12 @@ import (
 	"github.com/tdeshazo/repoctx/pkg/artifacts"
 	"github.com/tdeshazo/repoctx/pkg/compat"
 	"github.com/tdeshazo/repoctx/pkg/compiler"
+	"github.com/tdeshazo/repoctx/pkg/diagnostic"
 	"github.com/tdeshazo/repoctx/pkg/discovery"
 	"github.com/tdeshazo/repoctx/pkg/ir"
 	"github.com/tdeshazo/repoctx/pkg/manifest"
 	"github.com/tdeshazo/repoctx/pkg/obligation"
+	"github.com/tdeshazo/repoctx/pkg/projection"
 )
 
 func TestPublishedContractVersions(t *testing.T) {
@@ -24,13 +26,15 @@ func TestPublishedContractVersions(t *testing.T) {
 		"document-links provider": artifacts.DocumentLinkProviderVersion,
 		"Go-imports provider":     artifacts.GoImportProviderVersion,
 		"obligation handoff":      obligation.Version,
+		"diagnostic report":       diagnostic.Version,
+		"projection negotiation":  projection.Version,
 		"repository entities":     ir.EntityVersion,
 		"repository manifest":     manifest.Version,
 		"document frontmatter":    manifest.FrontmatterVersion,
 	}
 	want := map[string]string{
 		"Go API":                  "repoctx.go-api/v1alpha1",
-		"IR":                      "repoctx.ir/v1alpha4",
+		"IR":                      "repoctx.ir/v1alpha5",
 		"agent context":           "repoctx.context/v1alpha3",
 		"discovery":               "repoctx.discovery/v1alpha1",
 		"artifacts":               "repoctx.artifacts/v1alpha1",
@@ -38,8 +42,10 @@ func TestPublishedContractVersions(t *testing.T) {
 		"document-links provider": "repoctx.document-links/v1",
 		"Go-imports provider":     "repoctx.go-imports/v1",
 		"obligation handoff":      "repoctx.obligations/v1alpha1",
+		"diagnostic report":       "repoctx.diagnostics/v1alpha1",
+		"projection negotiation":  "repoctx.projection/v1alpha1",
 		"repository entities":     "repoctx.entities/v1alpha2",
-		"repository manifest":     "repoctx.manifest/v1alpha2",
+		"repository manifest":     "repoctx.manifest/v1alpha3",
 		"document frontmatter":    "repoctx.frontmatter/v1alpha1",
 	}
 	for name, version := range versions {

@@ -16,18 +16,20 @@ binary came from a trusted source.
 | Surface | Current identifier | Update action |
 | --- | --- | --- |
 | Public Go packages | `repoctx.go-api/v1alpha1` | Update callers and rebuild against the current module. |
-| Repository IR | `repoctx.ir/v1alpha4` | Recompile the repository. |
+| Repository IR | `repoctx.ir/v1alpha5` | Recompile the repository. |
 | Repository entities | `repoctx.entities/v1alpha2` | Recompile with the current canonical manifest. |
 | Agent context | `repoctx.context/v1alpha3` | Regenerate from a current IR index. |
 | Live discovery | `repoctx.discovery/v1alpha1` | Rerun discovery. |
 | Artifact catalog | `repoctx.artifacts/v1alpha1` | Regenerate from the maintained source declaration. |
 | Artifact authoring | `repoctx.artifact-authoring/v1alpha2` | Update the declaration and regenerate the catalog. |
-| Repository manifest | `repoctx.manifest/v1alpha2` | Update the manifest and rebuild all derived views. |
+| Repository manifest | `repoctx.manifest/v1alpha3` | Update the manifest and rebuild all derived views. |
 | Document frontmatter | `repoctx.frontmatter/v1alpha1` | Update declarations and recompile the repository. |
 | Obligation handoff | `repoctx.obligations/v1alpha1` | Rebuild from current inputs and caller policy. |
+| Diagnostic report | `repoctx.diagnostics/v1alpha1` | Regenerate findings from current compiler passes. |
+| Projection negotiation | `repoctx.projection/v1alpha1` | Renegotiate from current caller-approved inputs and target capabilities. |
 | Document-link provider | `repoctx.document-links/v1` | Re-ground with the current provider. |
 | Go-import provider | `repoctx.go-imports/v1` | Re-ground with the current provider. |
-| Build information | `repoctx.build/v1alpha4` | Rerun `repoctx version`. |
+| Build information | `repoctx.build/v1alpha5` | Rerun `repoctx version`. |
 
 Historical schemas and incidental legacy readers are development artifacts, not
 supported compatibility surfaces. They may be changed or removed without
@@ -51,3 +53,8 @@ caller-controlled inputs.
 Application-owned roots, scope, authority, tokenizers, payload caps, execution,
 and verification remain external. A new repoctx version cannot broaden those
 permissions or turn repository evidence into trusted instructions.
+
+The [diagnostic report](DIAGNOSTICS.md) and [projection negotiation](PROJECTION.md)
+documents define the corresponding closed JSON schemas. The JSON fields emitted
+by `repoctx version -format json` are descriptive contract identifiers; they do
+not attest to source authenticity, authority, execution, or verification.

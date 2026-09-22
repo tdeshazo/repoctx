@@ -60,8 +60,8 @@ func VerifySourceGeneration(r *ir.Repository, o SourceGenerationOptions) (*Verif
 	if err := r.Validate(); err != nil {
 		return nil, fmt.Errorf("invalid index: %w", err)
 	}
-	if r.Version != "repoctx.ir/v1alpha4" {
-		return nil, fmt.Errorf("source generation requires v1alpha4 compilation-input manifests; recompile this index")
+	if r.Version != "repoctx.ir/v1alpha5" {
+		return nil, fmt.Errorf("source generation requires v1alpha5 compilation-input manifests; recompile this index")
 	}
 
 	encoded, err := json.Marshal(r)

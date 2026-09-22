@@ -56,8 +56,8 @@ func build(ctx context.Context, r *ir.Repository, o Options, generationSources m
 	if e := r.Validate(); e != nil {
 		return nil, fmt.Errorf("invalid index: %w", e)
 	}
-	if r.Version != "repoctx.ir/v1alpha4" {
-		return nil, fmt.Errorf("context serving requires v1alpha4 compilation-input manifests; recompile this index")
+	if r.Version != "repoctx.ir/v1alpha5" {
+		return nil, fmt.Errorf("context serving requires v1alpha5 compilation-input manifests; recompile this index")
 	}
 	profile := r.Inputs.Profile
 	if len(o.AllowPaths) != 0 || len(o.DenyPaths) != 0 {
@@ -474,7 +474,7 @@ func (b *Bundle) Validate() error {
 			return fmt.Errorf("invalid context identity")
 		}
 	}
-	if b.Snapshot.IRVersion != "repoctx.ir/v1alpha4" || b.Snapshot.VerifiedFiles < 0 {
+	if b.Snapshot.IRVersion != "repoctx.ir/v1alpha5" || b.Snapshot.VerifiedFiles < 0 {
 		return fmt.Errorf("invalid snapshot metadata")
 	}
 	if b.Snapshot.Verification != "verified-local" && b.Snapshot.Verification != "immutable" {

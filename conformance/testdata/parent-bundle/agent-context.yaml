@@ -1,0 +1,30 @@
+version: repoctx.manifest/v1alpha3
+namespace: rcx
+source_roots:
+  - id: docs
+    path: docs
+document_sources:
+  - id: target-state
+    path: docs/target-state.md
+    format: repoctx.frontmatter/v1alpha1
+  - id: foundations
+    path: docs/foundations.md
+    format: repoctx.frontmatter/v1alpha1
+artifact_sources: []
+components:
+  - id: documentation
+    source_roots: [docs]
+    artifact_sources: []
+    provider_inputs: []
+    owners: [maintainers]
+    scopes: [{kind: subtree, path: docs}]
+    lifecycle: active
+    supersedes: []
+    sensitivity: public
+    freshness: {inputs: []}
+provider_inputs: []
+derived_views:
+  - id: repository-ir
+    kind: repository_ir
+    components: [documentation]
+capabilities: [syntax_graph, semantic_entities]

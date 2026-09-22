@@ -139,6 +139,18 @@ func validate(doc *Manifest, limits Limits) error {
 			return err
 		}
 	}
+	// Resolve after collecting every component so declaration order has no effect.
+	for i, component := range doc.Components {
+		path := fmt.Sprintf("$.components[%d].depends_on", i)
+		if err := references(component.DependsOn, components, path, "component"); err != nil {
+			return err
+		}
+		for j, dependency := range component.DependsOn {
+			if dependency == component.ID {
+				return fail(fmt.Sprintf("%s[%d]", path, j), "self dependency is not allowed")
+			}
+		}
+	}
 	for i, view := range doc.DerivedViews {
 		path := fmt.Sprintf("$.derived_views[%d]", i)
 		if err := identity(identities, make(map[string]bool), view.ID, path+".id"); err != nil {

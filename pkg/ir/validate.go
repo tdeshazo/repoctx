@@ -34,10 +34,10 @@ func (r *Repository) Validate() error {
 	if r == nil {
 		return fmt.Errorf("nil repository")
 	}
-	if r.Version != "repoctx.ir/v1alpha2" && r.Version != "repoctx.ir/v1alpha3" && r.Version != "repoctx.ir/v1alpha4" {
+	if r.Version != "repoctx.ir/v1alpha2" && r.Version != "repoctx.ir/v1alpha3" && r.Version != "repoctx.ir/v1alpha4" && r.Version != "repoctx.ir/v1alpha5" {
 		return fmt.Errorf("unsupported IR version %q", r.Version)
 	}
-	if r.Version == "repoctx.ir/v1alpha4" {
+	if r.Version == "repoctx.ir/v1alpha4" || r.Version == "repoctx.ir/v1alpha5" {
 		if err := r.validateInputs(); err != nil {
 			return err
 		}

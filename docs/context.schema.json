@@ -118,7 +118,7 @@
           "pattern": "^sha256:[0-9a-f]{64}$"
         },
         "ir_version": {
-          "const": "repoctx.ir/v1alpha4"
+          "const": "repoctx.ir/v1alpha5"
         },
         "verification": {
           "enum": [

@@ -1,0 +1,11 @@
+schema: rcx.bundle/v1
+id: rcx.bundle.config
+title: The Repository as a Context Program
+source_of_truth: Leaf frontmatter and source bodies
+discovery:
+  roots: [docs]
+  pattern: '**/*.md'
+  identity_field: id
+root:
+  id: rcx.map.root
+  path: README.md

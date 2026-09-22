@@ -43,7 +43,7 @@ class M4ProtocolTests(unittest.TestCase):
 
     def test_protocol_pins_profiles_budgets_and_scoring(self):
         protocol, scoring = self.validate()
-        self.assertEqual(protocol["compiler_profile"]["ir_contract"], "repoctx.ir/v1alpha4")
+        self.assertEqual(protocol["compiler_profile"]["ir_contract"], "repoctx.ir/v1alpha5")
         self.assertEqual(protocol["context_profile"]["contract"], "repoctx.context/v1alpha3")
         self.assertEqual(protocol["budgets"]["condition_output_bytes"], 12000)
         self.assertEqual(set(scoring["profiles"]), {"end_to_end", "evidence_only"})
@@ -98,7 +98,7 @@ class M4ProtocolTests(unittest.TestCase):
     def test_run_lock_pins_source_model_binary_and_harness(self):
         build = {"program": "repoctx", "release": "test", "revision": "a" * 40,
                  "modified": "false",
-                 "contracts": {"ir": "repoctx.ir/v1alpha4",
+                 "contracts": {"ir": "repoctx.ir/v1alpha5",
                                "context": "repoctx.context/v1alpha3"}}
         with mock.patch.object(PROTOCOL, "git_state", return_value=("a" * 40, False)), \
                 mock.patch.object(PROTOCOL, "binary_identity", return_value=("b" * 64, build)):

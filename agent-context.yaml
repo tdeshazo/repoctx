@@ -1,4 +1,4 @@
-version: repoctx.manifest/v1alpha2
+version: repoctx.manifest/v1alpha3
 namespace: repoctx
 source_roots:
   - id: repository

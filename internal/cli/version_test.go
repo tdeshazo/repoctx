@@ -4,8 +4,10 @@ import (
 	"testing"
 
 	"github.com/tdeshazo/repoctx/pkg/compat"
+	"github.com/tdeshazo/repoctx/pkg/diagnostic"
 	"github.com/tdeshazo/repoctx/pkg/ir"
 	"github.com/tdeshazo/repoctx/pkg/manifest"
+	"github.com/tdeshazo/repoctx/pkg/projection"
 )
 
 func TestCurrentBuildInfoUsesInjectedProvenance(t *testing.T) {
@@ -29,15 +31,17 @@ func TestCurrentBuildInfoUsesInjectedProvenance(t *testing.T) {
 		info.Modified != buildModified || info.Distribution != buildDistribution {
 		t.Fatalf("injected provenance lost: %+v", info)
 	}
-	if buildInfoVersion != "repoctx.build/v1alpha4" {
+	if buildInfoVersion != "repoctx.build/v1alpha5" {
 		t.Fatalf("build info version = %q", buildInfoVersion)
 	}
 	if info.Version != buildInfoVersion || info.Contracts.GoAPI != compat.GoAPI ||
-		info.Contracts.IR != "repoctx.ir/v1alpha4" ||
+		info.Contracts.IR != "repoctx.ir/v1alpha5" ||
 		info.Contracts.ArtifactAuthoring != "repoctx.artifact-authoring/v1alpha2" ||
 		info.Contracts.DocumentLinks != "repoctx.document-links/v1" ||
 		info.Contracts.GoImports != "repoctx.go-imports/v1" ||
 		info.Contracts.Obligations != "repoctx.obligations/v1alpha1" ||
+		info.Contracts.Diagnostics != diagnostic.Version ||
+		info.Contracts.Projection != projection.Version ||
 		info.Contracts.Manifest != manifest.Version || info.Contracts.Entities != ir.EntityVersion ||
 		info.Contracts.Frontmatter != manifest.FrontmatterVersion {
 		t.Fatalf("build contract incomplete: %+v", info)

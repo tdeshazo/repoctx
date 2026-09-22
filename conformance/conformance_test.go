@@ -2,6 +2,8 @@ package conformance_test
 
 import (
 	"bytes"
+	"crypto/sha256"
+	"encoding/hex"
 	"encoding/json"
 	"errors"
 	"os"
@@ -14,9 +16,73 @@ import (
 	"github.com/tdeshazo/repoctx/pkg/artifacts"
 	"github.com/tdeshazo/repoctx/pkg/compiler"
 	"github.com/tdeshazo/repoctx/pkg/ir"
+	"github.com/tdeshazo/repoctx/pkg/manifest"
 )
 
 const fixtureGoMod = "module example.test/conformance\n\ngo 1.23\n"
+
+func TestParentDocumentationMigrationFixture(t *testing.T) {
+	root := filepath.Join("testdata", "parent-bundle")
+	repo, err := compiler.Compile(compiler.Options{Root: root, Manifest: "agent-context.yaml"})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if repo.Entities == nil || repo.Entities.Version != ir.EntityVersion || repo.Entities.Namespace != "rcx" {
+		t.Fatalf("canonical entity model was not compiled: %+v", repo.Entities)
+	}
+	wantIDs := []string{"rcx:documentation", "rcx:foundations", "rcx:maintainers", "rcx:target-state"}
+	if len(repo.Entities.Entities) != len(wantIDs) {
+		t.Fatalf("entity count = %d, want %d: %+v", len(repo.Entities.Entities), len(wantIDs), repo.Entities.Entities)
+	}
+	for i, entity := range repo.Entities.Entities {
+		if entity.ID != wantIDs[i] {
+			t.Fatalf("entity %d = %q, want %q", i, entity.ID, wantIDs[i])
+		}
+		if len(entity.Declaration.Sources) != 1 {
+			t.Fatalf("entity %q has %d declaration sources", entity.ID, len(entity.Declaration.Sources))
+		}
+		source := entity.Declaration.Sources[0]
+		data, err := os.ReadFile(filepath.Join(root, source.Path))
+		if err != nil {
+			t.Fatal(err)
+		}
+		hash := sha256.Sum256(data)
+		if source.SHA256 != hex.EncodeToString(hash[:]) || source.StartByte < 0 || source.EndByte > int64(len(data)) {
+			t.Fatalf("entity %q has invalid exact provenance: %+v", entity.ID, source)
+		}
+		excerpt := string(data[source.StartByte:source.EndByte])
+		marker := "id: " + strings.TrimPrefix(entity.ID, "rcx:")
+		if entity.ID == "rcx:documentation" {
+			marker = "id: documentation"
+		}
+		if !strings.Contains(excerpt, marker) {
+			t.Fatalf("entity %q provenance does not retain its declaration: %q", entity.ID, excerpt)
+		}
+	}
+	first, err := json.Marshal(repo.Entities)
+	if err != nil {
+		t.Fatal(err)
+	}
+	second, err := compiler.Compile(compiler.Options{Root: root, Manifest: "agent-context.yaml"})
+	if err != nil {
+		t.Fatal(err)
+	}
+	secondBytes, err := json.Marshal(second.Entities)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !bytes.Equal(first, secondBytes) {
+		t.Fatal("canonical entity output changed between identical compilations")
+	}
+
+	legacy, err := os.ReadFile(filepath.Join(root, "legacy-agent-context.yaml"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if doc, err := manifest.Load(root, legacy, manifest.Limits{}); err == nil || doc != nil || !strings.Contains(err.Error(), "unknown field") {
+		t.Fatalf("legacy rcx.bundle manifest was accepted: doc=%+v err=%v", doc, err)
+	}
+}
 
 func TestCurrentContracts(t *testing.T) {
 	root := filepath.Join("testdata", "repository")

@@ -35,7 +35,7 @@
     {
       "id": "ir-contract",
       "path": "docs/IR.md",
-      "start": "# Repository IR v1alpha4",
+      "start": "# Repository IR v1alpha5",
       "end": "[context bundle](AGENT_CONTEXT.md), not the interned AST/CSR tables."
     },
     {
@@ -198,7 +198,7 @@
       ]
     },
     {
-      "id": "repoctx:contract.ir-v1alpha4",
+      "id": "repoctx:contract.ir-v1alpha5",
       "kind": "contract",
       "owner": "repoctx:maintainers",
       "applies_to": [
@@ -391,7 +391,7 @@
   "relationships": [
     {
       "from": "repoctx:component.compiler",
-      "to": "repoctx:contract.ir-v1alpha4",
+      "to": "repoctx:contract.ir-v1alpha5",
       "kind": "governed_by",
       "resolution": "declared",
       "sources": [

@@ -45,7 +45,8 @@ var (
 		[]string{"id", "source_roots", "artifact_sources", "provider_inputs", "owners", "scopes", "lifecycle", "supersedes", "sensitivity", "freshness"},
 		map[string]*shape{"id": stringShape, "source_roots": stringsShape,
 			"artifact_sources": stringsShape, "provider_inputs": stringsShape,
-			"owners": stringsShape, "scopes": {kind: yaml.SequenceNode, element: scopeShape},
+			"depends_on": stringsShape,
+			"owners":     stringsShape, "scopes": {kind: yaml.SequenceNode, element: scopeShape},
 			"lifecycle": stringShape, "supersedes": stringsShape,
 			"sensitivity": stringShape, "freshness": freshnessShape},
 	)

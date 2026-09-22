@@ -1,4 +1,4 @@
-# Repository IR v1alpha4
+# Repository IR v1alpha5
 
 This wire format is a reusable machine index. Agents should receive the separate
 [context bundle](AGENT_CONTEXT.md), not the interned AST/CSR tables.
@@ -22,7 +22,7 @@ function/class definitions. Ordinary Python comments are not AST nodes.
 
 ```go
 type Repository struct {
-    Version     string       // v: repoctx.ir/v1alpha4
+    Version     string       // v: repoctx.ir/v1alpha5
     Root        int          // r: interned ".", not an absolute host path
     Files       []File       // f
     Symbols     []Symbol     // s
@@ -30,7 +30,7 @@ type Repository struct {
     Graph       *SymbolGraph // g: collapsed traversal view
     Diagnostics []Diagnostic // d
     Strings     []string     // q
-    Inputs      *InputManifest // inputs: required in v1alpha4
+    Inputs      *InputManifest // inputs: required in v1alpha5
     Entities    *EntityModel // entities: optional semantic declarations
 }
 ```
@@ -51,7 +51,9 @@ Omitting the compiler's manifest option preserves source-only IR.
 records compiler/frontend versions, syntax-only build semantics, effective
 allow/deny and directory exclusions, and read/inventory limits. The source
 manifest and profile have separate digests; `Repository.SnapshotID` binds the
-complete index, including that manifest. See the
+complete index, including that manifest. An optional caller-supplied repository
+revision and clean/dirty state may be recorded as consistency metadata; these
+fields are not authenticated and do not replace content verification. See the
 [input, consistency and migration contract](AGENT_CONTEXT.md#replay-source-changes-and-policy).
 Older v1alpha3 artifacts remain readable with the preserved
 [v1alpha3 schema](ir-v1alpha3.schema.json), but must be recompiled for serving.
@@ -203,7 +205,7 @@ indexes; compressed byte count is unrelated to model context consumption.
 
 ## Compatibility
 
-The compiler writes and supports `repoctx.ir/v1alpha4`. Some older versions may
+The compiler writes and supports `repoctx.ir/v1alpha5`. Some older versions may
 remain structurally readable during development, but they are not supported and
 cannot serve current agent context. Recompile older indexes; merely changing a
 version string does not establish newer invariants. See the

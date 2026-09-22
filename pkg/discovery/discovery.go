@@ -368,6 +368,9 @@ func better(a, b Result) bool {
 	if a.Score.DistinctTerms != b.Score.DistinctTerms {
 		return a.Score.DistinctTerms > b.Score.DistinctTerms
 	}
+	if a.metadataRank != b.metadataRank {
+		return a.metadataRank > b.metadataRank
+	}
 	if a.Score.PathTerms != b.Score.PathTerms {
 		return a.Score.PathTerms > b.Score.PathTerms
 	}

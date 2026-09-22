@@ -16,19 +16,21 @@ import (
 	repomanifest "github.com/tdeshazo/repoctx/pkg/manifest"
 )
 
-const IRVersion = "repoctx.ir/v1alpha4"
+const IRVersion = "repoctx.ir/v1alpha5"
 
 type Options struct {
-	Root         string
-	Python       string // retained for API compatibility; Python uses native Tree-sitter
-	CacheDir     string // optional trusted, caller-owned parse-fragment cache outside Root
-	MaxBytes     int64
-	MaxReadBytes int64 // total bytes across both verification passes; default 256 MiB
-	MaxEntries   int   // total discovery entries per pass; default 100000
-	IgnoreDirs   map[string]bool
-	AllowPaths   []string // optional source/auxiliary file or directory prefixes; not globs
-	DenyPaths    []string // evaluated before parsing/indexing
-	Manifest     string   // optional repository-relative canonical manifest
+	Root               string
+	Python             string // retained for API compatibility; Python uses native Tree-sitter
+	CacheDir           string // optional trusted, caller-owned parse-fragment cache outside Root
+	MaxBytes           int64
+	MaxReadBytes       int64 // total bytes across both verification passes; default 256 MiB
+	MaxEntries         int   // total discovery entries per pass; default 100000
+	IgnoreDirs         map[string]bool
+	AllowPaths         []string // optional source/auxiliary file or directory prefixes; not globs
+	DenyPaths          []string // evaluated before parsing/indexing
+	Manifest           string   // optional repository-relative canonical manifest
+	RepositoryRevision string   // optional caller-supplied full Git object ID
+	RepositoryDirty    *bool    // optional caller-supplied worktree state
 }
 
 type sourceFile struct {
@@ -73,6 +75,10 @@ func compile(opts Options) (*ir.Repository, CacheStats, error) {
 	if opts.IgnoreDirs == nil {
 		opts.IgnoreDirs = defaultIgnoreDirs()
 	}
+	repository, err := repositoryIdentity(opts)
+	if err != nil {
+		return nil, CacheStats{}, err
+	}
 
 	for _, group := range [][]string{opts.AllowPaths, opts.DenyPaths} {
 		for _, p := range group {
@@ -93,6 +99,7 @@ func compile(opts Options) (*ir.Repository, CacheStats, error) {
 	if err != nil {
 		return nil, CacheStats{}, err
 	}
+	manifest.Repository = repository
 	profileID, err := manifest.ProfileID()
 	if err != nil {
 		return nil, CacheStats{}, err

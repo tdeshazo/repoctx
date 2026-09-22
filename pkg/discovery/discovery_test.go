@@ -172,6 +172,86 @@ func TestDiscoverAnswerBearingBodies(t *testing.T) {
 	}
 }
 
+func TestDiscoverPrefersCanonicalLeavesOverGeneratedRoutes(t *testing.T) {
+	o := DefaultOptions()
+	o.Root = fixture(t, map[string]string{
+		"docs/index.md": "---\nschema: rcx.navigation/v1\nid: rcx.topic.retry\nkind: map\norigin: generated\nstatus: active\nauthority: generated\n---\n\n# Retry topic\n\nUse the retry configuration route for the canonical guidance.\n",
+		"docs/retry.md": "---\nschema: rcx.document/v1\nid: rcx.retry.guide\nkind: architecture\norigin: report\nstatus: active\nauthority: advisory\n---\n\n# Retry configuration\n\nCanonical retry configuration guidance.\n",
+	})
+	o.Query, o.MaxResults, o.ContextLines = "retry configuration", 1, 0
+	r := run(t, o)
+	if len(r.Response.Results) != 1 || r.Response.Results[0].Path != "docs/retry.md" {
+		t.Fatalf("generated route consumed bounded result: %+v", r.Response.Results)
+	}
+	if r.Response.Results[0].Evidence == nil || r.Response.Results[0].Evidence.Text != "# Retry configuration\n" {
+		t.Fatalf("canonical evidence changed: %+v", r.Response.Results[0].Evidence)
+	}
+	if strings.Contains(string(r.Payload), "metadataRank") {
+		t.Fatal("internal metadata rank leaked into the discovery contract")
+	}
+}
+
+func TestDiscoverMetadataDoesNotOverrideStrongerLexicalEvidence(t *testing.T) {
+	o := DefaultOptions()
+	o.Root = fixture(t, map[string]string{
+		"docs/index.md": "---\nschema: rcx.navigation/v1\nkind: map\norigin: generated\nstatus: active\n---\n\nretry configuration\n",
+		"docs/retry.md": "---\nschema: rcx.document/v1\nkind: architecture\norigin: report\nstatus: active\n---\n\nretry\n",
+		"pkg/retry.go":  "package retry\n// retry configuration reproducible\n",
+	})
+	o.Query, o.MaxResults, o.ContextLines = "retry configuration reproducible", 1, 0
+	r := run(t, o)
+	if len(r.Response.Results) != 1 || r.Response.Results[0].Path != "pkg/retry.go" {
+		t.Fatalf("metadata rank overrode stronger lexical evidence: %+v", r.Response.Results)
+	}
+}
+
+func TestMetadataRankUsesDeclaredFrontmatterOnly(t *testing.T) {
+	cases := []struct {
+		name string
+		text string
+		want int
+	}{
+		{
+			name: "generated navigation",
+			text: "---\nschema: rcx.navigation/v1\nkind: map\norigin: generated\nstatus: active\n---\nbody",
+			want: -3,
+		},
+		{
+			name: "active canonical leaf",
+			text: "---\nschema: rcx.document/v1\nkind: architecture\norigin: report\nstatus: active\n---\nbody",
+			want: 3,
+		},
+		{
+			name: "deprecated canonical leaf",
+			text: "---\nschema: rcx.document/v1\nkind: architecture\norigin: report\nstatus: deprecated\n---\nbody",
+			want: -2,
+		},
+		{
+			name: "prose is not metadata",
+			text: "# origin: generated\n# kind: map\nbody",
+			want: 0,
+		},
+	}
+	for _, tc := range cases {
+		t.Run(tc.name, func(t *testing.T) {
+			if got := metadataRank([]byte(tc.text)); got != tc.want {
+				t.Fatalf("metadata rank = %d, want %d", got, tc.want)
+			}
+		})
+	}
+}
+
+func BenchmarkMetadataRankNonFrontmatter(b *testing.B) {
+	data := append([]byte("ordinary source\n"), bytes.Repeat([]byte("retry configuration evidence\n"), 1<<16)...)
+	b.ResetTimer()
+	b.ReportAllocs()
+	for i := 0; i < b.N; i++ {
+		if got := metadataRank(data); got != 0 {
+			b.Fatalf("metadata rank = %d, want 0", got)
+		}
+	}
+}
+
 func TestDiscoverDiversifiesBroadRelevantResults(t *testing.T) {
 	results := []Result{
 		{Entry: Entry{Path: "docs/a.md", Candidate: "documentation"}, Score: Score{DistinctTerms: 8}},

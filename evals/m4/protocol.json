@@ -5,7 +5,7 @@
   "cache_states": ["cold", "warm"],
   "compiler_profile": {
     "id": "repoctx-source-v1",
-    "ir_contract": "repoctx.ir/v1alpha4",
+    "ir_contract": "repoctx.ir/v1alpha5",
     "provider": "source",
     "allow": ["."],
     "deny": [],

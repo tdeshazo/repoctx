@@ -91,7 +91,7 @@ entities:
 ---
 # Model
 `)
-	mustWrite(t, filepath.Join(root, "agent-context.yaml"), `version: repoctx.manifest/v1alpha2
+	mustWrite(t, filepath.Join(root, "agent-context.yaml"), `version: repoctx.manifest/v1alpha3
 namespace: demo
 source_roots: [{id: source, path: .}]
 document_sources: [{id: semantics, path: model.md, format: repoctx.frontmatter/v1alpha1}]

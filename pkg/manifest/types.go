@@ -4,7 +4,7 @@
 package manifest
 
 // Version identifies the only supported repository manifest contract.
-const Version = "repoctx.manifest/v1alpha2"
+const Version = "repoctx.manifest/v1alpha3"
 
 // FrontmatterVersion identifies typed declarations embedded in Markdown.
 const FrontmatterVersion = "repoctx.frontmatter/v1alpha1"
@@ -55,6 +55,10 @@ type Component struct {
 	Supersedes      []string  `json:"supersedes" yaml:"supersedes"`
 	Sensitivity     string    `json:"sensitivity" yaml:"sensitivity"`
 	Freshness       Freshness `json:"freshness" yaml:"freshness"`
+
+	// DependsOn optionally declares other manifest components as dependencies.
+	// These are authored claims, not resolved imports or execution ordering.
+	DependsOn []string `json:"depends_on,omitempty" yaml:"depends_on,omitempty"`
 }
 
 // Scope is an authored applicability claim.

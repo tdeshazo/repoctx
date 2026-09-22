@@ -85,6 +85,7 @@ type Result struct {
 	MatchedTerms []string  `json:"matched_terms"`
 	Score        Score     `json:"score"`
 	Evidence     *Evidence `json:"evidence,omitempty"`
+	metadataRank int       `json:"-"`
 }
 
 // Response reports observed source, never an atomic filesystem snapshot.

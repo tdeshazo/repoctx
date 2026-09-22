@@ -91,6 +91,10 @@ func (e *engine) inspect(entry Entry) error {
 		return nil
 	}
 	starts := lineStarts(b)
+	metadataRankValue := 0
+	if e.o.Operation == "discover" && e.o.Query != "" {
+		metadataRankValue = metadataRank(b)
+	}
 	windows := []window{}
 	if e.o.Operation == "read" {
 		for _, request := range requests {
@@ -151,13 +155,17 @@ func (e *engine) inspect(entry Entry) error {
 			matched = []string{}
 			score = Score{}
 		}
-		e.add(Result{
+		result := Result{
 			Entry: entry, MatchedTerms: matched, Score: score,
 			Evidence: &Evidence{
 				SHA256: hash, StartByte: start, EndByte: end, StartLine: w.start + 1, EndLine: w.end,
 				Text: text,
 			},
-		})
+		}
+		if e.o.Operation == "discover" && e.o.Query != "" {
+			result.metadataRank = metadataRankValue
+		}
+		e.add(result)
 	}
 	return nil
 }

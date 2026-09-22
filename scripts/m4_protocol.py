@@ -97,7 +97,7 @@ def validate_protocol(protocol_path: Path = PROTOCOL) -> tuple[dict[str, Any], d
     require(protocol["workspace_policy"] == "fresh_export_per_trial", "workspaces must be fresh")
 
     compiler = protocol["compiler_profile"]
-    require(compiler == {"id": "repoctx-source-v1", "ir_contract": "repoctx.ir/v1alpha4",
+    require(compiler == {"id": "repoctx-source-v1", "ir_contract": "repoctx.ir/v1alpha5",
                          "provider": "source", "allow": ["."], "deny": [],
                          "max_source_bytes": 2097152, "max_total_source_bytes": 536870912},
             "compiler profile drifted")
@@ -244,7 +244,7 @@ def binary_identity(binary: Path) -> tuple[str, dict[str, Any]]:
     require(result.returncode == 0, "repoctx binary does not report build identity")
     build = json.loads(result.stdout)
     require(build.get("program") == "repoctx" and build.get("contracts", {}).get("ir") ==
-            "repoctx.ir/v1alpha4" and build["contracts"].get("context") ==
+            "repoctx.ir/v1alpha5" and build["contracts"].get("context") ==
             "repoctx.context/v1alpha3", "repoctx binary contracts do not match the protocol")
     return digest(binary), build
 
