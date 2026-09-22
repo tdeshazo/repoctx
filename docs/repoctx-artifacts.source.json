@@ -75,10 +75,10 @@
       "end": "M2 provides a sound invalidation model."
     },
     {
-      "id": "m5-03",
+      "id": "m5-04",
       "path": "ROADMAP.md",
-      "start": "- [ ] **M5-03 — Reuse verified immutable sources.** Avoid rereading every source",
-      "end": "  the largest atomic latency stage."
+      "start": "- [ ] **M5-04 — Add serving only where justified.** A library cache or optional",
+      "end": "  generation or in-memory aggregate before making it the warm serving path."
     }
   ],
   "artifacts": [
@@ -343,7 +343,7 @@
       "declared_inputs": []
     },
     {
-      "id": "repoctx:requirement.m5-03-immutable-sources",
+      "id": "repoctx:requirement.m5-04-bounded-serving",
       "kind": "requirement",
       "applies_to": [
         {
@@ -353,7 +353,7 @@
       ],
       "lifecycle": "active",
       "sources": [
-        "m5-03"
+        "m5-04"
       ],
       "declared_inputs": []
     }
@@ -424,11 +424,11 @@
     },
     {
       "from": "repoctx:milestone.m5-amortization",
-      "to": "repoctx:requirement.m5-03-immutable-sources",
+      "to": "repoctx:requirement.m5-04-bounded-serving",
       "kind": "contains",
       "resolution": "declared",
       "sources": [
-        "m5-03"
+        "m5-04"
       ]
     }
   ]

@@ -57,6 +57,20 @@ Artifact growth compares compact canonical IR bytes with Go source-file bytes;
 the small `go.mod` is excluded from the source-byte metric. Context
 bytes remain bounded by the fixed query and 32 KiB output limit.
 
+M5-03 adds a separate repeated-query benchmark so the frozen M5-01 stage set
+does not silently change:
+
+```sh
+go test ./pkg/agentctx -run '^$' \
+  -bench '^BenchmarkM5ImmutableGeneration$/^files=1000$' \
+  -benchmem -benchtime=3x -count=10
+```
+
+`BenchmarkM5ImmutableGeneration` excludes its one-time strict verification and
+generation construction from the timer. It measures context materialization
+against privately owned, already verified index and source bytes. The ordinary
+`context_materialization` benchmark remains the strict per-request local path.
+
 ## Predeclared M5 target
 
 On the 1,000-file workload, subsequent warm-path work must reduce both the p95

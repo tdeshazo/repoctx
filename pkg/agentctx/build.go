@@ -14,8 +14,31 @@ import (
 // context payload. It runs no repository commands. Use an immutable worktree:
 // source reads do not create a transactional filesystem snapshot.
 func Build(r *ir.Repository, o Options) (*Result, error) {
-	if e := normalize(&o); e != nil {
+	return build(r, o, nil)
+}
+
+// BuildFromGeneration builds context from a previously verified, immutable
+// in-memory source generation without rereading the repository filesystem.
+// ExpectedSnapshot remains mandatory so the application explicitly binds its
+// authenticated request to the generation it selected.
+func BuildFromGeneration(g *VerifiedSourceGeneration, o Options) (*Result, error) {
+	if g == nil {
+		return nil, fmt.Errorf("verified source generation is required")
+	}
+	if o.Consistency != "" && o.Consistency != "immutable" {
+		return nil, fmt.Errorf("verified source generation requires immutable consistency")
+	}
+	o.Consistency = "immutable"
+	o.sourceMode = "verified-source-generation/v1"
+	return build(g.repository, o, g.sources)
+}
+
+func build(r *ir.Repository, o Options, generationSources map[int]*source) (*Result, error) {
+	if e := normalize(&o, generationSources == nil); e != nil {
 		return nil, e
+	}
+	if r == nil {
+		return nil, fmt.Errorf("repository index is required")
 	}
 	if e := r.Validate(); e != nil {
 		return nil, fmt.Errorf("invalid index: %w", e)
@@ -37,9 +60,12 @@ func Build(r *ir.Repository, o Options) (*Result, error) {
 	if o.ExpectedSnapshot != "" && snap != o.ExpectedSnapshot {
 		return nil, fmt.Errorf("snapshot mismatch: re-resolve semantic IDs against the requested index")
 	}
-	sources, e := loadSources(r, o)
-	if e != nil {
-		return nil, e
+	sources := generationSources
+	if sources == nil {
+		sources, e = loadSources(r, o)
+		if e != nil {
+			return nil, e
+		}
 	}
 	candidates, seeds, limited, e := choose(r, o, sources)
 	if e != nil {
@@ -66,7 +92,9 @@ func Build(r *ir.Repository, o Options) (*Result, error) {
 	if r.Inputs.GoMod.State == "unavailable" {
 		b.Capabilities.Unavailable = append(b.Capabilities.Unavailable, "go_module_metadata_policy_denied")
 	}
-	if o.Consistency == "immutable" {
+	if generationSources != nil {
+		b.Warnings = append(b.Warnings, "Source bytes were strictly verified once and reused from a caller-retained immutable in-memory generation bound to this snapshot.")
+	} else if o.Consistency == "immutable" {
 		b.Warnings = append(b.Warnings, "Inventory and auxiliary inputs rely on the caller's pinned, immutable snapshot assertion; source bytes remain hash-verified.")
 	} else {
 		b.Warnings = append(b.Warnings, "Two verified input passes detect observed drift, not an atomic filesystem snapshot. Isolate concurrent writers.")
@@ -313,7 +341,7 @@ func markPartialQueryExcerpts(b *Bundle, sources map[int]*source) {
 	}
 }
 
-func normalize(o *Options) error {
+func normalize(o *Options, requireRoot bool) error {
 	if o.Consistency == "" {
 		o.Consistency = "verified-local"
 	}
@@ -326,7 +354,7 @@ func normalize(o *Options) error {
 	if o.CountTokens != nil && strings.TrimSpace(o.TokenizerID) == "" {
 		return fmt.Errorf("a tokenizer requires a caller-owned tokenizer identity")
 	}
-	if o.Root == "" {
+	if o.Root == "" && requireRoot {
 		return fmt.Errorf("explicit source Root is required")
 	}
 	if len(o.Symbols)+len(o.Units) == 0 && strings.TrimSpace(o.Query) == "" {

@@ -553,21 +553,28 @@ performance target. Do not build a daemon merely to complete this milestone.
   changes. Avoid duplicating global strings, graphs, or manifests in fragments;
   global dense graph IDs remain snapshot-local even when fragments are reused.
   Evidence: [incremental artifact report](docs/reports/m5-02-evidence.md).
-- [ ] **M5-03 — Reuse verified immutable sources.** Avoid rereading every source
+- [x] **M5-03 — Reuse verified immutable sources.** Avoid rereading every source
   on every query only when the caller provides an enforceable immutable snapshot
   or equivalent validated generation. Metadata timestamps alone are not proof of
   content identity. Authenticate and scope the reused generation, retain exact
   content identities, and keep strict local verification available. Optimize
   this path before weaker freshness shortcuts: M5-01 identified verification as
-  the largest atomic latency stage.
+  the largest atomic latency stage. Evidence:
+  [verified source generation report](docs/reports/m5-03-evidence.md).
 - [ ] **M5-04 — Add serving only where justified.** A library cache or optional
   service must support bounded memory, eviction, cancellation, atomic generation
   swaps, and authorization-scoped identities. A daemon may be deferred if a
   simpler local design meets the measured need. If ranking remains material after
   M5-02 and M5-03, prefer a reusable, query-independent candidate index with
-  bounded lookup work before introducing a service. M5-02 also found that one
-  JSON file per fragment is inefficient for many tiny files; benchmark a bounded
-  packed generation or in-memory aggregate before making it the warm serving path.
+  bounded lookup work before introducing a service. Expose compact, bounded
+  symbol discovery over that index with exact, substring, and regex matching;
+  language, kind, path, and unit filters; deterministic limits and omissions;
+  and IDs, names, kinds, units, paths, and declaration spans rather than source
+  bodies by default. Feed selected IDs into the existing `context -symbol` path,
+  with any declaration-only expansion reusing its evidence contract instead of
+  creating a parallel retrieval pipeline. M5-02 also found that one JSON file per
+  fragment is inefficient for many tiny files; benchmark a bounded packed
+  generation or in-memory aggregate before making it the warm serving path.
 
 ### Acceptance gates
 
@@ -657,6 +664,10 @@ inclusion in the core:
   expose a persistent semantic-retrieval gap.
 - **Additional grammars or type-aware providers:** when a target workload
   justifies the coverage and maintenance cost.
+- **Structural AST query language:** only when evaluation fixtures demonstrate
+  tasks that bounded symbol discovery, exact symbol expansion, source regex, and
+  existing graph traversal cannot satisfy. Keep any future syntax explicitly
+  language-aware and result-bounded rather than presenting it as semantic proof.
 - **Vendor-specific adapters or MCP transport:** when integrations require them;
   they must preserve the same evidence and trust contracts.
 - **Generated agent instruction projections:** only from separately approved

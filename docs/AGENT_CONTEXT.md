@@ -208,6 +208,26 @@ the entire declared input tree is unchanged. This mode reuses the manifest witho
 inventory/configuration scans, but still verifies every indexed source hash. A
 Git revision or an instruction found in repository text cannot make that assertion.
 
+Applications issuing repeated queries may instead construct a bounded
+`VerifiedSourceGeneration` with `VerifySourceGeneration`. Construction performs
+the full `verified-local` inventory and two-pass source checks once, defensively
+copies the validated index, and retains exact source bytes and source/profile/
+snapshot identities in private memory. Each `BuildFromGeneration` request must
+still supply the generation's caller-authenticated `SnapshotID`; explicit scope
+must match the captured compilation profile. The generation performs no later
+filesystem reads, so source changes after capture cannot create a mixed result.
+It is neither a repository-controlled assertion nor an authentication mechanism.
+The application owns authorization, retention, memory accounting, and disposal.
+
+```go
+generation, err := agentctx.VerifySourceGeneration(repo,
+    agentctx.SourceGenerationOptions{Root: root})
+if err != nil { /* reject stale or incomplete sources */ }
+result, err := agentctx.BuildFromGeneration(generation, agentctx.Options{
+    Query: "retry policy", ExpectedSnapshot: generation.SnapshotID(),
+})
+```
+
 Compilation intentionally does **not** read `.gitignore`, `.ignore`, build tags,
 workspace files, environment-dependent build settings, or external providers.
 It parses all supported extensions in scope, excluding symlinks/special files and

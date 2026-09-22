@@ -74,3 +74,47 @@ func BenchmarkM5ContextPath(b *testing.B) {
 		})
 	}
 }
+
+func BenchmarkM5ImmutableGeneration(b *testing.B) {
+	for _, files := range []int{10, 100, 1000} {
+		b.Run(fmt.Sprintf("files=%d", files), func(b *testing.B) {
+			root := b.TempDir()
+			sourceBytes, err := benchfixture.Write(root, files)
+			if err != nil {
+				b.Fatal(err)
+			}
+			repo, err := compiler.Compile(compiler.Options{Root: root})
+			if err != nil {
+				b.Fatal(err)
+			}
+			generation, err := VerifySourceGeneration(repo, SourceGenerationOptions{Root: root})
+			if err != nil {
+				b.Fatal(err)
+			}
+			options := Options{Query: "Compute helper Record", Depth: 1,
+				Direction: "both", Relations: []ir.EdgeKind{ir.EdgeCalls, ir.EdgeDefines},
+				MaxBytes: 32768, MaxSymbols: 12, MaxCandidates: 128, MaxRelations: 48,
+				MaxUnits: 8, ExpectedSnapshot: generation.SnapshotID(), Format: "json"}
+			result, err := BuildFromGeneration(generation, options)
+			if err != nil {
+				b.Fatal(err)
+			}
+			irBytes, err := json.Marshal(repo)
+			if err != nil {
+				b.Fatal(err)
+			}
+			b.ReportAllocs()
+			b.ResetTimer()
+			b.ReportMetric(float64(files), "files")
+			b.ReportMetric(float64(sourceBytes), "source-bytes")
+			b.ReportMetric(float64(len(irBytes)), "artifact-bytes")
+			b.ReportMetric(float64(len(result.Payload)), "context-bytes")
+			for i := 0; i < b.N; i++ {
+				benchmarkResult, err = BuildFromGeneration(generation, options)
+				if err != nil {
+					b.Fatal(err)
+				}
+			}
+		})
+	}
+}

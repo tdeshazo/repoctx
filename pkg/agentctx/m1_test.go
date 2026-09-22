@@ -13,7 +13,7 @@ func TestM1DocumentUnitsAndContainment(t *testing.T) {
 		"| A | B |\r\n| --- | --- |\r\n| yes | no |\r\n\r\n```go\r\n# not a heading\r\nfunc Fake() {}\r\n```\r\n\r\n# Repeated\r\nLast."
 	root, r := compileFixture(t, map[string]string{"doc.md": doc, "plain.md": "No heading.\n\nAnother paragraph.\n"})
 	o := baseOptions(root)
-	if err := normalize(&o); err != nil {
+	if err := normalize(&o, true); err != nil {
 		t.Fatal(err)
 	}
 	sources, err := loadSources(r, o)

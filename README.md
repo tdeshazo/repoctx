@@ -407,6 +407,12 @@ expired, cross-run, and stale-snapshot failures are explicit.
   manifest under a caller-owned immutable-tree guarantee; source hashes still get
   checked. Dirty/untracked permitted files count as inputs in either mode. Checks
   are not an atomic filesystem snapshot; callers must isolate concurrent writers.
+- Repeated Go API queries can call `agentctx.VerifySourceGeneration` once, then
+  `agentctx.BuildFromGeneration` with its authenticated `SnapshotID`. The
+  generation privately owns a bounded index copy and exact source bytes that
+  passed strict local verification, so later queries perform no filesystem reads.
+  Retention and authorization remain application-owned; the one-shot CLI keeps
+  strict local verification available and does not create a hidden persistent cache.
 - Compilation caps per-file bytes, total bytes across both passes, and inventory
   entries, and atomically publishes complete file outputs. See the
   [input and consistency contract](docs/AGENT_CONTEXT.md#replay-source-changes-and-policy).

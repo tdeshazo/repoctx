@@ -5,6 +5,10 @@ import "github.com/tdeshazo/repoctx/pkg/ir"
 // taskID binds all selection, rendering and budget inputs. Root locations and
 // function addresses are not identities. The caller supplies tokenizer identity.
 func taskID(index string, o Options) (string, error) {
+	consistency := o.Consistency
+	if o.sourceMode != "" {
+		consistency += "+" + o.sourceMode
+	}
 	// Options includes a function even when nil; encode an explicit mirror so
 	// future selection options must be deliberately added to this contract.
 	return ir.ContentID(struct {
@@ -23,6 +27,6 @@ func taskID(index string, o Options) (string, error) {
 		MaxSymbols: o.MaxSymbols, MaxUnits: o.MaxUnits, MaxCandidates: o.MaxCandidates,
 		MaxRelations: o.MaxRelations, MaxBytes: o.MaxBytes, MaxTokens: o.MaxTokens,
 		MaxSourceBytes: o.MaxSourceBytes, MaxReadBytes: o.MaxReadBytes,
-		Tokenizer: o.TokenizerID, Consistency: o.Consistency,
+		Tokenizer: o.TokenizerID, Consistency: consistency,
 	})
 }

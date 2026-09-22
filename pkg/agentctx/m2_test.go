@@ -48,7 +48,7 @@ func TestM2TaskIdentityBindsSelectionAndRendering(t *testing.T) {
 		})
 	}
 	// Root locations are not part of canonical task identity.
-	if err := normalize(&o); err != nil {
+	if err := normalize(&o, true); err != nil {
 		t.Fatal(err)
 	}
 	a, _ := taskID(first.Bundle.Snapshot.ID, o)
