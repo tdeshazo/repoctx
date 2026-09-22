@@ -204,7 +204,10 @@ basenames; patterns containing `/` match root-relative paths. `discover` splits
 task text into distinct lowercase Unicode letter/digit terms and matches
 substrings in paths and source. Punctuated fields that look like identifiers,
 such as `M4-12` or `rcx.topic.retry`, remain intact: results with exact identifier
-matches rank first, and their source windows center on lines containing the
+matches rank first while ordinary lexical matches remain eligible. Exact matches
+must not be embedded in a larger letter/digit sequence, but punctuation remains
+a delimiter so identifiers match prose, dotted symbols, and paths such as
+`docs/M4-12-evidence.md`. Their source windows center on lines containing the
 intact identifier. Ordinary hyphenated prose keeps the term-based behavior.
 Discovery windows cannot grow beyond one requested context window by chaining
 nearby weak matches. Windows then rank by distinct matched terms, declared

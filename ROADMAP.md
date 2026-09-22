@@ -20,11 +20,13 @@ These statuses summarize retained evidence, not a fresh execution of its tests.
 The [historical plan](docs/history/roadmap-2026-09-22.md) preserves milestone IDs,
 completion links, and architectural proposals. This file owns current priorities.
 
-## 1. Next roadmap priority: make bounded retrieval useful
+## 1. Bounded retrieval corrections
 
-The next outstanding roadmap item is M4-12: reliable retrieval under realistic
-output limits.
-Start with the three [recorded context failures](docs/reports/m4-09-evidence.md):
+M4-12 records the bounded retrieval corrections under realistic output limits.
+After these corrections, the next outstanding roadmap item is M4-13, the paired
+actual agent workflow pilot below. Complete that pilot before further retrieval
+tuning or infrastructure work.
+The corrections address three [recorded context failures](docs/reports/m4-09-evidence.md):
 identifier noise, an answer-bearing window that did not fit, and a clipped
 reference to the actionable requirement.
 
@@ -34,15 +36,17 @@ reference to the actionable requirement.
   and budget failures; retain focused regression coverage for the decisive evidence.
   Evidence: [bounded retrieval replay](docs/reports/m4-12-bounded-retrieval.md).
 
-Prefer exact identifier matches when appropriate, useful query-centered windows,
-and enough room for evidence after response metadata. Preserve diverse relevant
-results without allowing weak matches to displace decisive evidence. Use the
-existing discovery and context paths; add a new abstraction only if a reproduced
-failure requires it.
+Prefer exact identifier matches when appropriate without discarding useful
+filename or prose evidence. Use query-centered windows and leave enough room for
+evidence after response metadata. Preserve diverse relevant results without
+allowing weak matches to displace decisive evidence. Use the existing discovery
+and context paths; add a new abstraction only if a reproduced failure requires
+it.
 
 **Done when:** Small fixtures retrieve the decisive evidence at the recorded
 5,000-, 8,000-, and 12,000-byte budgets, with exact source spans and explicit
-excerpts or omissions. Check nearby queries and no-answer cases for regressions.
+excerpts or omissions. Check nearby queries, mixed filename/prose queries, and
+no-answer cases for regressions.
 Document any case that still cannot fit and its usable follow-up retrieval.
 A local regression improvement does not establish downstream agent improvement.
 

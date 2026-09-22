@@ -6,9 +6,15 @@ import (
 	"sort"
 	"strings"
 	"unicode"
+	"unicode/utf8"
 )
 
 type window struct{ start, end int }
+
+type discoveryWindow struct {
+	window
+	line int
+}
 
 func queryTerms(query string) []string {
 	terms := []string{}
@@ -65,11 +71,50 @@ func identifierMatches(identifiers []string, path, text string) int {
 	path, text = strings.ToLower(path), strings.ToLower(text)
 	matches := 0
 	for _, identifier := range identifiers {
-		if strings.Contains(path, identifier) || strings.Contains(text, identifier) {
+		identifier = strings.ToLower(identifier)
+		if containsIdentifier(path, identifier) || containsIdentifier(text, identifier) {
 			matches++
 		}
 	}
 	return matches
+}
+
+// containsIdentifier finds an identifier that is not embedded in a larger
+// letter/digit sequence. Punctuation remains a boundary so identifiers retain
+// useful matches in prose, dotted symbols, and paths such as docs/M4-07.md.
+func containsIdentifier(value, identifier string) bool {
+	if identifier == "" {
+		return false
+	}
+	for offset := 0; ; {
+		index := strings.Index(value[offset:], identifier)
+		if index < 0 {
+			return false
+		}
+		start := offset + index
+		end := start + len(identifier)
+		if identifierBoundaryBefore(value, start) && identifierBoundaryAfter(value, end) {
+			return true
+		}
+		_, size := utf8.DecodeRuneInString(value[start:])
+		offset = start + size
+	}
+}
+
+func identifierBoundaryBefore(value string, offset int) bool {
+	if offset == 0 {
+		return true
+	}
+	r, _ := utf8.DecodeLastRuneInString(value[:offset])
+	return !unicode.IsLetter(r) && !unicode.IsDigit(r)
+}
+
+func identifierBoundaryAfter(value string, offset int) bool {
+	if offset == len(value) {
+		return true
+	}
+	r, _ := utf8.DecodeRuneInString(value[offset:])
+	return !unicode.IsLetter(r) && !unicode.IsDigit(r)
 }
 
 func lexical(terms []string, p, text string) ([]string, Score) {
@@ -143,6 +188,22 @@ func mergeDiscoveryWindows(windows []window, maxLines int) []window {
 	return merged
 }
 
+// lexicalWindowsOutside returns lexical candidates whose hit lines are not
+// covered by sorted identifier windows. Both inputs are produced in line order.
+func lexicalWindowsOutside(candidates []discoveryWindow, identifiers []window) []window {
+	windows := []window{}
+	identifier := 0
+	for _, candidate := range candidates {
+		for identifier < len(identifiers) && identifiers[identifier].end <= candidate.line {
+			identifier++
+		}
+		if identifier == len(identifiers) || candidate.line < identifiers[identifier].start {
+			windows = append(windows, candidate.window)
+		}
+	}
+	return windows
+}
+
 func (e *engine) inspect(entry Entry) error {
 	requests := e.requested[entry.Path]
 	if e.o.Operation == "read" && len(requests) == 0 {
@@ -189,6 +250,8 @@ func (e *engine) inspect(entry Entry) error {
 		}
 	} else {
 		identifierFocused := e.o.Operation == "discover" && len(e.identifiers) > 0
+		identifierWindows := []discoveryWindow{}
+		lexicalWindows := []discoveryWindow{}
 		for line, start := range starts {
 			if err := e.ctx.Err(); err != nil {
 				return err
@@ -198,20 +261,38 @@ func (e *engine) inspect(entry Entry) error {
 				end = starts[line+1]
 			}
 			text := string(b[start:end])
-			hit := false
+			lexicalHit := false
+			identifierHit := false
 			if e.search != nil {
-				hit = e.search.MatchString(strings.TrimSuffix(text, "\n"))
-			} else if identifierFocused {
-				hit = identifierMatches(e.identifiers, "", text) > 0
+				lexicalHit = e.search.MatchString(strings.TrimSuffix(text, "\n"))
 			} else {
 				_, s := lexical(e.terms, "", text)
-				hit = s.DistinctTerms > 0
+				lexicalHit = s.DistinctTerms > 0
+				if identifierFocused {
+					identifierHit = identifierMatches(e.identifiers, "", text) > 0
+				}
 			}
-			if hit {
-				windows = append(windows, window{
+			if lexicalHit || identifierHit {
+				candidate := discoveryWindow{window: window{
 					start: line - min(line, e.o.ContextLines),
 					end:   line + 1 + min(len(starts)-line-1, e.o.ContextLines),
-				})
+				}, line: line}
+				if identifierHit {
+					identifierWindows = append(identifierWindows, candidate)
+				} else {
+					lexicalWindows = append(lexicalWindows, candidate)
+				}
+			}
+		}
+		if e.o.Operation == "discover" {
+			for _, candidate := range identifierWindows {
+				windows = append(windows, candidate.window)
+			}
+			selectedIdentifiers := mergeDiscoveryWindows(windows, 2*e.o.ContextLines+1)
+			windows = append(windows, lexicalWindowsOutside(lexicalWindows, selectedIdentifiers)...)
+		} else {
+			for _, candidate := range lexicalWindows {
+				windows = append(windows, candidate.window)
 			}
 		}
 		if len(windows) == 0 && score.PathTerms > 0 && e.o.Operation == "discover" {

@@ -10,10 +10,12 @@ unrelated `m4` and `07` text to compete. Separately, matches on nearby generic
 terms could merge context windows repeatedly until a result covered most of a
 file. The serialized response then dropped that result whole when it did not fit.
 
-Discovery now retains identifier-like query fields as exact terms. Exact
-identifier matches guide both ranking and source-window centers; weak split
-matches no longer qualify when an intact identifier was requested. Exact-match
-ties prefer documentation and source over configuration inventory. Discovery
+Discovery retains identifier-like query fields intact. Review follow-up preserves
+ordinary filename and prose candidates alongside identifier-centered windows;
+identifier preference must not become a hard filter. Exact identifier matches
+respect surrounding letter/digit boundaries, so `M4-07` does not receive an
+exact-match preference for `M4-070`. Exact-match ties prefer documentation and
+source over configuration inventory. Discovery
 also bounds merged excerpts to one requested context window, preventing nearby
 generic matches from turning a focused excerpt into a whole-file result. Search
 and explicit reads retain their existing window behavior.
