@@ -35,7 +35,7 @@ python3 scripts/release.py build --version 0.1.0 \
 ```
 
 The command reruns release checks, rejects a dirty checkout or in-repository
-output, and emits:
+output, normalizes archive timestamps to the source commit, and emits:
 
 - a Linux amd64 native archive containing the executable and notices;
 - the platform-specific Python wheel and source distribution;
@@ -47,6 +47,10 @@ Checksums detect changed bytes but do not authenticate the publisher. The
 provenance statement explicitly records that it is unsigned. Sign and publish
 artifacts only through a maintainer-approved release channel, then create the
 matching `vVERSION` tag and verify uploaded bytes against `SHA256SUMS`.
+
+The sdist contains current source, schemas, maintenance documents, skill, tests,
+and concise M6 release evidence. Historical raw evaluation transcripts remain
+excluded; they are not required to build or inspect the release.
 
 ## Maintain
 

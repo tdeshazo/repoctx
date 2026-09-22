@@ -158,6 +158,8 @@ def check_repository(root: Path = ROOT) -> dict[str, Any]:
     for directory in ("docs", "scripts", "skills", "tests"):
         if f"graft {directory}" not in manifest:
             raise ReleaseError(f"MANIFEST.in does not graft {directory}")
+    if "prune docs/reports" not in manifest:
+        raise ReleaseError("MANIFEST.in does not exclude historical report archives")
 
     notices = (root / "THIRD_PARTY_NOTICES.md").read_text(encoding="utf-8")
     requirements = go_requirements(root)
@@ -288,6 +290,11 @@ def build_release(version: str, output_dir: Path, root: Path = ROOT) -> dict[str
     revision, clean = git_state(root)
     if not clean:
         raise ReleaseError("release builds require a clean Git worktree")
+    source_date_epoch = run(
+        ["git", "show", "-s", "--format=%ct", revision], cwd=root
+    ).stdout.strip()
+    if not source_date_epoch.isdigit():
+        raise ReleaseError("Git revision has no numeric commit timestamp")
 
     output_dir.parent.mkdir(parents=True, exist_ok=True)
     work = Path(tempfile.mkdtemp(prefix="repoctx-release-", dir=output_dir.parent))
@@ -295,7 +302,14 @@ def build_release(version: str, output_dir: Path, root: Path = ROOT) -> dict[str
     staging.mkdir()
     try:
         env = os.environ.copy()
-        env.update({"CGO_ENABLED": "1", "GOCACHE": str(work / "go-cache"), "GOWORK": "off"})
+        env.update(
+            {
+                "CGO_ENABLED": "1",
+                "GOCACHE": str(work / "go-cache"),
+                "GOWORK": "off",
+                "SOURCE_DATE_EPOCH": source_date_epoch,
+            }
+        )
         binary = work / "repoctx"
         ldflags = " ".join(
             (
@@ -367,6 +381,7 @@ def build_release(version: str, output_dir: Path, root: Path = ROOT) -> dict[str
             "version": "repoctx.release-provenance/v1alpha1",
             "release": version,
             "revision": revision,
+            "source_date_epoch": int(source_date_epoch),
             "source_tree_clean": True,
             "authenticated": False,
             "platform": "linux/amd64",
