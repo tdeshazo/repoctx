@@ -627,10 +627,11 @@ positive agent-performance claim.
   callbacks, progressive disclosure, and provider capability negotiation.
   Preserve application-owned roots, policies, and payload caps across adapters.
   Evidence: [current-contract conformance fixtures](docs/reports/m6-02-evidence.md).
-- [ ] **M6-03 — Validate distribution.** Test source builds, both Go entry
+- [x] **M6-03 — Validate distribution.** Test source builds, both Go entry
   points, Python wheel/sdist installation, launcher behavior, and clean-machine
   operation for each advertised platform. Document supported toolchains and CGO
-  requirements; do not imply untested platform or wheel portability.
+  requirements; do not imply untested platform or wheel portability. Evidence:
+  [Linux amd64 distribution validation](docs/reports/m6-03-evidence.md).
 - [ ] **M6-04 — Establish release maintenance.** Publish changelogs, artifact
   checksums/provenance, license and dependency notices, a security-reporting
   process, and contributor guidance. Keep skill instructions, examples, schemas,
@@ -650,7 +651,7 @@ positive agent-performance claim.
 
 ### Acceptance gates
 
-- [ ] Clean-install tests pass for every advertised distribution/platform pair.
+- [x] Clean-install tests pass for every advertised distribution/platform pair.
 - [ ] Users can identify the executable, schema, provider, and source generation
   behind an output and determine when an index must be rebuilt.
 - [ ] Documentation clearly separates supported, experimental, unsupported, and

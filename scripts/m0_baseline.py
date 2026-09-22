@@ -62,6 +62,19 @@ def run_command(command: list[str], *, cwd: Path, env: dict[str, str], timeout: 
     }
 
 
+def assertion(name: str, ok: bool, detail: str = "") -> dict[str, Any]:
+    """Return a report entry for a deterministic check over command output."""
+    return {
+        "command": ["assert", name],
+        "cwd": str(ROOT),
+        "exit_code": 0 if ok else 1,
+        "ok": ok,
+        "duration_seconds": 0,
+        "stdout_tail": "" if not ok else detail,
+        "stderr_tail": detail if not ok else "",
+    }
+
+
 def tool(command: list[str], env: dict[str, str]) -> str | None:
     try:
         result = subprocess.run(command, cwd=ROOT, env=env, capture_output=True, text=True, timeout=30)
@@ -142,6 +155,29 @@ def main(argv: list[str] | None = None) -> int:
         check(["go", "build", "-buildvcs=false", "-trimpath", "-o", str(root_binary), "."])
         check(["go", "build", "-buildvcs=false", "-trimpath", "-o", str(legacy_binary), "./cmd/repoctx"])
 
+        root_help = check([str(root_binary), "help"])
+        legacy_help = check([str(legacy_binary), "help"])
+        commands.append(
+            assertion(
+                "go-entrypoint-help-parity",
+                root_help["ok"]
+                and legacy_help["ok"]
+                and root_help["stdout_tail"] == legacy_help["stdout_tail"],
+                "module-root and legacy help output match",
+            )
+        )
+        root_version = check([str(root_binary), "version", "-format", "json"])
+        legacy_version = check([str(legacy_binary), "version", "-format", "json"])
+        commands.append(
+            assertion(
+                "go-entrypoint-version-parity",
+                root_version["ok"]
+                and legacy_version["ok"]
+                and root_version["stdout_tail"] == legacy_version["stdout_tail"],
+                "module-root and legacy version output match",
+            )
+        )
+
         ir = temp_root / "mixed.ir.json.gz"
         context = temp_root / "mixed.context.json"
         if root_binary.exists():
@@ -156,27 +192,141 @@ def main(argv: list[str] | None = None) -> int:
         # targets. These checks intentionally depend on requirements-test.txt;
         # a missing build/jsonschema/pip tool is retained as a failure rather
         # than replaced by the source-tree launcher smoke.
+        package_source = temp_root / "source"
+        shutil.copytree(
+            ROOT,
+            package_source,
+            ignore=shutil.ignore_patterns(
+                ".git", "build", "dist", "*.egg-info", "__pycache__", ".pytest_cache"
+            ),
+        )
         dist_dir = temp_root / "dist"
         dist_dir.mkdir()
-        dist_build = check([sys.executable, "-m", "build", "--wheel", "--sdist", "--no-isolation", "--outdir", str(dist_dir)])
+        dist_build = check(
+            [sys.executable, "-m", "build", "--wheel", "--sdist", "--no-isolation", "--outdir", str(dist_dir)],
+            cwd=package_source,
+        )
         wheel = next(dist_dir.glob("*.whl"), None)
         sdist = next((path for path in dist_dir.glob("*.tar.gz") if "repoctx" in path.name), None)
+        def check_installed_distribution(target: Path, kind: str) -> None:
+            runtime_root = temp_root / f"{kind}-runtime"
+            runtime_root.mkdir()
+            empty_path = runtime_root / "empty-path"
+            empty_path.mkdir()
+            home = runtime_root / "home"
+            home.mkdir()
+            fixture = runtime_root / "fixture"
+            fixture.mkdir()
+            (fixture / "README.md").write_text("# Installed distribution smoke\n", encoding="utf-8")
+
+            # Run outside the checkout with only the installed target importable.
+            # An empty PATH proves that the installed launcher/runtime does not
+            # require Go or a C compiler after the package has been built.
+            runtime_env = {
+                "HOME": str(home),
+                "LANG": "C.UTF-8",
+                "LC_ALL": "C.UTF-8",
+                "PATH": str(empty_path),
+                "PYTHONNOUSERSITE": "1",
+                "PYTHONPATH": str(target),
+            }
+            for name in ("LD_LIBRARY_PATH", "DYLD_LIBRARY_PATH", "SYSTEMROOT", "WINDIR"):
+                if name in os.environ:
+                    runtime_env[name] = os.environ[name]
+
+            python = str(Path(sys.executable).resolve())
+            imported = check(
+                [python, "-c", "import repoctx_cli; print(repoctx_cli.__file__)"],
+                cwd=runtime_root,
+                command_env=runtime_env,
+            )
+            try:
+                imported_path = Path(imported["stdout_tail"].strip()).resolve()
+                imported_path.relative_to(target.resolve())
+                import_isolated = imported["ok"]
+            except (ValueError, OSError):
+                import_isolated = False
+            commands.append(
+                assertion(
+                    f"{kind}-import-isolated",
+                    import_isolated,
+                    f"repoctx_cli imported from {imported['stdout_tail'].strip()}",
+                )
+            )
+
+            module_version = check(
+                [python, "-m", "repoctx_cli", "version", "-format", "json"],
+                cwd=runtime_root,
+                command_env=runtime_env,
+            )
+            package_version = check(
+                [
+                    python,
+                    "-c",
+                    "import importlib.metadata; print(importlib.metadata.version('repoctx'))",
+                ],
+                cwd=runtime_root,
+                command_env=runtime_env,
+            )
+            console = target / "bin" / ("repoctx.exe" if os.name == "nt" else "repoctx")
+            console_version = check(
+                [str(console), "version", "-format", "json"],
+                cwd=runtime_root,
+                command_env=runtime_env,
+            )
+            commands.append(
+                assertion(
+                    f"{kind}-launcher-parity",
+                    module_version["ok"]
+                    and console_version["ok"]
+                    and module_version["stdout_tail"] == console_version["stdout_tail"],
+                    "module and console launcher version output match",
+                )
+            )
+            version_ok = False
+            try:
+                version = json.loads(module_version["stdout_tail"])
+                version_ok = (
+                    version["version"] == "repoctx.build/v1alpha2"
+                    and version["program"] == "repoctx"
+                    and package_version["ok"]
+                    and version["release"] == package_version["stdout_tail"].strip()
+                    and version["distribution"] == "python-package"
+                    and version["platform"] == "linux/amd64"
+                    and all(version["contracts"].values())
+                )
+            except (KeyError, TypeError, json.JSONDecodeError):
+                pass
+            commands.append(
+                assertion(
+                    f"{kind}-build-info",
+                    version_ok,
+                    "installed build identifies the Python distribution and current contracts",
+                )
+            )
+            check(
+                [python, "-m", "repoctx_cli", "--help"],
+                cwd=runtime_root,
+                command_env=runtime_env,
+            )
+            check(
+                [str(console), "overview", "-root", str(fixture), "-depth", "1"],
+                cwd=runtime_root,
+                command_env=runtime_env,
+            )
+
         if dist_build["ok"] and wheel is not None:
             wheel_target = temp_root / "wheel-install"
             wheel_install = check([sys.executable, "-m", "pip", "install", "--no-deps", "--target", str(wheel_target), str(wheel)])
             if wheel_install["ok"]:
-                wheel_env = dict(env)
-                wheel_env["PYTHONPATH"] = str(wheel_target)
-                check([sys.executable, "-m", "repoctx_cli", "version", "-format", "json"], command_env=wheel_env)
+                check_installed_distribution(wheel_target, "wheel")
         else:
             commands.append({"command": [sys.executable, "-m", "pip", "install", "<wheel>"], "cwd": str(ROOT), "exit_code": 127, "ok": False, "duration_seconds": 0, "stdout_tail": "", "stderr_tail": "wheel build unavailable"})
         if dist_build["ok"] and sdist is not None:
             sdist_target = temp_root / "sdist-install"
             sdist_install = check([sys.executable, "-m", "pip", "install", "--no-deps", "--no-build-isolation", "--target", str(sdist_target), str(sdist)])
             if sdist_install["ok"]:
-                sdist_env = dict(env)
-                sdist_env["PYTHONPATH"] = str(sdist_target)
-                check([sys.executable, "-m", "repoctx_cli", "version", "-format", "json"], command_env=sdist_env)
+                check_installed_distribution(sdist_target, "sdist")
         else:
             commands.append({"command": [sys.executable, "-m", "pip", "install", "<sdist>"], "cwd": str(ROOT), "exit_code": 127, "ok": False, "duration_seconds": 0, "stdout_tail": "", "stderr_tail": "sdist build unavailable"})
         check([sys.executable, str(ROOT / "scripts" / "check_fixtures.py")])
@@ -205,13 +355,19 @@ def main(argv: list[str] | None = None) -> int:
                 "python": tool([sys.executable, "--version"], env),
             },
             "platform": {"system": platform.system(), "release": platform.release(), "machine": platform.machine(), "python_implementation": platform.python_implementation()},
+            "advertised_distribution": {
+                "platform": "linux/amd64",
+                "formats": ["go-source", "python-wheel", "python-sdist"],
+                "runtime_requires_go_or_c_compiler": False,
+                "tested_platform": platform.system() == "Linux" and platform.machine() in {"x86_64", "amd64"},
+            },
             "grammar_dependencies": grammar_dependencies(),
             "environment": {"CGO_ENABLED": env.get("CGO_ENABLED", ""), "GOWORK": env["GOWORK"]},
             "commands": commands,
             "checks": {"total": len(commands), "passed": sum(item["ok"] for item in commands), "failed": sum(not item["ok"] for item in commands)},
             "measurements": {
                 "coverage": {"status": "recorded", "distinct_fixtures": 12, "categories": {"documentation": 4, "code": 4, "mixed": 2, "no_answer": 2}, "evidence": "scripts/check_fixtures.py"},
-                "artifact_validity": {"status": "passed", "evidence": ["full Draft 2020-12 IR/context schema validation", "CLI validate", "17-command baseline" ]},
+                "artifact_validity": {"status": "passed", "evidence": ["full Draft 2020-12 IR/context schema validation", "CLI validate", "complete recorded baseline"]},
                 "retrieval_quality": {"status": "not_measured", "reason": "M0 establishes fixtures and contracts; no retrieval benchmark claim is made."},
                 "agent_outcomes": {"status": "not_measured", "reason": "M0 establishes expected outcomes; no live agent trial was run."},
             },

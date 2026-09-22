@@ -29,16 +29,16 @@ The command sequence is:
 1. `go test ./...`
 2. `go test -race ./...`
 3. `go vet ./...`
-4. `go build -buildvcs=false -trimpath -o <temporary> .`
-5. `go build -buildvcs=false -trimpath -o <temporary> ./cmd/repoctx`
-6. Compile, validate, and render the mixed example with the fresh binary.
-7. Check the IR and context JSON artifacts against `docs/ir.schema.json` and
+4. Build both Go entry points and compare their help and JSON version output.
+5. Compile, validate, and render the mixed example with the fresh binary.
+6. Check the IR and context JSON artifacts against `docs/ir.schema.json` and
    `docs/context.schema.json`.
-8. Build a wheel and sdist with `python -m build --no-isolation`, install each
-   into a temporary target, and run `python -m repoctx_cli --help` from each
-   installed target.
-9. Check the 12 deterministic fixtures with `scripts/check_fixtures.py`.
-10. Run the Python launcher tests and a source-tree launcher smoke check.
+7. Build a wheel and sdist with `python -m build --no-isolation` and install
+   each into a temporary target. From outside the checkout, with only that
+   target importable and no Go or C compiler on `PATH`, verify the package import,
+   module and console launchers, build information, help, and a live overview.
+8. Check the 12 deterministic fixtures with `scripts/check_fixtures.py`.
+9. Run the Python launcher tests and a source-tree launcher smoke check.
 
 The runner uses a temporary Go build cache and the caller's declared Go module
 cache; it never runs repository build, test, plugin, or shell commands

@@ -75,10 +75,10 @@
       "end": "positive agent-performance claim."
     },
     {
-      "id": "m6-03",
+      "id": "m6-04",
       "path": "ROADMAP.md",
-      "start": "- [ ] **M6-03 — Validate distribution.** Test source builds, both Go entry",
-      "end": "  requirements; do not imply untested platform or wheel portability."
+      "start": "- [ ] **M6-04 — Establish release maintenance.** Publish changelogs, artifact",
+      "end": "  validation reports, and claims synchronized with released behavior."
     }
   ],
   "artifacts": [
@@ -343,7 +343,7 @@
       "declared_inputs": []
     },
     {
-      "id": "repoctx:requirement.m6-03-distribution",
+      "id": "repoctx:requirement.m6-04-maintenance",
       "kind": "requirement",
       "applies_to": [
         {
@@ -353,7 +353,7 @@
       ],
       "lifecycle": "active",
       "sources": [
-        "m6-03"
+        "m6-04"
       ],
       "declared_inputs": []
     }
@@ -424,11 +424,11 @@
     },
     {
       "from": "repoctx:milestone.m6-stabilization",
-      "to": "repoctx:requirement.m6-03-distribution",
+      "to": "repoctx:requirement.m6-04-maintenance",
       "kind": "contains",
       "resolution": "declared",
       "sources": [
-        "m6-03"
+        "m6-04"
       ]
     }
   ]
