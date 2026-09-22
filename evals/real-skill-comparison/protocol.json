@@ -1,0 +1,58 @@
+{
+  "version": "repoctx.real-skill-comparison/v1",
+  "primary_comparison": {
+    "control": "repoctx_binary_no_skill_no_prefill",
+    "treatment": "same_repoctx_binary_with_pinned_skill_no_prefill",
+    "repoctx_binary": "same_sha256_and_source_revision_in_both_conditions",
+    "skill": "the only assigned difference is normal native visibility of the pinned Repoctx skill",
+    "initial_index": "empty_private_scratch_for_each_trial",
+    "prefilled_evidence": false,
+    "estimand": "incremental effect of exposing the pinned skill when the same Repoctx executable is available in both conditions"
+  },
+  "sample": {
+    "minimum_distinct_tasks": 30,
+    "repeats_per_task_condition": 3,
+    "minimum_tasks_per_family": {
+      "known_file": 5,
+      "navigation_or_relationship": 10,
+      "change": 5
+    },
+    "all_scheduled_pairs_required": true,
+    "incomplete_pairs": "retain attempts and costs; classify the aggregate as inconclusive when missing pairs exceed 5 percent"
+  },
+  "randomization": {
+    "seed": 20260922,
+    "unit": "task_id_and_repeat",
+    "pairing": "run both conditions for the same task and repeat in adjacent slots",
+    "within_pair_order": "randomized_and_balanced_across_pairs",
+    "pair_order": "seeded_shuffle",
+    "workspace": "fresh source export and writable scratch for every trial"
+  },
+  "cache_and_setup": {
+    "repoctx_index": "start empty in both primary conditions; an agent-triggered compile remains in that trial's measured cost",
+    "provider_cache": "interleave pairs; record input, cached-input, output, and reasoning usage when available; use null when unavailable",
+    "os_cache": "record observed state when available; otherwise mark unknown",
+    "binary_build": "pin and hash the executable; report build time and resource use as setup cost",
+    "prefill_or_prebuilt_index": "evaluate in a separate comparison with skill visibility held fixed; report evidence-prefill and index-preparation costs separately"
+  },
+  "analysis": {
+    "primary_quality_metric": "verified_task_success",
+    "quality_guard_absolute_delta": -0.05,
+    "efficiency_thresholds": {
+      "input_plus_output_tokens_relative_reduction": 0.15,
+      "tool_calls_relative_reduction": 0.2,
+      "trial_wall_time_relative_reduction": 0.15
+    },
+    "uncertainty": {
+      "method": "paired_task_cluster_bootstrap",
+      "confidence": 0.95,
+      "resamples": 10000,
+      "seed": 20260923,
+      "cluster": "task_id",
+      "repeated_trials": "retain all three repeats inside each task cluster"
+    },
+    "decision_rule": "use the M4-05 quality guard and metric-specific efficiency thresholds; report each metric, classify incomplete or crossing intervals as inconclusive, and make no benefit claim if the quality guard fails",
+    "failures_and_timeouts": "count as task failures and retain measured cost",
+    "setup_cost": "report separately and show all-in cost at declared deployment volumes; do not omit compilation or evidence/index preparation"
+  }
+}
