@@ -1,8 +1,8 @@
-// Package compat identifies repoctx's public compatibility surfaces.
+// Package compat identifies repoctx's current public contract surfaces.
 //
-// The detailed reader, migration, and deprecation policy is documented in
+// The active-development stability policy is documented in
 // docs/COMPATIBILITY.md.
 package compat
 
-// GoAPI identifies the compatibility policy for repoctx's public Go packages.
+// GoAPI identifies the current public Go API contract.
 const GoAPI = "repoctx.go-api/v1alpha1"

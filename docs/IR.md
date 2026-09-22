@@ -191,11 +191,10 @@ indexes; compressed byte count is unrelated to model context consumption.
 
 ## Compatibility
 
-The compiler writes `repoctx.ir/v1alpha4`. `compiler.Read` accepts v1alpha2,
-v1alpha3, and v1alpha4 for structural inspection, but agent serving requires a
-v1alpha4 compilation-input manifest. Recompile older indexes; merely changing a
-version string does not establish newer invariants. The complete supported
-reader, migration, and immutable-semantics rules are in the
-[compatibility policy](COMPATIBILITY.md).
+The compiler writes and supports `repoctx.ir/v1alpha4`. Some older versions may
+remain structurally readable during development, but they are not supported and
+cannot serve current agent context. Recompile older indexes; merely changing a
+version string does not establish newer invariants. See the
+[active-development contract policy](COMPATIBILITY.md).
 
 The public packages are `pkg/ir`, `pkg/compiler` and `pkg/agentctx`.

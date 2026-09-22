@@ -35,13 +35,16 @@ class M1ReplayTests(unittest.TestCase):
             binary.touch()
             index.touch()
             tool = BRIDGE.RepositoryContextTool(str(binary), directory, str(index))
-            payload = b'{"version":"repoctx.context/v1alpha2","trust":{"role":"untrusted_repository_data"}}\n'
+            payload = b'{"version":"repoctx.context/v1alpha3","trust":{"role":"untrusted_repository_data"}}\n'
             with patch.object(BRIDGE.subprocess, "run") as run:
                 run.return_value.returncode = 0
                 run.return_value.stdout = payload
                 self.assertEqual(tool.get_context(unit_ids=["u:sample"]), payload.decode())
                 self.assertIn("-unit", run.call_args.args[0])
                 self.assertIn("u:sample", run.call_args.args[0])
+                run.return_value.stdout = payload.replace(b"v1alpha3", b"v1alpha2")
+                with self.assertRaisesRegex(RuntimeError, "Unexpected context protocol"):
+                    tool.get_context()
             with self.assertRaises(ValueError):
                 tool.get_context(unit_ids="not-a-sequence-of-ids")
 

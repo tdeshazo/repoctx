@@ -20,11 +20,7 @@ from typing import Any, Callable, Sequence
 
 
 _HANDLE = re.compile(r"[A-Za-z0-9][A-Za-z0-9._-]{0,127}\Z")
-_CONTEXT_VERSIONS = {
-    "repoctx.context/v1alpha1",
-    "repoctx.context/v1alpha2",
-    "repoctx.context/v1alpha3",
-}
+_CONTEXT_VERSION = "repoctx.context/v1alpha3"
 _CHECKPOINT_VERSION = "repoctx.adapter.checkpoint/v1alpha1"
 
 
@@ -217,7 +213,7 @@ class RepositoryContextTool:
             raise RuntimeError("Compiler exceeded the configured payload bound")
         payload = completed.stdout.decode("utf-8")
         bundle = json.loads(payload)
-        if bundle.get("version") not in _CONTEXT_VERSIONS:
+        if bundle.get("version") != _CONTEXT_VERSION:
             raise RuntimeError("Unexpected context protocol")
         if bundle.get("trust", {}).get("role") != "untrusted_repository_data":
             raise RuntimeError("Missing evidence trust classification")

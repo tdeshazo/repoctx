@@ -601,16 +601,17 @@ positive agent-performance claim.
 
 ### Work
 
-- [x] **M6-01 — Define compatibility policy.** Version the Go API, repository IR,
-  agent context, and optional artifact/provider contracts explicitly. Specify
-  supported readers, unknown-field handling, migrations, deprecations, and when
-  recompilation is required. Do not silently redefine existing IDs, spans,
-  completeness labels, or trust semantics. Evidence: [compatibility policy](docs/COMPATIBILITY.md)
+- [x] **M6-01 — Define active-development contract policy.** Version the Go API,
+  repository IR, agent context, and optional artifact/provider contracts
+  explicitly. Support only current contracts; breaking changes require a new
+  identifier and rebuild, not compatibility readers, migrations, or deprecation
+  windows. Do not silently redefine existing IDs, spans, completeness labels,
+  or trust semantics. Evidence: [contract policy](docs/COMPATIBILITY.md)
   and [implementation record](docs/reports/m6-01-evidence.md).
-- [ ] **M6-02 — Maintain conformance fixtures.** Test old supported indexes,
-  unsupported-version errors, JSON/Markdown projections, tokenizer callbacks,
-  progressive disclosure, and provider capability negotiation. Preserve
-  application-owned roots, policies, and payload caps across adapters.
+- [ ] **M6-02 — Maintain conformance fixtures.** Test current indexes, explicit
+  rejection of stale/unsupported versions, JSON/Markdown projections, tokenizer
+  callbacks, progressive disclosure, and provider capability negotiation.
+  Preserve application-owned roots, policies, and payload caps across adapters.
 - [ ] **M6-03 — Validate distribution.** Test source builds, both Go entry
   points, Python wheel/sdist installation, launcher behavior, and clean-machine
   operation for each advertised platform. Document supported toolchains and CGO
@@ -636,7 +637,7 @@ positive agent-performance claim.
 
 - [ ] Clean-install tests pass for every advertised distribution/platform pair.
 - [ ] Users can identify the executable, schema, provider, and source generation
-  behind an output and determine whether an older index is compatible.
+  behind an output and determine when an index must be rebuilt.
 - [ ] Documentation clearly separates supported, experimental, unsupported, and
   externally enforced behavior.
 - [ ] Every release claim links to a test, fixture, evaluation report, or stated
@@ -654,7 +655,7 @@ These apply throughout the roadmap, not only at M6.
 | Reproducibility | Same semantic inputs/profile yield the same canonical output; concurrent mutations are rejected or isolated by the declared mode |
 | Semantic honesty | Heuristics, unresolved targets, parse failures, unsupported providers, and omitted evidence stay visible |
 | Security/resource bounds | Negative tests, fuzzing where useful, adversarial repository fixtures, and documented platform limits |
-| Compatibility | Changed wire meanings receive an explicit version/migration decision and conformance coverage |
+| Contract changes | Changed wire meanings receive a new identifier and current-version conformance coverage |
 | Outcome claims | Correctness, cost, latency, and software success are independently supported rather than inferred from index size |
 
 ## 12. Deferred directions

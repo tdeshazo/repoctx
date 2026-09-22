@@ -77,8 +77,8 @@
     {
       "id": "m6-02",
       "path": "ROADMAP.md",
-      "start": "- [ ] **M6-02 — Maintain conformance fixtures.** Test old supported indexes,",
-      "end": "  application-owned roots, policies, and payload caps across adapters."
+      "start": "- [ ] **M6-02 — Maintain conformance fixtures.** Test current indexes, explicit",
+      "end": "  Preserve application-owned roots, policies, and payload caps across adapters."
     }
   ],
   "artifacts": [

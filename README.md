@@ -56,8 +56,9 @@ See [the artifact documentation](docs/ARTIFACTS.md#repository-dogfood-catalog).
 The JSON form uses `repoctx.build/v1alpha2` and reports the release, source
 revision and modified state when the Go toolchain supplied them, distribution,
 Go/platform versions, and supported Go API, IR, context, discovery, artifact,
-provider, and obligation contracts. See the [compatibility policy](docs/COMPATIBILITY.md)
-for supported readers, migrations, unknown-field handling, and deprecations.
+provider, and obligation contracts. See the [active-development contract
+policy](docs/COMPATIBILITY.md) for current versions, strict field handling, and
+rebuild requirements. Pre-1.0 contracts may break without a migration path.
 Local `go run` and builds made with `-buildvcs=false` can report `unknown`
 revision state. Version output is descriptive metadata, not authentication or
 proof that a binary matches a checkout; compare it with a caller-trusted release
@@ -335,10 +336,10 @@ repoctx context -root /repo -unit 'u:ID_FROM_A_PREVIOUS_BUNDLE' \
 Units are derived in memory after input verification, not persisted in a text
 cache. M2 adds a required compilation-input manifest in IR v1alpha4 and separate
 source/profile/index/task identities in context v1alpha3. Recompile older indexes.
-Consumers must also accept `units`, unit IDs in `seeds`, ranking components, and
-`query_excerpt` completeness. The
-[protocol and migration notes](docs/AGENT_CONTEXT.md) describe the contract;
-[the v1alpha1 schema](docs/context-v1alpha1.schema.json) remains for old artifacts.
+Current consumers must handle `units`, unit IDs in `seeds`, ranking components,
+and `query_excerpt` completeness. The [agent context contract](docs/AGENT_CONTEXT.md)
+describes the current protocol. Older schema files are historical development
+records, not supported reader targets.
 
 The planner uses deterministic lexical seeds and bounded graph expansion. It
 reserves up to a quarter of the byte budget (capped at 4096 bytes) for supporting

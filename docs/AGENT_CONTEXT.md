@@ -154,20 +154,17 @@ relationship summary can still describe other observed edge kinds.
 Defaults: 12 selected symbols, 8 units, 128 combined candidates, 48 relationship records,
 32768 rendered bytes. At most 100000 arcs are scanned by neighborhood expansion.
 
-### Migrating context consumers
+### Updating context consumers
 
-M2 requires recompilation to `repoctx.ir/v1alpha4`, whose required `inputs`
-manifest declares compilation inputs and policy. Legacy indexes remain readable
-for inspection but cannot serve current context. Context consumers must accept
-v1alpha3's `task_id`, source/profile identities and consistency labels.
-
-Consumers migrating from v1alpha1 also need the required `units` array,
-`selection.max_units`, `omissions.unit_limit`, new ranking fields/strategies,
-unit IDs in `seeds`, and `query_excerpt` symbol completeness. Do not assume
-that every required seed is in `symbols`. The model-neutral adapter accepts
-all three context versions and adds keyword-only `unit_ids`. Historical artifacts
-retain their version; use `context-v1alpha1.schema.json`,
-`context-v1alpha2.schema.json`, or `ir-v1alpha3.schema.json` as appropriate.
+Current context generation requires `repoctx.ir/v1alpha4`, whose `inputs`
+manifest declares compilation inputs and policy. Recompile any older index.
+Consumers must accept v1alpha3's `task_id`, source/profile identities,
+consistency labels, required `units` array, `selection.max_units`,
+`omissions.unit_limit`, ranking fields and strategies, unit IDs in `seeds`, and
+`query_excerpt` symbol completeness. Do not assume that every required seed is
+in `symbols`. The model-neutral adapter accepts only the current context
+version and adds keyword-only `unit_ids`. Older schemas are historical
+development records, not supported reader targets or migration promises.
 A quarter of the byte budget, capped at 4096 bytes, is reserved from source
 selection for imports and graph evidence. Token-cap integrations use corresponding
 soft reserves. This is a greedy policy, not an optimal relevance solver. Required
