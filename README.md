@@ -16,6 +16,17 @@ Applications may also opt into a separate **obligation handoff
 requirements, declared verification links, and opaque runner check IDs to an
 existing context task without executing a check or manufacturing a result.
 
+Repositories may declare canonical semantic inputs in a strict, bounded
+[`agent-context.yaml`](agent-context.yaml). Validate the manifest and print its
+normalized semantic model without compiling or activating providers:
+
+```sh
+repoctx manifest -root . -file agent-context.yaml
+```
+
+See [the manifest contract](docs/MANIFEST.md) for the closed schema, limits,
+availability checks, and authored-versus-generated boundary.
+
 ## Build and test
 
 ```sh
@@ -53,10 +64,10 @@ repoctx artifacts -root . -source docs/repoctx-artifacts.source.json \
 Use `-check` with the same arguments to detect stale output without writing it.
 See [the artifact documentation](docs/ARTIFACTS.md#repository-dogfood-catalog).
 
-The JSON form uses `repoctx.build/v1alpha2` and reports the release, source
+The JSON form uses `repoctx.build/v1alpha3` and reports the release, source
 revision and modified state when the Go toolchain supplied them, distribution,
 Go/platform versions, and supported Go API, IR, context, discovery, artifact,
-provider, and obligation contracts. See the [active-development contract
+provider, obligation, and manifest contracts. See the [active-development contract
 policy](docs/COMPATIBILITY.md) for current versions, strict field handling, and
 rebuild requirements. Pre-1.0 contracts may break without a migration path.
 Local `go run` and builds made with `-buildvcs=false` can report `unknown`

@@ -50,13 +50,13 @@ artifacts only through a maintainer-approved release channel, then create the
 matching `vVERSION` tag and verify uploaded bytes against `SHA256SUMS`.
 
 The sdist contains current source, schemas, maintenance documents, skill, tests,
-and concise M6 release evidence. Historical raw evaluation transcripts remain
-excluded; they are not required to build or inspect the release.
+and concise current release evidence. Historical raw evaluation transcripts
+remain excluded; they are not required to build or inspect the release.
 
 ## Maintain
 
 Before the next release, update `CHANGELOG.md`, dependency notices, supported
 platform claims, schemas and contract identifiers, the Usage specification,
-the vendored skill, and applicable validation reports. Re-run both commands
-above from the final clean revision; do not reuse checksums or provenance from
-an earlier commit.
+the canonical manifest, the vendored skill, and applicable validation reports.
+Re-run both commands above from the final clean revision; do not reuse checksums
+or provenance from an earlier commit.

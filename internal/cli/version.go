@@ -13,10 +13,11 @@ import (
 	"github.com/tdeshazo/repoctx/pkg/compat"
 	"github.com/tdeshazo/repoctx/pkg/compiler"
 	"github.com/tdeshazo/repoctx/pkg/discovery"
+	"github.com/tdeshazo/repoctx/pkg/manifest"
 	"github.com/tdeshazo/repoctx/pkg/obligation"
 )
 
-const buildInfoVersion = "repoctx.build/v1alpha2"
+const buildInfoVersion = "repoctx.build/v1alpha3"
 
 // These defaults describe an ordinary local Go build. Release tooling may set
 // them with -ldflags -X; the values remain descriptive and unauthenticated.
@@ -37,6 +38,7 @@ type contractVersions struct {
 	DocumentLinks     string `json:"document_links_provider"`
 	GoImports         string `json:"go_imports_provider"`
 	Obligations       string `json:"obligations"`
+	Manifest          string `json:"manifest"`
 }
 
 type buildInfo struct {
@@ -117,6 +119,7 @@ func currentBuildInfo() buildInfo {
 			DocumentLinks:     artifacts.DocumentLinkProviderVersion,
 			GoImports:         artifacts.GoImportProviderVersion,
 			Obligations:       obligation.Version,
+			Manifest:          manifest.Version,
 		},
 	}
 }
@@ -136,7 +139,7 @@ func writeBuildInfoText(info buildInfo) {
 	fmt.Printf("go: %s\n", info.GoVersion)
 	fmt.Printf("platform: %s\n", info.Platform)
 	fmt.Printf(
-		"contracts: go-api=%s ir=%s context=%s discovery=%s artifacts=%s artifact-authoring=%s document-links=%s go-imports=%s obligations=%s\n",
+		"contracts: go-api=%s ir=%s context=%s discovery=%s artifacts=%s artifact-authoring=%s document-links=%s go-imports=%s obligations=%s manifest=%s\n",
 		info.Contracts.GoAPI,
 		info.Contracts.IR,
 		info.Contracts.Context,
@@ -146,5 +149,6 @@ func writeBuildInfoText(info buildInfo) {
 		info.Contracts.DocumentLinks,
 		info.Contracts.GoImports,
 		info.Contracts.Obligations,
+		info.Contracts.Manifest,
 	)
 }

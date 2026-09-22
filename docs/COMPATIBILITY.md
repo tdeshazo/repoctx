@@ -21,10 +21,11 @@ binary came from a trusted source.
 | Live discovery | `repoctx.discovery/v1alpha1` | Rerun discovery. |
 | Artifact catalog | `repoctx.artifacts/v1alpha1` | Regenerate from the maintained source declaration. |
 | Artifact authoring | `repoctx.artifact-authoring/v1alpha1` | Update the declaration and regenerate the catalog. |
+| Repository manifest | `repoctx.manifest/v1alpha1` | Update the manifest and rebuild all derived views. |
 | Obligation handoff | `repoctx.obligations/v1alpha1` | Rebuild from current inputs and caller policy. |
 | Document-link provider | `repoctx.document-links/v1` | Re-ground with the current provider. |
 | Go-import provider | `repoctx.go-imports/v1` | Re-ground with the current provider. |
-| Build information | `repoctx.build/v1alpha2` | Rerun `repoctx version`. |
+| Build information | `repoctx.build/v1alpha3` | Rerun `repoctx version`. |
 
 Historical schemas and incidental legacy readers are development artifacts, not
 supported compatibility surfaces. They may be changed or removed without

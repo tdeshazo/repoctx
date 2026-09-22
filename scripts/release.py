@@ -30,7 +30,9 @@ REQUIRED_DOCUMENTS = (
     "README.md",
     "SECURITY.md",
     "THIRD_PARTY_NOTICES.md",
+    "agent-context.yaml",
     "docs/COMPATIBILITY.md",
+    "docs/MANIFEST.md",
     "docs/M0_BASELINE.md",
     "docs/RELEASING.md",
 )
@@ -40,6 +42,7 @@ SCHEMA_CONTRACTS = {
     "discovery": ("docs/discovery.schema.json", "version"),
     "artifacts": ("docs/artifacts.schema.json", "version"),
     "obligations": ("docs/obligations.schema.json", "version"),
+    "manifest": ("docs/manifest.schema.json", "version"),
 }
 
 
@@ -142,7 +145,7 @@ def check_repository(root: Path = ROOT) -> dict[str, Any]:
 
     readme = (root / "README.md").read_text(encoding="utf-8")
     manifest = (root / "MANIFEST.in").read_text(encoding="utf-8")
-    for path in ("CHANGELOG.md", "CONTRIBUTING.md", "SECURITY.md", "THIRD_PARTY_NOTICES.md", "docs/RELEASING.md"):
+    for path in ("CHANGELOG.md", "CONTRIBUTING.md", "SECURITY.md", "THIRD_PARTY_NOTICES.md", "docs/RELEASING.md", "docs/MANIFEST.md"):
         if path not in readme:
             raise ReleaseError(f"README.md does not link {path}")
     for path in (
@@ -152,6 +155,7 @@ def check_repository(root: Path = ROOT) -> dict[str, Any]:
         "NOTICE",
         "SECURITY.md",
         "THIRD_PARTY_NOTICES.md",
+        "agent-context.yaml",
     ):
         if f"include {path}" not in manifest:
             raise ReleaseError(f"MANIFEST.in does not include {path}")
@@ -183,6 +187,10 @@ def check_repository(root: Path = ROOT) -> dict[str, Any]:
         run(["go", "build", "-buildvcs=false", "-trimpath", "-o", str(binary), "."], cwd=root, env=env)
         help_result = run([str(binary), "help"], cwd=root)
         version_result = run([str(binary), "version", "-format", "json"], cwd=root)
+        manifest_result = run(
+            [str(binary), "manifest", "-root", str(root), "-file", "agent-context.yaml"],
+            cwd=root,
+        )
 
     usage_commands = parse_usage_commands((root / "repoctx.usage.kdl").read_text(encoding="utf-8"))
     help_commands = parse_help_commands(help_result.stdout + help_result.stderr)
@@ -192,11 +200,14 @@ def check_repository(root: Path = ROOT) -> dict[str, Any]:
         )
 
     build_info = json.loads(version_result.stdout)
+    manifest_info = json.loads(manifest_result.stdout)
     contracts = build_info.get("contracts", {})
     for name, (relative_path, property_name) in SCHEMA_CONTRACTS.items():
         actual = schema_version(root / relative_path, property_name)
         if contracts.get(name) != actual:
             raise ReleaseError(f"{relative_path}={actual}, executable {name}={contracts.get(name)}")
+    if manifest_info.get("version") != contracts.get("manifest"):
+        raise ReleaseError("dogfood manifest does not match the executable contract")
 
     compatibility = (root / "docs/COMPATIBILITY.md").read_text(encoding="utf-8")
     for name, contract in contracts.items():
@@ -204,7 +215,7 @@ def check_repository(root: Path = ROOT) -> dict[str, Any]:
             raise ReleaseError(f"compatibility documentation omits {name}={contract}")
 
     skill = (root / "skills/repoctx/SKILL.md").read_text(encoding="utf-8")
-    for command in ("version", "discover", "compile", "validate", "context"):
+    for command in ("version", "manifest", "discover", "compile", "validate", "context"):
         if f"repoctx {command}" not in skill:
             raise ReleaseError(f"vendored skill omits the repoctx {command} preflight/workflow")
 
@@ -213,6 +224,7 @@ def check_repository(root: Path = ROOT) -> dict[str, Any]:
         "m6-02-evidence.md",
         "m6-03-evidence.md",
         "m6-04-evidence.md",
+        "m7-01-evidence.md",
     ):
         if not (root / "docs" / "reports" / report).is_file():
             raise ReleaseError(f"missing current release evidence: {report}")

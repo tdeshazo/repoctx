@@ -13,6 +13,7 @@ are pinned by `go.mod` and authenticated for retrieval by `go.sum`.
 | `github.com/tree-sitter/tree-sitter-javascript` | `v0.25.0` | MIT | Copyright 2014 Max Brunsfeld |
 | `github.com/tree-sitter/tree-sitter-python` | `v0.25.0` | MIT | Copyright 2016 Max Brunsfeld |
 | `github.com/tree-sitter/tree-sitter-typescript` | `v0.23.2` | MIT | Copyright 2017 Max Brunsfeld |
+| `gopkg.in/yaml.v3` | `v3.0.1` | MIT and Apache-2.0 | Copyright 2006-2011 Kirill Simonov; Copyright 2011-2019 Canonical Ltd |
 
 The Python wheel bundles the same native binary. Python build and test tools are
 not bundled runtime dependencies. Inspect a particular binary with `go version
@@ -36,3 +37,11 @@ FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
 COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+## Apache License 2.0 notice
+
+The non-libyaml-derived files in `gopkg.in/yaml.v3` are licensed under the
+Apache License, Version 2.0. You may obtain a copy at
+<https://www.apache.org/licenses/LICENSE-2.0>. Unless required by applicable law
+or agreed to in writing, software distributed under that license is distributed
+on an "AS IS" basis, without warranties or conditions of any kind.

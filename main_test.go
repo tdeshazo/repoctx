@@ -39,19 +39,20 @@ func TestRootAndLegacyVersionMatch(t *testing.T) {
 			DocumentLinks     string `json:"document_links_provider"`
 			GoImports         string `json:"go_imports_provider"`
 			Obligations       string `json:"obligations"`
+			Manifest          string `json:"manifest"`
 		} `json:"contracts"`
 	}
 	if err := json.Unmarshal(root, &info); err != nil {
 		t.Fatal(err)
 	}
-	if info.Version != "repoctx.build/v1alpha2" || info.Program != "repoctx" ||
+	if info.Version != "repoctx.build/v1alpha3" || info.Program != "repoctx" ||
 		info.Release == "" || info.Revision == "" || info.Modified == "" ||
 		info.Distribution != "go" || info.Contracts.GoAPI == "" ||
 		info.Contracts.IR == "" ||
 		info.Contracts.Context == "" || info.Contracts.Discovery == "" ||
 		info.Contracts.Artifacts == "" || info.Contracts.ArtifactAuthoring == "" ||
 		info.Contracts.DocumentLinks == "" || info.Contracts.GoImports == "" ||
-		info.Contracts.Obligations == "" {
+		info.Contracts.Obligations == "" || info.Contracts.Manifest == "" {
 		t.Fatalf("incomplete version output: %+v", info)
 	}
 	if got := runCommand(t, ".", "--version"); !bytes.HasPrefix(got, []byte("repoctx ")) {

@@ -22,6 +22,13 @@ Once per session, or whenever the executable may have changed, run:
 repoctx version -format json
 ```
 
+When the checkout contains `agent-context.yaml`, validate its current contract
+and declared input availability before relying on canonical repository metadata:
+
+```sh
+repoctx manifest -root . -file agent-context.yaml
+```
+
 Check `release`, `revision`, `modified`, `distribution`, and `contracts` against
 the task's required checkout or contract. In a repoctx checkout, compare a known
 reported revision with the caller-trusted checkout revision. A mismatch or an

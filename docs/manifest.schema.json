@@ -1,0 +1,155 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/tdeshazo/repoctx/docs/manifest.schema.json",
+  "title": "repoctx repository manifest v1alpha1",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "version": {"const": "repoctx.manifest/v1alpha1"},
+    "namespace": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]{0,62}(?![\\s\\S])"
+    },
+    "source_roots": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 64,
+      "items": {"$ref": "#/$defs/source_root"}
+    },
+    "artifact_sources": {
+      "type": "array",
+      "maxItems": 64,
+      "items": {"$ref": "#/$defs/artifact_source"}
+    },
+    "components": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 256,
+      "items": {"$ref": "#/$defs/component"}
+    },
+    "provider_inputs": {
+      "type": "array",
+      "maxItems": 256,
+      "items": {"$ref": "#/$defs/provider_input"}
+    },
+    "derived_views": {
+      "type": "array",
+      "maxItems": 64,
+      "items": {"$ref": "#/$defs/derived_view"}
+    },
+    "capabilities": {
+      "type": "array",
+      "maxItems": 64,
+      "uniqueItems": true,
+      "items": {
+        "enum": [
+          "artifact_declarations",
+          "bounded_context",
+          "document_links",
+          "go_imports",
+          "obligation_handoff",
+          "syntax_graph"
+        ]
+      }
+    }
+  },
+  "required": [
+    "version",
+    "namespace",
+    "source_roots",
+    "artifact_sources",
+    "components",
+    "provider_inputs",
+    "derived_views",
+    "capabilities"
+  ],
+  "$defs": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9._-]{0,127}(?![\\s\\S])"
+    },
+    "path": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 4096,
+      "pattern": "^(?!.*[\\\\:\\x00-\\x1f\\x7f*?\\[\\]{}!])(?!(?:\\.|\\.\\.)(?:/|$))(?!.*\\/(?:\\.|\\.\\.)(?:/|$))[^/]+(?:/[^/]+)*(?![\\s\\S])"
+    },
+    "root_path": {
+      "oneOf": [
+        {"const": "."},
+        {"$ref": "#/$defs/path"}
+      ]
+    },
+    "id_list": {
+      "type": "array",
+      "maxItems": 256,
+      "uniqueItems": true,
+      "items": {"$ref": "#/$defs/id"}
+    },
+    "source_root": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {"$ref": "#/$defs/id"},
+        "path": {"$ref": "#/$defs/root_path"}
+      },
+      "required": ["id", "path"]
+    },
+    "artifact_source": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {"$ref": "#/$defs/id"},
+        "path": {"$ref": "#/$defs/path"},
+        "format": {"const": "repoctx.artifact-authoring/v1alpha1"}
+      },
+      "required": ["id", "path", "format"]
+    },
+    "component": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {"$ref": "#/$defs/id"},
+        "source_roots": {
+          "allOf": [
+            {"$ref": "#/$defs/id_list"},
+            {"minItems": 1}
+          ]
+        },
+        "artifact_sources": {"$ref": "#/$defs/id_list"},
+        "provider_inputs": {"$ref": "#/$defs/id_list"}
+      },
+      "required": ["id", "source_roots", "artifact_sources", "provider_inputs"]
+    },
+    "provider_input": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {"$ref": "#/$defs/id"},
+        "provider": {
+          "enum": ["repoctx.document-links/v1", "repoctx.go-imports/v1"]
+        },
+        "path": {"$ref": "#/$defs/path"}
+      },
+      "required": ["id", "provider", "path"]
+    },
+    "derived_view": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {"$ref": "#/$defs/id"},
+        "kind": {
+          "enum": ["repository_ir", "artifact_catalog", "agent_context", "obligation_handoff"]
+        },
+        "components": {
+          "allOf": [
+            {"$ref": "#/$defs/id_list"},
+            {"minItems": 1}
+          ]
+        }
+      },
+      "required": ["id", "kind", "components"]
+    }
+  },
+  "$comment": "Applied to the YAML representation graph. Runtime additionally rejects aliases, anchors, explicit tags, duplicate keys, multiple documents, unsafe/unavailable paths, duplicate identities, unresolved references, and byte/depth/aggregate limit violations. Authored manifests contain no generated hashes or coordinates and grant no authority."
+}

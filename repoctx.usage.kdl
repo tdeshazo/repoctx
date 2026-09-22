@@ -115,6 +115,11 @@ cmd "artifacts" effect="read" help="Generate deterministic artifact metadata fro
   }
 }
 
+cmd "manifest" effect="read" help="Validate the canonical repository manifest and print its semantic model" {
+  flag "--root <dir>" default="." help="Caller-selected repository root"
+  flag "--file <file>" default="agent-context.yaml" help="Manifest path"
+}
+
 cmd "stats" effect="read" help="Print repository IR statistics" {
   arg "<file>" help="Repository IR file"
 }

@@ -671,12 +671,13 @@ the existing deterministic artifact-authoring workflow.
 
 ### Work
 
-- [ ] **M7-01 — Define the canonical manifest contract.** Specify a strict,
+- [x] **M7-01 — Define the canonical manifest contract.** Specify a strict,
   bounded, schema-validated `agent-context.yaml` that declares source roots,
   artifact sources, components, provider inputs, derived views, and supported
   capabilities. Separate authored semantic fields from generated hashes and
   coordinates. Unknown or duplicate fields, unsafe aliases, excessive nesting,
-  and unavailable inputs must fail with bounded diagnostics.
+  and unavailable inputs must fail with bounded diagnostics. Evidence:
+  [canonical manifest contract](docs/reports/m7-01-evidence.md).
 - [ ] **M7-02 — Add typed repository entities.** Compile document frontmatter,
   components, decisions, contracts, requirements, verification obligations,
   owners, scopes, lifecycle, supersession, sensitivity, and freshness into stable

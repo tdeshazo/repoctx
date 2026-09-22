@@ -75,10 +75,10 @@
       "end": "the existing deterministic artifact-authoring workflow."
     },
     {
-      "id": "m7-01",
+      "id": "m7-02",
       "path": "ROADMAP.md",
-      "start": "- [ ] **M7-01 — Define the canonical manifest contract.** Specify a strict,",
-      "end": "  and unavailable inputs must fail with bounded diagnostics."
+      "start": "- [ ] **M7-02 — Add typed repository entities.** Compile document frontmatter,",
+      "end": "  every semantic assertion retains its exact source and declaration status."
     }
   ],
   "artifacts": [
@@ -343,7 +343,7 @@
       "declared_inputs": []
     },
     {
-      "id": "repoctx:requirement.m7-01-canonical-manifest",
+      "id": "repoctx:requirement.m7-02-typed-entities",
       "kind": "requirement",
       "applies_to": [
         {
@@ -353,7 +353,7 @@
       ],
       "lifecycle": "active",
       "sources": [
-        "m7-01"
+        "m7-02"
       ],
       "declared_inputs": []
     }
@@ -424,11 +424,11 @@
     },
     {
       "from": "repoctx:milestone.m7-canonical-model",
-      "to": "repoctx:requirement.m7-01-canonical-manifest",
+      "to": "repoctx:requirement.m7-02-typed-entities",
       "kind": "contains",
       "resolution": "declared",
       "sources": [
-        "m7-01"
+        "m7-02"
       ]
     }
   ]

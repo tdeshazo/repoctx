@@ -287,7 +287,7 @@ def main(argv: list[str] | None = None) -> int:
             try:
                 version = json.loads(module_version["stdout_tail"])
                 version_ok = (
-                    version["version"] == "repoctx.build/v1alpha2"
+                    version["version"] == "repoctx.build/v1alpha3"
                     and version["program"] == "repoctx"
                     and package_version["ok"]
                     and version["release"] == package_version["stdout_tail"].strip()

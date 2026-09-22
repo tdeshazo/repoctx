@@ -1,0 +1,49 @@
+version: repoctx.manifest/v1alpha1
+namespace: repoctx
+source_roots:
+  - id: repository
+    path: .
+artifact_sources:
+  - id: artifact-authoring
+    path: docs/repoctx-artifacts.source.json
+    format: repoctx.artifact-authoring/v1alpha1
+components:
+  - id: repoctx
+    source_roots:
+      - repository
+    artifact_sources:
+      - artifact-authoring
+    provider_inputs:
+      - go-module
+      - roadmap-links
+provider_inputs:
+  - id: go-module
+    provider: repoctx.go-imports/v1
+    path: go.mod
+  - id: roadmap-links
+    provider: repoctx.document-links/v1
+    path: ROADMAP.md
+derived_views:
+  - id: repository-ir
+    kind: repository_ir
+    components:
+      - repoctx
+  - id: artifact-catalog
+    kind: artifact_catalog
+    components:
+      - repoctx
+  - id: bounded-context
+    kind: agent_context
+    components:
+      - repoctx
+  - id: obligation-handoff
+    kind: obligation_handoff
+    components:
+      - repoctx
+capabilities:
+  - syntax_graph
+  - artifact_declarations
+  - document_links
+  - go_imports
+  - bounded_context
+  - obligation_handoff

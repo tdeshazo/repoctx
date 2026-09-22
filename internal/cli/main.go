@@ -29,6 +29,8 @@ func Main(args []string) {
 		compileCmd(args[1:])
 	case "artifacts":
 		artifactsCmd(args[1:])
+	case "manifest":
+		manifestCmd(args[1:])
 	case "stats":
 		statsCmd(args[1:])
 	case "context":
@@ -59,6 +61,7 @@ Usage:
   repoctx read [-root DIR] -file PATH[:START:END] [-file PATH...]
   repoctx compile [-root DIR] [-o repo.ir.json.gz] [-pretty] [-cache-dir DIR]
   repoctx artifacts -source FILE [-root DIR] [-o FILE] [-check]
+  repoctx manifest [-root DIR] [-file agent-context.yaml]
   repoctx stats REPO_IR
   repoctx graph [-match TEXT|-node ID] [-depth N] REPO_IR
   repoctx context -root DIR -query TEXT [-max-bytes 32768] REPO_IR

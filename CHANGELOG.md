@@ -5,6 +5,11 @@ pre-1.0 development; see [the contract policy](docs/COMPATIBILITY.md).
 
 ## [Unreleased]
 
+### Added
+
+- A strict, bounded `agent-context.yaml` contract and validation command for
+  canonical repository inputs, components, derived views, and capabilities.
+
 ### Planned
 
 - Canonical repository semantics, authority-aware views, execution and
