@@ -17,6 +17,7 @@ prune docs/reports
 include docs/reports/m6-01-evidence.md
 include docs/reports/m6-02-evidence.md
 include docs/reports/m6-03-evidence.md
+include docs/reports/m6-04-evidence.md
 graft examples
 graft internal
 graft pkg

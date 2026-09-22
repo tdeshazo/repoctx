@@ -123,8 +123,8 @@ features must remain experimental or disabled. Stable protocol behavior does
 not, by itself, justify a performance or task-success claim.
 
 M7-M11 are new target-state work, not retroactive requirements for completed
-M0-M5 gates. Finish the outstanding M4 evidence gates and M6-03/M6-04 release
-work before treating the expansion as the next delivery sequence. Each expansion
+M0-M6 work. Finish the outstanding M4 evidence gates before treating the
+expansion as the next delivery sequence. Each expansion
 milestone must reuse existing identities, evidence spans, diagnostics, and caller
 authority boundaries instead of creating parallel representations.
 
@@ -632,10 +632,11 @@ positive agent-performance claim.
   operation for each advertised platform. Document supported toolchains and CGO
   requirements; do not imply untested platform or wheel portability. Evidence:
   [Linux amd64 distribution validation](docs/reports/m6-03-evidence.md).
-- [ ] **M6-04 — Establish release maintenance.** Publish changelogs, artifact
+- [x] **M6-04 — Establish release maintenance.** Publish changelogs, artifact
   checksums/provenance, license and dependency notices, a security-reporting
   process, and contributor guidance. Keep skill instructions, examples, schemas,
-  validation reports, and claims synchronized with released behavior.
+  validation reports, and claims synchronized with released behavior. Evidence:
+  [release maintenance and reproducibility](docs/reports/m6-04-evidence.md).
 - [x] **M6-05 — Make executable provenance inspectable.** Dogfooding found an
   older `repoctx` on `PATH` whose help omitted checkout-documented commands.
   Add a stable version/build-info surface and an agent-skill preflight that can
@@ -652,11 +653,11 @@ positive agent-performance claim.
 ### Acceptance gates
 
 - [x] Clean-install tests pass for every advertised distribution/platform pair.
-- [ ] Users can identify the executable, schema, provider, and source generation
+- [x] Users can identify the executable, schema, provider, and source generation
   behind an output and determine when an index must be rebuilt.
-- [ ] Documentation clearly separates supported, experimental, unsupported, and
+- [x] Documentation clearly separates supported, experimental, unsupported, and
   externally enforced behavior.
-- [ ] Every release claim links to a test, fixture, evaluation report, or stated
+- [x] Every release claim links to a test, fixture, evaluation report, or stated
   limitation appropriate to that claim.
 
 ## 11. M7 — Compile a canonical repository model

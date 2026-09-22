@@ -69,16 +69,16 @@
       "end": "go build -o repoctx-cmd ./cmd/repoctx"
     },
     {
-      "id": "m6-milestone",
+      "id": "m7-milestone",
       "path": "ROADMAP.md",
-      "start": "## 10. M6 — Stabilize contracts and distribution",
-      "end": "positive agent-performance claim."
+      "start": "## 11. M7 — Compile a canonical repository model",
+      "end": "the existing deterministic artifact-authoring workflow."
     },
     {
-      "id": "m6-04",
+      "id": "m7-01",
       "path": "ROADMAP.md",
-      "start": "- [ ] **M6-04 — Establish release maintenance.** Publish changelogs, artifact",
-      "end": "  validation reports, and claims synchronized with released behavior."
+      "start": "- [ ] **M7-01 — Define the canonical manifest contract.** Specify a strict,",
+      "end": "  and unavailable inputs must fail with bounded diagnostics."
     }
   ],
   "artifacts": [
@@ -328,7 +328,7 @@
       "runner_check_id": "go-vet-all"
     },
     {
-      "id": "repoctx:milestone.m6-stabilization",
+      "id": "repoctx:milestone.m7-canonical-model",
       "kind": "component",
       "applies_to": [
         {
@@ -338,12 +338,12 @@
       ],
       "lifecycle": "active",
       "sources": [
-        "m6-milestone"
+        "m7-milestone"
       ],
       "declared_inputs": []
     },
     {
-      "id": "repoctx:requirement.m6-04-maintenance",
+      "id": "repoctx:requirement.m7-01-canonical-manifest",
       "kind": "requirement",
       "applies_to": [
         {
@@ -353,7 +353,7 @@
       ],
       "lifecycle": "active",
       "sources": [
-        "m6-04"
+        "m7-01"
       ],
       "declared_inputs": []
     }
@@ -423,12 +423,12 @@
       ]
     },
     {
-      "from": "repoctx:milestone.m6-stabilization",
-      "to": "repoctx:requirement.m6-04-maintenance",
+      "from": "repoctx:milestone.m7-canonical-model",
+      "to": "repoctx:requirement.m7-01-canonical-manifest",
       "kind": "contains",
       "resolution": "declared",
       "sources": [
-        "m6-04"
+        "m7-01"
       ]
     }
   ]

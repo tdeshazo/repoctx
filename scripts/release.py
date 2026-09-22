@@ -208,9 +208,16 @@ def check_repository(root: Path = ROOT) -> dict[str, Any]:
         if f"repoctx {command}" not in skill:
             raise ReleaseError(f"vendored skill omits the repoctx {command} preflight/workflow")
 
-    for report in ("m6-01-evidence.md", "m6-02-evidence.md", "m6-03-evidence.md"):
+    for report in (
+        "m6-01-evidence.md",
+        "m6-02-evidence.md",
+        "m6-03-evidence.md",
+        "m6-04-evidence.md",
+    ):
         if not (root / "docs" / "reports" / report).is_file():
             raise ReleaseError(f"missing current release evidence: {report}")
+        if f"include docs/reports/{report}" not in manifest:
+            raise ReleaseError(f"MANIFEST.in does not include current release evidence: {report}")
 
     return {
         "version": version,

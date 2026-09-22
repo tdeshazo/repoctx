@@ -35,7 +35,8 @@ python3 scripts/release.py build --version 0.1.0 \
 ```
 
 The command reruns release checks, rejects a dirty checkout or in-repository
-output, normalizes archive timestamps to the source commit, and emits:
+output, passes the source commit epoch to package builders, normalizes archive
+metadata, and emits:
 
 - a Linux amd64 native archive containing the executable and notices;
 - the platform-specific Python wheel and source distribution;
