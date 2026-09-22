@@ -496,7 +496,20 @@ This release has automated contract and regression tests. It has **not** been
 measured in a live coding-agent task-success evaluation; improved retrieval or
 coding success is not claimed.
 
+## Maintenance and security
+
+See the [changelog](CHANGELOG.md) for user-visible releases, the
+[contributor guide](CONTRIBUTING.md) for development expectations, and the
+[release procedure](docs/RELEASING.md) for reproducible Linux amd64 artifacts,
+checksums, and unsigned provenance. Runtime dependency attribution is in
+[THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
+
+Report vulnerabilities privately as described in [SECURITY.md](SECURITY.md).
+Do not place exploit details, credentials, or private repository content in a
+public issue.
+
 ## License
 
 Copyright 2026 Travis DeShazo. Licensed under the
-[Apache License 2.0](LICENSE). See [NOTICE](NOTICE) for attribution.
+[Apache License 2.0](LICENSE). See [NOTICE](NOTICE) and
+[third-party notices](THIRD_PARTY_NOTICES.md) for attribution.

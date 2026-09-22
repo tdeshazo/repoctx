@@ -1,6 +1,10 @@
 include README.md
+include CHANGELOG.md
+include CONTRIBUTING.md
 include LICENSE
 include NOTICE
+include SECURITY.md
+include THIRD_PARTY_NOTICES.md
 include Makefile
 include go.mod
 include go.sum
@@ -8,9 +12,13 @@ include main.go
 include main_test.go
 include repoctx.usage.kdl
 graft cmd
+graft docs
 graft examples
 graft internal
 graft pkg
+graft scripts
+graft skills
 graft src
+graft tests
 global-exclude __pycache__
 global-exclude *.py[cod]

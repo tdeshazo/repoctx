@@ -36,5 +36,8 @@ repoctx = "repoctx_cli:main"
 where = ["src"]
 include = ["repoctx_cli*"]
 
+[tool.setuptools]
+license-files = ["LICENSE", "NOTICE", "THIRD_PARTY_NOTICES.md"]
+
 [tool.setuptools.package-data]
 repoctx_cli = ["bin/repoctx", "bin/repoctx.exe"]
