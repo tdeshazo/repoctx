@@ -1,0 +1,35 @@
+{
+  "case": "indexed-trace",
+  "variant": "candidate",
+  "position": 1,
+  "exit_code": 0,
+  "timed_out": false,
+  "wall_seconds": 64.698395,
+  "usage": {
+    "input_tokens": 195558,
+    "cached_input_tokens": 156160,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 1993,
+    "reasoning_output_tokens": 706
+  },
+  "answer": "The indexed graph shows two repository-level outgoing links from `prepare_dispatch`:\n\n- `relay/service.py:7`: `prepare_dispatch` → `relay/batches.py:4` `accepts_batch_size`\n- `relay/service.py:11`: `prepare_dispatch` → `relay/classify.py:4` `choose_queue`\n\nConfiguration behavior:\n\n- `accepts_batch_size` accepts `0 < recipient_count <= 8`, using `MAX_BATCH_SIZE = 8` from `relay/config.py:2`.\n- `choose_queue` returns:\n  - `\"north-priority\"` when expedited and region is `\"north\"`;\n  - `\"priority\"` when expedited otherwise;\n  - `DEFAULT_QUEUE`, `\"standard\"`, otherwise (`relay/config.py:1`).\n\nThe graph also reports an unresolved `ValueError` call at [`relay/service.py:8`](/tmp/repoctx-skillreducer-VPRjsF/indexed-revision/trials/01-indexed-trace-candidate/workspace/repository/relay/service.py:8); it is a built-in exception rather than a cross-file repository callee. These claims are limited to the returned, verified graph; repoctx warns that its Python call resolution is syntactic and not type/module-resolved.",
+  "answer_pass": true,
+  "skill_read": true,
+  "reference_read": true,
+  "repoctx_retrieval": true,
+  "version_check": false,
+  "indexed_context": true,
+  "commands": [
+    "/usr/bin/zsh -lc \"sed -n '1,240p' /home/travis/.agents/skills/r2/repoctx/SKILL.md\"",
+    "/usr/bin/zsh -lc \"sed -n '1,260p' .agents/skills/repoctx/SKILL.md\"",
+    "/usr/bin/zsh -lc \"sed -n '1,300p' .agents/skills/repoctx/references/indexed-context.md\"",
+    "/usr/bin/zsh -lc \"ls -la && .tools/repoctx discover -root repository -query 'prepare_dispatch' -max-bytes 12000\"",
+    "/usr/bin/zsh -lc '.tools/repoctx compile -root repository -o repoctx-index.ir.json.gz'",
+    "/usr/bin/zsh -lc \".tools/repoctx validate repoctx-index.ir.json.gz && .tools/repoctx context -root repository -query 'prepare_dispatch' -direction out -depth 2 -max-bytes 20000 repoctx-index.ir.json.gz\"",
+    "/usr/bin/zsh -lc \".tools/repoctx context -root repository -query 'accepts_batch_size' -direction out -depth 1 -max-bytes 14000 repoctx-index.ir.json.gz\"",
+    "/usr/bin/zsh -lc \".tools/repoctx context -root repository -query 'choose_queue' -direction out -depth 1 -max-bytes 14000 repoctx-index.ir.json.gz\""
+  ],
+  "tool_items": 8,
+  "malformed_events": [],
+  "source_unchanged": true
+}

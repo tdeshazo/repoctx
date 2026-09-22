@@ -1,0 +1,14 @@
+The indexed graph shows two repository-level outgoing links from `prepare_dispatch`:
+
+- `relay/service.py:7`: `prepare_dispatch` → `relay/batches.py:4` `accepts_batch_size`
+- `relay/service.py:11`: `prepare_dispatch` → `relay/classify.py:4` `choose_queue`
+
+Configuration behavior:
+
+- `accepts_batch_size` accepts `0 < recipient_count <= 8`, using `MAX_BATCH_SIZE = 8` from `relay/config.py:2`.
+- `choose_queue` returns:
+  - `"north-priority"` when expedited and region is `"north"`;
+  - `"priority"` when expedited otherwise;
+  - `DEFAULT_QUEUE`, `"standard"`, otherwise (`relay/config.py:1`).
+
+The graph also reports an unresolved `ValueError` call at [`relay/service.py:8`](/tmp/repoctx-skillreducer-VPRjsF/indexed-revision/trials/01-indexed-trace-candidate/workspace/repository/relay/service.py:8); it is a built-in exception rather than a cross-file repository callee. These claims are limited to the returned, verified graph; repoctx warns that its Python call resolution is syntactic and not type/module-resolved.

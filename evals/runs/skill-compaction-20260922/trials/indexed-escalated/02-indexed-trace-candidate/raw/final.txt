@@ -1,0 +1,12 @@
+Using repoctx’s indexed graph (verified snapshot):
+
+- `prepare_dispatch` → `accepts_batch_size`: callsite [`relay/service.py:7`](/tmp/repoctx-skillreducer-VPRjsF/indexed-escalated/trials/02-indexed-trace-candidate/workspace/repository/relay/service.py:7). Definition is [`relay/batches.py:4`](/tmp/repoctx-skillreducer-VPRjsF/indexed-escalated/trials/02-indexed-trace-candidate/workspace/repository/relay/batches.py:4).
+- `prepare_dispatch` → `choose_queue`: callsite [`relay/service.py:11`](/tmp/repoctx-skillreducer-VPRjsF/indexed-escalated/trials/02-indexed-trace-candidate/workspace/repository/relay/service.py:11). Definition is [`relay/classify.py:4`](/tmp/repoctx-skillreducer-VPRjsF/indexed-escalated/trials/02-indexed-trace-candidate/workspace/repository/relay/classify.py:4).
+- The graph also reports `prepare_dispatch` → `ValueError` at [`relay/service.py:8`](/tmp/repoctx-skillreducer-VPRjsF/indexed-escalated/trials/02-indexed-trace-candidate/workspace/repository/relay/service.py:8), unresolved and not a cross-file project call.
+
+Configuration and behavior:
+
+- `MAX_BATCH_SIZE = 8` in [`relay/config.py:2`](/tmp/repoctx-skillreducer-VPRjsF/indexed-escalated/trials/02-indexed-trace-candidate/workspace/repository/relay/config.py:2). `accepts_batch_size` accepts recipient counts `1` through `8`.
+- `DEFAULT_QUEUE = "standard"` in [`relay/config.py:1`](/tmp/repoctx-skillreducer-VPRjsF/indexed-escalated/trials/02-indexed-trace-candidate/workspace/repository/relay/config.py:1). Queue selection returns `"north-priority"` for expedited northern reports, `"priority"` for other expedited reports, and `"standard"` otherwise.
+
+The indexed graph labels these calls as syntactically resolved/unresolved rather than type-checked runtime dispatch; claims are limited to these returned relationships and callsites.

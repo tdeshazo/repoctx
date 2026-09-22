@@ -1,0 +1,62 @@
+{
+  "started_at": "2026-09-22T21:08:10.507551+00:00",
+  "purpose": "exploratory SkillReducer routing and task retention comparison",
+  "model": "gpt-5.6-luna",
+  "reasoning_effort": "medium",
+  "fixture_sha256": {
+    "PROVENANCE.json": "d023205a1f3eb93c63a5c73377c2d201093c42a7b7dae9ac2823b609ff29c525",
+    "README.md": "02aedbcc26d8ffd347ec68404618f6ebf31a7fc21d166df4a5e81c493ab526d6",
+    "relay/__init__.py": "6b601d8e11cc74b4d074b12e0f175e1df7a7c3a9095fd6f8e98eb0d52228f057",
+    "relay/batches.py": "bbc90de96b33e0400481b483e7f1bd0515fb1e684a946b069afa8f3558c7a352",
+    "relay/classify.py": "f3bc90ceebbdccd9cf6344eedaa0729671cce01afceff5f22938cc65fb96a38e",
+    "relay/config.py": "156a30a3bdbbd6ae285f50ab2aa84166b20903420ad0dbe563f2c7c555efa63c",
+    "relay/service.py": "9e32b05ec64b9a7a54c22f9a2244752ac4ff9a5653acda68790b4ab575693402"
+  },
+  "skill_sha256": {
+    "baseline": "8b00b8d4dca36eaf79f1bba819d8fc5e8564b50539ec82d88519b41db94bd79d",
+    "candidate": "2a5d5bd20b3058cb70f9cb0ae143e35cfbd9a19b2ae91f9c1250c72d6b027265"
+  },
+  "binary": {
+    "sha256": "5c461f45222983e66ed950e3222f2696a77284afb3a9335e6eec097ca31b3e3f",
+    "version": {
+      "version": "repoctx.build/v1alpha5",
+      "program": "repoctx",
+      "release": "v0.0.0-20260922194714-22dcd9b16cef+dirty",
+      "revision": "22dcd9b16cef31ebe4c7846bed0681f04b785968",
+      "modified": "true",
+      "distribution": "go",
+      "go_version": "go1.27.1-X:nodwarf5",
+      "platform": "linux/amd64",
+      "contracts": {
+        "go_api": "repoctx.go-api/v1alpha1",
+        "ir": "repoctx.ir/v1alpha5",
+        "context": "repoctx.context/v1alpha3",
+        "discovery": "repoctx.discovery/v1alpha1",
+        "artifacts": "repoctx.artifacts/v1alpha1",
+        "artifact_authoring": "repoctx.artifact-authoring/v1alpha2",
+        "document_links_provider": "repoctx.document-links/v1",
+        "go_imports_provider": "repoctx.go-imports/v1",
+        "obligations": "repoctx.obligations/v1alpha1",
+        "diagnostics": "repoctx.diagnostics/v1alpha1",
+        "projection": "repoctx.projection/v1alpha1",
+        "manifest": "repoctx.manifest/v1alpha3",
+        "entities": "repoctx.entities/v1alpha2",
+        "frontmatter": "repoctx.frontmatter/v1alpha1"
+      }
+    }
+  },
+  "cases": [
+    {
+      "id": "indexed-trace",
+      "prompt": "Use repoctx's indexed context workflow to trace prepare_dispatch's outgoing calls across files. Cite the callsite for each caller-to-callee link, then explain the batch and queue configuration values. Keep the claim bounded by the returned graph evidence.",
+      "required": [
+        "accepts_batch_size",
+        "MAX_BATCH_SIZE",
+        "choose_queue",
+        "DEFAULT_QUEUE"
+      ],
+      "needs_retrieval": true,
+      "handoff": true
+    }
+  ]
+}

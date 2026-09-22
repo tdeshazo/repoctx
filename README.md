@@ -18,11 +18,12 @@ Applications may also opt into a separate **obligation handoff
 requirements, declared verification links, and opaque runner check IDs to an
 existing context task without executing a check or manufacturing a result.
 
-The examples below assume a current `repoctx` executable. Check it once with
-`repoctx version -format json`; if that command is unavailable or reports a
-different checkout, build the checkout with `go build -o repoctx .` and use
-`./repoctx` in the examples, or reinstall the current version. Repeat the
-check only when the executable may have changed.
+The examples below assume a current `repoctx` executable. A caller integration
+can validate and pin its executable, commands, and contracts once for a run. If
+there is no such handoff, run the intended discovery command directly; check
+`repoctx version -format json` when checkout identity or an indexed contract
+matters. If it cannot establish the required checkout, build the checkout with
+`go build -o repoctx .` and use `./repoctx`, or reinstall the current version.
 
 ## Default workflow
 
@@ -100,7 +101,8 @@ go build -o repoctx-cmd ./cmd/repoctx
 
 The authored [Usage specification](repoctx.usage.kdl) describes the complete
 command, argument, flag, effect, and completion surface without generating a
-second prose reference. With the `usage` CLI installed, validate or derive
+second prose reference. It is a command reference, not proof that a selected
+binary supports it. With the `usage` CLI installed, validate or derive
 artifacts from it:
 
 ```sh
@@ -211,10 +213,15 @@ above. Python-built binaries report the Python project release and
 
 ## Agent skill
 
-The vendored [repoctx skill](skills/repoctx/SKILL.md) teaches agents to discover
-and inspect bounded evidence first, compile an index when useful, check
-executable provenance, check freshness and limitations, and expand context only
-when needed.
+The vendored [repoctx skill](skills/repoctx/SKILL.md) keeps ordinary discovery
+short and loads [indexed context](skills/repoctx/references/indexed-context.md)
+or [persisted evidence](skills/repoctx/references/persisted-evidence.md) guidance
+only for those workflows. A [validated integration
+handoff](skills/repoctx/references/integration.md) can establish executable
+capabilities once so each agent does not repeat a version preflight.
+The [skill compaction trial](evals/runs/skill-compaction-20260922/README.md)
+records the first paired routing and workflow checks and the command-syntax
+correction they prompted.
 
 Copy the `skills/repoctx` directory into your agent's skill directory to use it
 outside this checkout. Installing the Go binary does not install the skill.

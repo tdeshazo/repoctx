@@ -34,15 +34,8 @@ repoctx discover -root /path/to/repo -query 'task, error, or component' -max-byt
 
 Inspect paths, exact excerpts, `incomplete`, `omissions`, and `warnings`. Use
 `repoctx read` for a returned path and inclusive line range only when more
-source is needed. All inputs are flags; batch multiple ranges by repeating
-`-file` in one call, and do not reread a complete returned excerpt:
-
-```sh
-repoctx read -root /path/to/repo -file src/file.py:10:20 -max-bytes 12000
-```
-
-An unknown end line can be `PATH:START:0` (through EOF); guessing past EOF is
-an error. `discover` accepts task terms; `repoctx search`
+source is needed. An unknown end line can be `PATH:START:0` (through EOF);
+guessing past EOF is an error. `discover` accepts task terms; `repoctx search`
 uses one literal substring by default, so use it for an exact symbol, error,
 or phrase. `repoctx files` can narrow by path glob. Use `repoctx COMMAND -help` for
 flags; in a repoctx source checkout, `repoctx.usage.kdl` is the maintained

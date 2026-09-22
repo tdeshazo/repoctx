@@ -1,0 +1,30 @@
+{
+  "case": "trace-dispatch",
+  "variant": "candidate",
+  "position": 3,
+  "exit_code": 0,
+  "timed_out": false,
+  "wall_seconds": 34.474285,
+  "usage": {
+    "input_tokens": 88411,
+    "cached_input_tokens": 74496,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 1224,
+    "reasoning_output_tokens": 374
+  },
+  "answer": "`prepare_dispatch` is defined in [`relay/service.py:5`]( /tmp/repoctx-skillreducer-VPRjsF/positive-escalated/trials/03-trace-dispatch-candidate/workspace/repository/relay/service.py:5).\n\nFlow:\n\n1. `prepare_dispatch(report_id, region, expedited, recipient_count)` calls `accepts_batch_size(recipient_count)`.\n2. [`accepts_batch_size`]( /tmp/repoctx-skillreducer-VPRjsF/positive-escalated/trials/03-trace-dispatch-candidate/workspace/repository/relay/batches.py:4) validates `0 < recipient_count <= MAX_BATCH_SIZE`. With [`MAX_BATCH_SIZE = 8`]( /tmp/repoctx-skillreducer-VPRjsF/positive-escalated/trials/03-trace-dispatch-candidate/workspace/repository/relay/config.py:2), valid batches are 1–8 recipients. Invalid batches raise `ValueError`.\n3. If valid, `prepare_dispatch` calls `choose_queue(region, expedited)` and returns `report_id` plus the selected queue.\n\n[`choose_queue`]( /tmp/repoctx-skillreducer-VPRjsF/positive-escalated/trials/03-trace-dispatch-candidate/workspace/repository/relay/classify.py:4) selects:\n\n- expedited + `region == \"north\"` → `\"north-priority\"`\n- expedited otherwise → `\"priority\"`\n- not expedited → `DEFAULT_QUEUE`, configured as `\"standard\"` in [`relay/config.py:1`]( /tmp/repoctx-skillreducer-VPRjsF/positive-escalated/trials/03-trace-dispatch-candidate/workspace/repository/relay/config.py:1).",
+  "answer_pass": true,
+  "skill_read": true,
+  "reference_read": false,
+  "repoctx_retrieval": true,
+  "version_check": true,
+  "commands": [
+    "/usr/bin/zsh -lc \"sed -n '1,240p' /tmp/repoctx-skillreducer-VPRjsF/positive-escalated/trials/03-trace-dispatch-candidate/workspace/.agents/skills/repoctx/SKILL.md\"",
+    "/usr/bin/zsh -lc 'repoctx version -format json && repoctx search -root repository -query prepare_dispatch -max-bytes 12000'",
+    "/usr/bin/zsh -lc \"repoctx discover -root repository -query 'prepare_dispatch accepts_batch_size choose_queue recipient batch queue configuration region expedited report' -max-bytes 24000\"",
+    "/usr/bin/zsh -lc 'for f in repository/relay/service.py repository/relay/batches.py repository/relay/classify.py repository/relay/config.py repository/README.md repository/PROVENANCE.json; do echo \"--- $f\"; nl -ba \"$f\"; done'"
+  ],
+  "tool_items": 4,
+  "malformed_events": [],
+  "source_unchanged": true
+}

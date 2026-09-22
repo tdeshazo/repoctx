@@ -1,0 +1,14 @@
+`prepare_dispatch` is defined in [relay/service.py](/tmp/repoctx-skillreducer-VPRjsF/positive-escalated/trials/04-trace-dispatch-baseline/workspace/repository/relay/service.py:5).
+
+Trace:
+
+1. `prepare_dispatch(report_id, region, expedited, recipient_count)` calls `accepts_batch_size(recipient_count)` from [relay/batches.py](/tmp/repoctx-skillreducer-VPRjsF/positive-escalated/trials/04-trace-dispatch-baseline/workspace/repository/relay/batches.py:4).
+2. Validation requires `0 < recipient_count <= MAX_BATCH_SIZE`.
+   - `MAX_BATCH_SIZE` is configured as `8` in [relay/config.py](/tmp/repoctx-skillreducer-VPRjsF/positive-escalated/trials/04-trace-dispatch-baseline/workspace/repository/relay/config.py:2).
+   - Invalid batches raise `ValueError("recipient batch is outside the accepted range")`.
+3. Valid batches call `choose_queue(region, expedited)` from [relay/classify.py](/tmp/repoctx-skillreducer-VPRjsF/positive-escalated/trials/04-trace-dispatch-baseline/workspace/repository/relay/classify.py:4):
+   - `expedited=True` and `region == "north"` → `"north-priority"`
+   - `expedited=True` elsewhere → `"priority"`
+   - Otherwise → `DEFAULT_QUEUE`, configured as `"standard"`.
+
+The returned object contains `report_id` and the selected `queue`. No other callers or configuration references were found in the repository.

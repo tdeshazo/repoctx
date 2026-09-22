@@ -1,0 +1,35 @@
+{
+  "case": "indexed-trace",
+  "variant": "baseline",
+  "position": 1,
+  "exit_code": 0,
+  "timed_out": false,
+  "wall_seconds": 73.988557,
+  "usage": {
+    "input_tokens": 190666,
+    "cached_input_tokens": 165632,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 2390,
+    "reasoning_output_tokens": 1001
+  },
+  "answer": "The indexed graph reports these outgoing calls from `prepare_dispatch`:\n\n- `prepare_dispatch → accepts_batch_size`: callsite [`relay/service.py:7`](/tmp/repoctx-skillreducer-VPRjsF/indexed-escalated/trials/01-indexed-trace-baseline/workspace/repository/relay/service.py:7); target definition [`relay/batches.py:4`](/tmp/repoctx-skillreducer-VPRjsF/indexed-escalated/trials/01-indexed-trace-baseline/workspace/repository/relay/batches.py:4).\n- `prepare_dispatch → choose_queue`: callsite [`relay/service.py:11`](/tmp/repoctx-skillreducer-VPRjsF/indexed-escalated/trials/01-indexed-trace-baseline/workspace/repository/relay/service.py:11); target definition [`relay/classify.py:4`](/tmp/repoctx-skillreducer-VPRjsF/indexed-escalated/trials/01-indexed-trace-baseline/workspace/repository/relay/classify.py:4).\n- `prepare_dispatch → ValueError`: callsite [`relay/service.py:8`](/tmp/repoctx-skillreducer-VPRjsF/indexed-escalated/trials/01-indexed-trace-baseline/workspace/repository/relay/service.py:8); the graph marks this target unresolved.\n\nConfiguration evidence:\n\n- `MAX_BATCH_SIZE = 8` in [`relay/config.py:2`](/tmp/repoctx-skillreducer-VPRjsF/indexed-escalated/trials/01-indexed-trace-baseline/workspace/repository/relay/config.py:2). `accepts_batch_size` accepts counts strictly greater than 0 and at most 8.\n- `DEFAULT_QUEUE = \"standard\"` in [`relay/config.py:1`](/tmp/repoctx-skillreducer-VPRjsF/indexed-escalated/trials/01-indexed-trace-baseline/workspace/repository/relay/config.py:1). `choose_queue` returns `north-priority` for expedited north reports, `priority` for other expedited reports, and `standard` otherwise.\n\nThese are the returned, selected graph edges; repoctx labels call resolution as syntactic/unresolved and warns that the graph is not exhaustive.",
+  "answer_pass": true,
+  "skill_read": true,
+  "reference_read": false,
+  "repoctx_retrieval": true,
+  "version_check": true,
+  "indexed_context": true,
+  "commands": [
+    "/usr/bin/zsh -lc \"sed -n '1,240p' /home/travis/.agents/skills/repoctx/SKILL.md\"",
+    "/usr/bin/zsh -lc \"sed -n '1,260p' .agents/skills/repoctx/SKILL.md\"",
+    "/usr/bin/zsh -lc 'repoctx version -format json'",
+    "/usr/bin/zsh -lc \"repoctx discover -root repository -query 'prepare_dispatch batch queue configuration' -max-bytes 14000\"",
+    "/usr/bin/zsh -lc 'repoctx compile -root repository -o .repoctx.ir.json.gz && repoctx validate .repoctx.ir.json.gz'",
+    "/usr/bin/zsh -lc \"repoctx context -root repository -query 'prepare_dispatch' -direction out -depth 1 -max-bytes 14000 -o .prepare.context.json .repoctx.ir.json.gz && sed -n '1,260p' .prepare.context.json\"",
+    "/usr/bin/zsh -lc \"repoctx context -root repository -query 'MAX_BATCH_SIZE DEFAULT_QUEUE' -depth 1 -max-bytes 12000 .repoctx.ir.json.gz\"",
+    "/usr/bin/zsh -lc \"repoctx context -root repository -query 'choose_queue' -depth 1 -max-bytes 8000 .repoctx.ir.json.gz\""
+  ],
+  "tool_items": 8,
+  "malformed_events": [],
+  "source_unchanged": true
+}

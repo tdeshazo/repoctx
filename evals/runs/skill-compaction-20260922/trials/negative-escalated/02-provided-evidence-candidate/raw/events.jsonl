@@ -1,0 +1,4 @@
+{"type":"thread.started","thread_id":"01a0caee-24fe-78a1-b165-1f6a97982680"}
+{"type":"turn.started"}
+{"type":"item.completed","item":{"id":"item_0","type":"agent_message","text":"It waits two minutes."}}
+{"type":"turn.completed","usage":{"input_tokens":15602,"cached_input_tokens":8960,"cache_write_input_tokens":0,"output_tokens":46,"reasoning_output_tokens":35}}

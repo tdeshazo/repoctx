@@ -1,0 +1,13 @@
+`prepare_dispatch` is defined in [`relay/service.py:5`]( /tmp/repoctx-skillreducer-VPRjsF/positive-escalated/trials/03-trace-dispatch-candidate/workspace/repository/relay/service.py:5).
+
+Flow:
+
+1. `prepare_dispatch(report_id, region, expedited, recipient_count)` calls `accepts_batch_size(recipient_count)`.
+2. [`accepts_batch_size`]( /tmp/repoctx-skillreducer-VPRjsF/positive-escalated/trials/03-trace-dispatch-candidate/workspace/repository/relay/batches.py:4) validates `0 < recipient_count <= MAX_BATCH_SIZE`. With [`MAX_BATCH_SIZE = 8`]( /tmp/repoctx-skillreducer-VPRjsF/positive-escalated/trials/03-trace-dispatch-candidate/workspace/repository/relay/config.py:2), valid batches are 1–8 recipients. Invalid batches raise `ValueError`.
+3. If valid, `prepare_dispatch` calls `choose_queue(region, expedited)` and returns `report_id` plus the selected queue.
+
+[`choose_queue`]( /tmp/repoctx-skillreducer-VPRjsF/positive-escalated/trials/03-trace-dispatch-candidate/workspace/repository/relay/classify.py:4) selects:
+
+- expedited + `region == "north"` → `"north-priority"`
+- expedited otherwise → `"priority"`
+- not expedited → `DEFAULT_QUEUE`, configured as `"standard"` in [`relay/config.py:1`]( /tmp/repoctx-skillreducer-VPRjsF/positive-escalated/trials/03-trace-dispatch-candidate/workspace/repository/relay/config.py:1).
