@@ -257,6 +257,28 @@ def deterministic_archive(output: Path, prefix: str, files: Sequence[tuple[str, 
             compressed.write(tar_bytes.getvalue())
 
 
+def normalize_sdist(source: Path, output: Path) -> None:
+    """Rewrite a source distribution with stable ordering and tar metadata."""
+    tar_bytes = io.BytesIO()
+    with tarfile.open(source, mode="r:gz") as input_archive:
+        members = input_archive.getmembers()
+        with tarfile.open(fileobj=tar_bytes, mode="w", format=tarfile.PAX_FORMAT) as archive:
+            for member in sorted(members, key=lambda item: item.name):
+                if not (member.isfile() or member.isdir()):
+                    raise ReleaseError(f"source distribution has unsupported member: {member.name}")
+                data = input_archive.extractfile(member) if member.isfile() else None
+                member.mtime = 0
+                member.uid = 0
+                member.gid = 0
+                member.uname = ""
+                member.gname = ""
+                member.pax_headers = {}
+                archive.addfile(member, data)
+    with output.open("wb") as raw:
+        with gzip.GzipFile(filename="", mode="wb", fileobj=raw, mtime=0) as compressed:
+            compressed.write(tar_bytes.getvalue())
+
+
 def copy_source(root: Path, destination: Path) -> None:
     """Copy release sources without local build and VCS artifacts."""
     shutil.copytree(
@@ -368,7 +390,11 @@ def build_release(version: str, output_dir: Path, root: Path = ROOT) -> dict[str
         if len(packages) != 2 or not any(path.suffix == ".whl" for path in packages) or not any(path.name.endswith(".tar.gz") for path in packages):
             raise ReleaseError(f"expected one wheel and one sdist, found {[path.name for path in packages]}")
         for package in packages:
-            shutil.copy2(package, staging / package.name)
+            destination = staging / package.name
+            if package.name.endswith(".tar.gz"):
+                normalize_sdist(package, destination)
+            else:
+                shutil.copy2(package, destination)
 
         distributables = sorted(
             path for path in staging.iterdir() if path.is_file()

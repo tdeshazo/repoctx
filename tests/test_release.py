@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import importlib.util
+import io
+import tarfile
 import tempfile
 from pathlib import Path
 from unittest import TestCase
@@ -47,6 +49,28 @@ class ReleaseTests(TestCase):
             release.deterministic_archive(first, "repoctx-1.2.3-linux-amd64", files)
             release.deterministic_archive(second, "repoctx-1.2.3-linux-amd64", files)
             self.assertEqual(first.read_bytes(), second.read_bytes())
+
+    def test_sdist_normalization_removes_varying_tar_metadata(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            outputs = []
+            for index, timestamp in enumerate((10, 20)):
+                source = root / f"source-{index}.tar.gz"
+                with tarfile.open(source, mode="w:gz") as archive:
+                    directory = tarfile.TarInfo("repoctx-1.2.3")
+                    directory.type = tarfile.DIRTYPE
+                    directory.mtime = timestamp
+                    archive.addfile(directory)
+                    data = b"content\n"
+                    member = tarfile.TarInfo("repoctx-1.2.3/README.md")
+                    member.size = len(data)
+                    member.mtime = timestamp
+                    archive.addfile(member, io.BytesIO(data))
+                output = root / f"normalized-{index}.tar.gz"
+                release.normalize_sdist(source, output)
+                outputs.append(output)
+
+            self.assertEqual(outputs[0].read_bytes(), outputs[1].read_bytes())
 
     def test_release_output_must_be_outside_repository(self) -> None:
         self.assertFalse(release.outside_root(ROOT / "dist"))
