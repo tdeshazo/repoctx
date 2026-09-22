@@ -1,0 +1,3 @@
+Changed `relay/config.py` to raise `MAX_BATCH_SIZE` from 8 to 12.
+
+Existing validation still rejects non-positive sizes and batches above 12. Boundary checks passed.

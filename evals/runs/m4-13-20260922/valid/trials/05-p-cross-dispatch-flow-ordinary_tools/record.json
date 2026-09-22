@@ -1,0 +1,72 @@
+{
+  "id": "05-p-cross-dispatch-flow-ordinary_tools",
+  "position": 5,
+  "task_id": "p-cross-dispatch-flow",
+  "task_type": "cross_file_analysis",
+  "condition": "ordinary_tools",
+  "input_prompt": "Trace prepare_dispatch across the repository. Explain how it validates the recipient batch and how it selects the returned queue, naming the participating functions and configuration value.",
+  "input_sha256": "572caf86741804014a28df317ad9bd7c18d3badfa97b5949694d4a6c944ea578",
+  "input_prompt_sha256": "a4942c2b2fc1c069d667d18b7dc6a54dffa3f6cdbe9e41f2a28bc2655845257b",
+  "prompt": "Trace prepare_dispatch across the repository. Explain how it validates the recipient batch and how it selects the returned queue, naming the participating functions and configuration value.\n\nThe supplied repository is in `repository/`. Work only in that repository; do not\nread files outside it or use the network. You may use ordinary shell tools. Use at\nmost 16 tool calls. Give a concise final response to the task.\n\nUse ordinary repository tools only; do not invoke repoctx.\n",
+  "prompt_sha256": "77725708af86371a3f906b2b1e3ae8415478ec590ef1e6b696e2e6398794e2db",
+  "model": "gpt-5.6-luna",
+  "reasoning_effort": "medium",
+  "exit_code": 0,
+  "timed_out": false,
+  "wall_seconds": 42.807592,
+  "usage": {
+    "input_tokens": 47736,
+    "cached_input_tokens": 39168,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 767,
+    "reasoning_output_tokens": 286
+  },
+  "event_count": 9,
+  "observed_tool_item_count": 2,
+  "command_count": 2,
+  "command_call_count": 2,
+  "tool_call_cap": 16,
+  "tool_call_cap_respected": true,
+  "tool_call_cap_enforcement": "advisory_prompt_only",
+  "command_events": [
+    {
+      "type": "item.completed",
+      "item": {
+        "id": "item_1",
+        "type": "command_execution",
+        "command": "/usr/bin/zsh -lc 'pwd && rg --files repository | head -80 && rg -n \"prepare_dispatch|dispatch\" repository'",
+        "aggregated_output": "/tmp/repoctx-m4-13-20260922-valid/trials/05-p-cross-dispatch-flow-ordinary_tools/workspace\nrepository/PROVENANCE.json\nrepository/README.md\nrepository/relay/__init__.py\nrepository/relay/config.py\nrepository/relay/batches.py\nrepository/relay/classify.py\nrepository/relay/service.py\nrepository/README.md:3:Relay Board prepares outgoing status reports for dispatch.\nrepository/README.md:7:The dispatch service waits two minutes before retrying a queued report. Queue\nrepository/relay/__init__.py:1:\"\"\"Synthetic dispatch helpers for the exploratory pilot fixture.\"\"\"\nrepository/relay/batches.py:5:    \"\"\"Return whether a dispatch may include this many recipients.\"\"\"\nrepository/relay/service.py:5:def prepare_dispatch(report_id, region, expedited, recipient_count):\nrepository/relay/service.py:6:    \"\"\"Validate a report and return its dispatch details.\"\"\"\nrepository/relay/classify.py:5:    \"\"\"Choose the dispatch queue for a report.\"\"\"\n",
+        "exit_code": 0,
+        "status": "completed"
+      }
+    },
+    {
+      "type": "item.completed",
+      "item": {
+        "id": "item_2",
+        "type": "command_execution",
+        "command": "/usr/bin/zsh -lc \"sed -n '1,200p' repository/relay/service.py; sed -n '1,160p' repository/relay/batches.py; sed -n '1,160p' repository/relay/classify.py; sed -n '1,200p' repository/relay/config.py; sed -n '1,160p' repository/README.md; sed -n '1,160p' repository/README.md\"",
+        "aggregated_output": "from .batches import accepts_batch_size\nfrom .classify import choose_queue\n\n\ndef prepare_dispatch(report_id, region, expedited, recipient_count):\n    \"\"\"Validate a report and return its dispatch details.\"\"\"\n    if not accepts_batch_size(recipient_count):\n        raise ValueError(\"recipient batch is outside the accepted range\")\n    return {\n        \"report_id\": report_id,\n        \"queue\": choose_queue(region, expedited),\n    }\nfrom .config import MAX_BATCH_SIZE\n\n\ndef accepts_batch_size(recipient_count):\n    \"\"\"Return whether a dispatch may include this many recipients.\"\"\"\n    return 0 < recipient_count <= MAX_BATCH_SIZE\nfrom .config import DEFAULT_QUEUE\n\n\ndef choose_queue(region, expedited):\n    \"\"\"Choose the dispatch queue for a report.\"\"\"\n    if expedited and region == \"north\":\n        return \"north-priority\"\n    if expedited:\n        return \"priority\"\n    return DEFAULT_QUEUE\nDEFAULT_QUEUE = \"standard\"\nMAX_BATCH_SIZE = 8\n# Relay Board\n\nRelay Board prepares outgoing status reports for dispatch.\n\n## Operations\n\nThe dispatch service waits two minutes before retrying a queued report. Queue\nselection and recipient-batch limits are implemented in the `relay` package.\n# Relay Board\n\nRelay Board prepares outgoing status reports for dispatch.\n\n## Operations\n\nThe dispatch service waits two minutes before retrying a queued report. Queue\nselection and recipient-batch limits are implemented in the `relay` package.\n",
+        "exit_code": 0,
+        "status": "completed"
+      }
+    }
+  ],
+  "errors": [],
+  "malformed_event_lines": [],
+  "answer": "`prepare_dispatch` in [`relay/service.py`](repository/relay/service.py) performs the flow:\n\n1. Calls `accepts_batch_size(recipient_count)` from [`relay/batches.py`](repository/relay/batches.py).\n2. That accepts only counts satisfying `0 < recipient_count <= MAX_BATCH_SIZE`.\n3. `MAX_BATCH_SIZE` is configured as `8` in [`relay/config.py`](repository/relay/config.py). Invalid batches raise `ValueError`.\n4. It calls `choose_queue(region, expedited)` from [`relay/classify.py`](repository/relay/classify.py):\n   - expedited + `region == \"north\"` → `\"north-priority\"`\n   - expedited otherwise → `\"priority\"`\n   - non-expedited → `DEFAULT_QUEUE`\n5. `DEFAULT_QUEUE` is configured as `\"standard\"`.\n\nThe returned dictionary contains `report_id` and the queue selected by `choose_queue`.",
+  "raw": {
+    "events": "/tmp/repoctx-m4-13-20260922-valid/trials/05-p-cross-dispatch-flow-ordinary_tools/raw/events.jsonl",
+    "stderr": "/tmp/repoctx-m4-13-20260922-valid/trials/05-p-cross-dispatch-flow-ordinary_tools/raw/stderr.txt",
+    "final": "/tmp/repoctx-m4-13-20260922-valid/trials/05-p-cross-dispatch-flow-ordinary_tools/raw/final.txt"
+  },
+  "source_unchanged": true,
+  "workspace_contents": [
+    ".agents",
+    ".codex",
+    ".git",
+    ".tools",
+    "input.json",
+    "repository"
+  ]
+}

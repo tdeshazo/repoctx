@@ -11,7 +11,8 @@ expanding the architecture.
 | Area | Status and evidence |
 | --- | --- |
 | Foundations, retrieval, input identity, and optional artifacts (M0–M3) | Recorded complete in the [historical plan](docs/history/roadmap-2026-09-22.md); preserve existing capabilities. |
-| Evaluation (M4) | Fixtures, controls, accounting, and prototypes exist. Agent-outcome acceptance gates remain open; no demonstrated agent-efficiency or coding-success improvement. See the [evaluation protocol](evals/m4/README.md). |
+| Evaluation (M4) | Fixtures, controls, accounting, and prototypes exist. The small exploratory M4-13 pilot completed four paired synthetic tasks with both conditions at 4/4; it found no efficiency gain. Agent-outcome acceptance gates remain open. See the [pilot report](docs/reports/m4-13-workflow-pilot.md) and [evaluation protocol](evals/m4/README.md). |
+| Default workflow (M6-07) | Guidance is implemented in the README and agent skill. Realistic first-use verification remains open; the synthetic pilot is feasibility evidence, not completion evidence. |
 | Performance and distribution (M5–M6) | Recorded complete for their declared workloads and supported distribution. These results do not establish agent task success. |
 | Canonical model (M7) | M7-01 through M7-03 implemented. Further expansion is paused; maintain the existing implementation. |
 | Authority, semantic views, execution plans, and projections (M8–M11) | Deferred proposals, not the next delivery sequence. |
@@ -23,9 +24,9 @@ completion links, and architectural proposals. This file owns current priorities
 ## 1. Bounded retrieval corrections
 
 M4-12 records the bounded retrieval corrections under realistic output limits.
-After these corrections, the next outstanding roadmap item is M4-13, the paired
-actual agent workflow pilot below. Complete that pilot before further retrieval
-tuning or infrastructure work.
+The M4-13 paired workflow pilot below is complete. The next active item is
+M6-07: verify that the revised discovery-first guidance works in realistic
+first-use tasks before further retrieval tuning or infrastructure work.
 The corrections address three [recorded context failures](docs/reports/m4-09-evidence.md):
 identifier noise, an answer-bearing window that did not fit, and a clipped
 reference to the actionable requirement.
@@ -52,9 +53,10 @@ A local regression improvement does not establish downstream agent improvement.
 
 ## 2. Test the actual agent workflow
 
-- [ ] **M4-13 — Run a small paired workflow pilot.** Compare ordinary repository
+- [x] **M4-13 — Run a small paired workflow pilot.** Compare ordinary repository
   tools with the same tools plus repoctx. Include index-free discovery explicitly;
-  use compilation when the task benefits from symbols and relationships.
+  use compilation when the task benefits from symbols and relationships. Evidence:
+  [workflow pilot report](docs/reports/m4-13-workflow-pilot.md).
 
 Choose a small, fixed set of representative documentation, code-localization,
 cross-file, and software-change tasks before running either condition. Use the
@@ -68,10 +70,16 @@ tooling where it fits; additional infrastructure is not the pilot's deliverable.
 fix a recurring failure, simplify a feature that adds friction, or proceed to the
 larger M4 study. An inconclusive or negative result is useful and must remain visible.
 
+The completed synthetic pilot covered four tasks. Both conditions reached 4/4;
+ordinary tools used 133.21 seconds, 15 tools, and 356,187 input+output tokens,
+while the repoctx condition used 135.53 seconds, 16 tools, and 363,895
+input+output tokens. The result did not establish an efficiency or coding-success
+improvement; retain the confirmatory M4 gates.
+
 This is exploratory development evidence. Keep its tasks separate from the M4
 held-out set if using the results to tune retrieval. Preserve the existing
 [confirmatory protocol and decision rules](evals/m4/README.md#predeclared-decisions)
-for published improvement claims; do not relax them or label the pilot as M4
+for published improvement claims; do not relax them or treat this pilot as M4
 completion. Persistence and compaction experiments remain separate and optional.
 
 ## 3. Simplify the default path
@@ -79,6 +87,11 @@ completion. Persistence and compaction experiments remain separate and optional.
 - [ ] **M6-07 — Make discover → inspect → expand the obvious workflow.** Align
   CLI guidance, README examples, and the agent skill around finding useful
   evidence with minimal setup. Use pilot friction to guide any behavior changes.
+
+The discovery-first guidance is implemented in the README and agent skill. Keep
+M6-07 open until a realistic first-use task verifies that the revised primer
+reaches useful evidence with clear follow-ups; the synthetic pilot alone is not
+enough to establish that result.
 
 Start with index-free discovery and bounded reads. Introduce compilation when
 indexed symbols and relationships help. Keep manifests, artifact catalogs,

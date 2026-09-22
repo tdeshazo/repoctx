@@ -1,0 +1,146 @@
+[
+  {
+    "trial": "01-p-doc-retry-delay-ordinary_tools",
+    "condition": "ordinary_tools",
+    "task_id": "p-doc-retry-delay",
+    "correct": true,
+    "wall_seconds": 14.709604,
+    "usage": {
+      "input_tokens": 46908,
+      "cached_input_tokens": 39168,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 278,
+      "reasoning_output_tokens": 32
+    },
+    "audited_tool_items": 2,
+    "command_calls": 2,
+    "failed_commands": 0,
+    "scoring": "Manual answer/patch review against frozen expected.json by orchestrator and independent reviewer; change checks in independent-checks.json."
+  },
+  {
+    "trial": "02-p-doc-retry-delay-ordinary_tools_plus_repoctx",
+    "condition": "ordinary_tools_plus_repoctx",
+    "task_id": "p-doc-retry-delay",
+    "correct": true,
+    "wall_seconds": 22.479205,
+    "usage": {
+      "input_tokens": 69179,
+      "cached_input_tokens": 58368,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 624,
+      "reasoning_output_tokens": 152
+    },
+    "audited_tool_items": 3,
+    "command_calls": 3,
+    "failed_commands": 1,
+    "scoring": "Manual answer/patch review against frozen expected.json by orchestrator and independent reviewer; change checks in independent-checks.json."
+  },
+  {
+    "trial": "03-p-code-queue-selection-ordinary_tools_plus_repoctx",
+    "condition": "ordinary_tools_plus_repoctx",
+    "task_id": "p-code-queue-selection",
+    "correct": true,
+    "wall_seconds": 24.032625,
+    "usage": {
+      "input_tokens": 71276,
+      "cached_input_tokens": 50176,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 457,
+      "reasoning_output_tokens": 108
+    },
+    "audited_tool_items": 3,
+    "command_calls": 3,
+    "failed_commands": 1,
+    "scoring": "Manual answer/patch review against frozen expected.json by orchestrator and independent reviewer; change checks in independent-checks.json."
+  },
+  {
+    "trial": "04-p-code-queue-selection-ordinary_tools",
+    "condition": "ordinary_tools",
+    "task_id": "p-code-queue-selection",
+    "correct": true,
+    "wall_seconds": 16.119273,
+    "usage": {
+      "input_tokens": 63242,
+      "cached_input_tokens": 54272,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 368,
+      "reasoning_output_tokens": 56
+    },
+    "audited_tool_items": 3,
+    "command_calls": 3,
+    "failed_commands": 0,
+    "scoring": "Manual answer/patch review against frozen expected.json by orchestrator and independent reviewer; change checks in independent-checks.json."
+  },
+  {
+    "trial": "05-p-cross-dispatch-flow-ordinary_tools",
+    "condition": "ordinary_tools",
+    "task_id": "p-cross-dispatch-flow",
+    "correct": true,
+    "wall_seconds": 42.807592,
+    "usage": {
+      "input_tokens": 47736,
+      "cached_input_tokens": 39168,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 767,
+      "reasoning_output_tokens": 286
+    },
+    "audited_tool_items": 2,
+    "command_calls": 2,
+    "failed_commands": 0,
+    "scoring": "Manual answer/patch review against frozen expected.json by orchestrator and independent reviewer; change checks in independent-checks.json."
+  },
+  {
+    "trial": "06-p-cross-dispatch-flow-ordinary_tools_plus_repoctx",
+    "condition": "ordinary_tools_plus_repoctx",
+    "task_id": "p-cross-dispatch-flow",
+    "correct": true,
+    "wall_seconds": 29.752014,
+    "usage": {
+      "input_tokens": 70293,
+      "cached_input_tokens": 58368,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 1055,
+      "reasoning_output_tokens": 241
+    },
+    "audited_tool_items": 3,
+    "command_calls": 3,
+    "failed_commands": 0,
+    "scoring": "Manual answer/patch review against frozen expected.json by orchestrator and independent reviewer; change checks in independent-checks.json."
+  },
+  {
+    "trial": "07-p-change-batch-cap-ordinary_tools_plus_repoctx",
+    "condition": "ordinary_tools_plus_repoctx",
+    "task_id": "p-change-batch-cap",
+    "correct": true,
+    "wall_seconds": 59.266207,
+    "usage": {
+      "input_tokens": 149477,
+      "cached_input_tokens": 123904,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 1534,
+      "reasoning_output_tokens": 500
+    },
+    "audited_tool_items": 7,
+    "command_calls": 6,
+    "failed_commands": 2,
+    "scoring": "Manual answer/patch review against frozen expected.json by orchestrator and independent reviewer; change checks in independent-checks.json."
+  },
+  {
+    "trial": "08-p-change-batch-cap-ordinary_tools",
+    "condition": "ordinary_tools",
+    "task_id": "p-change-batch-cap",
+    "correct": true,
+    "wall_seconds": 59.575238,
+    "usage": {
+      "input_tokens": 195106,
+      "cached_input_tokens": 168192,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 1782,
+      "reasoning_output_tokens": 436
+    },
+    "audited_tool_items": 8,
+    "command_calls": 7,
+    "failed_commands": 1,
+    "scoring": "Manual answer/patch review against frozen expected.json by orchestrator and independent reviewer; change checks in independent-checks.json."
+  }
+]

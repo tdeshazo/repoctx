@@ -18,9 +18,44 @@ Applications may also opt into a separate **obligation handoff
 requirements, declared verification links, and opaque runner check IDs to an
 existing context task without executing a check or manufacturing a result.
 
-Repositories may declare canonical semantic inputs in a strict, bounded
-[`agent-context.yaml`](agent-context.yaml). Validate the manifest and print its
-normalized semantic model without compiling or activating providers:
+The examples below assume a current `repoctx` executable. Check it once with
+`repoctx version -format json`; if that command is unavailable or reports a
+different checkout, build the checkout with `go build -o repoctx .` and use
+`./repoctx` in the examples, or reinstall the current version. Repeat the
+check only when the executable may have changed.
+
+## Default workflow
+
+For an ordinary repository question, use the smallest path that answers it:
+
+1. **Discover** the relevant files and excerpts without an index.
+2. **Inspect and read** the returned paths, ranges, and completeness fields. If
+   the evidence answers the task, stop; use focused `search` or `read`
+   follow-ups only when more context is needed.
+3. **Expand** with a compiled index only when symbols or relationships will
+   improve the answer. Use the returned semantic IDs and snapshot for a
+   targeted context follow-up.
+
+```sh
+repoctx discover -root . -query 'the task, error, or component' -max-bytes 12000
+# Replace README.md:1:30 with a path and inclusive range from discovery.
+repoctx read -root . -file README.md:1:30
+
+# Only when indexed relationships help:
+repoctx compile -root . -o /tmp/repoctx.ir.json.gz
+repoctx context -root . -query 'the component or API' -depth 1 \
+  -max-bytes 12000 /tmp/repoctx.ir.json.gz
+```
+
+Compilation is optional for orientation and focused source reads. Manifests,
+artifact catalogs, persisted file-reference bundles, and checkpoints are
+caller-controlled extensions; an ordinary lookup does not require authoring
+metadata or configuring a session store.
+
+When canonical semantic inputs are needed, a repository may declare them in a
+strict, bounded [`agent-context.yaml`](agent-context.yaml). Validate an existing
+manifest and print its normalized semantic model without compiling or activating
+providers; do not author one for an ordinary lookup:
 
 ```sh
 repoctx manifest -root . -file agent-context.yaml
@@ -152,9 +187,10 @@ above. Python-built binaries report the Python project release and
 
 ## Agent skill
 
-The vendored [repoctx skill](skills/repoctx/SKILL.md) teaches agents to compile
-an index, retrieve bounded evidence, check executable provenance, check freshness
-and limitations, and expand context only when needed.
+The vendored [repoctx skill](skills/repoctx/SKILL.md) teaches agents to discover
+and inspect bounded evidence first, compile an index when useful, check
+executable provenance, check freshness and limitations, and expand context only
+when needed.
 
 Copy the `skills/repoctx` directory into your agent's skill directory to use it
 outside this checkout. Installing the Go binary does not install the skill.
@@ -251,33 +287,36 @@ no-symlink access; other platforms require an immutable, access-controlled tree.
 Empty searches succeed with an empty list. Invalid options/ranges exit 2;
 execution failures exit 1. Diagnostics go to stderr and payloads to stdout, or
 an explicitly requested `-o` file written only after successful serialization.
-Discovery complements ordinary shell tools; no reduced-call or task-success
-improvement is claimed until a paired agent evaluation measures it.
+Discovery complements ordinary shell tools. A small exploratory paired pilot is
+documented in the [workflow pilot report](docs/reports/m4-13-workflow-pilot.md);
+it did not establish an efficiency or task-success improvement and is not a
+general usability claim.
 
-## Compile, then retrieve for an agent
+## Expand with an index when relationships help
 
-For initial navigation without an index, start with the
-[discovery toolkit](#repository-discovery-without-an-index). Compile when you
-need indexed symbols and relationships.
+Start with the [discovery toolkit](#repository-discovery-without-an-index),
+inspect its evidence, and read the useful paths or ranges. Compile when you
+need indexed symbols and relationships; keep the generated index in a
+caller-owned temporary location unless a durable artifact is required.
 
 ```sh
-./repoctx compile -root examples/mixed -o mixed.ir.json.gz
-./repoctx validate mixed.ir.json.gz
+./repoctx compile -root examples/mixed -o /tmp/mixed.ir.json.gz
+./repoctx validate /tmp/mixed.ir.json.gz
 
 ./repoctx context \
   -root examples/mixed \
   -query 'Worker.files' \
   -depth 1 \
   -max-bytes 20000 \
-  -o context.json \
-  mixed.ir.json.gz
+  -o /tmp/context.json \
+  /tmp/mixed.ir.json.gz
 ```
 
 Repeated compilation may opt into a caller-owned, content-addressed parse cache:
 
 ```sh
 ./repoctx compile -root examples/mixed \
-  -cache-dir /tmp/repoctx-parse-cache -o mixed.ir.json.gz
+  -cache-dir /tmp/repoctx-parse-cache -o /tmp/mixed.ir.json.gz
 ```
 
 The cache must be a private real directory outside the indexed repository. It
@@ -294,7 +333,7 @@ escaping, metadata and the trailing newline. It is not a model token limit.
 ```sh
 ./repoctx context -root examples/mixed \
   -symbol 'py:pkg.worker#Worker.files' \
-  -format markdown -max-bytes 20000 mixed.ir.json.gz
+  -format markdown -max-bytes 20000 /tmp/mixed.ir.json.gz
 ```
 
 Do not send the raw CSR/string-table index to the model. Do not infer a token
@@ -308,7 +347,7 @@ Take `snapshot.id` and a semantic ID from a returned symbol or relationship:
 ./repoctx context -root examples/mixed \
   -symbol 'py:pkg.worker#Worker.files' \
   -expect-snapshot 'sha256:THE_DIGEST_FROM_THE_PREVIOUS_BUNDLE' \
-  -direction out -depth 2 -max-bytes 12000 mixed.ir.json.gz
+  -direction out -depth 2 -max-bytes 12000 /tmp/mixed.ir.json.gz
 ```
 
 A digest mismatch or changed indexed source fails instead of returning stale
@@ -406,7 +445,8 @@ output tokens separately.
 See `examples/agent/tool_bridge.py` for a model-neutral Python adapter that keeps
 the binary, root, index, exclusion policy and output cap under application
 control. It does not call any model service. Inline delivery remains the
-default. Callers may instead configure a caller-scoped bundle directory outside
+default. Persisted file-reference delivery and checkpoints are optional. Callers
+may instead configure a caller-scoped bundle directory outside
 the indexed repository, supply a unique `run_id`, and request
 `delivery="file_reference"` with their own opaque, run-unique handle. The
 response contains snapshot identity, exact byte size and digest, relevant
@@ -515,9 +555,11 @@ Documentation: [agent handoff contract](docs/AGENT_CONTEXT.md),
 [context schema](docs/context.schema.json),
 [evaluation report and latest results](docs/reports/mothership-repoctx-codex-exec-comparison.md).
 
-This release has automated contract and regression tests. It has **not** been
-measured in a live coding-agent task-success evaluation; improved retrieval or
-coding success is not claimed.
+This release has automated contract and regression tests. A small exploratory
+paired pilot completed four synthetic tasks with both conditions at 4/4 and did
+not establish an efficiency or coding-success improvement. See the [workflow
+pilot report](docs/reports/m4-13-workflow-pilot.md); it is not a confirmatory
+live-agent evaluation or a general improvement claim.
 
 ## Maintenance and security
 

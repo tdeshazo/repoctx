@@ -1,0 +1,6 @@
+{
+  "id": "p-doc-retry-delay",
+  "type": "documentation_lookup",
+  "repository": "relay-board",
+  "prompt": "According to the repository documentation, how long does the dispatch service wait before retrying a queued report? Answer concisely and cite the file you used."
+}

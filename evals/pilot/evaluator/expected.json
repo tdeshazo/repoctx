@@ -1,0 +1,60 @@
+{
+  "version": "repoctx.m4-13.pilot.expected/v1",
+  "visibility": "evaluator_only",
+  "fixture": "relay-board",
+  "tasks": [
+    {
+      "id": "p-doc-retry-delay",
+      "expected_answer": "Two minutes.",
+      "required_evidence": [
+        {
+          "path": "README.md",
+          "text": "The dispatch service waits two minutes before retrying a queued report."
+        }
+      ]
+    },
+    {
+      "id": "p-code-queue-selection",
+      "expected_answer": "relay/classify.py: choose_queue",
+      "required_evidence": [
+        {
+          "path": "relay/classify.py",
+          "text": "def choose_queue(region, expedited):"
+        }
+      ]
+    },
+    {
+      "id": "p-cross-dispatch-flow",
+      "expected_answer": "prepare_dispatch calls accepts_batch_size, which compares recipient_count with MAX_BATCH_SIZE, and calls choose_queue, which uses region and expedited and falls back to DEFAULT_QUEUE.",
+      "required_evidence": [
+        {
+          "path": "relay/service.py",
+          "text": "if not accepts_batch_size(recipient_count):"
+        },
+        {
+          "path": "relay/service.py",
+          "text": "\"queue\": choose_queue(region, expedited),"
+        },
+        {
+          "path": "relay/batches.py",
+          "text": "return 0 < recipient_count <= MAX_BATCH_SIZE"
+        },
+        {
+          "path": "relay/classify.py",
+          "text": "return DEFAULT_QUEUE"
+        },
+        {
+          "path": "relay/config.py",
+          "text": "MAX_BATCH_SIZE = 8"
+        }
+      ]
+    },
+    {
+      "id": "p-change-batch-cap",
+      "expected_change": "Set MAX_BATCH_SIZE to 12 in relay/config.py while preserving accepts_batch_size's positive lower bound.",
+      "check": "python3 evaluator/check_change.py --repository /path/to/modified/repository",
+      "baseline": "fails because accepts_batch_size(12) is false",
+      "pass_condition": "accepts_batch_size accepts 1 and 12 and rejects 0, -1, and 13"
+    }
+  ]
+}

@@ -1,0 +1,1 @@
+The dispatch service waits **two minutes** before retrying a queued report. ([README.md](/tmp/repoctx-m4-13-20260922-valid/trials/02-p-doc-retry-delay-ordinary_tools_plus_repoctx/workspace/repository/README.md))

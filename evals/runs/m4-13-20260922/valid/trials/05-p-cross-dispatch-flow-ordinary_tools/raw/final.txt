@@ -1,0 +1,12 @@
+`prepare_dispatch` in [`relay/service.py`](repository/relay/service.py) performs the flow:
+
+1. Calls `accepts_batch_size(recipient_count)` from [`relay/batches.py`](repository/relay/batches.py).
+2. That accepts only counts satisfying `0 < recipient_count <= MAX_BATCH_SIZE`.
+3. `MAX_BATCH_SIZE` is configured as `8` in [`relay/config.py`](repository/relay/config.py). Invalid batches raise `ValueError`.
+4. It calls `choose_queue(region, expedited)` from [`relay/classify.py`](repository/relay/classify.py):
+   - expedited + `region == "north"` → `"north-priority"`
+   - expedited otherwise → `"priority"`
+   - non-expedited → `DEFAULT_QUEUE`
+5. `DEFAULT_QUEUE` is configured as `"standard"`.
+
+The returned dictionary contains `report_id` and the queue selected by `choose_queue`.

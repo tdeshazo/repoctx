@@ -69,16 +69,16 @@
       "end": "go build -o repoctx-cmd ./cmd/repoctx"
     },
     {
-      "id": "agent-workflow",
+      "id": "default-path",
       "path": "ROADMAP.md",
-      "start": "## 2. Test the actual agent workflow",
-      "end": "## 2. Test the actual agent workflow"
+      "start": "## 3. Simplify the default path",
+      "end": "## 3. Simplify the default path"
     },
     {
-      "id": "m4-13",
+      "id": "m6-07",
       "path": "ROADMAP.md",
-      "start": "- [ ] **M4-13 \u2014 Run a small paired workflow pilot.** Compare ordinary repository",
-      "end": "  use compilation when the task benefits from symbols and relationships."
+      "start": "- [ ] **M6-07 \u2014 Make discover \u2192 inspect \u2192 expand the obvious workflow.** Align",
+      "end": "  evidence with minimal setup. Use pilot friction to guide any behavior changes."
     }
   ],
   "artifacts": [
@@ -354,7 +354,7 @@
       "runner_check_id": "go-vet-all"
     },
     {
-      "id": "repoctx:milestone.agent-workflow",
+      "id": "repoctx:milestone.default-path",
       "kind": "component",
       "owner": "repoctx:maintainers",
       "applies_to": [
@@ -366,12 +366,12 @@
       "lifecycle": "active",
       "sensitivity": "public",
       "sources": [
-        "agent-workflow"
+        "default-path"
       ],
       "declared_inputs": []
     },
     {
-      "id": "repoctx:requirement.m4-13-paired-pilot",
+      "id": "repoctx:requirement.m6-07-default-workflow",
       "kind": "requirement",
       "owner": "repoctx:maintainers",
       "applies_to": [
@@ -383,7 +383,7 @@
       "lifecycle": "active",
       "sensitivity": "public",
       "sources": [
-        "m4-13"
+        "m6-07"
       ],
       "declared_inputs": []
     }
@@ -453,12 +453,12 @@
       ]
     },
     {
-      "from": "repoctx:milestone.agent-workflow",
-      "to": "repoctx:requirement.m4-13-paired-pilot",
+      "from": "repoctx:milestone.default-path",
+      "to": "repoctx:requirement.m6-07-default-workflow",
       "kind": "contains",
       "resolution": "declared",
       "sources": [
-        "m4-13"
+        "m6-07"
       ]
     }
   ]

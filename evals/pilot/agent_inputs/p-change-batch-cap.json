@@ -1,0 +1,6 @@
+{
+  "id": "p-change-batch-cap",
+  "type": "software_change",
+  "repository": "relay-board",
+  "prompt": "Raise the maximum accepted recipient batch from 8 to 12. Keep non-positive batch sizes invalid and reject batches above the new maximum. Make the smallest appropriate repository change, then state what you changed."
+}

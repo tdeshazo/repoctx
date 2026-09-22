@@ -1,0 +1,36 @@
+[
+  {
+    "trial": "07-p-change-batch-cap-ordinary_tools_plus_repoctx",
+    "method": "manual source diff review, then fresh source-only copy; isolated Python mode, stripped environment, 10-second timeout",
+    "command": [
+      "/usr/bin/python3",
+      "-I",
+      "-B",
+      "/home/travis/Workspace/repository_context_program/repoctx/evals/pilot/evaluator/check_change.py",
+      "--repository",
+      "/tmp/repoctx-pilot-verify-ir9v6zwa/repository"
+    ],
+    "exit_code": 0,
+    "stdout": "p-change-batch-cap passed\n",
+    "stderr": "",
+    "wall_seconds": 0.05628529299792717,
+    "config_sha256": "8e3b9e6ac68b7d4739b93f81e58135266eb533b49f03f07f08eefd3760757fc5"
+  },
+  {
+    "trial": "08-p-change-batch-cap-ordinary_tools",
+    "method": "manual source diff review, then fresh source-only copy; isolated Python mode, stripped environment, 10-second timeout",
+    "command": [
+      "/usr/bin/python3",
+      "-I",
+      "-B",
+      "/home/travis/Workspace/repository_context_program/repoctx/evals/pilot/evaluator/check_change.py",
+      "--repository",
+      "/tmp/repoctx-pilot-verify-1vgnaqtt/repository"
+    ],
+    "exit_code": 0,
+    "stdout": "p-change-batch-cap passed\n",
+    "stderr": "",
+    "wall_seconds": 0.046338555999682285,
+    "config_sha256": "8e3b9e6ac68b7d4739b93f81e58135266eb533b49f03f07f08eefd3760757fc5"
+  }
+]

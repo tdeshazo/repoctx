@@ -1,0 +1,5 @@
+WARNING: proceeding, even though we could not create PATH aliases: Refusing to create helper binaries under temporary dir "/tmp" (codex_home: AbsolutePathBuf("/tmp/repoctx-pilot-codex-home-nc55y1_k"))
+Reading additional input from stdin...
+2026-09-22T17:07:44.048574Z ERROR codex_models_manager::manager: failed to renew cache TTL: cache not found
+2026-09-22T17:07:59.186020Z ERROR codex_models_manager::manager: failed to renew cache TTL: cache not found
+2026-09-22T17:08:14.574558Z ERROR codex_models_manager::manager: failed to renew cache TTL: cache not found

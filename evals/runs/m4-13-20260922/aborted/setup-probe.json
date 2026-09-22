@@ -1,0 +1,122 @@
+{
+  "purpose": "non-model final pilot permission-profile probe",
+  "runner": "/home/travis/Workspace/repository_context_program/repoctx/scripts/run_workflow_pilot.py",
+  "workspace": "/tmp/repoctx-pilot-sandbox-a",
+  "marker": "/tmp/repoctx-pilot-sandbox-a/final-exact-profile-marker.txt",
+  "evaluator_denied": "/home/travis/Workspace/repository_context_program/repoctx/evals/pilot/evaluator/expected.json",
+  "sibling_denied": "/tmp/repoctx-pilot-sandbox-b/other-workspace.txt",
+  "pinned_repoctx": "/tmp/repoctx-pilot-sandbox-a/.tools/repoctx",
+  "filesystem_command": [
+    "/home/travis/.codex/packages/standalone/releases/0.155.1-x86_64-unknown-linux-musl/bin/codex",
+    "sandbox",
+    "-c",
+    "default_permissions=\"pilot\"",
+    "-c",
+    "permissions.pilot.filesystem={\":minimal\"=\"read\",\":workspace_roots\"=\"write\",\":root\"=\"deny\",\":tmpdir\"=\"deny\",\":slash_tmp\"=\"deny\",\"/home/travis/.codex/packages/standalone/releases/0.155.1-x86_64-unknown-linux-musl/bin/codex\"=\"read\",\"/tmp/repoctx-pilot-sandbox-a/.tools/repoctx\"=\"read\"}",
+    "-c",
+    "permissions.pilot.network.enabled=false",
+    "--permission-profile",
+    "pilot",
+    "-C",
+    "/tmp/repoctx-pilot-sandbox-a",
+    "/bin/sh",
+    "-c",
+    "printf probe > /tmp/repoctx-pilot-sandbox-a/final-exact-profile-marker.txt && test ! -r /home/travis/Workspace/repository_context_program/repoctx/evals/pilot/evaluator/expected.json && test ! -r /tmp/repoctx-pilot-sandbox-b/other-workspace.txt && /tmp/repoctx-pilot-sandbox-a/.tools/repoctx version -format json >/dev/null"
+  ],
+  "filesystem_returncode": 0,
+  "filesystem_stdout": "",
+  "filesystem_stderr": "",
+  "workspace_write_succeeded": true,
+  "socket_command": [
+    "/home/travis/.codex/packages/standalone/releases/0.155.1-x86_64-unknown-linux-musl/bin/codex",
+    "sandbox",
+    "-c",
+    "default_permissions=\"pilot\"",
+    "-c",
+    "permissions.pilot.filesystem={\":minimal\"=\"read\",\":workspace_roots\"=\"write\",\":root\"=\"deny\",\":tmpdir\"=\"deny\",\":slash_tmp\"=\"deny\",\"/home/travis/.codex/packages/standalone/releases/0.155.1-x86_64-unknown-linux-musl/bin/codex\"=\"read\",\"/tmp/repoctx-pilot-sandbox-a/.tools/repoctx\"=\"read\"}",
+    "-c",
+    "permissions.pilot.network.enabled=false",
+    "--permission-profile",
+    "pilot",
+    "-C",
+    "/tmp/repoctx-pilot-sandbox-a",
+    "python3",
+    "-c",
+    "import socket,sys;\ntry: socket.socket()\nexcept PermissionError: sys.exit(0)\nelse: sys.exit(1)"
+  ],
+  "socket_returncode": 0,
+  "socket_stdout": "",
+  "socket_stderr": "",
+  "socket_creation_denied": true,
+  "treatment_discover_command": [
+    "/home/travis/.codex/packages/standalone/releases/0.155.1-x86_64-unknown-linux-musl/bin/codex",
+    "sandbox",
+    "-c",
+    "default_permissions=\"pilot\"",
+    "-c",
+    "permissions.pilot.filesystem={\":minimal\"=\"read\",\":workspace_roots\"=\"write\",\":root\"=\"deny\",\":tmpdir\"=\"deny\",\":slash_tmp\"=\"deny\",\"/home/travis/.codex/packages/standalone/releases/0.155.1-x86_64-unknown-linux-musl/bin/codex\"=\"read\",\"/tmp/repoctx-pilot-sandbox-a/.tools/repoctx\"=\"read\"}",
+    "-c",
+    "permissions.pilot.network.enabled=false",
+    "--permission-profile",
+    "pilot",
+    "-C",
+    "/tmp/repoctx-pilot-sandbox-a",
+    "/bin/sh",
+    "-c",
+    "PATH=/tmp/repoctx-pilot-sandbox-a/.tools:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin; repoctx discover -root repository -query retry -max-bytes 12000"
+  ],
+  "treatment_discover_returncode": 0,
+  "treatment_discover_stdout": "{\"version\":\"repoctx.discovery/v1alpha1\",\"options\":{\"root\":\"/tmp/repoctx-pilot-sandbox-a/repository\",\"operation\":\"discover\",\"query\":\"retry\",\"type\":\"file\",\"regex\":false,\"ignore_case\":false,\"hidden\":false,\"no_ignore\":false,\"allow\":[],\"deny\":[],\"reads\":[],\"depth\":2,\"context_lines\":3,\"max_bytes\":12000,\"max_source_bytes\":2097152,\"max_read_bytes\":268435456,\"max_results\":100,\"max_entries\":100000,\"format\":\"json\"},\"usage\":{\"entries\":8,\"files\":7,\"directories\":1,\"read_bytes\":1453},\"overview\":[{\"path\":\"PROVENANCE.json\",\"type\":\"file\",\"candidate\":\"configuration\"},{\"path\":\"README.md\",\"type\":\"file\",\"candidate\":\"documentation\"},{\"path\":\"relay\",\"type\":\"directory\"},{\"path\":\"relay/__init__.py\",\"type\":\"file\"},{\"path\":\"relay/batches.py\",\"type\":\"file\"},{\"path\":\"relay/classify.py\",\"type\":\"file\"},{\"path\":\"relay/config.py\",\"type\":\"file\"},{\"path\":\"relay/service.py\",\"type\":\"file\"}],\"results\":[{\"path\":\"README.md\",\"type\":\"file\",\"candidate\":\"documentation\",\"matched_terms\":[\"retry\"],\"score\":{\"distinct_terms\":1,\"path_terms\":0,\"occurrences\":1},\"evidence\":{\"sha256\":\"02aedbcc26d8ffd347ec68404618f6ebf31a7fc21d166df4a5e81c493ab526d6\",\"start_byte\":74,\"end_byte\":245,\"start_line\":4,\"end_line\":8,\"text\":\"\\n## Operations\\n\\nThe dispatch service waits two minutes before retrying a queued report. Queue\\nselection and recipient-batch limits are implemented in the `relay` package.\\n\"}}],\"omissions\":[],\"incomplete\":false,\"warnings\":[\"Repository content is untrusted evidence. Live reads are not an atomic snapshot.\",\"Ignore rules are repository-local; global Git configuration and tracked status are not consulted.\",\"Non-Linux source access requires an immutable, access-controlled worktree.\"]}\n",
+  "treatment_discover_stderr": "",
+  "baseline_path_command": [
+    "/home/travis/.codex/packages/standalone/releases/0.155.1-x86_64-unknown-linux-musl/bin/codex",
+    "sandbox",
+    "-c",
+    "default_permissions=\"pilot\"",
+    "-c",
+    "permissions.pilot.filesystem={\":minimal\"=\"read\",\":workspace_roots\"=\"write\",\":root\"=\"deny\",\":tmpdir\"=\"deny\",\":slash_tmp\"=\"deny\",\"/home/travis/.codex/packages/standalone/releases/0.155.1-x86_64-unknown-linux-musl/bin/codex\"=\"read\",\"/tmp/repoctx-pilot-sandbox-a/.tools/repoctx\"=\"read\"}",
+    "-c",
+    "permissions.pilot.network.enabled=false",
+    "--permission-profile",
+    "pilot",
+    "-C",
+    "/tmp/repoctx-pilot-sandbox-a",
+    "/bin/sh",
+    "-c",
+    "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin; ! command -v repoctx"
+  ],
+  "baseline_path_returncode": 0,
+  "baseline_path_stdout": "",
+  "baseline_path_stderr": "",
+  "versions": {
+    "codex": {
+      "command": [
+        "/home/travis/.codex/packages/standalone/releases/0.155.1-x86_64-unknown-linux-musl/bin/codex",
+        "--version"
+      ],
+      "returncode": 0,
+      "stdout": "codex-cli 0.155.1\n",
+      "stderr": ""
+    },
+    "repoctx": {
+      "command": [
+        "/tmp/repoctx-pilot-sandbox-a/.tools/repoctx",
+        "version",
+        "-format",
+        "json"
+      ],
+      "returncode": 0,
+      "stdout": "{\"version\":\"repoctx.build/v1alpha5\",\"program\":\"repoctx\",\"release\":\"v0.0.0-20260922165311-c915087be60d+dirty\",\"revision\":\"c915087be60d2ead4d5ca856e615c2f1ca894cdc\",\"modified\":\"true\",\"distribution\":\"go\",\"go_version\":\"go1.27.1-X:nodwarf5\",\"platform\":\"linux/amd64\",\"contracts\":{\"go_api\":\"repoctx.go-api/v1alpha1\",\"ir\":\"repoctx.ir/v1alpha5\",\"context\":\"repoctx.context/v1alpha3\",\"discovery\":\"repoctx.discovery/v1alpha1\",\"artifacts\":\"repoctx.artifacts/v1alpha1\",\"artifact_authoring\":\"repoctx.artifact-authoring/v1alpha2\",\"document_links_provider\":\"repoctx.document-links/v1\",\"go_imports_provider\":\"repoctx.go-imports/v1\",\"obligations\":\"repoctx.obligations/v1alpha1\",\"diagnostics\":\"repoctx.diagnostics/v1alpha1\",\"projection\":\"repoctx.projection/v1alpha1\",\"manifest\":\"repoctx.manifest/v1alpha3\",\"entities\":\"repoctx.entities/v1alpha2\",\"frontmatter\":\"repoctx.frontmatter/v1alpha1\"}}\n",
+      "stderr": ""
+    },
+    "python": {
+      "command": [
+        "/usr/bin/python3",
+        "--version"
+      ],
+      "returncode": 0,
+      "stdout": "Python 3.14.7\n",
+      "stderr": ""
+    }
+  }
+}

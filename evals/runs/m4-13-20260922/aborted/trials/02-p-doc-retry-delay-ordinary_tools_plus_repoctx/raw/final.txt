@@ -1,0 +1,1 @@
+The dispatch service waits **two minutes** before retrying a queued report. ([repository/README.md](repository/README.md:7))

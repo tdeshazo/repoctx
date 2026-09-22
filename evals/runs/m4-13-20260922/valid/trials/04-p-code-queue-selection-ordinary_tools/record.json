@@ -1,0 +1,83 @@
+{
+  "id": "04-p-code-queue-selection-ordinary_tools",
+  "position": 4,
+  "task_id": "p-code-queue-selection",
+  "task_type": "code_localization",
+  "condition": "ordinary_tools",
+  "input_prompt": "Locate the function that selects a dispatch queue from a report's region and expedited flag. Give its repository path and function name.",
+  "input_sha256": "3fb68bff0dc99ecde821d6039738d5a35b5bf55c396ebaec5af6e73db984eae7",
+  "input_prompt_sha256": "a9f08aade1c3ad8edac9f6ecaec443a0f3fc642e82b038dfd8984c491e7a6449",
+  "prompt": "Locate the function that selects a dispatch queue from a report's region and expedited flag. Give its repository path and function name.\n\nThe supplied repository is in `repository/`. Work only in that repository; do not\nread files outside it or use the network. You may use ordinary shell tools. Use at\nmost 16 tool calls. Give a concise final response to the task.\n\nUse ordinary repository tools only; do not invoke repoctx.\n",
+  "prompt_sha256": "b9c79c143737d05fc1c8e8f0e1b68c8ad9275099516e027337eb03ea26e7b018",
+  "model": "gpt-5.6-luna",
+  "reasoning_effort": "medium",
+  "exit_code": 0,
+  "timed_out": false,
+  "wall_seconds": 16.119273,
+  "usage": {
+    "input_tokens": 63242,
+    "cached_input_tokens": 54272,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 368,
+    "reasoning_output_tokens": 56
+  },
+  "event_count": 11,
+  "observed_tool_item_count": 3,
+  "command_count": 3,
+  "command_call_count": 3,
+  "tool_call_cap": 16,
+  "tool_call_cap_respected": true,
+  "tool_call_cap_enforcement": "advisory_prompt_only",
+  "command_events": [
+    {
+      "type": "item.completed",
+      "item": {
+        "id": "item_1",
+        "type": "command_execution",
+        "command": "/usr/bin/zsh -lc 'rg --files repository | head -200'",
+        "aggregated_output": "repository/PROVENANCE.json\nrepository/README.md\nrepository/relay/__init__.py\nrepository/relay/config.py\nrepository/relay/batches.py\nrepository/relay/classify.py\nrepository/relay/service.py\n",
+        "exit_code": 0,
+        "status": "completed"
+      }
+    },
+    {
+      "type": "item.completed",
+      "item": {
+        "id": "item_2",
+        "type": "command_execution",
+        "command": "/usr/bin/zsh -lc 'rg -n -i \"dispatch|queue|expedit|region\" repository'",
+        "aggregated_output": "repository/README.md:3:Relay Board prepares outgoing status reports for dispatch.\nrepository/README.md:7:The dispatch service waits two minutes before retrying a queued report. Queue\nrepository/relay/batches.py:5:    \"\"\"Return whether a dispatch may include this many recipients.\"\"\"\nrepository/relay/__init__.py:1:\"\"\"Synthetic dispatch helpers for the exploratory pilot fixture.\"\"\"\nrepository/relay/classify.py:1:from .config import DEFAULT_QUEUE\nrepository/relay/classify.py:4:def choose_queue(region, expedited):\nrepository/relay/classify.py:5:    \"\"\"Choose the dispatch queue for a report.\"\"\"\nrepository/relay/classify.py:6:    if expedited and region == \"north\":\nrepository/relay/classify.py:8:    if expedited:\nrepository/relay/classify.py:10:    return DEFAULT_QUEUE\nrepository/relay/config.py:1:DEFAULT_QUEUE = \"standard\"\nrepository/relay/service.py:2:from .classify import choose_queue\nrepository/relay/service.py:5:def prepare_dispatch(report_id, region, expedited, recipient_count):\nrepository/relay/service.py:6:    \"\"\"Validate a report and return its dispatch details.\"\"\"\nrepository/relay/service.py:11:        \"queue\": choose_queue(region, expedited),\n",
+        "exit_code": 0,
+        "status": "completed"
+      }
+    },
+    {
+      "type": "item.completed",
+      "item": {
+        "id": "item_3",
+        "type": "command_execution",
+        "command": "/usr/bin/zsh -lc \"sed -n '1,80p' repository/relay/classify.py\"",
+        "aggregated_output": "from .config import DEFAULT_QUEUE\n\n\ndef choose_queue(region, expedited):\n    \"\"\"Choose the dispatch queue for a report.\"\"\"\n    if expedited and region == \"north\":\n        return \"north-priority\"\n    if expedited:\n        return \"priority\"\n    return DEFAULT_QUEUE\n",
+        "exit_code": 0,
+        "status": "completed"
+      }
+    }
+  ],
+  "errors": [],
+  "malformed_event_lines": [],
+  "answer": "`repository/relay/classify.py` — `choose_queue(region, expedited)`",
+  "raw": {
+    "events": "/tmp/repoctx-m4-13-20260922-valid/trials/04-p-code-queue-selection-ordinary_tools/raw/events.jsonl",
+    "stderr": "/tmp/repoctx-m4-13-20260922-valid/trials/04-p-code-queue-selection-ordinary_tools/raw/stderr.txt",
+    "final": "/tmp/repoctx-m4-13-20260922-valid/trials/04-p-code-queue-selection-ordinary_tools/raw/final.txt"
+  },
+  "source_unchanged": true,
+  "workspace_contents": [
+    ".agents",
+    ".codex",
+    ".git",
+    ".tools",
+    "input.json",
+    "repository"
+  ]
+}

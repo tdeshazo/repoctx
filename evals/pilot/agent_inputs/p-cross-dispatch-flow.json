@@ -1,0 +1,6 @@
+{
+  "id": "p-cross-dispatch-flow",
+  "type": "cross_file_analysis",
+  "repository": "relay-board",
+  "prompt": "Trace prepare_dispatch across the repository. Explain how it validates the recipient batch and how it selects the returned queue, naming the participating functions and configuration value."
+}

@@ -1,0 +1,72 @@
+{
+  "id": "01-p-doc-retry-delay-ordinary_tools",
+  "position": 1,
+  "task_id": "p-doc-retry-delay",
+  "task_type": "documentation_lookup",
+  "condition": "ordinary_tools",
+  "input_prompt": "According to the repository documentation, how long does the dispatch service wait before retrying a queued report? Answer concisely and cite the file you used.",
+  "input_sha256": "10039dd71d7a47c3d548cde240e8c64b78d33057501c5d556d869f48a73a6ae6",
+  "input_prompt_sha256": "f3b3fcea0b4ba2cdbd112556a126383043932e575b52be607a8c015112316adf",
+  "prompt": "According to the repository documentation, how long does the dispatch service wait before retrying a queued report? Answer concisely and cite the file you used.\n\nThe supplied repository is in `repository/`. Work only in that repository; do not\nread files outside it or use the network. You may use ordinary shell tools. Use at\nmost 16 tool calls. Give a concise final response to the task.\n\nUse ordinary repository tools only; do not invoke repoctx.\n",
+  "prompt_sha256": "32991e307c505eff069cec2d77b5fbf2fed48451b2a2754e0cd63d4b28c2024b",
+  "model": "gpt-5.6-luna",
+  "reasoning_effort": "medium",
+  "exit_code": 0,
+  "timed_out": false,
+  "wall_seconds": 14.709604,
+  "usage": {
+    "input_tokens": 46908,
+    "cached_input_tokens": 39168,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 278,
+    "reasoning_output_tokens": 32
+  },
+  "event_count": 9,
+  "observed_tool_item_count": 2,
+  "command_count": 2,
+  "command_call_count": 2,
+  "tool_call_cap": 16,
+  "tool_call_cap_respected": true,
+  "tool_call_cap_enforcement": "advisory_prompt_only",
+  "command_events": [
+    {
+      "type": "item.completed",
+      "item": {
+        "id": "item_1",
+        "type": "command_execution",
+        "command": "/usr/bin/zsh -lc \"rg -n -i \\\"dispatch|queued report|retry|wait\\\" repository --glob '*.md' --glob '*.txt' --glob '*.rst'\"",
+        "aggregated_output": "repository/README.md:3:Relay Board prepares outgoing status reports for dispatch.\nrepository/README.md:7:The dispatch service waits two minutes before retrying a queued report. Queue\n",
+        "exit_code": 0,
+        "status": "completed"
+      }
+    },
+    {
+      "type": "item.completed",
+      "item": {
+        "id": "item_2",
+        "type": "command_execution",
+        "command": "/usr/bin/zsh -lc \"sed -n '1,20p' repository/README.md\"",
+        "aggregated_output": "# Relay Board\n\nRelay Board prepares outgoing status reports for dispatch.\n\n## Operations\n\nThe dispatch service waits two minutes before retrying a queued report. Queue\nselection and recipient-batch limits are implemented in the `relay` package.\n",
+        "exit_code": 0,
+        "status": "completed"
+      }
+    }
+  ],
+  "errors": [],
+  "malformed_event_lines": [],
+  "answer": "The dispatch service waits **two minutes** before retrying a queued report. ([repository/README.md](repository/README.md))",
+  "raw": {
+    "events": "/tmp/repoctx-m4-13-20260922-valid/trials/01-p-doc-retry-delay-ordinary_tools/raw/events.jsonl",
+    "stderr": "/tmp/repoctx-m4-13-20260922-valid/trials/01-p-doc-retry-delay-ordinary_tools/raw/stderr.txt",
+    "final": "/tmp/repoctx-m4-13-20260922-valid/trials/01-p-doc-retry-delay-ordinary_tools/raw/final.txt"
+  },
+  "source_unchanged": true,
+  "workspace_contents": [
+    ".agents",
+    ".codex",
+    ".git",
+    ".tools",
+    "input.json",
+    "repository"
+  ]
+}

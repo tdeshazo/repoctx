@@ -5,9 +5,10 @@ description: Discover repository files and source excerpts without an index, or 
 
 # Repoctx
 
-Use index-free discovery for repository orientation and source evidence; compile
-an index when symbol relationships are needed. Assume `repoctx` is on `PATH`,
-but confirm which executable is running before relying on its command set.
+Use the smallest workflow that answers the task: discover, inspect/read the
+returned evidence, then expand with an index when symbols or relationships are
+useful. Assume `repoctx` is on `PATH`, but confirm which executable is running
+before relying on its command set.
 
 Use it for codebase exploration, implementation, debugging, or review when a
 focused source/relationship slice would improve decisions. Do not use it as a
@@ -20,13 +21,6 @@ Once per session, or whenever the executable may have changed, run:
 
 ```sh
 repoctx version -format json
-```
-
-When the checkout contains `agent-context.yaml`, validate its current contract
-and declared input availability before relying on canonical repository metadata:
-
-```sh
-repoctx manifest -root . -file agent-context.yaml
 ```
 
 Check `release`, `revision`, `modified`, `distribution`, and `contracts` against
@@ -58,7 +52,24 @@ that failure itself means their capabilities must be checked before use.
   index's policy. Never choose immutable mode merely because Git is clean: only
   the caller can assert an isolated immutable tree and supply a snapshot pin.
 
-## Discover without compiling
+## Optional canonical metadata
+
+Manifests are optional. When a task needs a repository's canonical semantic
+metadata, validate an existing `agent-context.yaml` and its declared input
+availability before relying on it:
+
+```sh
+repoctx manifest -root . -file agent-context.yaml
+```
+
+Do not author a manifest for an ordinary discovery or source-read task.
+
+## Discover, inspect, and read without compiling
+
+Start with one bounded discovery request. Inspect its paths, excerpts,
+`incomplete`, `omissions`, and `warnings`. If the evidence answers the task,
+stop; read or search follow-up ranges only when more context is needed. Do not
+compile an index just to orient yourself.
 
 When several discovery steps are needed, try one combined request before
 separately listing, searching, and reading the same files:
@@ -123,7 +134,7 @@ do not prove absence.
 ## Expand only when needed
 
 Context v1alpha3 returns source/profile/task identities and requires an IR
-v1alpha4 compilation manifest; recompile legacy indexes. It also returns
+v1alpha5 compilation manifest; recompile legacy indexes. It also returns
 `units`: exact document/source extents separate
 from symbol definitions. For a paragraph, section, table, or body match, reuse
 its `u:` ID with `-unit` and the previous `-expect-snapshot`. A unit's `parent`
@@ -149,7 +160,12 @@ If the snapshot check fails, do not use the old bundle as current evidence:
 recompile or investigate the changed source first. Semantic IDs can change after
 renames or collisions, and dense numeric graph IDs are snapshot-local.
 
-## Persisted evidence and checkpoints
+## Optional persisted evidence and checkpoints
+
+Inline context delivery is sufficient for ordinary retrieval. Use persisted
+file-reference bundles or checkpoints only when the caller's harness needs
+bounded handoff or resume state; they require a caller-owned store outside the
+indexed repository.
 
 When the harness uses `examples/agent/tool_bridge.py` file-reference delivery,
 give each caller an access-controlled store outside the indexed repository and

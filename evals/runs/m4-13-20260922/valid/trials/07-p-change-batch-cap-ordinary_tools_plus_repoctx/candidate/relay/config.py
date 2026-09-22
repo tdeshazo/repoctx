@@ -1,0 +1,2 @@
+DEFAULT_QUEUE = "standard"
+MAX_BATCH_SIZE = 12
