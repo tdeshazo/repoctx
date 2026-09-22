@@ -19,7 +19,11 @@ SUBCOMMANDS = frozenset({
 SHELLS = frozenset({"sh", "bash", "dash", "zsh", "ksh"})
 COMMAND_WRAPPERS = frozenset({"command", "exec", "builtin"})
 SHELL_OPERATORS = frozenset({";", "&&", "||", "|", "&", "(", ")"})
-EOF_ERROR = "line range exceeds observed file"
+EOF_ERRORS = (
+    "line range exceeds observed file",
+    "requested end line",
+    "requested start line",
+)
 
 
 def executable_name(token: str) -> str:
@@ -127,6 +131,14 @@ def _event_output(item: dict[str, Any]) -> str:
     return output if isinstance(output, str) else ""
 
 
+def has_eof_error(output: str) -> bool:
+    if EOF_ERRORS[0] in output:
+        return True
+    return "exceeds observed file" in output and any(
+        marker in output for marker in EOF_ERRORS[1:]
+    )
+
+
 def account_event_file(path: Path) -> list[dict[str, Any]]:
     """Return recognized Repoctx invocations from completed event records."""
     records = []
@@ -159,7 +171,7 @@ def account_event_file(path: Path) -> list[dict[str, Any]]:
 
         output = _event_output(item)
         exit_code = item.get("exit_code")
-        eof_failure = "read" in subcommands and EOF_ERROR in output
+        eof_failure = "read" in subcommands and has_eof_error(output)
         failed = type(exit_code) is int and exit_code != 0
         records.append({
             "source": str(path),

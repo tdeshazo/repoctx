@@ -67,6 +67,26 @@ class RepoctxCallAccountingTests(unittest.TestCase):
         self.assertEqual(report["events"][1]["failure_class"], "eof_read")
         self.assertEqual(report["events"][2]["failure_class"], "other")
 
+    def test_new_requested_endpoint_diagnostics_count_as_eof_errors(self):
+        with tempfile.TemporaryDirectory() as directory:
+            events = Path(directory) / "events.jsonl"
+            rows = [
+                command_event("item_1", "repoctx read -file x:5:99", 2,
+                              "requested end line 99 exceeds observed file (20 lines)"),
+                command_event("item_2", "repoctx read -file x:99:0", 2,
+                              "requested start line 99 exceeds observed file (20 lines)"),
+            ]
+            events.write_text("".join(json.dumps(row) + "\n" for row in rows),
+                              encoding="utf-8")
+
+            report = ACCOUNTING.build_report([events])
+
+        self.assertEqual(report["summary"]["eof_read_failures"], 2)
+        self.assertEqual(
+            [event["failure_class"] for event in report["events"]],
+            ["eof_read", "eof_read"],
+        )
+
 
 if __name__ == "__main__":
     unittest.main()
