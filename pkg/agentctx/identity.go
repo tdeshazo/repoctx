@@ -9,6 +9,9 @@ func taskID(index string, o Options) (string, error) {
 	if o.sourceMode != "" {
 		consistency += "+" + o.sourceMode
 	}
+	if o.authorityScope != "" {
+		consistency += "+authority:" + o.authorityScope
+	}
 	// Options includes a function even when nil; encode an explicit mirror so
 	// future selection options must be deliberately added to this contract.
 	return ir.ContentID(struct {

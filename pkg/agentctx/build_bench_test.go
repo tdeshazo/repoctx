@@ -1,6 +1,7 @@
 package agentctx
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"testing"
@@ -13,6 +14,7 @@ import (
 var (
 	benchmarkCandidates []candidate
 	benchmarkResult     *Result
+	benchmarkDiscovery  *SymbolDiscovery
 )
 
 func BenchmarkM5ContextPath(b *testing.B) {
@@ -55,7 +57,7 @@ func BenchmarkM5ContextPath(b *testing.B) {
 				b.ReportAllocs()
 				reportScale(b)
 				for i := 0; i < b.N; i++ {
-					benchmarkCandidates, _, _, err = choose(repo, opts, sources)
+					benchmarkCandidates, _, _, err = choose(context.Background(), repo, opts, sources)
 					if err != nil {
 						b.Fatal(err)
 					}
@@ -111,6 +113,63 @@ func BenchmarkM5ImmutableGeneration(b *testing.B) {
 			b.ReportMetric(float64(len(result.Payload)), "context-bytes")
 			for i := 0; i < b.N; i++ {
 				benchmarkResult, err = BuildFromGeneration(generation, options)
+				if err != nil {
+					b.Fatal(err)
+				}
+			}
+		})
+	}
+}
+
+func BenchmarkM5WarmServing(b *testing.B) {
+	for _, files := range []int{10, 100, 1000} {
+		b.Run(fmt.Sprintf("files=%d", files), func(b *testing.B) {
+			root := b.TempDir()
+			sourceBytes, err := benchfixture.Write(root, files)
+			if err != nil {
+				b.Fatal(err)
+			}
+			repo, err := compiler.Compile(compiler.Options{Root: root})
+			if err != nil {
+				b.Fatal(err)
+			}
+			irBytes, err := json.Marshal(repo)
+			if err != nil {
+				b.Fatal(err)
+			}
+			generation, err := VerifySourceGeneration(repo, SourceGenerationOptions{Root: root})
+			if err != nil {
+				b.Fatal(err)
+			}
+			store, err := NewGenerationStore(GenerationStoreOptions{
+				MaxGenerations: 1, MaxBytes: generation.RetainedBytes(),
+			})
+			if err != nil {
+				b.Fatal(err)
+			}
+			if err := store.Publish(context.Background(), "benchmark", generation); err != nil {
+				b.Fatal(err)
+			}
+			query := SymbolQuery{Pattern: "Compute", Mode: "substring", Limit: 3}
+			b.ReportAllocs()
+			b.ResetTimer()
+			b.ReportMetric(float64(files), "files")
+			b.ReportMetric(float64(sourceBytes), "source-bytes")
+			b.ReportMetric(float64(len(irBytes)), "artifact-bytes")
+			b.ReportMetric(float64(generation.RetainedBytes()), "generation-bytes")
+			b.ReportMetric(float64(generation.RetainedBytes())/float64(len(irBytes)), "generation/IR")
+			for i := 0; i < b.N; i++ {
+				benchmarkDiscovery, err = store.Discover(context.Background(), "benchmark", query)
+				if err != nil {
+					b.Fatal(err)
+				}
+				symbols := make([]string, len(benchmarkDiscovery.Symbols))
+				for index, symbol := range benchmarkDiscovery.Symbols {
+					symbols[index] = symbol.ID
+				}
+				benchmarkResult, err = store.Build(context.Background(), "benchmark", Options{
+					Symbols: symbols, ExpectedSnapshot: generation.SnapshotID(), MaxBytes: 32768,
+				})
 				if err != nil {
 					b.Fatal(err)
 				}

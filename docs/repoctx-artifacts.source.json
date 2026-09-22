@@ -69,16 +69,16 @@
       "end": "go build -o repoctx-cmd ./cmd/repoctx"
     },
     {
-      "id": "m5-milestone",
+      "id": "m6-milestone",
       "path": "ROADMAP.md",
-      "start": "## 9. M5 — Amortize verified compilation and serving",
-      "end": "M2 provides a sound invalidation model."
+      "start": "## 10. M6 — Stabilize contracts and distribution",
+      "end": "positive agent-performance claim."
     },
     {
-      "id": "m5-04",
+      "id": "m6-01",
       "path": "ROADMAP.md",
-      "start": "- [ ] **M5-04 — Add serving only where justified.** A library cache or optional",
-      "end": "  generation or in-memory aggregate before making it the warm serving path."
+      "start": "- [ ] **M6-01 — Define compatibility policy.** Version the Go API, repository IR,",
+      "end": "  completeness labels, or trust semantics."
     }
   ],
   "artifacts": [
@@ -328,7 +328,7 @@
       "runner_check_id": "go-vet-all"
     },
     {
-      "id": "repoctx:milestone.m5-amortization",
+      "id": "repoctx:milestone.m6-stabilization",
       "kind": "component",
       "applies_to": [
         {
@@ -338,12 +338,12 @@
       ],
       "lifecycle": "active",
       "sources": [
-        "m5-milestone"
+        "m6-milestone"
       ],
       "declared_inputs": []
     },
     {
-      "id": "repoctx:requirement.m5-04-bounded-serving",
+      "id": "repoctx:requirement.m6-01-compatibility-policy",
       "kind": "requirement",
       "applies_to": [
         {
@@ -353,7 +353,7 @@
       ],
       "lifecycle": "active",
       "sources": [
-        "m5-04"
+        "m6-01"
       ],
       "declared_inputs": []
     }
@@ -423,12 +423,12 @@
       ]
     },
     {
-      "from": "repoctx:milestone.m5-amortization",
-      "to": "repoctx:requirement.m5-04-bounded-serving",
+      "from": "repoctx:milestone.m6-stabilization",
+      "to": "repoctx:requirement.m6-01-compatibility-policy",
       "kind": "contains",
       "resolution": "declared",
       "sources": [
-        "m5-04"
+        "m6-01"
       ]
     }
   ]

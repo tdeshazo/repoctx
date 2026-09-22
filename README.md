@@ -25,6 +25,16 @@ go build -o repoctx .
 go build -o repoctx-cmd ./cmd/repoctx
 ```
 
+The authored [Usage specification](repoctx.usage.kdl) describes the complete
+command, argument, flag, effect, and completion surface without generating a
+second prose reference. With the `usage` CLI installed, validate or derive
+artifacts from it:
+
+```sh
+usage lint repoctx.usage.kdl
+usage generate markdown --file repoctx.usage.kdl --out-file /tmp/repoctx-cli.md
+```
+
 Inspect the executable before relying on commands or wire-contract versions:
 
 ```sh

@@ -561,7 +561,7 @@ performance target. Do not build a daemon merely to complete this milestone.
   this path before weaker freshness shortcuts: M5-01 identified verification as
   the largest atomic latency stage. Evidence:
   [verified source generation report](docs/reports/m5-03-evidence.md).
-- [ ] **M5-04 — Add serving only where justified.** A library cache or optional
+- [x] **M5-04 — Add serving only where justified.** A library cache or optional
   service must support bounded memory, eviction, cancellation, atomic generation
   swaps, and authorization-scoped identities. A daemon may be deferred if a
   simpler local design meets the measured need. If ranking remains material after
@@ -575,18 +575,19 @@ performance target. Do not build a daemon merely to complete this milestone.
   creating a parallel retrieval pipeline. M5-02 also found that one JSON file per
   fragment is inefficient for many tiny files; benchmark a bounded packed
   generation or in-memory aggregate before making it the warm serving path.
+  Evidence: [bounded serving report](docs/reports/m5-04-evidence.md).
 
 ### Acceptance gates
 
 - [x] Incremental and clean builds produce identical canonical semantic outputs
   for the same inputs/profile, including add/delete/rename/configuration tests.
-- [ ] On the declared 1,000-file workload, the warm p95 complete-path component
+- [x] On the declared 1,000-file workload, the warm p95 complete-path component
   sum and median allocation volume are at most 50% of the M5-01 cold baseline.
   Incremental storage is at most 1.25 times canonical IR bytes; bounded context
   output is not accepted as a substitute for bounded ranking work. Meet the
   target without violating evidence fidelity, freshness, resource, or quality
   gates, and publish warm and cold results rather than only the favorable case.
-- [ ] Eviction, restart, cancellation, and interrupted publication cannot expose
+- [x] Eviction, restart, cancellation, and interrupted publication cannot expose
   mixed generations or evidence from another caller's scope.
 - [x] The local CLI remains usable without a service or external database.
 

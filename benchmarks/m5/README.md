@@ -71,6 +71,20 @@ generation construction from the timer. It measures context materialization
 against privately owned, already verified index and source bytes. The ordinary
 `context_materialization` benchmark remains the strict per-request local path.
 
+M5-04 measures the bounded in-memory serving path, including compact substring
+symbol discovery, selection of returned semantic IDs, and exact context
+expansion through the active authorization-scoped generation:
+
+```sh
+go test ./pkg/agentctx -run '^$' \
+  -bench '^BenchmarkM5WarmServing$/^files=1000$' \
+  -benchmem -benchtime=3x -count=10
+```
+
+Generation construction and publication are outside the warm request timer.
+The benchmark reports the deterministic retained-byte charge alongside canonical
+IR bytes; this metric is a cache budget, not Go heap size or RSS.
+
 ## Predeclared M5 target
 
 On the 1,000-file workload, subsequent warm-path work must reduce both the p95

@@ -6,6 +6,7 @@ include go.mod
 include go.sum
 include main.go
 include main_test.go
+include repoctx.usage.kdl
 graft cmd
 graft examples
 graft internal

@@ -177,9 +177,9 @@ JSON. File output uses a temporary file and rename after all checks succeed.
 Read limits default to 2 MiB per source and 256 MiB total per request, including
 both verified-local input passes and auxiliary reads. `CountTokens` requires a
 caller-owned `TokenizerID` identifying the actual implementation/version. Decoded
-IR reads are limited to 128 MiB. Larger deployments need a service cache and an
-explicit resource/isolation policy. Full source verification per request favors
-correctness over repeated-query throughput; it is not a persistent index server.
+IR reads are limited to 128 MiB. Full source verification per request favors
+correctness over repeated-query throughput. Repeated-query applications can use
+the bounded library cache below; repoctx does not require a daemon or database.
 
 ## Replay, source changes and policy
 
@@ -217,7 +217,7 @@ still supply the generation's caller-authenticated `SnapshotID`; explicit scope
 must match the captured compilation profile. The generation performs no later
 filesystem reads, so source changes after capture cannot create a mixed result.
 It is neither a repository-controlled assertion nor an authentication mechanism.
-The application owns authorization, retention, memory accounting, and disposal.
+The application still owns authentication and authorization.
 
 ```go
 generation, err := agentctx.VerifySourceGeneration(repo,
@@ -227,6 +227,43 @@ result, err := agentctx.BuildFromGeneration(generation, agentctx.Options{
     Query: "retry policy", ExpectedSnapshot: generation.SnapshotID(),
 })
 ```
+
+`GenerationStore` adds process-local LRU retention, deterministic retained-byte
+accounting, cancellation, and atomic activation. The caller supplies an opaque,
+authenticated authority scope on every operation. Scope participates in the
+context task identity and lookups never reveal generations from another scope.
+The store starts empty after restart, creates no goroutines, and keeps an
+already-acquired immutable generation valid through eviction. `Publish` checks
+cancellation before changing the active generation; `Purge` removes all retained
+generations for one scope.
+
+```go
+store, err := agentctx.NewGenerationStore(agentctx.GenerationStoreOptions{
+    MaxGenerations: 4,
+    MaxBytes:       256 << 20,
+})
+if err != nil { /* reject unbounded configuration */ }
+if err := store.Publish(ctx, authorityScope, generation); err != nil {
+    /* the previous complete generation remains active */
+}
+symbols, err := store.Discover(ctx, authorityScope, agentctx.SymbolQuery{
+    Pattern: "retry", Mode: "substring", Limit: 20, MaxScanned: 10000,
+})
+if err != nil { /* handle cancellation or unavailable generation */ }
+if len(symbols.Symbols) == 0 { /* no matching symbol */ }
+result, err := store.Build(ctx, authorityScope, agentctx.Options{
+    Symbols: []string{symbols.Symbols[0].ID},
+    ExpectedSnapshot: symbols.SnapshotID,
+})
+```
+
+Symbol discovery returns only IDs, names, languages, kinds, paths, units, and
+declaration spans. Exact lookup uses binary search; every mode inspects at most
+`MaxScanned` records in semantic-ID order. Optional language, kind,
+path-prefix, and unit filters apply before the result limit. Check `Incomplete`,
+`Omissions.Limit`, and `Omissions.Unscanned`. Feed selected semantic IDs into
+the existing context builder as shown; source evidence is produced only by that
+path, so discovery cannot become a competing or less exact evidence contract.
 
 Compilation intentionally does **not** read `.gitignore`, `.ignore`, build tags,
 workspace files, environment-dependent build settings, or external providers.

@@ -1,6 +1,7 @@
 package agentctx
 
 import (
+	"context"
 	"fmt"
 	"sort"
 	"strings"
@@ -219,19 +220,30 @@ func includeUnit(b *Bundle, c candidate, src *source, o Options) (*Bundle, bool,
 	return b, false, nil
 }
 
-func choose(r *ir.Repository, o Options, sources map[int]*source) ([]candidate, []string, bool, error) {
-	candidates, ids, limited, err := chooseSymbols(r, o, sources)
+func choose(ctx context.Context, r *ir.Repository, o Options, sources map[int]*source) ([]candidate, []string, bool, error) {
+	candidates, ids, limited, err := chooseSymbols(ctx, r, o, sources)
 	if err != nil {
 		return nil, nil, false, err
 	}
-	units, err := retrievalUnits(r, sources)
-	if err != nil {
-		return nil, nil, false, err
+	units := []retrievalUnit{}
+	if len(o.Units) > 0 || len(o.Symbols) == 0 {
+		units, err = retrievalUnits(r, sources)
+		if err != nil {
+			return nil, nil, false, err
+		}
+		if err := ctx.Err(); err != nil {
+			return nil, nil, false, err
+		}
 	}
 	ranked := []candidate{}
 	explicit := len(o.Symbols)+len(o.Units) > 0
 	byID := map[string]*retrievalUnit{}
 	for i := range units {
+		if i&255 == 0 {
+			if err := ctx.Err(); err != nil {
+				return nil, nil, false, err
+			}
+		}
 		byID[units[i].ID] = &units[i]
 	}
 	seen := map[string]bool{}

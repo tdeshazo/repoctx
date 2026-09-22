@@ -35,6 +35,7 @@ type Options struct {
 	TokenizerID      string // caller-owned implementation/version identity when CountTokens is set
 	Consistency      string // verified-local (default) or immutable; immutable requires ExpectedSnapshot
 	sourceMode       string // internal provenance discriminator for deterministic task identities
+	authorityScope   string // internal caller-owned scope discriminator; never rendered
 }
 
 type Bundle struct {

@@ -1,6 +1,7 @@
 package agentctx
 
 import (
+	"context"
 	"fmt"
 	"sort"
 	"strings"
@@ -49,10 +50,15 @@ func terms(s string) []string {
 	}
 	return clean
 }
-func chooseSymbols(r *ir.Repository, o Options, sources map[int]*source) ([]candidate, []string, bool, error) {
+func chooseSymbols(ctx context.Context, r *ir.Repository, o Options, sources map[int]*source) ([]candidate, []string, bool, error) {
 	var seeds []candidate
 	byID := map[string]int{}
 	for i, s := range r.Symbols {
+		if i&255 == 0 {
+			if err := ctx.Err(); err != nil {
+				return nil, nil, false, err
+			}
+		}
 		if sources[s.File] != nil {
 			byID[r.String(s.ID)] = i
 		}
@@ -73,6 +79,11 @@ func chooseSymbols(r *ir.Repository, o Options, sources map[int]*source) ([]cand
 		words := terms(o.Query)
 		var ranked []candidate
 		for i, s := range r.Symbols {
+			if i&255 == 0 {
+				if err := ctx.Err(); err != nil {
+					return nil, nil, false, err
+				}
+			}
 			if sources[s.File] == nil {
 				continue
 			}
@@ -187,6 +198,11 @@ func chooseSymbols(r *ir.Repository, o Options, sources map[int]*source) ([]cand
 			for _, d := range dirs {
 				for j := d.csr.Offsets[cur.node]; j < d.csr.Offsets[cur.node+1]; j++ {
 					scanned++
+					if scanned&255 == 0 {
+						if err := ctx.Err(); err != nil {
+							return nil, nil, false, err
+						}
+					}
 					if scanned > 100000 {
 						limited = true
 						break

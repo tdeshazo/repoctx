@@ -1,0 +1,192 @@
+min_usage_version "6.6.1"
+
+name "repoctx"
+bin "repoctx"
+about "Compile repositories into a compact typed IR and retrieve bounded source evidence"
+license "Apache-2.0"
+repository "https://github.com/tdeshazo/repoctx"
+
+example "repoctx discover --root . --query 'retry configuration' --max-bytes 12000" help="Inspect a repository without building an index"
+example "repoctx compile --root . --o repo.ir.json.gz" help="Compile a reusable repository index"
+example "repoctx context --root . --query 'retry policy' repo.ir.json.gz" help="Build bounded evidence from an index"
+
+flag "-h --help" action="help" builtin=#true help="Print help"
+flag "--version" help="Print version and build information"
+
+// Shared declarations expand into each discovery command while remaining
+// authored once. repoctx's Go flag parser accepts both -flag and --flag; the
+// spec advertises the conventional long form.
+flagset "discovery-common" {
+  flag "--root <dir>" default="." help="Selected root; never expands to a parent Git root"
+  flag "--format <format>" default="json" help="Output format" {
+    choices "json" "markdown"
+  }
+  flag "--hidden" help="Include hidden entries except .git"
+  flag "--no-ignore" help="Disable local ignore rules; never bypasses scope"
+  flag "--allow... <path>" help="Permit a relative file or directory prefix; repeatable"
+  flag "--deny... <path>" help="Deny a relative file or directory prefix; repeatable; deny wins"
+  flag "--max-bytes <bytes>" default="32768" help="Maximum final serialized payload bytes" {
+    arg "<bytes>" validate="int(value) >= 1" validate_error="must be positive"
+  }
+  flag "--max-source-bytes <bytes>" default="2097152" help="Maximum bytes read per file" {
+    arg "<bytes>" validate="int(value) >= 1" validate_error="must be positive"
+  }
+  flag "--max-read-bytes <bytes>" default="268435456" help="Maximum total source and ignore-file bytes" {
+    arg "<bytes>" validate="int(value) >= 1" validate_error="must be positive"
+  }
+  flag "--max-results <count>" default="100" help="Maximum result records" {
+    arg "<count>" validate="int(value) >= 1" validate_error="must be positive"
+  }
+  flag "--max-entries <count>" default="100000" help="Maximum enumerated directory entries" {
+    arg "<count>" validate="int(value) >= 1 && int(value) <= 10000000" validate_error="must be between 1 and 10000000"
+  }
+  flag "-o --o <file>" default="-" effect="write" help="Output file, or - for stdout"
+}
+
+flagset "discovery-depth" {
+  flag "--depth <count>" default="2" help="Overview depth; 0 omits the tree but still scans inventory" {
+    arg "<count>" validate="int(value) >= 0" validate_error="must be nonnegative"
+  }
+}
+
+flagset "discovery-query" {
+  flag "--query <text>" help="Search pattern or discovery task text"
+  flag "--context-lines <count>" default="3" help="Surrounding lines per matching line" {
+    arg "<count>" validate="int(value) >= 0" validate_error="must be nonnegative"
+  }
+}
+
+flagset "discovery-glob" {
+  flag "--glob <glob>" help="Path glob; slashless patterns match basenames and ** crosses directories"
+}
+
+cmd "discover" effect="read" help="Orient, find files, search text, and return bounded excerpts without an index" {
+  use "discovery-common" "discovery-depth" "discovery-query" "discovery-glob"
+}
+
+cmd "overview" effect="read" help="Show a bounded repository tree and inventory summary without an index" {
+  use "discovery-common" "discovery-depth"
+}
+
+cmd "files" effect="read" help="Find files or directories without an index" {
+  use "discovery-common" "discovery-glob"
+  flag "--type <type>" default="file" help="Entry type" {
+    choices "file" "directory" "all"
+  }
+}
+
+cmd "search" effect="read" help="Search repository text and return exact bounded excerpts without an index" {
+  use "discovery-common" "discovery-query" "discovery-glob"
+  flag "--query <text>" required=#true help="Required search pattern"
+  flag "--regex" help="Interpret the query as a Go regular expression, line by line"
+  flag "--ignore-case" help="Match without case sensitivity"
+}
+
+cmd "read" effect="read" help="Read exact bounded file excerpts without an index" {
+  use "discovery-common"
+  flag "--file... <file>" required=#true help="PATH or PATH:START:END with inclusive lines; repeatable"
+}
+
+cmd "compile" effect="read" help="Compile supported repository sources into canonical typed IR" {
+  flag "--root <dir>" default="." help="Repository root"
+  flag "-o --o <file>" default="-" effect="write" help="Output path; .gz enables gzip and - writes stdout"
+  flag "--pretty" help="Pretty-print JSON"
+  flag "--python <path>" deprecated="Python uses native Tree-sitter" help="Deprecated compatibility flag"
+  flag "--max-bytes <bytes>" default="2097152" help="Maximum source file size" {
+    arg "<bytes>" validate="int(value) >= 1 && int(value) <= 16777216" validate_error="must be between 1 and 16777216"
+  }
+  flag "--max-read-bytes <bytes>" default="268435456" help="Total bytes across both compilation verification passes" {
+    arg "<bytes>" validate="int(value) >= 1 && int(value) <= 268435456" validate_error="must be between 1 and 268435456"
+  }
+  flag "--max-entries <count>" default="100000" help="Maximum enumerated entries per inventory pass" {
+    arg "<count>" validate="int(value) >= 1 && int(value) <= 100000" validate_error="must be between 1 and 100000"
+  }
+  flag "--cache-dir <dir>" help="Trusted parse-fragment cache outside the repository"
+  flag "--allow... <path>" help="Permit a source or auxiliary file/directory prefix before indexing; repeatable"
+  flag "--deny... <path>" help="Deny a source or auxiliary file/directory prefix before indexing; repeatable"
+}
+
+cmd "artifacts" effect="read" help="Generate deterministic artifact metadata from semantic authoring input" {
+  flag "--source <file>" required=#true help="Artifact authoring JSON"
+  flag "--root <dir>" default="." help="Repository root containing anchored sources"
+  flag "-o --o <file>" default="-" effect="write" help="Generated artifact catalog, or - for stdout"
+  flag "--check" help="Fail instead of writing when the output file is stale" {
+    requires "--o"
+  }
+}
+
+cmd "stats" effect="read" help="Print repository IR statistics" {
+  arg "<file>" help="Repository IR file"
+}
+
+cmd "graph" effect="read" help="Inspect a bounded symbol-graph neighborhood" {
+  arg "<file>" help="Repository IR file"
+  flag "--match <text>" help="Case-insensitive symbol or external-node substring"
+  flag "--node <id>" help="Dense graph node ID" {
+    arg "<id>" validate="int(value) >= 0" validate_error="must be nonnegative"
+  }
+  flag "--depth <count>" default="1" help="Neighborhood depth" {
+    arg "<count>" validate="int(value) >= 0" validate_error="must be nonnegative"
+  }
+  flag "--limit <count>" default="50" help="Maximum printed graph nodes" {
+    arg "<count>" validate="int(value) >= 1" validate_error="must be positive"
+  }
+}
+
+cmd "context" effect="read" help="Build bounded, source-linked agent evidence from repository IR" {
+  arg "<file>" help="Repository IR file"
+  flag "--root <dir>" required=#true help="Path to the matching source repository"
+  flag "--query <text>" help="Task text, symbol name, or path for lexical retrieval"
+  flag "--symbol... <id>" help="Exact semantic symbol ID; repeatable"
+  flag "--unit... <id>" help="Exact retrieval unit ID from this snapshot; repeatable"
+  flag "--max-units <count>" default="8" help="Maximum included retrieval units" {
+    arg "<count>" validate="int(value) >= 1 && int(value) <= 64" validate_error="must be between 1 and 64"
+  }
+  flag "--allow... <path>" help="Repeat the compilation allow policy exactly; omitted scope inherits index policy"
+  flag "--deny... <path>" help="Repeat the compilation deny policy exactly; repeatable; deny wins"
+  flag "--expect-snapshot <digest>" help="Required index snapshot digest when expanding prior context"
+  flag "--consistency <mode>" default="verified-local" help="Source consistency mode" {
+    choices "verified-local" "immutable"
+  }
+  flag "--depth <count>" default="1" help="Graph depth; unit and unresolved hubs are never expanded" {
+    arg "<count>" validate="int(value) >= 0 && int(value) <= 4" validate_error="must be between 0 and 4"
+  }
+  flag "--direction <direction>" default="both" help="Graph traversal direction" {
+    choices "in" "out" "both"
+  }
+  flag "--relations <relations>" default="calls,defines" help="Comma-separated traversal relations: calls, defines, imports"
+  flag "--max-bytes <bytes>" default="32768" help="Hard limit on the complete uncompressed serialized payload" {
+    arg "<bytes>" validate="int(value) >= 1" validate_error="must be positive"
+  }
+  flag "--max-symbols <count>" default="12" help="Maximum included symbol records" {
+    arg "<count>" validate="int(value) >= 1 && int(value) <= 64" validate_error="must be between 1 and 64"
+  }
+  flag "--max-candidates <count>" default="128" help="Maximum graph candidates" {
+    arg "<count>" validate="int(value) >= 1 && int(value) <= 4096" validate_error="must be between 1 and 4096"
+  }
+  flag "--max-relations <count>" default="48" help="Maximum relationship records" {
+    arg "<count>" validate="int(value) >= 1 && int(value) <= 256" validate_error="must be between 1 and 256"
+  }
+  flag "--max-source-bytes <bytes>" default="2097152" help="Per-file verification read bound" {
+    arg "<bytes>" validate="int(value) >= 1" validate_error="must be positive"
+  }
+  flag "--max-read-bytes <bytes>" default="268435456" help="Total verification read bound" {
+    arg "<bytes>" validate="int(value) >= 1" validate_error="must be positive"
+  }
+  flag "--format <format>" default="json" help="Output format" {
+    choices "json" "markdown"
+  }
+  flag "-o --o <file>" default="-" effect="write" help="Output file, or - for stdout"
+}
+
+cmd "validate" effect="read" help="Validate repository IR and print its snapshot identity" {
+  arg "<file>" help="Repository IR file"
+}
+
+cmd "version" effect="read" help="Print version, build provenance, and supported contract versions" {
+  flag "--format <format>" default="text" help="Output format" {
+    choices "text" "json"
+  }
+}
+
+cmd "help" effect="read" help="Print CLI help"

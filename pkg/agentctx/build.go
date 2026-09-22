@@ -1,6 +1,7 @@
 package agentctx
 
 import (
+	"context"
 	"encoding/hex"
 	"fmt"
 	"runtime"
@@ -14,7 +15,7 @@ import (
 // context payload. It runs no repository commands. Use an immutable worktree:
 // source reads do not create a transactional filesystem snapshot.
 func Build(r *ir.Repository, o Options) (*Result, error) {
-	return build(r, o, nil)
+	return build(context.Background(), r, o, nil)
 }
 
 // BuildFromGeneration builds context from a previously verified, immutable
@@ -22,6 +23,15 @@ func Build(r *ir.Repository, o Options) (*Result, error) {
 // ExpectedSnapshot remains mandatory so the application explicitly binds its
 // authenticated request to the generation it selected.
 func BuildFromGeneration(g *VerifiedSourceGeneration, o Options) (*Result, error) {
+	return BuildFromGenerationContext(context.Background(), g, o)
+}
+
+// BuildFromGenerationContext is BuildFromGeneration with cooperative request
+// cancellation. No work is detached from ctx.
+func BuildFromGenerationContext(ctx context.Context, g *VerifiedSourceGeneration, o Options) (*Result, error) {
+	if ctx == nil {
+		return nil, fmt.Errorf("context is required")
+	}
 	if g == nil {
 		return nil, fmt.Errorf("verified source generation is required")
 	}
@@ -30,10 +40,13 @@ func BuildFromGeneration(g *VerifiedSourceGeneration, o Options) (*Result, error
 	}
 	o.Consistency = "immutable"
 	o.sourceMode = "verified-source-generation/v1"
-	return build(g.repository, o, g.sources)
+	return build(ctx, g.repository, o, g.sources)
 }
 
-func build(r *ir.Repository, o Options, generationSources map[int]*source) (*Result, error) {
+func build(ctx context.Context, r *ir.Repository, o Options, generationSources map[int]*source) (*Result, error) {
+	if err := ctx.Err(); err != nil {
+		return nil, err
+	}
 	if e := normalize(&o, generationSources == nil); e != nil {
 		return nil, e
 	}
@@ -67,8 +80,11 @@ func build(r *ir.Repository, o Options, generationSources map[int]*source) (*Res
 			return nil, e
 		}
 	}
-	candidates, seeds, limited, e := choose(r, o, sources)
+	candidates, seeds, limited, e := choose(ctx, r, o, sources)
 	if e != nil {
+		return nil, e
+	}
+	if e := ctx.Err(); e != nil {
 		return nil, e
 	}
 	kinds := []string{}
@@ -142,6 +158,9 @@ func build(r *ir.Repository, o Options, generationSources map[int]*source) (*Res
 		importBudget.MaxTokens = o.MaxTokens - o.MaxTokens/8
 	}
 	for _, c := range candidates {
+		if e := ctx.Err(); e != nil {
+			return nil, e
+		}
 		if c.unit != nil {
 			if len(b.Units) >= o.MaxUnits {
 				b.Omissions.UnitLimit++
@@ -234,6 +253,9 @@ func build(r *ir.Repository, o Options, generationSources map[int]*source) (*Res
 	}
 	seenImports := map[string]bool{}
 	for _, edge := range r.Edges {
+		if e := ctx.Err(); e != nil {
+			return nil, e
+		}
 		if edge.Kind != ir.EdgeImports {
 			continue
 		}
@@ -273,9 +295,15 @@ func build(r *ir.Repository, o Options, generationSources map[int]*source) (*Res
 		}
 	}
 	markPartialQueryExcerpts(b, sources)
+	if e := ctx.Err(); e != nil {
+		return nil, e
+	}
 	rels, omittedRelations := relationships(r, b, sources, o.MaxRelations)
 	b.Omissions.Relations += omittedRelations
 	for _, rel := range rels {
+		if e := ctx.Err(); e != nil {
+			return nil, e
+		}
 		if len(b.Relationships) >= o.MaxRelations {
 			b.Omissions.Relations++
 			continue
