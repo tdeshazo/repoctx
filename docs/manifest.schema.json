@@ -1,11 +1,11 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://github.com/tdeshazo/repoctx/docs/manifest.schema.json",
-  "title": "repoctx repository manifest v1alpha1",
+  "title": "repoctx repository manifest v1alpha2",
   "type": "object",
   "additionalProperties": false,
   "properties": {
-    "version": {"const": "repoctx.manifest/v1alpha1"},
+    "version": {"const": "repoctx.manifest/v1alpha2"},
     "namespace": {
       "type": "string",
       "pattern": "^[a-z][a-z0-9-]{0,62}(?![\\s\\S])"
@@ -15,6 +15,11 @@
       "minItems": 1,
       "maxItems": 64,
       "items": {"$ref": "#/$defs/source_root"}
+    },
+    "document_sources": {
+      "type": "array",
+      "maxItems": 64,
+      "items": {"$ref": "#/$defs/document_source"}
     },
     "artifact_sources": {
       "type": "array",
@@ -48,6 +53,7 @@
           "document_links",
           "go_imports",
           "obligation_handoff",
+          "semantic_entities",
           "syntax_graph"
         ]
       }
@@ -57,6 +63,7 @@
     "version",
     "namespace",
     "source_roots",
+    "document_sources",
     "artifact_sources",
     "components",
     "provider_inputs",
@@ -105,6 +112,38 @@
       },
       "required": ["id", "path", "format"]
     },
+    "document_source": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {"$ref": "#/$defs/id"},
+        "path": {"$ref": "#/$defs/path"},
+        "format": {"const": "repoctx.frontmatter/v1alpha1"}
+      },
+      "required": ["id", "path", "format"]
+    },
+    "scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "kind": {"enum": ["file", "subtree"]},
+        "path": {"$ref": "#/$defs/root_path"}
+      },
+      "required": ["kind", "path"]
+    },
+    "freshness": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "inputs": {
+          "type": "array",
+          "maxItems": 256,
+          "uniqueItems": true,
+          "items": {"$ref": "#/$defs/path"}
+        }
+      },
+      "required": ["inputs"]
+    },
     "component": {
       "type": "object",
       "additionalProperties": false,
@@ -117,9 +156,19 @@
           ]
         },
         "artifact_sources": {"$ref": "#/$defs/id_list"},
-        "provider_inputs": {"$ref": "#/$defs/id_list"}
+        "provider_inputs": {"$ref": "#/$defs/id_list"},
+        "owners": {"$ref": "#/$defs/id_list"},
+        "scopes": {
+          "type": "array",
+          "maxItems": 256,
+          "items": {"$ref": "#/$defs/scope"}
+        },
+        "lifecycle": {"enum": ["draft", "active", "deprecated", "superseded", "retired"]},
+        "supersedes": {"$ref": "#/$defs/id_list"},
+        "sensitivity": {"enum": ["public", "internal", "restricted"]},
+        "freshness": {"$ref": "#/$defs/freshness"}
       },
-      "required": ["id", "source_roots", "artifact_sources", "provider_inputs"]
+      "required": ["id", "source_roots", "artifact_sources", "provider_inputs", "owners", "scopes", "lifecycle", "supersedes", "sensitivity", "freshness"]
     },
     "provider_input": {
       "type": "object",

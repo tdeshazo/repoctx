@@ -44,6 +44,9 @@ func (r *Repository) Validate() error {
 	} else if r.Inputs != nil {
 		return fmt.Errorf("legacy index cannot carry a compilation manifest")
 	}
+	if err := r.validateEntities(); err != nil {
+		return err
+	}
 	str := func(n int, optional bool) bool { return (optional && n == 0) || n > 0 && n <= len(r.Strings) }
 	ref := func(f, n int) bool { return f >= 0 && f < len(r.Files) && n >= 0 && n < len(r.Files[f].Nodes) }
 	if !str(r.Root, true) {

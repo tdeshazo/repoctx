@@ -8,6 +8,7 @@ var supportedCapabilities = map[string]bool{
 	"document_links":        true,
 	"go_imports":            true,
 	"obligation_handoff":    true,
+	"semantic_entities":     true,
 	"syntax_graph":          true,
 }
 
@@ -18,7 +19,7 @@ func validate(doc *Manifest, limits Limits) error {
 	if !namespacePattern.MatchString(doc.Namespace) {
 		return fail("$.namespace", "invalid namespace")
 	}
-	if doc.SourceRoots == nil || doc.ArtifactSources == nil || doc.Components == nil ||
+	if doc.SourceRoots == nil || doc.DocumentSources == nil || doc.ArtifactSources == nil || doc.Components == nil ||
 		doc.ProviderInputs == nil || doc.DerivedViews == nil || doc.Capabilities == nil {
 		return fail("$", "required array missing")
 	}
@@ -34,6 +35,7 @@ func validate(doc *Manifest, limits Limits) error {
 		max  int
 	}{
 		{"$.source_roots", len(doc.SourceRoots), limits.SourceRoots},
+		{"$.document_sources", len(doc.DocumentSources), limits.DocumentSources},
 		{"$.artifact_sources", len(doc.ArtifactSources), limits.ArtifactSources},
 		{"$.components", len(doc.Components), limits.Components},
 		{"$.provider_inputs", len(doc.ProviderInputs), limits.ProviderInputs},
@@ -48,6 +50,7 @@ func validate(doc *Manifest, limits Limits) error {
 
 	identities := make(map[string]bool)
 	roots := make(map[string]bool)
+	documents := make(map[string]bool)
 	artifacts := make(map[string]bool)
 	providers := make(map[string]bool)
 	components := make(map[string]bool)
@@ -70,6 +73,18 @@ func validate(doc *Manifest, limits Limits) error {
 		}
 		if source.Format != "repoctx.artifact-authoring/v1alpha1" {
 			return fail(path+".format", "unsupported artifact source format")
+		}
+	}
+	for i, source := range doc.DocumentSources {
+		path := fmt.Sprintf("$.document_sources[%d]", i)
+		if err := identity(identities, documents, source.ID, path+".id"); err != nil {
+			return err
+		}
+		if !validPath(source.Path, false) {
+			return fail(path+".path", "invalid path")
+		}
+		if source.Format != FrontmatterVersion {
+			return fail(path+".format", "unsupported document source format")
 		}
 	}
 	for i, input := range doc.ProviderInputs {
@@ -102,6 +117,27 @@ func validate(doc *Manifest, limits Limits) error {
 		if err := references(component.ProviderInputs, providers, path+".provider_inputs", "provider input"); err != nil {
 			return err
 		}
+		if component.Owners == nil || component.Scopes == nil || component.Supersedes == nil || component.Freshness.Inputs == nil {
+			return fail(path, "required array missing")
+		}
+		if err := localReferences(component.Owners, path+".owners"); err != nil {
+			return err
+		}
+		if err := scopes(component.Scopes, path+".scopes"); err != nil {
+			return err
+		}
+		if !oneOf(component.Lifecycle, "draft", "active", "deprecated", "superseded", "retired") {
+			return fail(path+".lifecycle", "unsupported lifecycle")
+		}
+		if err := localReferences(component.Supersedes, path+".supersedes"); err != nil {
+			return err
+		}
+		if !oneOf(component.Sensitivity, "public", "internal", "restricted") {
+			return fail(path+".sensitivity", "unsupported sensitivity")
+		}
+		if err := inputPaths(component.Freshness.Inputs, path+".freshness.inputs"); err != nil {
+			return err
+		}
 	}
 	for i, view := range doc.DerivedViews {
 		path := fmt.Sprintf("$.derived_views[%d]", i)
@@ -132,6 +168,9 @@ func validate(doc *Manifest, limits Limits) error {
 	if len(doc.ArtifactSources) > 0 && !seenCapabilities["artifact_declarations"] {
 		return fail("$.capabilities", "artifact source capability missing")
 	}
+	if len(doc.DocumentSources) > 0 && !seenCapabilities["semantic_entities"] {
+		return fail("$.capabilities", "semantic entity capability missing")
+	}
 	for i, input := range doc.ProviderInputs {
 		capability := map[string]string{
 			"repoctx.document-links/v1": "document_links",
@@ -151,6 +190,64 @@ func validate(doc *Manifest, limits Limits) error {
 		if !seenCapabilities[capability] {
 			return fail(fmt.Sprintf("$.derived_views[%d].kind", i), "derived view capability missing")
 		}
+	}
+	return nil
+}
+
+func localReferences(values []string, path string) error {
+	if len(values) > 256 {
+		return fail(path, "count limit exceeded")
+	}
+	seen := make(map[string]bool, len(values))
+	for i, value := range values {
+		itemPath := fmt.Sprintf("%s[%d]", path, i)
+		if !idPattern.MatchString(value) {
+			return fail(itemPath, "invalid identity")
+		}
+		if seen[value] {
+			return fail(itemPath, "duplicate identity")
+		}
+		seen[value] = true
+	}
+	return nil
+}
+
+func scopes(values []Scope, path string) error {
+	if len(values) > 256 {
+		return fail(path, "count limit exceeded")
+	}
+	seen := make(map[string]bool, len(values))
+	for i, value := range values {
+		itemPath := fmt.Sprintf("%s[%d]", path, i)
+		if !oneOf(value.Kind, "file", "subtree") {
+			return fail(itemPath+".kind", "unsupported scope")
+		}
+		if !validPath(value.Path, value.Kind == "subtree") {
+			return fail(itemPath+".path", "invalid path")
+		}
+		key := value.Kind + "\x00" + value.Path
+		if seen[key] {
+			return fail(itemPath, "duplicate scope")
+		}
+		seen[key] = true
+	}
+	return nil
+}
+
+func inputPaths(values []string, path string) error {
+	if len(values) > 256 {
+		return fail(path, "count limit exceeded")
+	}
+	seen := make(map[string]bool, len(values))
+	for i, value := range values {
+		itemPath := fmt.Sprintf("%s[%d]", path, i)
+		if !validPath(value, false) {
+			return fail(itemPath, "invalid path")
+		}
+		if seen[value] {
+			return fail(itemPath, "duplicate path")
+		}
+		seen[value] = true
 	}
 	return nil
 }

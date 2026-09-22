@@ -74,6 +74,63 @@ class Worker:
 	}
 }
 
+func TestCompileCanonicalEntitiesIsExplicit(t *testing.T) {
+	root := t.TempDir()
+	mustWrite(t, filepath.Join(root, "main.go"), "package demo\n")
+	mustWrite(t, filepath.Join(root, "model.md"), `---
+version: repoctx.frontmatter/v1alpha1
+entities:
+  - id: maintainers
+    kind: owner
+    owners: []
+    scopes: []
+    lifecycle: active
+    supersedes: []
+    sensitivity: internal
+    freshness: {inputs: [main.go]}
+---
+# Model
+`)
+	mustWrite(t, filepath.Join(root, "agent-context.yaml"), `version: repoctx.manifest/v1alpha2
+namespace: demo
+source_roots: [{id: source, path: .}]
+document_sources: [{id: semantics, path: model.md, format: repoctx.frontmatter/v1alpha1}]
+artifact_sources: []
+components:
+  - id: core
+    source_roots: [source]
+    artifact_sources: []
+    provider_inputs: []
+    owners: [maintainers]
+    scopes: [{kind: subtree, path: .}]
+    lifecycle: active
+    supersedes: []
+    sensitivity: internal
+    freshness: {inputs: [main.go]}
+provider_inputs: []
+derived_views: [{id: index, kind: repository_ir, components: [core]}]
+capabilities: [syntax_graph, semantic_entities]
+`)
+
+	sourceOnly, err := Compile(Options{Root: root})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if sourceOnly.Entities != nil {
+		t.Fatal("source-only compilation activated repository semantics")
+	}
+	canonical, err := Compile(Options{Root: root, Manifest: "agent-context.yaml"})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if canonical.Entities == nil || len(canonical.Entities.Entities) != 2 {
+		t.Fatalf("typed entities missing: %+v", canonical.Entities)
+	}
+	if len(canonical.Files) != len(sourceOnly.Files) || len(canonical.Symbols) != len(sourceOnly.Symbols) {
+		t.Fatal("semantic compilation changed the syntax graph")
+	}
+}
+
 func TestCompileTreeSitterLanguagesAndMalformedDiagnostics(t *testing.T) {
 	root := t.TempDir()
 	mustWrite(t, filepath.Join(root, "worker.py"), "class Worker:\n    def run(self):\n        return 1\n")

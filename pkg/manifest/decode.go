@@ -31,13 +31,23 @@ var (
 	rootShape    = object([]string{"id", "path"}, map[string]*shape{
 		"id": stringShape, "path": stringShape,
 	})
+	documentShape = object([]string{"id", "path", "format"}, map[string]*shape{
+		"id": stringShape, "path": stringShape, "format": stringShape,
+	})
 	artifactShape = object([]string{"id", "path", "format"}, map[string]*shape{
 		"id": stringShape, "path": stringShape, "format": stringShape,
 	})
+	scopeShape = object([]string{"kind", "path"}, map[string]*shape{
+		"kind": stringShape, "path": stringShape,
+	})
+	freshnessShape = object([]string{"inputs"}, map[string]*shape{"inputs": stringsShape})
 	componentShape = object(
-		[]string{"id", "source_roots", "artifact_sources", "provider_inputs"},
+		[]string{"id", "source_roots", "artifact_sources", "provider_inputs", "owners", "scopes", "lifecycle", "supersedes", "sensitivity", "freshness"},
 		map[string]*shape{"id": stringShape, "source_roots": stringsShape,
-			"artifact_sources": stringsShape, "provider_inputs": stringsShape},
+			"artifact_sources": stringsShape, "provider_inputs": stringsShape,
+			"owners": stringsShape, "scopes": {kind: yaml.SequenceNode, element: scopeShape},
+			"lifecycle": stringShape, "supersedes": stringsShape,
+			"sensitivity": stringShape, "freshness": freshnessShape},
 	)
 	providerShape = object([]string{"id", "provider", "path"}, map[string]*shape{
 		"id": stringShape, "provider": stringShape, "path": stringShape,
@@ -46,11 +56,12 @@ var (
 		"id": stringShape, "kind": stringShape, "components": stringsShape,
 	})
 	manifestShape = object(
-		[]string{"version", "namespace", "source_roots", "artifact_sources", "components", "provider_inputs", "derived_views", "capabilities"},
+		[]string{"version", "namespace", "source_roots", "document_sources", "artifact_sources", "components", "provider_inputs", "derived_views", "capabilities"},
 		map[string]*shape{
 			"version":          stringShape,
 			"namespace":        stringShape,
 			"source_roots":     {kind: yaml.SequenceNode, element: rootShape},
+			"document_sources": {kind: yaml.SequenceNode, element: documentShape},
 			"artifact_sources": {kind: yaml.SequenceNode, element: artifactShape},
 			"components":       {kind: yaml.SequenceNode, element: componentShape},
 			"provider_inputs":  {kind: yaml.SequenceNode, element: providerShape},
@@ -68,7 +79,7 @@ func object(required []string, fields map[string]*shape) *shape {
 // Availability checks reject symlinks and non-regular file inputs. No provider
 // is invoked and the manifest cannot widen the caller-selected root.
 func Load(root string, data []byte, limits Limits) (*Manifest, error) {
-	doc, normalized, err := decode(data, limits)
+	doc, _, normalized, err := decode(data, limits)
 	if err != nil {
 		return nil, err
 	}
@@ -103,35 +114,35 @@ func LoadFile(root, path string, limits Limits) (*Manifest, error) {
 	return Load(root, data, normalized)
 }
 
-func decode(data []byte, limits Limits) (*Manifest, Limits, error) {
+func decode(data []byte, limits Limits) (*Manifest, *yaml.Node, Limits, error) {
 	normalized, err := normalizeLimits(limits)
 	if err != nil {
-		return nil, limits, err
+		return nil, nil, limits, err
 	}
 	if len(data) > normalized.Bytes {
-		return nil, limits, fail("$", "byte limit exceeded")
+		return nil, nil, limits, fail("$", "byte limit exceeded")
 	}
 	if !utf8.Valid(data) {
-		return nil, limits, fail("$", "invalid UTF-8")
+		return nil, nil, limits, fail("$", "invalid UTF-8")
 	}
 	decoder := yaml.NewDecoder(bytes.NewReader(data))
 	var node yaml.Node
 	if err := decoder.Decode(&node); err != nil || len(node.Content) != 1 {
-		return nil, limits, fail("$", "invalid YAML syntax")
+		return nil, nil, limits, fail("$", "invalid YAML syntax")
 	}
 	var trailing yaml.Node
 	if err := decoder.Decode(&trailing); err != io.EOF {
-		return nil, limits, fail("$", "multiple YAML documents are not allowed")
+		return nil, nil, limits, fail("$", "multiple YAML documents are not allowed")
 	}
 	entries := 0
 	if err := checkNode(node.Content[0], manifestShape, "$", 1, normalized, &entries); err != nil {
-		return nil, limits, err
+		return nil, nil, limits, err
 	}
 	var doc Manifest
 	if err := node.Content[0].Decode(&doc); err != nil {
-		return nil, limits, fail("$", "invalid field type")
+		return nil, nil, limits, fail("$", "invalid field type")
 	}
-	return &doc, normalized, nil
+	return &doc, node.Content[0], normalized, nil
 }
 
 func checkNode(node *yaml.Node, expected *shape, path string, depth int, limits Limits, entries *int) error {
@@ -199,6 +210,7 @@ func normalizeLimits(limits Limits) (Limits, error) {
 	ceiling := ceilings()
 	pairs := [][2]*int{{&limits.Bytes, &ceiling.Bytes}, {&limits.Depth, &ceiling.Depth},
 		{&limits.Entries, &ceiling.Entries}, {&limits.SourceRoots, &ceiling.SourceRoots},
+		{&limits.DocumentSources, &ceiling.DocumentSources},
 		{&limits.ArtifactSources, &ceiling.ArtifactSources}, {&limits.Components, &ceiling.Components},
 		{&limits.ProviderInputs, &ceiling.ProviderInputs}, {&limits.DerivedViews, &ceiling.DerivedViews},
 		{&limits.Capabilities, &ceiling.Capabilities}}
@@ -227,6 +239,11 @@ func available(root string, doc *Manifest) error {
 	for i, source := range doc.ArtifactSources {
 		if _, err := sources.Read(source.Path, 2<<20); err != nil {
 			return fail(fmt.Sprintf("$.artifact_sources[%d].path", i), "artifact source is unavailable")
+		}
+	}
+	for i, source := range doc.DocumentSources {
+		if _, err := sources.Read(source.Path, 2<<20); err != nil {
+			return fail(fmt.Sprintf("$.document_sources[%d].path", i), "document source is unavailable")
 		}
 	}
 	for i, input := range doc.ProviderInputs {

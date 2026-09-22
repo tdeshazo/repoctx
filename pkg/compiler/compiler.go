@@ -13,6 +13,7 @@ import (
 	"github.com/tdeshazo/repoctx/internal/lang/treeast"
 	"github.com/tdeshazo/repoctx/internal/sourceroot"
 	"github.com/tdeshazo/repoctx/pkg/ir"
+	repomanifest "github.com/tdeshazo/repoctx/pkg/manifest"
 )
 
 const IRVersion = "repoctx.ir/v1alpha4"
@@ -27,6 +28,7 @@ type Options struct {
 	IgnoreDirs   map[string]bool
 	AllowPaths   []string // optional source/auxiliary file or directory prefixes; not globs
 	DenyPaths    []string // evaluated before parsing/indexing
+	Manifest     string   // optional repository-relative canonical manifest
 }
 
 type sourceFile struct {
@@ -110,6 +112,15 @@ func compile(opts Options) (*ir.Repository, CacheStats, error) {
 		}
 	}
 	linkRepository(repo, st, goModule(contents["go.mod"]))
+	if opts.Manifest != "" {
+		entities, err := repomanifest.CompileEntities(root, opts.Manifest, repomanifest.Limits{}, func(path string) bool {
+			return pathAllowed(path, opts)
+		})
+		if err != nil {
+			return nil, CacheStats{}, fmt.Errorf("compile repository entities: %w", err)
+		}
+		repo.Entities = entities
+	}
 	if err := repo.Validate(); err != nil {
 		return nil, CacheStats{}, fmt.Errorf("compiler invariant: %w", err)
 	}

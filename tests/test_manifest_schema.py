@@ -17,15 +17,22 @@ class ManifestSchemaTests(TestCase):
         Draft202012Validator.check_schema(schema)
         self.validator = Draft202012Validator(schema)
         self.fixture = {
-            "version": "repoctx.manifest/v1alpha1",
+            "version": "repoctx.manifest/v1alpha2",
             "namespace": "demo",
             "source_roots": [{"id": "source", "path": "."}],
+            "document_sources": [],
             "artifact_sources": [],
             "components": [{
                 "id": "core",
                 "source_roots": ["source"],
                 "artifact_sources": [],
                 "provider_inputs": [],
+                "owners": [],
+                "scopes": [{"kind": "subtree", "path": "."}],
+                "lifecycle": "active",
+                "supersedes": [],
+                "sensitivity": "internal",
+                "freshness": {"inputs": ["go.mod"]},
             }],
             "provider_inputs": [],
             "derived_views": [{
@@ -67,3 +74,44 @@ class ManifestSchemaTests(TestCase):
         fixture = copy.deepcopy(self.fixture)
         fixture["components"][0]["source_roots"] = ["source", "source"]
         self.assertFalse(self.validator.is_valid(fixture))
+
+
+class FrontmatterSchemaTests(TestCase):
+    def setUp(self):
+        schema = json.loads((ROOT / "docs/frontmatter.schema.json").read_text())
+        Draft202012Validator.check_schema(schema)
+        self.validator = Draft202012Validator(schema)
+        self.fixture = {
+            "version": "repoctx.frontmatter/v1alpha1",
+            "entities": [{
+                "id": "maintainers",
+                "kind": "owner",
+                "owners": [],
+                "scopes": [],
+                "lifecycle": "active",
+                "supersedes": [],
+                "sensitivity": "internal",
+                "freshness": {"inputs": ["agent-context.yaml"]},
+            }],
+        }
+
+    def test_valid_closed_shape(self):
+        self.validator.validate(self.fixture)
+        fixture = copy.deepcopy(self.fixture)
+        fixture["entities"][0]["status"] = "trusted"
+        self.assertFalse(self.validator.is_valid(fixture))
+
+    def test_all_entity_kinds(self):
+        for kind in (
+            "document",
+            "component",
+            "decision",
+            "contract",
+            "requirement",
+            "verification_obligation",
+            "owner",
+        ):
+            fixture = copy.deepcopy(self.fixture)
+            fixture["entities"][0]["kind"] = kind
+            with self.subTest(kind=kind):
+                self.validator.validate(fixture)

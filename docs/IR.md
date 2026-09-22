@@ -31,8 +31,18 @@ type Repository struct {
     Diagnostics []Diagnostic // d
     Strings     []string     // q
     Inputs      *InputManifest // inputs: required in v1alpha4
+    Entities    *EntityModel // entities: optional semantic declarations
 }
 ```
+
+`entities`, when present, is `repoctx.entities/v1alpha1`. It contains
+namespace-qualified, ID-sorted declarations compiled from the caller-selected
+canonical manifest and its explicit Markdown frontmatter inputs. Entity kinds
+cover documents, components, decisions, contracts, requirements, verification
+obligations, and owners. Each retains owners, scopes, lifecycle, supersession,
+sensitivity, freshness inputs, status `declared`, and an exact source span with
+a full-file SHA-256 digest. These are repository claims, not trusted policy.
+Omitting the compiler's manifest option preserves source-only IR.
 
 `inputs` records sorted source paths, full hashes and byte sizes, plus root
 `go.mod` as present, absent, or unavailable under caller policy. Its profile

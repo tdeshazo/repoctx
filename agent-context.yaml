@@ -1,8 +1,12 @@
-version: repoctx.manifest/v1alpha1
+version: repoctx.manifest/v1alpha2
 namespace: repoctx
 source_roots:
   - id: repository
     path: .
+document_sources:
+  - id: repository-semantics
+    path: docs/MANIFEST.md
+    format: repoctx.frontmatter/v1alpha1
 artifact_sources:
   - id: artifact-authoring
     path: docs/repoctx-artifacts.source.json
@@ -16,6 +20,17 @@ components:
     provider_inputs:
       - go-module
       - roadmap-links
+    owners:
+      - maintainers
+    scopes:
+      - kind: subtree
+        path: .
+    lifecycle: active
+    supersedes: []
+    sensitivity: public
+    freshness:
+      inputs:
+        - agent-context.yaml
 provider_inputs:
   - id: go-module
     provider: repoctx.go-imports/v1
@@ -42,6 +57,7 @@ derived_views:
       - repoctx
 capabilities:
   - syntax_graph
+  - semantic_entities
   - artifact_declarations
   - document_links
   - go_imports

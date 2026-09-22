@@ -5,7 +5,9 @@ workflow. The indexed workflow has **two outputs with different consumers**:
 
 1. **Repository IR (`repoctx.ir/v1alpha4`)**: compact Go/Python/HTML/CSS/JavaScript/TypeScript/TSX/Markdown ASTs, interned
    strings, symbols, occurrence edges, and dense forward/reverse CSR adjacency.
-   This is the reusable machine index, not the prompt.
+   An explicit `-manifest` compile may attach typed, exact-source semantic
+   declarations. Without it, the IR remains source-only. This is the reusable
+   machine index, not the prompt.
 2. **Agent context (`repoctx.context/v1alpha3`)**: a selected, readable JSON or
    Markdown bundle with exact source, semantic IDs, provenance, selection
    reasons, bounded relationships, explicit omissions, and trust metadata.
@@ -22,6 +24,7 @@ normalized semantic model without compiling or activating providers:
 
 ```sh
 repoctx manifest -root . -file agent-context.yaml
+repoctx compile -root . -manifest agent-context.yaml -o repo.ir.json.gz
 ```
 
 See [the manifest contract](docs/MANIFEST.md) for the closed schema, limits,
@@ -64,10 +67,10 @@ repoctx artifacts -root . -source docs/repoctx-artifacts.source.json \
 Use `-check` with the same arguments to detect stale output without writing it.
 See [the artifact documentation](docs/ARTIFACTS.md#repository-dogfood-catalog).
 
-The JSON form uses `repoctx.build/v1alpha3` and reports the release, source
+The JSON form uses `repoctx.build/v1alpha4` and reports the release, source
 revision and modified state when the Go toolchain supplied them, distribution,
 Go/platform versions, and supported Go API, IR, context, discovery, artifact,
-provider, obligation, and manifest contracts. See the [active-development contract
+provider, obligation, manifest, entity, and frontmatter contracts. See the [active-development contract
 policy](docs/COMPATIBILITY.md) for current versions, strict field handling, and
 rebuild requirements. Pre-1.0 contracts may break without a migration path.
 Local `go run` and builds made with `-buildvcs=false` can report `unknown`

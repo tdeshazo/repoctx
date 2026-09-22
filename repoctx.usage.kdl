@@ -8,6 +8,7 @@ repository "https://github.com/tdeshazo/repoctx"
 
 example "repoctx discover --root . --query 'retry configuration' --max-bytes 12000" help="Inspect a repository without building an index"
 example "repoctx compile --root . --o repo.ir.json.gz" help="Compile a reusable repository index"
+example "repoctx compile --root . --manifest agent-context.yaml --o repo.ir.json.gz" help="Compile source plus explicitly selected semantic declarations"
 example "repoctx context --root . --query 'retry policy' repo.ir.json.gz" help="Build bounded evidence from an index"
 
 flag "-h --help" action="help" builtin=#true help="Print help"
@@ -102,6 +103,7 @@ cmd "compile" effect="read" help="Compile supported repository sources into cano
     arg "<count>" validate="int(value) >= 1 && int(value) <= 100000" validate_error="must be between 1 and 100000"
   }
   flag "--cache-dir <dir>" help="Trusted parse-fragment cache outside the repository"
+  flag "--manifest <file>" help="Optional canonical repository manifest; omitted keeps source-only compilation"
   flag "--allow... <path>" help="Permit a source or auxiliary file/directory prefix before indexing; repeatable"
   flag "--deny... <path>" help="Deny a source or auxiliary file/directory prefix before indexing; repeatable"
 }

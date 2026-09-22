@@ -51,6 +51,9 @@
     },
     "inputs": {
       "$ref": "#/$defs/inputManifest"
+    },
+    "entities": {
+      "$ref": "#/$defs/entityModel"
     }
   },
   "additionalProperties": false,
@@ -482,6 +485,66 @@
         "max_entries"
       ],
       "additionalProperties": false
+    },
+    "sourceSpan": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "path": {"type": "string"},
+        "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "start_byte": {"type": "integer", "minimum": 0},
+        "end_byte": {"type": "integer", "minimum": 1},
+        "start_line": {"type": "integer", "minimum": 1},
+        "end_line": {"type": "integer", "minimum": 1},
+        "start_byte_column": {"type": "integer", "minimum": 0},
+        "end_byte_column": {"type": "integer", "minimum": 0}
+      },
+      "required": ["path", "sha256", "start_byte", "end_byte", "start_line", "end_line", "start_byte_column", "end_byte_column"]
+    },
+    "entityScope": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "kind": {"enum": ["file", "subtree"]},
+        "path": {"type": "string"}
+      },
+      "required": ["kind", "path"]
+    },
+    "entity": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {"type": "string", "pattern": "^[a-z][a-z0-9-]{0,62}:[a-z][a-z0-9._-]{0,127}$"},
+        "kind": {"enum": ["document", "component", "decision", "contract", "requirement", "verification_obligation", "owner"]},
+        "owners": {"type": "array", "maxItems": 256, "uniqueItems": true, "items": {"type": "string"}},
+        "scopes": {"type": "array", "maxItems": 256, "items": {"$ref": "#/$defs/entityScope"}},
+        "lifecycle": {"enum": ["draft", "active", "deprecated", "superseded", "retired"]},
+        "supersedes": {"type": "array", "maxItems": 256, "uniqueItems": true, "items": {"type": "string"}},
+        "sensitivity": {"enum": ["public", "internal", "restricted"]},
+        "freshness": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {"inputs": {"type": "array", "maxItems": 256, "uniqueItems": true, "items": {"type": "string"}}},
+          "required": ["inputs"]
+        },
+        "declaration": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {"status": {"const": "declared"}, "source": {"$ref": "#/$defs/sourceSpan"}},
+          "required": ["status", "source"]
+        }
+      },
+      "required": ["id", "kind", "owners", "scopes", "lifecycle", "supersedes", "sensitivity", "freshness", "declaration"]
+    },
+    "entityModel": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "version": {"const": "repoctx.entities/v1alpha1"},
+        "namespace": {"type": "string", "pattern": "^[a-z][a-z0-9-]{0,62}$"},
+        "entities": {"type": "array", "maxItems": 1024, "items": {"$ref": "#/$defs/entity"}}
+      },
+      "required": ["version", "namespace", "entities"]
     },
     "inputManifest": {
       "type": "object",

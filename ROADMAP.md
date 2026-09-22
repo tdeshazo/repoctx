@@ -678,11 +678,12 @@ the existing deterministic artifact-authoring workflow.
   coordinates. Unknown or duplicate fields, unsafe aliases, excessive nesting,
   and unavailable inputs must fail with bounded diagnostics. Evidence:
   [canonical manifest contract](docs/reports/m7-01-evidence.md).
-- [ ] **M7-02 — Add typed repository entities.** Compile document frontmatter,
+- [x] **M7-02 — Add typed repository entities.** Compile document frontmatter,
   components, decisions, contracts, requirements, verification obligations,
   owners, scopes, lifecycle, supersession, sensitivity, and freshness into stable
   R-CIR entities. Preserve the existing syntax graph and source-only workflow;
   every semantic assertion retains its exact source and declaration status.
+  Evidence: [typed repository entities](docs/reports/m7-02-evidence.md).
 - [ ] **M7-03 — Unify artifact authoring and compilation.** Make the current
   deterministic artifact generator an input adapter for the canonical model,
   with one semantic declaration path and no agent-authored hashes or coordinates.

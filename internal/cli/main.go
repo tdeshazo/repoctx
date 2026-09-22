@@ -59,7 +59,7 @@ Usage:
   repoctx files [-root DIR] [-glob '*.go'] [-type file|directory|all]
   repoctx search [-root DIR] -query TEXT [-regex] [-context-lines 3]
   repoctx read [-root DIR] -file PATH[:START:END] [-file PATH...]
-  repoctx compile [-root DIR] [-o repo.ir.json.gz] [-pretty] [-cache-dir DIR]
+  repoctx compile [-root DIR] [-manifest FILE] [-o repo.ir.json.gz] [-pretty] [-cache-dir DIR]
   repoctx artifacts -source FILE [-root DIR] [-o FILE] [-check]
   repoctx manifest [-root DIR] [-file agent-context.yaml]
   repoctx stats REPO_IR
@@ -89,6 +89,7 @@ func compileCmd(args []string) {
 	maxRead := fs.Int64("max-read-bytes", 256<<20, "total input bytes across both compilation verification passes")
 	maxEntries := fs.Int("max-entries", 100000, "maximum enumerated directory entries per inventory pass")
 	cacheDir := fs.String("cache-dir", "", "trusted parse-fragment cache outside the repository")
+	manifestPath := fs.String("manifest", "", "optional canonical repository manifest")
 	var allows, denies repeated
 	fs.Var(&allows, "allow", "permitted source/auxiliary file or directory prefix before indexing; repeat")
 	fs.Var(&denies, "deny", "denied source/auxiliary file or directory prefix before indexing; repeat")
@@ -96,6 +97,7 @@ func compileCmd(args []string) {
 	repo, cacheStats, err := compiler.CompileWithStats(compiler.Options{
 		Root: *root, Python: *python, MaxBytes: *maxBytes, MaxReadBytes: *maxRead,
 		MaxEntries: *maxEntries, AllowPaths: allows, DenyPaths: denies, CacheDir: *cacheDir,
+		Manifest: *manifestPath,
 	})
 	if err != nil {
 		fatal(err)
@@ -126,11 +128,15 @@ func statsCmd(args []string) {
 		nodes += len(f.Nodes)
 	}
 	graphNodes, graphArcs := 0, 0
+	entities := 0
 	if repo.Graph != nil {
 		graphNodes = len(repo.Symbols) + len(repo.Graph.External)
 		graphArcs = len(repo.Graph.Out.Targets)
 	}
-	fmt.Printf("IR: %s\nfiles: %d (go=%d python=%d html=%d css=%d javascript=%d typescript=%d tsx=%d markdown=%d)\nnodes: %d\nsymbols: %d\noccurrence edges: %d\ngraph nodes: %d\ngraph arcs: %d\ndiagnostics: %d\nstrings: %d\n", repo.Version, len(repo.Files), langs[ir.LangGo], langs[ir.LangPython], langs[ir.LangHTML], langs[ir.LangCSS], langs[ir.LangJavaScript], langs[ir.LangTypeScript], langs[ir.LangTSX], langs[ir.LangMarkdown], nodes, len(repo.Symbols), len(repo.Edges), graphNodes, graphArcs, len(repo.Diagnostics), len(repo.Strings))
+	if repo.Entities != nil {
+		entities = len(repo.Entities.Entities)
+	}
+	fmt.Printf("IR: %s\nfiles: %d (go=%d python=%d html=%d css=%d javascript=%d typescript=%d tsx=%d markdown=%d)\nnodes: %d\nsymbols: %d\noccurrence edges: %d\ngraph nodes: %d\ngraph arcs: %d\nentities: %d\ndiagnostics: %d\nstrings: %d\n", repo.Version, len(repo.Files), langs[ir.LangGo], langs[ir.LangPython], langs[ir.LangHTML], langs[ir.LangCSS], langs[ir.LangJavaScript], langs[ir.LangTypeScript], langs[ir.LangTSX], langs[ir.LangMarkdown], nodes, len(repo.Symbols), len(repo.Edges), graphNodes, graphArcs, entities, len(repo.Diagnostics), len(repo.Strings))
 }
 
 func graphCmd(args []string) {

@@ -7,11 +7,15 @@ import (
 	"testing"
 )
 
-const validManifest = `version: repoctx.manifest/v1alpha1
+const validManifest = `version: repoctx.manifest/v1alpha2
 namespace: demo
 source_roots:
   - id: source
     path: .
+document_sources:
+  - id: semantics
+    path: model.md
+    format: repoctx.frontmatter/v1alpha1
 artifact_sources:
   - id: claims
     path: claims.json
@@ -21,6 +25,12 @@ components:
     source_roots: [source]
     artifact_sources: [claims]
     provider_inputs: [module]
+    owners: [maintainers]
+    scopes: [{kind: subtree, path: .}]
+    lifecycle: active
+    supersedes: []
+    sensitivity: internal
+    freshness: {inputs: [go.mod]}
 provider_inputs:
   - id: module
     provider: repoctx.go-imports/v1
@@ -29,13 +39,29 @@ derived_views:
   - id: index
     kind: repository_ir
     components: [core]
-capabilities: [syntax_graph, artifact_declarations, go_imports]
+capabilities: [syntax_graph, semantic_entities, artifact_declarations, go_imports]
+`
+
+const validFrontmatter = `---
+version: repoctx.frontmatter/v1alpha1
+entities:
+  - id: maintainers
+    kind: owner
+    owners: []
+    scopes: []
+    lifecycle: active
+    supersedes: []
+    sensitivity: internal
+    freshness: {inputs: [go.mod]}
+---
+# Model
 `
 
 func TestLoadValidManifestAndVerifyAvailability(t *testing.T) {
 	root := t.TempDir()
 	write(t, root, "claims.json")
 	write(t, root, "go.mod")
+	writeData(t, root, "model.md", validFrontmatter)
 	doc, err := Load(root, []byte(validManifest), Limits{})
 	if err != nil {
 		t.Fatal(err)
@@ -56,6 +82,7 @@ func TestLoadRejectsSymlinkedArtifactInput(t *testing.T) {
 	root := t.TempDir()
 	write(t, root, "target")
 	write(t, root, "go.mod")
+	writeData(t, root, "model.md", validFrontmatter)
 	if err := os.Symlink("target", filepath.Join(root, "claims.json")); err != nil {
 		t.Fatal(err)
 	}
@@ -84,20 +111,21 @@ func TestLoadFileConfinesManifestToRoot(t *testing.T) {
 
 func TestRejectsUnsafeYAMLAndClosedShape(t *testing.T) {
 	cases := map[string]string{
-		"duplicate":                   strings.Replace(validManifest, "version: repoctx.manifest/v1alpha1", "version: repoctx.manifest/v1alpha1\nversion: repoctx.manifest/v1alpha1", 1),
+		"duplicate":                   strings.Replace(validManifest, "version: repoctx.manifest/v1alpha2", "version: repoctx.manifest/v1alpha2\nversion: repoctx.manifest/v1alpha2", 1),
 		"alias":                       strings.Replace(validManifest, "- id: source", "- &root\n    id: source", 1),
-		"explicit tag":                strings.Replace(validManifest, "version: repoctx.manifest/v1alpha1", "version: !!str repoctx.manifest/v1alpha1", 1),
+		"explicit tag":                strings.Replace(validManifest, "version: repoctx.manifest/v1alpha2", "version: !!str repoctx.manifest/v1alpha2", 1),
 		"unknown":                     strings.Replace(validManifest, "capabilities:", "generated_sha256: nope\ncapabilities:", 1),
 		"unsafe path":                 strings.Replace(validManifest, "path: claims.json", "path: ../claims.json", 1),
 		"unknown reference":           strings.Replace(validManifest, "source_roots: [source]", "source_roots: [missing]", 1),
 		"duplicate identity":          strings.Replace(validManifest, "id: claims", "id: source", 1),
 		"unsupported version":         strings.Replace(validManifest, Version, "repoctx.manifest/v0", 1),
-		"scalar coercion":             strings.Replace(validManifest, "version: repoctx.manifest/v1alpha1", "version: 1", 1),
-		"missing provider capability": strings.Replace(validManifest, "capabilities: [syntax_graph, artifact_declarations, go_imports]", "capabilities: [syntax_graph, artifact_declarations]", 1),
+		"scalar coercion":             strings.Replace(validManifest, "version: repoctx.manifest/v1alpha2", "version: 1", 1),
+		"missing provider capability": strings.Replace(validManifest, "capabilities: [syntax_graph, semantic_entities, artifact_declarations, go_imports]", "capabilities: [syntax_graph, semantic_entities, artifact_declarations]", 1),
 	}
 	root := t.TempDir()
 	write(t, root, "claims.json")
 	write(t, root, "go.mod")
+	writeData(t, root, "model.md", validFrontmatter)
 	for name, data := range cases {
 		t.Run(name, func(t *testing.T) {
 			doc, err := Load(root, []byte(data), Limits{})
@@ -112,6 +140,7 @@ func TestLimitsAndMultipleDocuments(t *testing.T) {
 	root := t.TempDir()
 	write(t, root, "claims.json")
 	write(t, root, "go.mod")
+	writeData(t, root, "model.md", validFrontmatter)
 	tests := []struct {
 		data   string
 		limits Limits
@@ -147,6 +176,7 @@ func FuzzLoad(f *testing.F) {
 	root := f.TempDir()
 	write(f, root, "claims.json")
 	write(f, root, "go.mod")
+	writeData(f, root, "model.md", validFrontmatter)
 	f.Add([]byte(validManifest))
 	f.Add([]byte("a: &a [*a]\n"))
 	f.Fuzz(func(t *testing.T, data []byte) {
@@ -159,7 +189,12 @@ func FuzzLoad(f *testing.F) {
 
 func write(t testing.TB, root, name string) {
 	t.Helper()
-	if err := os.WriteFile(filepath.Join(root, name), []byte("test\n"), 0600); err != nil {
+	writeData(t, root, name, "test\n")
+}
+
+func writeData(t testing.TB, root, name, data string) {
+	t.Helper()
+	if err := os.WriteFile(filepath.Join(root, name), []byte(data), 0600); err != nil {
 		t.Fatal(err)
 	}
 }

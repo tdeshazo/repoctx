@@ -12,6 +12,7 @@ type Repository struct {
 	Diagnostics []Diagnostic   `json:"d,omitempty"`
 	Strings     []string       `json:"q,omitempty"`
 	Inputs      *InputManifest `json:"inputs,omitempty"`
+	Entities    *EntityModel   `json:"entities,omitempty"`
 }
 
 type Language uint8

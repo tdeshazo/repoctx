@@ -1,17 +1,103 @@
+---
+version: repoctx.frontmatter/v1alpha1
+entities:
+  - id: maintainers
+    kind: owner
+    owners: []
+    scopes: []
+    lifecycle: active
+    supersedes: []
+    sensitivity: public
+    freshness:
+      inputs:
+        - agent-context.yaml
+  - id: manifest-document
+    kind: document
+    owners: [maintainers]
+    scopes:
+      - kind: file
+        path: docs/MANIFEST.md
+    lifecycle: active
+    supersedes: []
+    sensitivity: public
+    freshness:
+      inputs:
+        - docs/MANIFEST.md
+  - id: manifest-explicit-opt-in
+    kind: decision
+    owners: [maintainers]
+    scopes:
+      - kind: subtree
+        path: .
+    lifecycle: active
+    supersedes: []
+    sensitivity: public
+    freshness:
+      inputs:
+        - agent-context.yaml
+  - id: canonical-manifest
+    kind: contract
+    owners: [maintainers]
+    scopes:
+      - kind: file
+        path: agent-context.yaml
+    lifecycle: active
+    supersedes: []
+    sensitivity: public
+    freshness:
+      inputs:
+        - docs/manifest.schema.json
+  - id: exact-declaration-source
+    kind: requirement
+    owners: [maintainers]
+    scopes:
+      - kind: subtree
+        path: pkg/manifest
+    lifecycle: active
+    supersedes: []
+    sensitivity: public
+    freshness:
+      inputs:
+        - pkg/manifest/entities.go
+  - id: manifest-conformance
+    kind: verification_obligation
+    owners: [maintainers]
+    scopes:
+      - kind: subtree
+        path: pkg/manifest
+    lifecycle: active
+    supersedes: []
+    sensitivity: public
+    freshness:
+      inputs:
+        - pkg/manifest/manifest_test.go
+---
+
 # Canonical repository manifest
 
 `agent-context.yaml` is the repository-authored entry point for the canonical
-repository model. The current contract is `repoctx.manifest/v1alpha1`, described
+repository model. The current contract is `repoctx.manifest/v1alpha2`, described
 by [the JSON Schema](manifest.schema.json) and enforced by `pkg/manifest`.
+Typed Markdown declarations use `repoctx.frontmatter/v1alpha1` and its
+[frontmatter schema](frontmatter.schema.json).
 Only this current active-development contract is supported.
 
 The manifest declares an authored repository namespace plus:
 
 - named source roots beneath the caller-selected repository root;
+- named Markdown inputs containing typed semantic frontmatter;
 - semantic artifact-authoring inputs and their contract;
 - components and their source, artifact, and provider inputs;
 - supported derived views over those components; and
 - the capabilities the repository expects the current compiler to provide.
+
+Canonical compilation remains explicit:
+
+```sh
+repoctx compile -root . -manifest agent-context.yaml -o repo.ir.json.gz
+```
+
+Without `-manifest`, compilation emits the existing bounded source-only IR.
 
 The checked-in [repoctx manifest](../agent-context.yaml) is the example and
 dogfood fixture. Validate it without compiling a repository:
@@ -24,6 +110,15 @@ The command prints the validated semantic model as JSON. Declaration order is
 preserved. The namespace and IDs are authored, stable names; they are not paths,
 commands, account identities, or proof of ownership. IDs are unique across all
 declaration kinds, and every reference must resolve to the expected kind.
+
+`document_sources` explicitly lists the Markdown files whose leading YAML
+frontmatter is semantic input. Frontmatter may declare documents, components,
+decisions, contracts, requirements, verification obligations, and owners. Each
+entity also declares owner IDs, file/subtree scopes, lifecycle, supersession,
+sensitivity, and freshness inputs. Components carry the same semantic fields
+directly in the manifest. Compilation qualifies local IDs with the namespace,
+sorts by ID, resolves owner and same-kind supersession references, and attaches
+an exact hashed byte span with status `declared`.
 
 ## Authored versus generated data
 
@@ -48,7 +143,7 @@ providers/formats/views/capabilities, and unavailable inputs fail the whole
 manifest. Diagnostics are bounded and never quote repository values.
 
 Production ceilings are 12 representation-graph levels, 4,096 total nodes, 64
-source roots, 64 artifact sources, 256 components, 256 provider inputs, 64
+source roots, 64 document sources, 64 artifact sources, 256 components, 256 provider inputs, 64
 derived views, and 64 capabilities. Callers may lower but not raise these limits.
 Each component or view may contain at most 256 references.
 File paths are relative slash paths without traversal, globs, backslashes,
