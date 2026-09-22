@@ -21,6 +21,30 @@ These statuses summarize retained evidence, not a fresh execution of its tests.
 The [historical plan](docs/history/roadmap-2026-09-22.md) preserves milestone IDs,
 completion links, and architectural proposals. This file owns current priorities.
 
+## Immediate follow-up: real-repository skill evaluation
+
+The 2026-09-22 external Tornado follow-up passed 8/8 tasks in every cohort.
+The skill/no-prefill cohort used 28.5% more total input/output tokens than
+vanilla (including cached input), with 11 command events failing on read ranges
+beyond EOF. Historical controls and simultaneous treatment changes prevent
+attributing the usage difference to the skill. Keep Repoctx optional; the
+earlier M6-07 directed pass does not establish reliable EOF handling across tasks.
+See the [actionable feedback](docs/reports/real-repoctx-skill-2026-09-22-feedback.md)
+for evidence, limitations, and verification criteria.
+
+- [ ] **First: fix recurring EOF read friction.** Inspect the evaluated version
+  and failed commands, reproduce the errors, and make valid bounded retries
+  obvious. Verify exact spans, output limits, and recovery on fresh agent tasks.
+- [ ] **Next: reduce demonstrated retrieval overhead.** Inspect the largest
+  regressions and apparent wins before changing guidance. Remove observed
+  redundant work and retain the stop rule for sufficient or known-file evidence.
+- [ ] **Before rerunning: repair external harness accounting.** Reconcile PATH
+  and explicit-path invocations to 37 commands and 39 subcommands; distinguish
+  the 11 Repoctx EOF failures from the one downstream public-check failure.
+- [ ] **Then: run a controlled comparison.** Pin versions, isolate treatment
+  changes, interleave repeated trials, and freeze fresh tasks and decision rules.
+  Report correctness, usage components, time, and compilation cost separately.
+
 ## 1. Bounded retrieval corrections
 
 M4-12 records the bounded retrieval corrections under realistic output limits.
