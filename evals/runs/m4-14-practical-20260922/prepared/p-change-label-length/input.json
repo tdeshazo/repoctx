@@ -1,0 +1,17 @@
+{
+  "version": "repoctx.m4.agent-input/v1alpha1",
+  "id": "p-change-label-length",
+  "question": "Allow 24 destination characters on labels instead of 20 without changing the label layout.",
+  "repository": "parcel-path",
+  "files": [
+    "PROVENANCE.json",
+    "README.md",
+    "docs/routing.md",
+    "parcel/__init__.py",
+    "parcel/config.py",
+    "parcel/labels.py",
+    "parcel/routing.py",
+    "parcel/service.py"
+  ],
+  "check_id": "p-label-24"
+}

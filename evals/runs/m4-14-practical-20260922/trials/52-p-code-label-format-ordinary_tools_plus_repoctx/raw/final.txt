@@ -1,0 +1,1 @@
+`format_label` in `parcel/labels.py:1-3` combines the tracking code and destination city. It strips and title-cases the city, truncates it to 20 characters, then returns `"{tracking_code} | {destination}"`. `prepare_parcel` uses it for the parcel’s `"label"` field (`parcel/service.py:4-7`).

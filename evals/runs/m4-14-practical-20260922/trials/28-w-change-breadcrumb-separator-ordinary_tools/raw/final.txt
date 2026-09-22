@@ -1,0 +1,1 @@
+Changed the breadcrumb separator from a slash to a single chevron (`›`) in [repository/portal/navigation.py](repository/portal/navigation.py:2). Verified that both the breadcrumb function and rendered page use it.

@@ -1,0 +1,67 @@
+{
+  "packet_id": "c134d81be85673fd",
+  "task_type": "documentation_lookup",
+  "question": "Which delivery lane is used when no service level is supplied?",
+  "expected_outcome": "answerable",
+  "expected_answer": "The ground lane.",
+  "required_permitted_sources": [
+    {
+      "file": "README.md",
+      "sha256": "324d0c287f5e651e665590538b6ab9ff0f075b7dd2106359b3bfb17cf55c8e2b",
+      "start_byte": 88,
+      "end_byte": 159,
+      "text": "Standard parcels use the ground lane when no service level is supplied."
+    }
+  ],
+  "visible_sources": [
+    {
+      "file": "PROVENANCE.json",
+      "sha256": "b3470c74c280a5102798e7a9f619939aaa89d366434730d597fb637caf2ed297",
+      "text": "{\"origin\":\"synthetic\",\"license\":\"Apache-2.0\",\"copyright\":\"repoctx contributors\",\"redistribution\":\"cleared\"}\n"
+    },
+    {
+      "file": "README.md",
+      "sha256": "324d0c287f5e651e665590538b6ab9ff0f075b7dd2106359b3bfb17cf55c8e2b",
+      "text": "# Parcel Path\n\nParcel Path selects a delivery lane and prints compact shipping labels.\n\nStandard parcels use the ground lane when no service level is supplied.\nWeekend pickup adds a fixed surcharge to the quoted delivery price.\nTracking events are retained for 14 days in the local event buffer.\n"
+    },
+    {
+      "file": "docs/routing.md",
+      "sha256": "f91a1ab5c30298dd19de465e36795eb40c7f1b7f74e1f19e1a3de690d1e1cc44",
+      "text": "# Routing policy\n\nNorth-region parcels route through depot N1 before final delivery.\nHazardous parcels cannot use the air lane and must remain on ground transport.\nLabels include the tracking code followed by the destination city.\n"
+    },
+    {
+      "file": "parcel/__init__.py",
+      "sha256": "b05a5b48287251bfa38f3e846f78b878fe12672f51303f658e60462e28c31b19",
+      "text": "\"\"\"Parcel Path example package.\"\"\"\n"
+    },
+    {
+      "file": "parcel/config.py",
+      "sha256": "f60a407f9f512c69c8c6fbe4d4d1721e3dbb0e466f9ae1d12c0dd83637175da6",
+      "text": "DEFAULT_LANE = \"ground\"\nEVENT_RETENTION_DAYS = 14\nWEEKEND_SURCHARGE = 5\n"
+    },
+    {
+      "file": "parcel/labels.py",
+      "sha256": "bced0ffad05950d60a4ab7c1f03e1855dd3e307366c39c165ff2d814a0b79102",
+      "text": "def format_label(tracking_code, city):\n    destination = city.strip().title()[:20]\n    return f\"{tracking_code} | {destination}\"\n"
+    },
+    {
+      "file": "parcel/routing.py",
+      "sha256": "0c9042fbfee395e9c79afd611a4c30830c1634289ef45db3d5f11ca15939964b",
+      "text": "from .config import DEFAULT_LANE, WEEKEND_SURCHARGE\n\n\ndef choose_lane(region, hazardous=False, requested=None):\n    if hazardous:\n        return \"ground\"\n    if requested:\n        return requested\n    return \"north-n1\" if region == \"north\" else DEFAULT_LANE\n\n\ndef delivery_price(base, weekend=False):\n    return base + (WEEKEND_SURCHARGE if weekend else 0)\n"
+    },
+    {
+      "file": "parcel/service.py",
+      "sha256": "b09c733e7a289de9312584db1ffcf1c60cb0bab030d9e0e8f714c9b1e7984e75",
+      "text": "from .labels import format_label\nfrom .routing import choose_lane, delivery_price\n\n\ndef prepare_parcel(tracking_code, city, region, base_price, hazardous=False):\n    return {\n        \"label\": format_label(tracking_code, city),\n        \"lane\": choose_lane(region, hazardous=hazardous),\n        \"price\": delivery_price(base_price),\n    }\n"
+    }
+  ],
+  "model_response": "The **ground** lane is the default when no service level is supplied ([repository/README.md](repository/README.md:5), [repository/parcel/config.py](repository/parcel/config.py:1)). North-region parcels have a routing exception: they use `north-n1` ([repository/parcel/routing.py](repository/parcel/routing.py:9)).",
+  "review": {
+    "grade": null,
+    "reason": "",
+    "source_grounding": ""
+  },
+  "source_changes": {
+    "changed_files": []
+  }
+}

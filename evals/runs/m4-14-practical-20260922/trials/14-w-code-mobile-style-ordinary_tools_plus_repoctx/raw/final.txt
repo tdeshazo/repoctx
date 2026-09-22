@@ -1,0 +1,1 @@
+The style is in [assets/site.css](repository/assets/site.css:6): for screens **639px wide or narrower**, the media query sets `nav { display: block; }`, keeping navigation visible.

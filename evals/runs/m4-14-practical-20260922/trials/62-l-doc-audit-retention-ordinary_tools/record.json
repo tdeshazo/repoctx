@@ -1,0 +1,121 @@
+{
+  "id": "62-l-doc-audit-retention-ordinary_tools",
+  "position": 62,
+  "task_id": "l-doc-audit-retention",
+  "task_type": "documentation_lookup",
+  "condition": "ordinary_tools",
+  "question": "How long are refund audit records retained?",
+  "model": "gpt-6-sol",
+  "model_revision": "unresolved_alias",
+  "reasoning_effort": "medium",
+  "input_sha256": "0758bdf389aeda8f0f37ac47e017f047cd76e2d4039c9f63b357308b50769bdd",
+  "prompt_sha256": "be250828625496b901594e9640d51b47e22dd123568f46e44f8f0df2c4e4ae92",
+  "exit_code": 0,
+  "timed_out": false,
+  "wall_seconds": 16.062587,
+  "usage": {
+    "input_tokens": 53170,
+    "cached_input_tokens": 45824,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 211,
+    "reasoning_output_tokens": 49
+  },
+  "event_count": 9,
+  "observed_tool_item_count": 2,
+  "observed_tool_item_types": {
+    "command_execution": 2
+  },
+  "tool_events": [
+    {
+      "type": "item.completed",
+      "item": {
+        "id": "item_1",
+        "type": "command_execution",
+        "command": "/usr/bin/zsh -lc 'rg --files repository'",
+        "aggregated_output": "repository/PROVENANCE.json\nrepository/README.md\nrepository/docs/operations.md\nrepository/ledger/__init__.py\nrepository/ledger/config.py\nrepository/ledger/pricing.py\nrepository/ledger/service.py\nrepository/ledger/storage.py\n",
+        "exit_code": 0,
+        "status": "completed"
+      }
+    },
+    {
+      "type": "item.completed",
+      "item": {
+        "id": "item_2",
+        "type": "command_execution",
+        "command": "/usr/bin/zsh -lc \"rg -n -i 'refund|audit|retain|retention|record|purge|delete|days|years' repository\"",
+        "aggregated_output": "repository/README.md:3:Ledger Lite records small-business invoices and refunds.\nrepository/README.md:9:See `docs/operations.md` for settlement and audit policy.\nrepository/docs/operations.md:3:Settlements remain pending for two business days before they are final.\nrepository/docs/operations.md:4:Refund audit records are retained for 90 days after the refund date.\nrepository/ledger/service.py:3:from .storage import append_refund\nrepository/ledger/service.py:6:def quote_invoice(reference, amount, days_late, currency=None):\nrepository/ledger/service.py:11:        \"late_fee\": late_fee(days_late, amount),\nrepository/ledger/service.py:15:def record_refund(reference, amount):\nrepository/ledger/service.py:17:    return append_refund(normalized, amount)\nrepository/ledger/storage.py:1:REFUNDS = []\nrepository/ledger/storage.py:4:def append_refund(reference, amount):\nrepository/ledger/storage.py:5:    record = {\"reference\": reference, \"amount\": amount}\nrepository/ledger/storage.py:6:    REFUNDS.append(record)\nrepository/ledger/storage.py:7:    return record\nrepository/ledger/pricing.py:1:def late_fee(days_late, amount):\nrepository/ledger/pricing.py:2:    \"\"\"Charge one percent per late day, currently capped at ten days.\"\"\"\nrepository/ledger/pricing.py:3:    billable_days = min(max(days_late, 0), 10)\nrepository/ledger/pricing.py:4:    return round(amount * billable_days * 0.01, 2)\n",
+        "exit_code": 0,
+        "status": "completed"
+      }
+    }
+  ],
+  "command_call_count": 2,
+  "tool_call_cap": 24,
+  "tool_call_cap_respected": true,
+  "tool_call_cap_enforcement": "advisory_prompt_only",
+  "command_events": [
+    {
+      "type": "item.completed",
+      "item": {
+        "id": "item_1",
+        "type": "command_execution",
+        "command": "/usr/bin/zsh -lc 'rg --files repository'",
+        "aggregated_output": "repository/PROVENANCE.json\nrepository/README.md\nrepository/docs/operations.md\nrepository/ledger/__init__.py\nrepository/ledger/config.py\nrepository/ledger/pricing.py\nrepository/ledger/service.py\nrepository/ledger/storage.py\n",
+        "exit_code": 0,
+        "status": "completed"
+      }
+    },
+    {
+      "type": "item.completed",
+      "item": {
+        "id": "item_2",
+        "type": "command_execution",
+        "command": "/usr/bin/zsh -lc \"rg -n -i 'refund|audit|retain|retention|record|purge|delete|days|years' repository\"",
+        "aggregated_output": "repository/README.md:3:Ledger Lite records small-business invoices and refunds.\nrepository/README.md:9:See `docs/operations.md` for settlement and audit policy.\nrepository/docs/operations.md:3:Settlements remain pending for two business days before they are final.\nrepository/docs/operations.md:4:Refund audit records are retained for 90 days after the refund date.\nrepository/ledger/service.py:3:from .storage import append_refund\nrepository/ledger/service.py:6:def quote_invoice(reference, amount, days_late, currency=None):\nrepository/ledger/service.py:11:        \"late_fee\": late_fee(days_late, amount),\nrepository/ledger/service.py:15:def record_refund(reference, amount):\nrepository/ledger/service.py:17:    return append_refund(normalized, amount)\nrepository/ledger/storage.py:1:REFUNDS = []\nrepository/ledger/storage.py:4:def append_refund(reference, amount):\nrepository/ledger/storage.py:5:    record = {\"reference\": reference, \"amount\": amount}\nrepository/ledger/storage.py:6:    REFUNDS.append(record)\nrepository/ledger/storage.py:7:    return record\nrepository/ledger/pricing.py:1:def late_fee(days_late, amount):\nrepository/ledger/pricing.py:2:    \"\"\"Charge one percent per late day, currently capped at ten days.\"\"\"\nrepository/ledger/pricing.py:3:    billable_days = min(max(days_late, 0), 10)\nrepository/ledger/pricing.py:4:    return round(amount * billable_days * 0.01, 2)\n",
+        "exit_code": 0,
+        "status": "completed"
+      }
+    }
+  ],
+  "errors": [],
+  "malformed_event_lines": [],
+  "answer": "Refund audit records are retained for **90 days after the refund date**. [repository/docs/operations.md](repository/docs/operations.md:4)",
+  "raw": {
+    "events": "trials/62-l-doc-audit-retention-ordinary_tools/raw/events.jsonl",
+    "stderr": "trials/62-l-doc-audit-retention-ordinary_tools/raw/stderr.txt",
+    "final": "trials/62-l-doc-audit-retention-ordinary_tools/raw/final.txt"
+  },
+  "source_before_sha256": {
+    "PROVENANCE.json": "b3470c74c280a5102798e7a9f619939aaa89d366434730d597fb637caf2ed297",
+    "README.md": "dd3ae2f1d4bf271452ffded6f204fcac3e639f1dd13b338ffe1a4e7dd2481dae",
+    "docs/operations.md": "1b35c75fc71d6d8cb6de0806afc2d0b0c8929d2f4862743df82b0139b7d96c74",
+    "ledger/__init__.py": "a623e22bb9b8c2da83e511d6778f4cbbed5242d96129ac168f4168ab542d51cb",
+    "ledger/config.py": "01b6bc6b19c6824db9874af8943c0c321a30e3ef780442985f011c5069e90e09",
+    "ledger/pricing.py": "30f52304d0d0e9a2f6754972619e97d5cce726e256cde6906c834bcba82e4762",
+    "ledger/service.py": "29c7f779724021a6331fcf3c8ca2242a0218876e075b5bb151e338e1b9c70552",
+    "ledger/storage.py": "42cd1ced5a0ba956a2ac1c270ac0e3b03beed25e338c3d8c620e32a6b51cd499"
+  },
+  "source_after_sha256": {
+    "PROVENANCE.json": "b3470c74c280a5102798e7a9f619939aaa89d366434730d597fb637caf2ed297",
+    "README.md": "dd3ae2f1d4bf271452ffded6f204fcac3e639f1dd13b338ffe1a4e7dd2481dae",
+    "docs/operations.md": "1b35c75fc71d6d8cb6de0806afc2d0b0c8929d2f4862743df82b0139b7d96c74",
+    "ledger/__init__.py": "a623e22bb9b8c2da83e511d6778f4cbbed5242d96129ac168f4168ab542d51cb",
+    "ledger/config.py": "01b6bc6b19c6824db9874af8943c0c321a30e3ef780442985f011c5069e90e09",
+    "ledger/pricing.py": "30f52304d0d0e9a2f6754972619e97d5cce726e256cde6906c834bcba82e4762",
+    "ledger/service.py": "29c7f779724021a6331fcf3c8ca2242a0218876e075b5bb151e338e1b9c70552",
+    "ledger/storage.py": "42cd1ced5a0ba956a2ac1c270ac0e3b03beed25e338c3d8c620e32a6b51cd499"
+  },
+  "changed_files": [],
+  "source_unchanged": true,
+  "source_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "source_diff_path": "trials/62-l-doc-audit-retention-ordinary_tools/raw/source.diff",
+  "change_check": null,
+  "workspace_contents": [
+    ".agents",
+    ".codex",
+    ".git",
+    ".scratch",
+    "input.json",
+    "repository"
+  ]
+}

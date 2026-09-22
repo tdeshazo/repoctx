@@ -1,0 +1,88 @@
+{
+  "packet_id": "0f0a57cb0f6eb602",
+  "task_type": "cross_file_analysis",
+  "question": "Trace how page rendering obtains the theme, breadcrumb, and skip link.",
+  "expected_outcome": "answerable",
+  "expected_answer": "render_page imports DEFAULT_THEME, breadcrumb, and skip_link, then uses each in the returned markup.",
+  "required_permitted_sources": [
+    {
+      "file": "portal/render.py",
+      "sha256": "d3d1480183082902c87ff9e97fe7902019222d529f204bd3d8f72452da90e140",
+      "start_byte": 0,
+      "end_byte": 79,
+      "text": "from .config import DEFAULT_THEME\nfrom .navigation import breadcrumb, skip_link"
+    },
+    {
+      "file": "portal/render.py",
+      "sha256": "d3d1480183082902c87ff9e97fe7902019222d529f204bd3d8f72452da90e140",
+      "start_byte": 82,
+      "end_byte": 414,
+      "text": "def render_page(title, sections, theme=None):\n    trail = breadcrumb([\"docs\", title])\n    links = \"\".join(f\"<li>{section}</li>\" for section in sections)\n    return (\n        skip_link()\n        + f'<main id=\"main-content\" data-theme=\"{theme or DEFAULT_THEME}\">'\n        + f\"<nav>{trail}</nav><h1>{title}</h1><ul>{links}</ul></main>\""
+    },
+    {
+      "file": "portal/navigation.py",
+      "sha256": "c95c158c80173e04be723f09fd909b50542491d8bf5bd767a3592687bb75ee58",
+      "start_byte": 0,
+      "end_byte": 84,
+      "text": "def breadcrumb(parts):\n    return \" / \".join(part.strip().title() for part in parts)"
+    },
+    {
+      "file": "portal/navigation.py",
+      "sha256": "c95c158c80173e04be723f09fd909b50542491d8bf5bd767a3592687bb75ee58",
+      "start_byte": 87,
+      "end_byte": 191,
+      "text": "def skip_link(target=\"main-content\"):\n    return f'<a class=\"skip\" href=\"#{target}\">Skip to content</a>'"
+    }
+  ],
+  "visible_sources": [
+    {
+      "file": "PROVENANCE.json",
+      "sha256": "b3470c74c280a5102798e7a9f619939aaa89d366434730d597fb637caf2ed297",
+      "text": "{\"origin\":\"synthetic\",\"license\":\"Apache-2.0\",\"copyright\":\"repoctx contributors\",\"redistribution\":\"cleared\"}\n"
+    },
+    {
+      "file": "README.md",
+      "sha256": "81a2a7c3120b83f2665efefe6076a02783d3d229f76a03270d4ded84051913c5",
+      "text": "# Portal Kit\n\nPortal Kit renders navigation state for a small documentation site.\n\nThe default visual theme is light for visitors without a saved preference.\nBreadcrumbs appear above the page title on every documentation page.\nThe skip link targets the `main-content` landmark.\n"
+    },
+    {
+      "file": "assets/site.css",
+      "sha256": "230761729ab0eca5ceeea3993d442a88245f301bade36cd59124708ce2624cd1",
+      "text": ".skip:focus {\n  outline: 3px solid blue;\n  outline-offset: 2px;\n}\n\n@media (max-width: 639px) {\n  nav { display: block; }\n}\n"
+    },
+    {
+      "file": "docs/accessibility.md",
+      "sha256": "98bb0981d1680bd8da25c0f023f2e79bb5f568ea94314736ea413dc820e59e91",
+      "text": "# Accessibility\n\nKeyboard focus uses a three-pixel blue outline with a two-pixel offset.\nNavigation labels must remain visible at widths below 640 pixels.\nEvery rendered page exposes exactly one main landmark.\n"
+    },
+    {
+      "file": "portal/__init__.py",
+      "sha256": "780ee0a923f8945df13f7c3138964422a262fd22751e9b684f661907b3620306",
+      "text": "\"\"\"Portal Kit example package.\"\"\"\n"
+    },
+    {
+      "file": "portal/config.py",
+      "text": "DEFAULT_THEME = \"light\"\nMOBILE_BREAKPOINT = 640\n[unrelated token declaration redacted]\n",
+      "redacted_unrelated_line": true
+    },
+    {
+      "file": "portal/navigation.py",
+      "sha256": "c95c158c80173e04be723f09fd909b50542491d8bf5bd767a3592687bb75ee58",
+      "text": "def breadcrumb(parts):\n    return \" / \".join(part.strip().title() for part in parts)\n\n\ndef skip_link(target=\"main-content\"):\n    return f'<a class=\"skip\" href=\"#{target}\">Skip to content</a>'\n"
+    },
+    {
+      "file": "portal/render.py",
+      "sha256": "d3d1480183082902c87ff9e97fe7902019222d529f204bd3d8f72452da90e140",
+      "text": "from .config import DEFAULT_THEME\nfrom .navigation import breadcrumb, skip_link\n\n\ndef render_page(title, sections, theme=None):\n    trail = breadcrumb([\"docs\", title])\n    links = \"\".join(f\"<li>{section}</li>\" for section in sections)\n    return (\n        skip_link()\n        + f'<main id=\"main-content\" data-theme=\"{theme or DEFAULT_THEME}\">'\n        + f\"<nav>{trail}</nav><h1>{title}</h1><ul>{links}</ul></main>\"\n    )\n"
+    }
+  ],
+  "model_response": "`render_page(title, sections, theme=None)` assembles the page in [portal/render.py](repository/portal/render.py:5):\n\n- **Theme:** The `<main>` element gets `data-theme` from `theme or DEFAULT_THEME`. The default is `\"light\"`, so an omitted or falsey theme uses light. [portal/render.py](repository/portal/render.py:10), [portal/config.py](repository/portal/config.py:1)\n- **Breadcrumb:** Rendering passes `[\"docs\", title]` to `breadcrumb()`, which trims and title-cases each part, then joins them with ` / `. The result appears in `<nav>` before the heading. [portal/render.py](repository/portal/render.py:6), [portal/navigation.py](repository/portal/navigation.py:1), [portal/render.py](repository/portal/render.py:11)\n- **Skip link:** Rendering prepends `skip_link()` to the output. Its default target produces a link to `#main-content`, matching the `<main id=\"main-content\">` element. [portal/render.py](repository/portal/render.py:9), [portal/navigation.py](repository/portal/navigation.py:5), [portal/render.py](repository/portal/render.py:10)",
+  "review": {
+    "grade": null,
+    "reason": "",
+    "source_grounding": ""
+  },
+  "source_changes": {
+    "changed_files": []
+  }
+}

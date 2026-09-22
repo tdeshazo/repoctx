@@ -1,0 +1,3 @@
+The routing policy says north-region parcels go through depot N1 (`docs/routing.md:3`). Code represents that route as the lane string `"north-n1"` when `region == "north"` and no other rule takes precedence (`parcel/routing.py:4-9`). `prepare_parcel` calls that function and puts the result in the parcel’s `"lane"` field (`parcel/service.py:5-9`).
+
+There are two limits to that behavior: hazardous parcels get `"ground"`, and a directly requested lane takes precedence over the north default (`parcel/routing.py:5-9`). The code does not model N1 as a separate depot stop; it encodes the route in the lane value.

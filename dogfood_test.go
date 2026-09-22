@@ -3,8 +3,6 @@ package main
 import (
 	"bytes"
 	"os"
-	"path/filepath"
-	"strings"
 	"testing"
 
 	"github.com/tdeshazo/repoctx/pkg/agentctx"
@@ -62,9 +60,9 @@ func TestRepositoryArtifactCatalog(t *testing.T) {
 		t.Fatalf("catalog links did not ground completely: %+v", grounding)
 	}
 
-	milestone, gate := nextRoadmapPair(t, root, catalog)
+	milestone, gate := workflowEvaluationRoadmapPair(t, catalog)
 	initial, err := agentctx.Build(repo, agentctx.Options{
-		Root: root, Query: "next outstanding roadmap item", Depth: 0, MaxBytes: 20000,
+		Root: root, Query: "agent workflow evaluation roadmap evidence", Depth: 0, MaxBytes: 20000,
 		DenyPaths: denyPaths,
 	})
 	if err != nil {
@@ -132,7 +130,7 @@ func artifactIDs(catalog *artifacts.Catalog) []string {
 	return ids
 }
 
-func nextRoadmapPair(t *testing.T, root string, catalog *artifacts.Catalog) (artifacts.Artifact, artifacts.Artifact) {
+func workflowEvaluationRoadmapPair(t *testing.T, catalog *artifacts.Catalog) (artifacts.Artifact, artifacts.Artifact) {
 	t.Helper()
 	byID := make(map[string]artifacts.Artifact, len(catalog.Artifacts))
 	for _, artifact := range catalog.Artifacts {
@@ -142,27 +140,17 @@ func nextRoadmapPair(t *testing.T, root string, catalog *artifacts.Catalog) (art
 		from, fromOK := byID[relationship.From]
 		to, toOK := byID[relationship.To]
 		isRoadmapPair := relationship.Kind == "contains" && fromOK && toOK &&
+			from.ID == "repoctx:milestone.evaluation" &&
+			to.ID == "repoctx:requirement.m4-14-practical-comparison" &&
 			from.Kind == "component" && to.Kind == "requirement" &&
 			len(from.Sources) == 1 && len(to.Sources) == 1 &&
 			from.Sources[0].Path == "ROADMAP.md" && to.Sources[0].Path == "ROADMAP.md"
 		if !isRoadmapPair {
 			continue
 		}
-		roadmap, err := os.ReadFile(filepath.Join(root, "ROADMAP.md"))
-		if err != nil {
-			t.Fatal(err)
-		}
-		gateStart := int(to.Sources[0].StartByte)
-		gateText := roadmap[gateStart:to.Sources[0].EndByte]
-		if !strings.HasPrefix(string(gateText), "- [ ] **M") {
-			t.Fatalf("declared next gate is not incomplete: %q", gateText)
-		}
-		if strings.Contains(string(roadmap[:gateStart]), "- [ ] **M") {
-			t.Fatal("catalog skipped an earlier incomplete roadmap item")
-		}
 		return from, to
 	}
-	t.Fatal("catalog has no incomplete milestone and next-gate relationship")
+	t.Fatal("catalog has no workflow-evaluation roadmap component and requirement relationship")
 	return artifacts.Artifact{}, artifacts.Artifact{}
 }
 

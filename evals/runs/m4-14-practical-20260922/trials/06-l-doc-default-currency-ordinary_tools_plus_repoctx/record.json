@@ -1,0 +1,123 @@
+{
+  "id": "06-l-doc-default-currency-ordinary_tools_plus_repoctx",
+  "position": 6,
+  "task_id": "l-doc-default-currency",
+  "task_type": "documentation_lookup",
+  "condition": "ordinary_tools_plus_repoctx",
+  "question": "What currency does an invoice use when none is supplied?",
+  "model": "gpt-6-sol",
+  "model_revision": "unresolved_alias",
+  "reasoning_effort": "medium",
+  "input_sha256": "0f4c32f5c4ad3c3592d42d58e1f536e5834e95ec87f24cb87ae82e45937868c8",
+  "prompt_sha256": "48d44f6ee8d20e5c69a67d5e2a08b8fb79fbefc037734ba3a8b5716a9333d731",
+  "exit_code": 0,
+  "timed_out": false,
+  "wall_seconds": 15.26183,
+  "usage": {
+    "input_tokens": 53553,
+    "cached_input_tokens": 46208,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 265,
+    "reasoning_output_tokens": 68
+  },
+  "event_count": 9,
+  "observed_tool_item_count": 2,
+  "observed_tool_item_types": {
+    "command_execution": 2
+  },
+  "tool_events": [
+    {
+      "type": "item.completed",
+      "item": {
+        "id": "item_1",
+        "type": "command_execution",
+        "command": "/usr/bin/zsh -lc \"rg -n -i 'default.currency|currency.*default|invoice.*currency|currency.*invoice' repository\"",
+        "aggregated_output": "repository/README.md:5:The default invoice currency is USD unless the caller supplies another ISO code.\nrepository/ledger/config.py:1:DEFAULT_CURRENCY = \"USD\"\nrepository/ledger/service.py:1:from .config import DEFAULT_CURRENCY\nrepository/ledger/service.py:6:def quote_invoice(reference, amount, days_late, currency=None):\nrepository/ledger/service.py:10:        \"currency\": currency or DEFAULT_CURRENCY,\n",
+        "exit_code": 0,
+        "status": "completed"
+      }
+    },
+    {
+      "type": "item.completed",
+      "item": {
+        "id": "item_2",
+        "type": "command_execution",
+        "command": "/usr/bin/zsh -lc \"sed -n '1,100p' repository/ledger/config.py repository/ledger/service.py repository/README.md\"",
+        "aggregated_output": "DEFAULT_CURRENCY = \"USD\"\nMAX_SETTLEMENT_RETRIES = 3\nREQUEST_TIMEOUT_SECONDS = 45\nfrom .config import DEFAULT_CURRENCY\nfrom .pricing import late_fee, normalize_reference\nfrom .storage import append_refund\n\n\ndef quote_invoice(reference, amount, days_late, currency=None):\n    normalized = normalize_reference(reference)\n    return {\n        \"reference\": normalized,\n        \"currency\": currency or DEFAULT_CURRENCY,\n        \"late_fee\": late_fee(days_late, amount),\n    }\n\n\ndef record_refund(reference, amount):\n    normalized = normalize_reference(reference)\n    return append_refund(normalized, amount)\n# Ledger Lite\n\nLedger Lite records small-business invoices and refunds.\n\nThe default invoice currency is USD unless the caller supplies another ISO code.\nInvoice references are normalized before storage so imports can be compared.\nRequest timeout is 30 seconds for all settlement calls.\n\nSee `docs/operations.md` for settlement and audit policy.\n",
+        "exit_code": 0,
+        "status": "completed"
+      }
+    }
+  ],
+  "command_call_count": 2,
+  "tool_call_cap": 24,
+  "tool_call_cap_respected": true,
+  "tool_call_cap_enforcement": "advisory_prompt_only",
+  "command_events": [
+    {
+      "type": "item.completed",
+      "item": {
+        "id": "item_1",
+        "type": "command_execution",
+        "command": "/usr/bin/zsh -lc \"rg -n -i 'default.currency|currency.*default|invoice.*currency|currency.*invoice' repository\"",
+        "aggregated_output": "repository/README.md:5:The default invoice currency is USD unless the caller supplies another ISO code.\nrepository/ledger/config.py:1:DEFAULT_CURRENCY = \"USD\"\nrepository/ledger/service.py:1:from .config import DEFAULT_CURRENCY\nrepository/ledger/service.py:6:def quote_invoice(reference, amount, days_late, currency=None):\nrepository/ledger/service.py:10:        \"currency\": currency or DEFAULT_CURRENCY,\n",
+        "exit_code": 0,
+        "status": "completed"
+      }
+    },
+    {
+      "type": "item.completed",
+      "item": {
+        "id": "item_2",
+        "type": "command_execution",
+        "command": "/usr/bin/zsh -lc \"sed -n '1,100p' repository/ledger/config.py repository/ledger/service.py repository/README.md\"",
+        "aggregated_output": "DEFAULT_CURRENCY = \"USD\"\nMAX_SETTLEMENT_RETRIES = 3\nREQUEST_TIMEOUT_SECONDS = 45\nfrom .config import DEFAULT_CURRENCY\nfrom .pricing import late_fee, normalize_reference\nfrom .storage import append_refund\n\n\ndef quote_invoice(reference, amount, days_late, currency=None):\n    normalized = normalize_reference(reference)\n    return {\n        \"reference\": normalized,\n        \"currency\": currency or DEFAULT_CURRENCY,\n        \"late_fee\": late_fee(days_late, amount),\n    }\n\n\ndef record_refund(reference, amount):\n    normalized = normalize_reference(reference)\n    return append_refund(normalized, amount)\n# Ledger Lite\n\nLedger Lite records small-business invoices and refunds.\n\nThe default invoice currency is USD unless the caller supplies another ISO code.\nInvoice references are normalized before storage so imports can be compared.\nRequest timeout is 30 seconds for all settlement calls.\n\nSee `docs/operations.md` for settlement and audit policy.\n",
+        "exit_code": 0,
+        "status": "completed"
+      }
+    }
+  ],
+  "errors": [],
+  "malformed_event_lines": [],
+  "answer": "An invoice uses **USD** when no currency is supplied. The invoice function falls back to `DEFAULT_CURRENCY`, which is set to `\"USD\"` ([ledger/service.py](repository/ledger/service.py), [ledger/config.py](repository/ledger/config.py)).",
+  "raw": {
+    "events": "trials/06-l-doc-default-currency-ordinary_tools_plus_repoctx/raw/events.jsonl",
+    "stderr": "trials/06-l-doc-default-currency-ordinary_tools_plus_repoctx/raw/stderr.txt",
+    "final": "trials/06-l-doc-default-currency-ordinary_tools_plus_repoctx/raw/final.txt"
+  },
+  "source_before_sha256": {
+    "PROVENANCE.json": "b3470c74c280a5102798e7a9f619939aaa89d366434730d597fb637caf2ed297",
+    "README.md": "dd3ae2f1d4bf271452ffded6f204fcac3e639f1dd13b338ffe1a4e7dd2481dae",
+    "docs/operations.md": "1b35c75fc71d6d8cb6de0806afc2d0b0c8929d2f4862743df82b0139b7d96c74",
+    "ledger/__init__.py": "a623e22bb9b8c2da83e511d6778f4cbbed5242d96129ac168f4168ab542d51cb",
+    "ledger/config.py": "01b6bc6b19c6824db9874af8943c0c321a30e3ef780442985f011c5069e90e09",
+    "ledger/pricing.py": "30f52304d0d0e9a2f6754972619e97d5cce726e256cde6906c834bcba82e4762",
+    "ledger/service.py": "29c7f779724021a6331fcf3c8ca2242a0218876e075b5bb151e338e1b9c70552",
+    "ledger/storage.py": "42cd1ced5a0ba956a2ac1c270ac0e3b03beed25e338c3d8c620e32a6b51cd499"
+  },
+  "source_after_sha256": {
+    "PROVENANCE.json": "b3470c74c280a5102798e7a9f619939aaa89d366434730d597fb637caf2ed297",
+    "README.md": "dd3ae2f1d4bf271452ffded6f204fcac3e639f1dd13b338ffe1a4e7dd2481dae",
+    "docs/operations.md": "1b35c75fc71d6d8cb6de0806afc2d0b0c8929d2f4862743df82b0139b7d96c74",
+    "ledger/__init__.py": "a623e22bb9b8c2da83e511d6778f4cbbed5242d96129ac168f4168ab542d51cb",
+    "ledger/config.py": "01b6bc6b19c6824db9874af8943c0c321a30e3ef780442985f011c5069e90e09",
+    "ledger/pricing.py": "30f52304d0d0e9a2f6754972619e97d5cce726e256cde6906c834bcba82e4762",
+    "ledger/service.py": "29c7f779724021a6331fcf3c8ca2242a0218876e075b5bb151e338e1b9c70552",
+    "ledger/storage.py": "42cd1ced5a0ba956a2ac1c270ac0e3b03beed25e338c3d8c620e32a6b51cd499"
+  },
+  "changed_files": [],
+  "source_unchanged": true,
+  "source_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "source_diff_path": "trials/06-l-doc-default-currency-ordinary_tools_plus_repoctx/raw/source.diff",
+  "change_check": null,
+  "workspace_contents": [
+    ".agents",
+    ".codex",
+    ".git",
+    ".scratch",
+    ".tools",
+    "input.json",
+    "repository",
+    "skill"
+  ]
+}

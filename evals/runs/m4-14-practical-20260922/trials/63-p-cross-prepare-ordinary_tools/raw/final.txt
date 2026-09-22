@@ -1,0 +1,5 @@
+`prepare_parcel` builds a dictionary from its arguments:
+
+- **Label:** It passes `tracking_code` and `city` to `format_label`, which strips surrounding whitespace from the city, title-cases it, keeps the first 20 characters, and returns `tracking_code | city`. (`repository/parcel/service.py:7`, `repository/parcel/labels.py:1-3`)
+- **Lane:** It passes `region` and `hazardous` to `choose_lane`. Hazardous parcels use `"ground"`; otherwise, `"north"` uses `"north-n1"` and other regions use the configured default, `"ground"`. `prepare_parcel` supplies no `requested` lane. (`repository/parcel/service.py:8`, `repository/parcel/routing.py:4-9`, `repository/parcel/config.py:1`)
+- **Price:** It passes `base_price` to `delivery_price` without a `weekend` flag. The flag defaults to `False`, so the returned price is `base_price` with no surcharge. (`repository/parcel/service.py:9`, `repository/parcel/routing.py:12-13`)

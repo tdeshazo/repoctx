@@ -1,0 +1,1 @@
+The delivery lane is selected in `choose_lane()` at `repository/parcel/routing.py:4`. Hazardous parcels use ground; otherwise, a requested lane takes priority, then north-region parcels use `north-n1`, and all others use the default ground lane (`repository/parcel/config.py:1`). `prepare_parcel()` calls this function at `repository/parcel/service.py:8`.

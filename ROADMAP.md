@@ -11,7 +11,7 @@ expanding the architecture.
 | Area | Status and evidence |
 | --- | --- |
 | Foundations, retrieval, input identity, and optional artifacts (M0–M3) | Recorded complete in the [historical plan](docs/history/roadmap-2026-09-22.md); preserve existing capabilities. |
-| Evaluation (M4) | Fixtures, controls, accounting, and prototypes exist. The small exploratory M4-13 pilot completed four paired synthetic tasks with both conditions at 4/4; it found no efficiency gain. Agent-outcome acceptance gates remain open. See the [pilot report](docs/reports/m4-13-workflow-pilot.md) and [evaluation protocol](evals/m4/README.md). |
+| Evaluation (M4) | Fixtures, controls, accounting, and prototypes exist. M4-14 completed 33 paired tasks with 33/33 verified successes for ordinary tools and 32/33 with repoctx; it found no quality or efficiency benefit. Keep repoctx optional for small known-file tasks. See the [M4-14 practical report](docs/reports/m4-14-practical.md) and [frozen evaluation protocol](evals/m4/README.md). |
 | Default workflow (M6-07) | Complete for the documented workflow checks described in the [completion report](docs/reports/m6-07-completion.md). The fresh bounded-read task passed; a final tuned replay of the same relationship task also passed after earlier partial runs. |
 | Performance and distribution (M5–M6) | Recorded complete for their declared workloads and supported distribution. These results do not establish agent task success. |
 | Canonical model (M7) | M7-01 through M7-03 implemented. Further expansion is paused; maintain the existing implementation. |
@@ -24,9 +24,9 @@ completion links, and architectural proposals. This file owns current priorities
 ## 1. Bounded retrieval corrections
 
 M4-12 records the bounded retrieval corrections under realistic output limits.
-The M4-13 paired workflow pilot below is complete. The next active item is
-M4-14: run the predeclared confirmatory evaluation after recording the M6-07
-workflow checks below.
+The M4-13 paired workflow pilot and the M4-14 practical paired comparison below
+are complete. M4-14 supports keeping repoctx optional for small known-file
+tasks; no expansion or forced usage follows from this run.
 The corrections address three [recorded context failures](docs/reports/m4-09-evidence.md):
 identifier noise, an answer-bearing window that did not fit, and a clipped
 reference to the actionable requirement.
@@ -74,19 +74,23 @@ The completed synthetic pilot covered four tasks. Both conditions reached 4/4;
 ordinary tools used 133.21 seconds, 15 tools, and 356,187 input+output tokens,
 while the repoctx condition used 135.53 seconds, 16 tools, and 363,895
 input+output tokens. The result did not establish an efficiency or coding-success
-improvement; retain the confirmatory M4 gates.
+improvement; the completed M4-14 comparison below provides the larger practical
+check without establishing a general efficiency or coding-success benefit.
 
 This is exploratory development evidence. Keep its tasks separate from the M4
-held-out set if using the results to tune retrieval. Preserve the existing
-[confirmatory protocol and decision rules](evals/m4/README.md#predeclared-decisions)
-for published improvement claims; do not relax them or treat this pilot as M4
-completion. Persistence and compaction experiments remain separate and optional.
+corpus if using the results to tune retrieval. The existing [frozen confirmatory
+protocol and decision rules](evals/m4/README.md#predeclared-decisions) remain
+optional background and unchanged; do not relabel this pilot or the practical
+comparison as full-protocol compliance. Persistence and compaction experiments
+remain separate and optional.
 
-- [ ] **M4-14 — Run the confirmatory held-out workflow evaluation.** Execute the
-  existing [confirmatory protocol and decision rules](evals/m4/README.md#predeclared-decisions)
-  against its frozen task set, with its paired accounting, missingness guard, and
-  predeclared classification. Keep this gate open until the run and its
-  classification report are linked; M6-07 evidence does not satisfy it.
+- [x] **M4-14 — Run the practical paired workflow comparison.** Completed all
+  33 M4 corpus tasks as matched ordinary-tools and ordinary-tools-plus-repoctx
+  pairs. Independent grading retained failures and costs; results are
+  descriptive and make no statistical-generalization claim. See the [practical
+  report](docs/reports/m4-14-practical.md) and its linked raw run and grading
+  records. The decision is to keep repoctx optional for small known-file tasks;
+  the existing 572-trial protocol remains unchanged optional background.
 
 ## 3. Simplify the default path
 

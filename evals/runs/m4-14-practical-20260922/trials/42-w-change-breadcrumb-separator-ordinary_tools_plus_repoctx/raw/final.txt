@@ -1,0 +1,1 @@
+Changed the breadcrumb separator from `/` to a single chevron (`›`) in [repository/portal/navigation.py](repository/portal/navigation.py:2). Verified that `Docs › Guide` appears in a rendered page.

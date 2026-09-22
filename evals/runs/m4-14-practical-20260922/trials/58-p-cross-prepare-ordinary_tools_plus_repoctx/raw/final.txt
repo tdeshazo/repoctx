@@ -1,0 +1,5 @@
+`prepare_parcel` builds a dictionary from three helper calls:
+
+- **Label:** `format_label(tracking_code, city)` keeps the tracking code and appends the city after trimming whitespace, converting it to title case, and limiting it to 20 characters. [parcel/service.py](repository/parcel/service.py:7), [parcel/labels.py](repository/parcel/labels.py:1)
+- **Lane:** `choose_lane(region, hazardous=hazardous)` returns `ground` for hazardous parcels; otherwise it returns `north-n1` for the north region and the configured default, `ground`, for other regions. [parcel/service.py](repository/parcel/service.py:8), [parcel/routing.py](repository/parcel/routing.py:4), [parcel/config.py](repository/parcel/config.py:1)
+- **Price:** `delivery_price(base_price)` receives no `weekend` argument, so its default of `False` applies and the returned price equals `base_price`. [parcel/service.py](repository/parcel/service.py:9), [parcel/routing.py](repository/parcel/routing.py:12)

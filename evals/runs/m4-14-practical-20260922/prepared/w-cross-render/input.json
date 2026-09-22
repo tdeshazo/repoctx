@@ -1,0 +1,16 @@
+{
+  "version": "repoctx.m4.agent-input/v1alpha1",
+  "id": "w-cross-render",
+  "question": "Trace how page rendering obtains the theme, breadcrumb, and skip link.",
+  "repository": "portal-kit",
+  "files": [
+    "PROVENANCE.json",
+    "README.md",
+    "assets/site.css",
+    "docs/accessibility.md",
+    "portal/__init__.py",
+    "portal/config.py",
+    "portal/navigation.py",
+    "portal/render.py"
+  ]
+}

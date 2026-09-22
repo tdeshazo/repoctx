@@ -1,0 +1,1 @@
+Visitors with no saved preference see the **light** theme. `render_page` uses `DEFAULT_THEME` when no theme is provided, and that default is `"light"` ([portal/render.py](repository/portal/render.py:10), [portal/config.py](repository/portal/config.py:1)).

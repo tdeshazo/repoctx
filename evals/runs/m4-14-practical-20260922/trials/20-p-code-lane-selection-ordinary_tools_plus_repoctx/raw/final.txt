@@ -1,0 +1,1 @@
+The lane is selected in [`parcel/routing.py`](repository/parcel/routing.py:4), in `choose_lane()`. It chooses `"ground"` for hazardous parcels, otherwise uses a requested lane if supplied, then `"north-n1"` for the north region or the default lane. [`prepare_parcel()`](repository/parcel/service.py:5) calls it to fill the parcel’s `"lane"` field.

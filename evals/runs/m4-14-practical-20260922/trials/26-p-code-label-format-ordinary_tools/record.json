@@ -1,0 +1,143 @@
+{
+  "id": "26-p-code-label-format-ordinary_tools",
+  "position": 26,
+  "task_id": "p-code-label-format",
+  "task_type": "code_localization",
+  "condition": "ordinary_tools",
+  "question": "Locate the code that combines tracking code and destination city into a label.",
+  "model": "gpt-6-sol",
+  "model_revision": "unresolved_alias",
+  "reasoning_effort": "medium",
+  "input_sha256": "295866456c1f06e922fb284abe8fee8bf1bc12eb8a13bef0a425e41ed48ce47a",
+  "prompt_sha256": "bb0bd1c8f188f2c42562544bc0c0a218deda02e631ae4dcc6f4d37ed350026e4",
+  "exit_code": 0,
+  "timed_out": false,
+  "wall_seconds": 17.706663,
+  "usage": {
+    "input_tokens": 71429,
+    "cached_input_tokens": 63744,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 381,
+    "reasoning_output_tokens": 40
+  },
+  "event_count": 11,
+  "observed_tool_item_count": 3,
+  "observed_tool_item_types": {
+    "command_execution": 3
+  },
+  "tool_events": [
+    {
+      "type": "item.completed",
+      "item": {
+        "id": "item_1",
+        "type": "command_execution",
+        "command": "/usr/bin/zsh -lc 'rg --files repository | head -80'",
+        "aggregated_output": "repository/PROVENANCE.json\nrepository/README.md\nrepository/docs/routing.md\nrepository/parcel/routing.py\nrepository/parcel/service.py\nrepository/parcel/config.py\nrepository/parcel/labels.py\nrepository/parcel/__init__.py\n",
+        "exit_code": 0,
+        "status": "completed"
+      }
+    },
+    {
+      "type": "item.completed",
+      "item": {
+        "id": "item_2",
+        "type": "command_execution",
+        "command": "/usr/bin/zsh -lc \"rg -n -i 'tracking|destination|city|label' repository\"",
+        "aggregated_output": "repository/README.md:3:Parcel Path selects a delivery lane and prints compact shipping labels.\nrepository/README.md:7:Tracking events are retained for 14 days in the local event buffer.\nrepository/docs/routing.md:5:Labels include the tracking code followed by the destination city.\nrepository/parcel/labels.py:1:def format_label(tracking_code, city):\nrepository/parcel/labels.py:2:    destination = city.strip().title()[:20]\nrepository/parcel/labels.py:3:    return f\"{tracking_code} | {destination}\"\nrepository/parcel/service.py:1:from .labels import format_label\nrepository/parcel/service.py:5:def prepare_parcel(tracking_code, city, region, base_price, hazardous=False):\nrepository/parcel/service.py:7:        \"label\": format_label(tracking_code, city),\n",
+        "exit_code": 0,
+        "status": "completed"
+      }
+    },
+    {
+      "type": "item.completed",
+      "item": {
+        "id": "item_3",
+        "type": "command_execution",
+        "command": "/usr/bin/zsh -lc 'nl -ba repository/parcel/labels.py; nl -ba repository/parcel/service.py; nl -ba repository/docs/routing.md'",
+        "aggregated_output": "     1\tdef format_label(tracking_code, city):\n     2\t    destination = city.strip().title()[:20]\n     3\t    return f\"{tracking_code} | {destination}\"\n     1\tfrom .labels import format_label\n     2\tfrom .routing import choose_lane, delivery_price\n     3\t\n     4\t\n     5\tdef prepare_parcel(tracking_code, city, region, base_price, hazardous=False):\n     6\t    return {\n     7\t        \"label\": format_label(tracking_code, city),\n     8\t        \"lane\": choose_lane(region, hazardous=hazardous),\n     9\t        \"price\": delivery_price(base_price),\n    10\t    }\n     1\t# Routing policy\n     2\t\n     3\tNorth-region parcels route through depot N1 before final delivery.\n     4\tHazardous parcels cannot use the air lane and must remain on ground transport.\n     5\tLabels include the tracking code followed by the destination city.\n",
+        "exit_code": 0,
+        "status": "completed"
+      }
+    }
+  ],
+  "command_call_count": 3,
+  "tool_call_cap": 24,
+  "tool_call_cap_respected": true,
+  "tool_call_cap_enforcement": "advisory_prompt_only",
+  "command_events": [
+    {
+      "type": "item.completed",
+      "item": {
+        "id": "item_1",
+        "type": "command_execution",
+        "command": "/usr/bin/zsh -lc 'rg --files repository | head -80'",
+        "aggregated_output": "repository/PROVENANCE.json\nrepository/README.md\nrepository/docs/routing.md\nrepository/parcel/routing.py\nrepository/parcel/service.py\nrepository/parcel/config.py\nrepository/parcel/labels.py\nrepository/parcel/__init__.py\n",
+        "exit_code": 0,
+        "status": "completed"
+      }
+    },
+    {
+      "type": "item.completed",
+      "item": {
+        "id": "item_2",
+        "type": "command_execution",
+        "command": "/usr/bin/zsh -lc \"rg -n -i 'tracking|destination|city|label' repository\"",
+        "aggregated_output": "repository/README.md:3:Parcel Path selects a delivery lane and prints compact shipping labels.\nrepository/README.md:7:Tracking events are retained for 14 days in the local event buffer.\nrepository/docs/routing.md:5:Labels include the tracking code followed by the destination city.\nrepository/parcel/labels.py:1:def format_label(tracking_code, city):\nrepository/parcel/labels.py:2:    destination = city.strip().title()[:20]\nrepository/parcel/labels.py:3:    return f\"{tracking_code} | {destination}\"\nrepository/parcel/service.py:1:from .labels import format_label\nrepository/parcel/service.py:5:def prepare_parcel(tracking_code, city, region, base_price, hazardous=False):\nrepository/parcel/service.py:7:        \"label\": format_label(tracking_code, city),\n",
+        "exit_code": 0,
+        "status": "completed"
+      }
+    },
+    {
+      "type": "item.completed",
+      "item": {
+        "id": "item_3",
+        "type": "command_execution",
+        "command": "/usr/bin/zsh -lc 'nl -ba repository/parcel/labels.py; nl -ba repository/parcel/service.py; nl -ba repository/docs/routing.md'",
+        "aggregated_output": "     1\tdef format_label(tracking_code, city):\n     2\t    destination = city.strip().title()[:20]\n     3\t    return f\"{tracking_code} | {destination}\"\n     1\tfrom .labels import format_label\n     2\tfrom .routing import choose_lane, delivery_price\n     3\t\n     4\t\n     5\tdef prepare_parcel(tracking_code, city, region, base_price, hazardous=False):\n     6\t    return {\n     7\t        \"label\": format_label(tracking_code, city),\n     8\t        \"lane\": choose_lane(region, hazardous=hazardous),\n     9\t        \"price\": delivery_price(base_price),\n    10\t    }\n     1\t# Routing policy\n     2\t\n     3\tNorth-region parcels route through depot N1 before final delivery.\n     4\tHazardous parcels cannot use the air lane and must remain on ground transport.\n     5\tLabels include the tracking code followed by the destination city.\n",
+        "exit_code": 0,
+        "status": "completed"
+      }
+    }
+  ],
+  "errors": [],
+  "malformed_event_lines": [],
+  "answer": "The label is built in [parcel/labels.py](repository/parcel/labels.py:1). `format_label` trims and title-cases the city, limits it to 20 characters, then returns `\"{tracking_code} | {destination}\"`. [parcel/service.py](repository/parcel/service.py:7) calls it when preparing a parcel.",
+  "raw": {
+    "events": "trials/26-p-code-label-format-ordinary_tools/raw/events.jsonl",
+    "stderr": "trials/26-p-code-label-format-ordinary_tools/raw/stderr.txt",
+    "final": "trials/26-p-code-label-format-ordinary_tools/raw/final.txt"
+  },
+  "source_before_sha256": {
+    "PROVENANCE.json": "b3470c74c280a5102798e7a9f619939aaa89d366434730d597fb637caf2ed297",
+    "README.md": "324d0c287f5e651e665590538b6ab9ff0f075b7dd2106359b3bfb17cf55c8e2b",
+    "docs/routing.md": "f91a1ab5c30298dd19de465e36795eb40c7f1b7f74e1f19e1a3de690d1e1cc44",
+    "parcel/__init__.py": "b05a5b48287251bfa38f3e846f78b878fe12672f51303f658e60462e28c31b19",
+    "parcel/config.py": "f60a407f9f512c69c8c6fbe4d4d1721e3dbb0e466f9ae1d12c0dd83637175da6",
+    "parcel/labels.py": "bced0ffad05950d60a4ab7c1f03e1855dd3e307366c39c165ff2d814a0b79102",
+    "parcel/routing.py": "0c9042fbfee395e9c79afd611a4c30830c1634289ef45db3d5f11ca15939964b",
+    "parcel/service.py": "b09c733e7a289de9312584db1ffcf1c60cb0bab030d9e0e8f714c9b1e7984e75"
+  },
+  "source_after_sha256": {
+    "PROVENANCE.json": "b3470c74c280a5102798e7a9f619939aaa89d366434730d597fb637caf2ed297",
+    "README.md": "324d0c287f5e651e665590538b6ab9ff0f075b7dd2106359b3bfb17cf55c8e2b",
+    "docs/routing.md": "f91a1ab5c30298dd19de465e36795eb40c7f1b7f74e1f19e1a3de690d1e1cc44",
+    "parcel/__init__.py": "b05a5b48287251bfa38f3e846f78b878fe12672f51303f658e60462e28c31b19",
+    "parcel/config.py": "f60a407f9f512c69c8c6fbe4d4d1721e3dbb0e466f9ae1d12c0dd83637175da6",
+    "parcel/labels.py": "bced0ffad05950d60a4ab7c1f03e1855dd3e307366c39c165ff2d814a0b79102",
+    "parcel/routing.py": "0c9042fbfee395e9c79afd611a4c30830c1634289ef45db3d5f11ca15939964b",
+    "parcel/service.py": "b09c733e7a289de9312584db1ffcf1c60cb0bab030d9e0e8f714c9b1e7984e75"
+  },
+  "changed_files": [],
+  "source_unchanged": true,
+  "source_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "source_diff_path": "trials/26-p-code-label-format-ordinary_tools/raw/source.diff",
+  "change_check": null,
+  "workspace_contents": [
+    ".agents",
+    ".codex",
+    ".git",
+    ".scratch",
+    "input.json",
+    "repository"
+  ]
+}

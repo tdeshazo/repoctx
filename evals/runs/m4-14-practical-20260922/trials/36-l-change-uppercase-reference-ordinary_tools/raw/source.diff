@@ -1,0 +1,8 @@
+--- before/ledger/pricing.py
++++ after/ledger/pricing.py
+@@ -5,4 +5,4 @@
+ 
+ 
+ def normalize_reference(reference):
+-    return reference.strip().lower()
++    return reference.strip().upper()

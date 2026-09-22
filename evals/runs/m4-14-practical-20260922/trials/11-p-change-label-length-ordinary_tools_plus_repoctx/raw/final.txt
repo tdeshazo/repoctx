@@ -1,0 +1,1 @@
+Updated [parcel/labels.py](repository/parcel/labels.py:2) to allow 24 destination characters. The label layout remains `tracking code | destination`. Checks passed for 24-character input, truncation at 25 characters, and the existing formatting.

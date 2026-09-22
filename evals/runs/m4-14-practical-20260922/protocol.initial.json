@@ -1,0 +1,888 @@
+{
+  "run": "M4-14-practical-descriptive",
+  "prepared_at": "2026-09-22T19:12:42.979229+00:00",
+  "task_count": 33,
+  "trial_count": 66,
+  "conditions": [
+    "ordinary_tools",
+    "ordinary_tools_plus_repoctx"
+  ],
+  "seed": 20260922,
+  "shuffle": "Python random.Random(seed).shuffle over all 66 trials",
+  "source_revision": "b2a2650464439705f46795f953040f75e6d75500",
+  "model": "gpt-6-sol",
+  "model_revision": "unresolved_alias",
+  "reasoning_effort": "medium",
+  "timeout_seconds": 300,
+  "tool_call_cap": 24,
+  "tool_call_cap_enforcement": "advisory_prompt_only",
+  "schedule": [
+    {
+      "task_id": "p-code-weekend-surcharge",
+      "condition": "ordinary_tools_plus_repoctx",
+      "position": 1,
+      "trial_id": "01-p-code-weekend-surcharge-ordinary_tools_plus_repoctx",
+      "prompt_sha256": "eb0baa650b6c9e7c675a9dc24236c1a20893709ec834c1ec94fbcbe974292679"
+    },
+    {
+      "task_id": "p-code-weekend-surcharge",
+      "condition": "ordinary_tools",
+      "position": 2,
+      "trial_id": "02-p-code-weekend-surcharge-ordinary_tools",
+      "prompt_sha256": "9f14b385feb4f74acbdbe643569729539194b1f824f718439453b464d8651177"
+    },
+    {
+      "task_id": "p-change-weekend-surcharge",
+      "condition": "ordinary_tools_plus_repoctx",
+      "position": 3,
+      "trial_id": "03-p-change-weekend-surcharge-ordinary_tools_plus_repoctx",
+      "prompt_sha256": "87faf97a6c03384a9d71805bbf41b65f29fb8ccfebd9c6efa8315a80a569e795"
+    },
+    {
+      "task_id": "w-cross-accessibility",
+      "condition": "ordinary_tools_plus_repoctx",
+      "position": 4,
+      "trial_id": "04-w-cross-accessibility-ordinary_tools_plus_repoctx",
+      "prompt_sha256": "5b4d9bb2f9eae0423e82c14b2a47bc00c8b2d0b6a79342ccc98f986975a98d0c"
+    },
+    {
+      "task_id": "p-doc-default-lane",
+      "condition": "ordinary_tools_plus_repoctx",
+      "position": 5,
+      "trial_id": "05-p-doc-default-lane-ordinary_tools_plus_repoctx",
+      "prompt_sha256": "b4360c615201ce41e5631d881b269fa49cd773489ee386118229f42c83aa6129"
+    },
+    {
+      "task_id": "l-doc-default-currency",
+      "condition": "ordinary_tools_plus_repoctx",
+      "position": 6,
+      "trial_id": "06-l-doc-default-currency-ordinary_tools_plus_repoctx",
+      "prompt_sha256": "48d44f6ee8d20e5c69a67d5e2a08b8fb79fbefc037734ba3a8b5716a9333d731"
+    },
+    {
+      "task_id": "p-doc-hazardous",
+      "condition": "ordinary_tools",
+      "position": 7,
+      "trial_id": "07-p-doc-hazardous-ordinary_tools",
+      "prompt_sha256": "7d8a64229f82175455cac39ac670b85c134876b3de77fdd31ae63f1e77cbb930"
+    },
+    {
+      "task_id": "edge-contradictory-timeout",
+      "condition": "ordinary_tools",
+      "position": 8,
+      "trial_id": "08-edge-contradictory-timeout-ordinary_tools",
+      "prompt_sha256": "f53974ddd0cb429e0cccc24755c1f36552ec0455f4c5590cd9d2c26e5754c530"
+    },
+    {
+      "task_id": "l-cross-quote",
+      "condition": "ordinary_tools",
+      "position": 9,
+      "trial_id": "09-l-cross-quote-ordinary_tools",
+      "prompt_sha256": "b7fa01c5e1b9b388c3ee0d6e8f632476b7fa74d34bcf5274fdf988d1ff4ccb7f"
+    },
+    {
+      "task_id": "l-cross-refund",
+      "condition": "ordinary_tools",
+      "position": 10,
+      "trial_id": "10-l-cross-refund-ordinary_tools",
+      "prompt_sha256": "7a54c37a5d20b7a2fe1b5bbbe7d965f42dba7f3efa641bd6a3cd52c40bea8e23"
+    },
+    {
+      "task_id": "p-change-label-length",
+      "condition": "ordinary_tools_plus_repoctx",
+      "position": 11,
+      "trial_id": "11-p-change-label-length-ordinary_tools_plus_repoctx",
+      "prompt_sha256": "399ef85ec3dca7cbee4389573378d08c588a35435609e464a0acbd4a41a3d571"
+    },
+    {
+      "task_id": "l-change-late-cap",
+      "condition": "ordinary_tools_plus_repoctx",
+      "position": 12,
+      "trial_id": "12-l-change-late-cap-ordinary_tools_plus_repoctx",
+      "prompt_sha256": "6d2950d6b734bb2bdcf66170a2aff0384bcccf7bf4b356d23c3b79155053ecd3"
+    },
+    {
+      "task_id": "p-doc-hazardous",
+      "condition": "ordinary_tools_plus_repoctx",
+      "position": 13,
+      "trial_id": "13-p-doc-hazardous-ordinary_tools_plus_repoctx",
+      "prompt_sha256": "9befdd14183f6c40a03ed9c28b237e3a1d189cf3d47d342d4617db0f79fdccf9"
+    },
+    {
+      "task_id": "w-code-mobile-style",
+      "condition": "ordinary_tools_plus_repoctx",
+      "position": 14,
+      "trial_id": "14-w-code-mobile-style-ordinary_tools_plus_repoctx",
+      "prompt_sha256": "07d51ce8637c922b910c449d5923630f662c836237108371e067f5522c63c33a"
+    },
+    {
+      "task_id": "w-change-default-theme",
+      "condition": "ordinary_tools_plus_repoctx",
+      "position": 15,
+      "trial_id": "15-w-change-default-theme-ordinary_tools_plus_repoctx",
+      "prompt_sha256": "53d5b1794794af2ecf62ab0a7c14bb760df5a4500da833060653f76eeaa5bbb5"
+    },
+    {
+      "task_id": "l-doc-audit-retention",
+      "condition": "ordinary_tools_plus_repoctx",
+      "position": 16,
+      "trial_id": "16-l-doc-audit-retention-ordinary_tools_plus_repoctx",
+      "prompt_sha256": "591a3bb2e9e0d48e59096ce2ff3933ab3829f7278a1719771d9a4f9c378c286c"
+    },
+    {
+      "task_id": "edge-no-answer-blockchain",
+      "condition": "ordinary_tools_plus_repoctx",
+      "position": 17,
+      "trial_id": "17-edge-no-answer-blockchain-ordinary_tools_plus_repoctx",
+      "prompt_sha256": "c5628d0471c3bb3ac4da7e92c650772bdf32b23ba41dd3799b66c8e847b69e96"
+    },
+    {
+      "task_id": "l-code-reference-normalization",
+      "condition": "ordinary_tools",
+      "position": 18,
+      "trial_id": "18-l-code-reference-normalization-ordinary_tools",
+      "prompt_sha256": "8585105396fffa9180ec64ab857f3b2ceec1b24abd7410e24bd14d320e8862ba"
+    },
+    {
+      "task_id": "p-change-weekend-surcharge",
+      "condition": "ordinary_tools",
+      "position": 19,
+      "trial_id": "19-p-change-weekend-surcharge-ordinary_tools",
+      "prompt_sha256": "3d53adcda7bb14f0ee34c893e0c6420c15068657016fc03736f6d572268e8d39"
+    },
+    {
+      "task_id": "p-code-lane-selection",
+      "condition": "ordinary_tools_plus_repoctx",
+      "position": 20,
+      "trial_id": "20-p-code-lane-selection-ordinary_tools_plus_repoctx",
+      "prompt_sha256": "ead5ee4c9dd90364b23e95708ce1cd540441eb8b3d7d67a43b9fbfcc30ad389c"
+    },
+    {
+      "task_id": "l-code-late-fee",
+      "condition": "ordinary_tools_plus_repoctx",
+      "position": 21,
+      "trial_id": "21-l-code-late-fee-ordinary_tools_plus_repoctx",
+      "prompt_sha256": "41ed7311ef67599abc08d0f35a2b40dd880843c75f598091cbf82ed2e4b79c95"
+    },
+    {
+      "task_id": "w-cross-accessibility",
+      "condition": "ordinary_tools",
+      "position": 22,
+      "trial_id": "22-w-cross-accessibility-ordinary_tools",
+      "prompt_sha256": "8b96957497fd1b6834e7e98bcdb13bc57a4b3c1869c0dd91fa9f2f9d020155c8"
+    },
+    {
+      "task_id": "l-cross-refund",
+      "condition": "ordinary_tools_plus_repoctx",
+      "position": 23,
+      "trial_id": "23-l-cross-refund-ordinary_tools_plus_repoctx",
+      "prompt_sha256": "f631808eaa9e69d9264d57554734b68ff1143dbd90b7ad915e43ae0651298065"
+    },
+    {
+      "task_id": "w-cross-render",
+      "condition": "ordinary_tools_plus_repoctx",
+      "position": 24,
+      "trial_id": "24-w-cross-render-ordinary_tools_plus_repoctx",
+      "prompt_sha256": "6af1cd4666302cebf4cd18d10c7766d64b17e4d974888fa784fa9c898f6a9850"
+    },
+    {
+      "task_id": "w-doc-main-landmark",
+      "condition": "ordinary_tools_plus_repoctx",
+      "position": 25,
+      "trial_id": "25-w-doc-main-landmark-ordinary_tools_plus_repoctx",
+      "prompt_sha256": "49f331ef3363e66a744e688b1bdda805be611b40ca5cfd1230bf186a329a33b7"
+    },
+    {
+      "task_id": "p-code-label-format",
+      "condition": "ordinary_tools",
+      "position": 26,
+      "trial_id": "26-p-code-label-format-ordinary_tools",
+      "prompt_sha256": "bb0bd1c8f188f2c42562544bc0c0a218deda02e631ae4dcc6f4d37ed350026e4"
+    },
+    {
+      "task_id": "w-code-breadcrumb",
+      "condition": "ordinary_tools_plus_repoctx",
+      "position": 27,
+      "trial_id": "27-w-code-breadcrumb-ordinary_tools_plus_repoctx",
+      "prompt_sha256": "558a67e43875ec04b2f9be89d22ab7e8ea0f6a484d89944541a49da93823d8fc"
+    },
+    {
+      "task_id": "w-change-breadcrumb-separator",
+      "condition": "ordinary_tools",
+      "position": 28,
+      "trial_id": "28-w-change-breadcrumb-separator-ordinary_tools",
+      "prompt_sha256": "affc590793d70d85b64f7d230da96c319cc0831fc38456655c30d186bc5db01d"
+    },
+    {
+      "task_id": "w-code-skip-link",
+      "condition": "ordinary_tools_plus_repoctx",
+      "position": 29,
+      "trial_id": "29-w-code-skip-link-ordinary_tools_plus_repoctx",
+      "prompt_sha256": "393aa4e57aae2668a34f321320ae8dbd0bbc949beea53576564776a54e2f4af1"
+    },
+    {
+      "task_id": "l-code-retry-limit",
+      "condition": "ordinary_tools_plus_repoctx",
+      "position": 30,
+      "trial_id": "30-l-code-retry-limit-ordinary_tools_plus_repoctx",
+      "prompt_sha256": "a5de32b81a4324096409de75bca3d7005499102aea6328d778f64878191ee6d5"
+    },
+    {
+      "task_id": "p-doc-default-lane",
+      "condition": "ordinary_tools",
+      "position": 31,
+      "trial_id": "31-p-doc-default-lane-ordinary_tools",
+      "prompt_sha256": "b358c268d5c63168f3117e8941edd3b70b9a96400a51ad1d8a82ab02e2a41afc"
+    },
+    {
+      "task_id": "p-doc-retention",
+      "condition": "ordinary_tools_plus_repoctx",
+      "position": 32,
+      "trial_id": "32-p-doc-retention-ordinary_tools_plus_repoctx",
+      "prompt_sha256": "8733d4e0719f10cc12d2dd530a88a9c5fc298f4313bce801b62acecbfd4d62a8"
+    },
+    {
+      "task_id": "w-doc-default-theme",
+      "condition": "ordinary_tools",
+      "position": 33,
+      "trial_id": "33-w-doc-default-theme-ordinary_tools",
+      "prompt_sha256": "20a6e44087e6997a94245b4893f4cf25abf7a76911387e8447a90ce3e70784c2"
+    },
+    {
+      "task_id": "l-change-uppercase-reference",
+      "condition": "ordinary_tools_plus_repoctx",
+      "position": 34,
+      "trial_id": "34-l-change-uppercase-reference-ordinary_tools_plus_repoctx",
+      "prompt_sha256": "730e967bfe993b146de58da335b6f30b4c0a2830157955d9e1a4371e839a24bc"
+    },
+    {
+      "task_id": "l-change-late-cap",
+      "condition": "ordinary_tools",
+      "position": 35,
+      "trial_id": "35-l-change-late-cap-ordinary_tools",
+      "prompt_sha256": "ed6f274ccbdd361cb04188a6062af81c3eb57b95ac3183a0fe3a1185d7550190"
+    },
+    {
+      "task_id": "l-change-uppercase-reference",
+      "condition": "ordinary_tools",
+      "position": 36,
+      "trial_id": "36-l-change-uppercase-reference-ordinary_tools",
+      "prompt_sha256": "4c9ff3d33bce006d7867e96590afbee781b2f20f5cce5a1358be49959ce253c2"
+    },
+    {
+      "task_id": "l-code-retry-limit",
+      "condition": "ordinary_tools",
+      "position": 37,
+      "trial_id": "37-l-code-retry-limit-ordinary_tools",
+      "prompt_sha256": "ef2bfc997979ed88d9271b4e8a7795ee022172cb5cdff1660c3297cf9f6aa47e"
+    },
+    {
+      "task_id": "p-doc-retention",
+      "condition": "ordinary_tools",
+      "position": 38,
+      "trial_id": "38-p-doc-retention-ordinary_tools",
+      "prompt_sha256": "86dc82f647cce8ce116f25ae86c0c11187c1487f64b2ceff1dbe16c7408ef084"
+    },
+    {
+      "task_id": "w-code-skip-link",
+      "condition": "ordinary_tools",
+      "position": 39,
+      "trial_id": "39-w-code-skip-link-ordinary_tools",
+      "prompt_sha256": "6601feb05763c039b19db1caa771eacad44c9ce35c0c97a3c558ffb079da828a"
+    },
+    {
+      "task_id": "w-code-mobile-style",
+      "condition": "ordinary_tools",
+      "position": 40,
+      "trial_id": "40-w-code-mobile-style-ordinary_tools",
+      "prompt_sha256": "31de8cd88317e0aa20edd9875458da0ab592c3421a081e525e92786621146b3b"
+    },
+    {
+      "task_id": "l-code-late-fee",
+      "condition": "ordinary_tools",
+      "position": 41,
+      "trial_id": "41-l-code-late-fee-ordinary_tools",
+      "prompt_sha256": "94d7ff3418c7a119a385990f15177a1224d81d7b192a01492ef3872e4a91812f"
+    },
+    {
+      "task_id": "w-change-breadcrumb-separator",
+      "condition": "ordinary_tools_plus_repoctx",
+      "position": 42,
+      "trial_id": "42-w-change-breadcrumb-separator-ordinary_tools_plus_repoctx",
+      "prompt_sha256": "4945ebf50f97f25d6ec5140261d96b0c79b1a8f6bae8476cb8abb585fbe687b1"
+    },
+    {
+      "task_id": "p-cross-north-route",
+      "condition": "ordinary_tools",
+      "position": 43,
+      "trial_id": "43-p-cross-north-route-ordinary_tools",
+      "prompt_sha256": "a95e62d1d96bcd3ddc11594c3d281b94f411e8c3c5b8082f737a0d0c51758d53"
+    },
+    {
+      "task_id": "l-code-reference-normalization",
+      "condition": "ordinary_tools_plus_repoctx",
+      "position": 44,
+      "trial_id": "44-l-code-reference-normalization-ordinary_tools_plus_repoctx",
+      "prompt_sha256": "cb1098330af45d5a489d219f6803ab1d3876dad3852b38e49132729b809ac14d"
+    },
+    {
+      "task_id": "edge-denied-admin-token",
+      "condition": "ordinary_tools",
+      "position": 45,
+      "trial_id": "45-edge-denied-admin-token-ordinary_tools",
+      "prompt_sha256": "e163260db50ee72695cbc5521c7c40c54114c0e9f7fa885bef63025bab572a6b"
+    },
+    {
+      "task_id": "w-cross-render",
+      "condition": "ordinary_tools",
+      "position": 46,
+      "trial_id": "46-w-cross-render-ordinary_tools",
+      "prompt_sha256": "448ebafa33bf7cbd3b839c85475283b95e11debf4ae02acb98fedfd6eca7acd1"
+    },
+    {
+      "task_id": "edge-no-answer-blockchain",
+      "condition": "ordinary_tools",
+      "position": 47,
+      "trial_id": "47-edge-no-answer-blockchain-ordinary_tools",
+      "prompt_sha256": "a0311724077167da23265016ae201afc396da5ec2783ce5c056ff967f9751c26"
+    },
+    {
+      "task_id": "l-doc-settlement-window",
+      "condition": "ordinary_tools_plus_repoctx",
+      "position": 48,
+      "trial_id": "48-l-doc-settlement-window-ordinary_tools_plus_repoctx",
+      "prompt_sha256": "85f8ce976992f61933a293f3791a2c7f427f22bb81c191c01e9861f08f40abb4"
+    },
+    {
+      "task_id": "w-doc-main-landmark",
+      "condition": "ordinary_tools",
+      "position": 49,
+      "trial_id": "49-w-doc-main-landmark-ordinary_tools",
+      "prompt_sha256": "f3c0e0c526b29a55cb80ed839788141a22d6b0178c2bb2dab07ef0d489573567"
+    },
+    {
+      "task_id": "p-code-lane-selection",
+      "condition": "ordinary_tools",
+      "position": 50,
+      "trial_id": "50-p-code-lane-selection-ordinary_tools",
+      "prompt_sha256": "0cdafe98f9ec99427279c0be81056ad6291e337b3f62cddcea837458ee1f2d96"
+    },
+    {
+      "task_id": "w-doc-focus-style",
+      "condition": "ordinary_tools",
+      "position": 51,
+      "trial_id": "51-w-doc-focus-style-ordinary_tools",
+      "prompt_sha256": "f5be1f708fcec2cfed150b9c1edbf212026fb9dcfa5f52be651b7a213ceef638"
+    },
+    {
+      "task_id": "p-code-label-format",
+      "condition": "ordinary_tools_plus_repoctx",
+      "position": 52,
+      "trial_id": "52-p-code-label-format-ordinary_tools_plus_repoctx",
+      "prompt_sha256": "ab9ceaf211b115dd2a0613089378c67f67a4e7d51ccf0e2231c711924b75b8b8"
+    },
+    {
+      "task_id": "p-change-label-length",
+      "condition": "ordinary_tools",
+      "position": 53,
+      "trial_id": "53-p-change-label-length-ordinary_tools",
+      "prompt_sha256": "f93784f3ec0c477e6e01279ba4ddd3354bb933d02423aeede25c21c6564a7a91"
+    },
+    {
+      "task_id": "w-doc-focus-style",
+      "condition": "ordinary_tools_plus_repoctx",
+      "position": 54,
+      "trial_id": "54-w-doc-focus-style-ordinary_tools_plus_repoctx",
+      "prompt_sha256": "5484ca18badb5221103e654fa7f77bb30fa678d043c3a9dfc5d7fef6a0b8b280"
+    },
+    {
+      "task_id": "w-change-default-theme",
+      "condition": "ordinary_tools",
+      "position": 55,
+      "trial_id": "55-w-change-default-theme-ordinary_tools",
+      "prompt_sha256": "b1e3ddbdf1f5cf199cca73488c22cda8593c5ddff66706fd0bc9874ab0e6ef75"
+    },
+    {
+      "task_id": "edge-contradictory-timeout",
+      "condition": "ordinary_tools_plus_repoctx",
+      "position": 56,
+      "trial_id": "56-edge-contradictory-timeout-ordinary_tools_plus_repoctx",
+      "prompt_sha256": "54cef4f027508b247ed92e7733dacec81d042dd2f765ff890e0c43454ba7158d"
+    },
+    {
+      "task_id": "l-doc-settlement-window",
+      "condition": "ordinary_tools",
+      "position": 57,
+      "trial_id": "57-l-doc-settlement-window-ordinary_tools",
+      "prompt_sha256": "4b7d6fef3d9d74e76f1a19e91dc65465e35e8ca967bbc0883cfb0ae6f617d7be"
+    },
+    {
+      "task_id": "p-cross-prepare",
+      "condition": "ordinary_tools_plus_repoctx",
+      "position": 58,
+      "trial_id": "58-p-cross-prepare-ordinary_tools_plus_repoctx",
+      "prompt_sha256": "766cf31ebc5cccf7414cb17fffd719797cc2a055e58a252a02862004827d37f3"
+    },
+    {
+      "task_id": "edge-denied-admin-token",
+      "condition": "ordinary_tools_plus_repoctx",
+      "position": 59,
+      "trial_id": "59-edge-denied-admin-token-ordinary_tools_plus_repoctx",
+      "prompt_sha256": "edebe1ed053a9e8b3015a6f4383cea0a1a0be75591e0111ea5f8ced469311dec"
+    },
+    {
+      "task_id": "w-doc-default-theme",
+      "condition": "ordinary_tools_plus_repoctx",
+      "position": 60,
+      "trial_id": "60-w-doc-default-theme-ordinary_tools_plus_repoctx",
+      "prompt_sha256": "2f93d972b13c68daec8f2e771969db4b113e8bc5cb43c17b5a09aef3487cdb4e"
+    },
+    {
+      "task_id": "p-cross-north-route",
+      "condition": "ordinary_tools_plus_repoctx",
+      "position": 61,
+      "trial_id": "61-p-cross-north-route-ordinary_tools_plus_repoctx",
+      "prompt_sha256": "fbbacc3a7ac5803d30a8e73599a0b67eb96fa7ea9b3886228c464e200b33fa39"
+    },
+    {
+      "task_id": "l-doc-audit-retention",
+      "condition": "ordinary_tools",
+      "position": 62,
+      "trial_id": "62-l-doc-audit-retention-ordinary_tools",
+      "prompt_sha256": "be250828625496b901594e9640d51b47e22dd123568f46e44f8f0df2c4e4ae92"
+    },
+    {
+      "task_id": "p-cross-prepare",
+      "condition": "ordinary_tools",
+      "position": 63,
+      "trial_id": "63-p-cross-prepare-ordinary_tools",
+      "prompt_sha256": "ed770e36d9ccc131da5ce68cbc569e3dd488282eb6eb6055a68e6c7f8c3fe867"
+    },
+    {
+      "task_id": "l-doc-default-currency",
+      "condition": "ordinary_tools",
+      "position": 64,
+      "trial_id": "64-l-doc-default-currency-ordinary_tools",
+      "prompt_sha256": "95a03d752ec43d329dec8c4a7c3e5bf9685b3856de7139a207b8d60346831559"
+    },
+    {
+      "task_id": "l-cross-quote",
+      "condition": "ordinary_tools_plus_repoctx",
+      "position": 65,
+      "trial_id": "65-l-cross-quote-ordinary_tools_plus_repoctx",
+      "prompt_sha256": "f5ad26a86eef6fc6b11e366279a2758125ff813860db9abe7b7e0243566f4bfe"
+    },
+    {
+      "task_id": "w-code-breadcrumb",
+      "condition": "ordinary_tools",
+      "position": 66,
+      "trial_id": "66-w-code-breadcrumb-ordinary_tools",
+      "prompt_sha256": "02054e63300ecc704943f4fa42572efd00613f60150b7b994810803bc6d7cc93"
+    }
+  ],
+  "source_sha256_by_task": {
+    "l-doc-default-currency": {
+      "PROVENANCE.json": "b3470c74c280a5102798e7a9f619939aaa89d366434730d597fb637caf2ed297",
+      "README.md": "dd3ae2f1d4bf271452ffded6f204fcac3e639f1dd13b338ffe1a4e7dd2481dae",
+      "docs/operations.md": "1b35c75fc71d6d8cb6de0806afc2d0b0c8929d2f4862743df82b0139b7d96c74",
+      "ledger/__init__.py": "a623e22bb9b8c2da83e511d6778f4cbbed5242d96129ac168f4168ab542d51cb",
+      "ledger/config.py": "01b6bc6b19c6824db9874af8943c0c321a30e3ef780442985f011c5069e90e09",
+      "ledger/pricing.py": "30f52304d0d0e9a2f6754972619e97d5cce726e256cde6906c834bcba82e4762",
+      "ledger/service.py": "29c7f779724021a6331fcf3c8ca2242a0218876e075b5bb151e338e1b9c70552",
+      "ledger/storage.py": "42cd1ced5a0ba956a2ac1c270ac0e3b03beed25e338c3d8c620e32a6b51cd499"
+    },
+    "l-doc-settlement-window": {
+      "PROVENANCE.json": "b3470c74c280a5102798e7a9f619939aaa89d366434730d597fb637caf2ed297",
+      "README.md": "dd3ae2f1d4bf271452ffded6f204fcac3e639f1dd13b338ffe1a4e7dd2481dae",
+      "docs/operations.md": "1b35c75fc71d6d8cb6de0806afc2d0b0c8929d2f4862743df82b0139b7d96c74",
+      "ledger/__init__.py": "a623e22bb9b8c2da83e511d6778f4cbbed5242d96129ac168f4168ab542d51cb",
+      "ledger/config.py": "01b6bc6b19c6824db9874af8943c0c321a30e3ef780442985f011c5069e90e09",
+      "ledger/pricing.py": "30f52304d0d0e9a2f6754972619e97d5cce726e256cde6906c834bcba82e4762",
+      "ledger/service.py": "29c7f779724021a6331fcf3c8ca2242a0218876e075b5bb151e338e1b9c70552",
+      "ledger/storage.py": "42cd1ced5a0ba956a2ac1c270ac0e3b03beed25e338c3d8c620e32a6b51cd499"
+    },
+    "l-doc-audit-retention": {
+      "PROVENANCE.json": "b3470c74c280a5102798e7a9f619939aaa89d366434730d597fb637caf2ed297",
+      "README.md": "dd3ae2f1d4bf271452ffded6f204fcac3e639f1dd13b338ffe1a4e7dd2481dae",
+      "docs/operations.md": "1b35c75fc71d6d8cb6de0806afc2d0b0c8929d2f4862743df82b0139b7d96c74",
+      "ledger/__init__.py": "a623e22bb9b8c2da83e511d6778f4cbbed5242d96129ac168f4168ab542d51cb",
+      "ledger/config.py": "01b6bc6b19c6824db9874af8943c0c321a30e3ef780442985f011c5069e90e09",
+      "ledger/pricing.py": "30f52304d0d0e9a2f6754972619e97d5cce726e256cde6906c834bcba82e4762",
+      "ledger/service.py": "29c7f779724021a6331fcf3c8ca2242a0218876e075b5bb151e338e1b9c70552",
+      "ledger/storage.py": "42cd1ced5a0ba956a2ac1c270ac0e3b03beed25e338c3d8c620e32a6b51cd499"
+    },
+    "l-code-late-fee": {
+      "PROVENANCE.json": "b3470c74c280a5102798e7a9f619939aaa89d366434730d597fb637caf2ed297",
+      "README.md": "dd3ae2f1d4bf271452ffded6f204fcac3e639f1dd13b338ffe1a4e7dd2481dae",
+      "docs/operations.md": "1b35c75fc71d6d8cb6de0806afc2d0b0c8929d2f4862743df82b0139b7d96c74",
+      "ledger/__init__.py": "a623e22bb9b8c2da83e511d6778f4cbbed5242d96129ac168f4168ab542d51cb",
+      "ledger/config.py": "01b6bc6b19c6824db9874af8943c0c321a30e3ef780442985f011c5069e90e09",
+      "ledger/pricing.py": "30f52304d0d0e9a2f6754972619e97d5cce726e256cde6906c834bcba82e4762",
+      "ledger/service.py": "29c7f779724021a6331fcf3c8ca2242a0218876e075b5bb151e338e1b9c70552",
+      "ledger/storage.py": "42cd1ced5a0ba956a2ac1c270ac0e3b03beed25e338c3d8c620e32a6b51cd499"
+    },
+    "l-code-reference-normalization": {
+      "PROVENANCE.json": "b3470c74c280a5102798e7a9f619939aaa89d366434730d597fb637caf2ed297",
+      "README.md": "dd3ae2f1d4bf271452ffded6f204fcac3e639f1dd13b338ffe1a4e7dd2481dae",
+      "docs/operations.md": "1b35c75fc71d6d8cb6de0806afc2d0b0c8929d2f4862743df82b0139b7d96c74",
+      "ledger/__init__.py": "a623e22bb9b8c2da83e511d6778f4cbbed5242d96129ac168f4168ab542d51cb",
+      "ledger/config.py": "01b6bc6b19c6824db9874af8943c0c321a30e3ef780442985f011c5069e90e09",
+      "ledger/pricing.py": "30f52304d0d0e9a2f6754972619e97d5cce726e256cde6906c834bcba82e4762",
+      "ledger/service.py": "29c7f779724021a6331fcf3c8ca2242a0218876e075b5bb151e338e1b9c70552",
+      "ledger/storage.py": "42cd1ced5a0ba956a2ac1c270ac0e3b03beed25e338c3d8c620e32a6b51cd499"
+    },
+    "l-code-retry-limit": {
+      "PROVENANCE.json": "b3470c74c280a5102798e7a9f619939aaa89d366434730d597fb637caf2ed297",
+      "README.md": "dd3ae2f1d4bf271452ffded6f204fcac3e639f1dd13b338ffe1a4e7dd2481dae",
+      "docs/operations.md": "1b35c75fc71d6d8cb6de0806afc2d0b0c8929d2f4862743df82b0139b7d96c74",
+      "ledger/__init__.py": "a623e22bb9b8c2da83e511d6778f4cbbed5242d96129ac168f4168ab542d51cb",
+      "ledger/config.py": "01b6bc6b19c6824db9874af8943c0c321a30e3ef780442985f011c5069e90e09",
+      "ledger/pricing.py": "30f52304d0d0e9a2f6754972619e97d5cce726e256cde6906c834bcba82e4762",
+      "ledger/service.py": "29c7f779724021a6331fcf3c8ca2242a0218876e075b5bb151e338e1b9c70552",
+      "ledger/storage.py": "42cd1ced5a0ba956a2ac1c270ac0e3b03beed25e338c3d8c620e32a6b51cd499"
+    },
+    "l-cross-quote": {
+      "PROVENANCE.json": "b3470c74c280a5102798e7a9f619939aaa89d366434730d597fb637caf2ed297",
+      "README.md": "dd3ae2f1d4bf271452ffded6f204fcac3e639f1dd13b338ffe1a4e7dd2481dae",
+      "docs/operations.md": "1b35c75fc71d6d8cb6de0806afc2d0b0c8929d2f4862743df82b0139b7d96c74",
+      "ledger/__init__.py": "a623e22bb9b8c2da83e511d6778f4cbbed5242d96129ac168f4168ab542d51cb",
+      "ledger/config.py": "01b6bc6b19c6824db9874af8943c0c321a30e3ef780442985f011c5069e90e09",
+      "ledger/pricing.py": "30f52304d0d0e9a2f6754972619e97d5cce726e256cde6906c834bcba82e4762",
+      "ledger/service.py": "29c7f779724021a6331fcf3c8ca2242a0218876e075b5bb151e338e1b9c70552",
+      "ledger/storage.py": "42cd1ced5a0ba956a2ac1c270ac0e3b03beed25e338c3d8c620e32a6b51cd499"
+    },
+    "l-cross-refund": {
+      "PROVENANCE.json": "b3470c74c280a5102798e7a9f619939aaa89d366434730d597fb637caf2ed297",
+      "README.md": "dd3ae2f1d4bf271452ffded6f204fcac3e639f1dd13b338ffe1a4e7dd2481dae",
+      "docs/operations.md": "1b35c75fc71d6d8cb6de0806afc2d0b0c8929d2f4862743df82b0139b7d96c74",
+      "ledger/__init__.py": "a623e22bb9b8c2da83e511d6778f4cbbed5242d96129ac168f4168ab542d51cb",
+      "ledger/config.py": "01b6bc6b19c6824db9874af8943c0c321a30e3ef780442985f011c5069e90e09",
+      "ledger/pricing.py": "30f52304d0d0e9a2f6754972619e97d5cce726e256cde6906c834bcba82e4762",
+      "ledger/service.py": "29c7f779724021a6331fcf3c8ca2242a0218876e075b5bb151e338e1b9c70552",
+      "ledger/storage.py": "42cd1ced5a0ba956a2ac1c270ac0e3b03beed25e338c3d8c620e32a6b51cd499"
+    },
+    "l-change-late-cap": {
+      "PROVENANCE.json": "b3470c74c280a5102798e7a9f619939aaa89d366434730d597fb637caf2ed297",
+      "README.md": "dd3ae2f1d4bf271452ffded6f204fcac3e639f1dd13b338ffe1a4e7dd2481dae",
+      "docs/operations.md": "1b35c75fc71d6d8cb6de0806afc2d0b0c8929d2f4862743df82b0139b7d96c74",
+      "ledger/__init__.py": "a623e22bb9b8c2da83e511d6778f4cbbed5242d96129ac168f4168ab542d51cb",
+      "ledger/config.py": "01b6bc6b19c6824db9874af8943c0c321a30e3ef780442985f011c5069e90e09",
+      "ledger/pricing.py": "30f52304d0d0e9a2f6754972619e97d5cce726e256cde6906c834bcba82e4762",
+      "ledger/service.py": "29c7f779724021a6331fcf3c8ca2242a0218876e075b5bb151e338e1b9c70552",
+      "ledger/storage.py": "42cd1ced5a0ba956a2ac1c270ac0e3b03beed25e338c3d8c620e32a6b51cd499"
+    },
+    "l-change-uppercase-reference": {
+      "PROVENANCE.json": "b3470c74c280a5102798e7a9f619939aaa89d366434730d597fb637caf2ed297",
+      "README.md": "dd3ae2f1d4bf271452ffded6f204fcac3e639f1dd13b338ffe1a4e7dd2481dae",
+      "docs/operations.md": "1b35c75fc71d6d8cb6de0806afc2d0b0c8929d2f4862743df82b0139b7d96c74",
+      "ledger/__init__.py": "a623e22bb9b8c2da83e511d6778f4cbbed5242d96129ac168f4168ab542d51cb",
+      "ledger/config.py": "01b6bc6b19c6824db9874af8943c0c321a30e3ef780442985f011c5069e90e09",
+      "ledger/pricing.py": "30f52304d0d0e9a2f6754972619e97d5cce726e256cde6906c834bcba82e4762",
+      "ledger/service.py": "29c7f779724021a6331fcf3c8ca2242a0218876e075b5bb151e338e1b9c70552",
+      "ledger/storage.py": "42cd1ced5a0ba956a2ac1c270ac0e3b03beed25e338c3d8c620e32a6b51cd499"
+    },
+    "p-doc-default-lane": {
+      "PROVENANCE.json": "b3470c74c280a5102798e7a9f619939aaa89d366434730d597fb637caf2ed297",
+      "README.md": "324d0c287f5e651e665590538b6ab9ff0f075b7dd2106359b3bfb17cf55c8e2b",
+      "docs/routing.md": "f91a1ab5c30298dd19de465e36795eb40c7f1b7f74e1f19e1a3de690d1e1cc44",
+      "parcel/__init__.py": "b05a5b48287251bfa38f3e846f78b878fe12672f51303f658e60462e28c31b19",
+      "parcel/config.py": "f60a407f9f512c69c8c6fbe4d4d1721e3dbb0e466f9ae1d12c0dd83637175da6",
+      "parcel/labels.py": "bced0ffad05950d60a4ab7c1f03e1855dd3e307366c39c165ff2d814a0b79102",
+      "parcel/routing.py": "0c9042fbfee395e9c79afd611a4c30830c1634289ef45db3d5f11ca15939964b",
+      "parcel/service.py": "b09c733e7a289de9312584db1ffcf1c60cb0bab030d9e0e8f714c9b1e7984e75"
+    },
+    "p-doc-hazardous": {
+      "PROVENANCE.json": "b3470c74c280a5102798e7a9f619939aaa89d366434730d597fb637caf2ed297",
+      "README.md": "324d0c287f5e651e665590538b6ab9ff0f075b7dd2106359b3bfb17cf55c8e2b",
+      "docs/routing.md": "f91a1ab5c30298dd19de465e36795eb40c7f1b7f74e1f19e1a3de690d1e1cc44",
+      "parcel/__init__.py": "b05a5b48287251bfa38f3e846f78b878fe12672f51303f658e60462e28c31b19",
+      "parcel/config.py": "f60a407f9f512c69c8c6fbe4d4d1721e3dbb0e466f9ae1d12c0dd83637175da6",
+      "parcel/labels.py": "bced0ffad05950d60a4ab7c1f03e1855dd3e307366c39c165ff2d814a0b79102",
+      "parcel/routing.py": "0c9042fbfee395e9c79afd611a4c30830c1634289ef45db3d5f11ca15939964b",
+      "parcel/service.py": "b09c733e7a289de9312584db1ffcf1c60cb0bab030d9e0e8f714c9b1e7984e75"
+    },
+    "p-doc-retention": {
+      "PROVENANCE.json": "b3470c74c280a5102798e7a9f619939aaa89d366434730d597fb637caf2ed297",
+      "README.md": "324d0c287f5e651e665590538b6ab9ff0f075b7dd2106359b3bfb17cf55c8e2b",
+      "docs/routing.md": "f91a1ab5c30298dd19de465e36795eb40c7f1b7f74e1f19e1a3de690d1e1cc44",
+      "parcel/__init__.py": "b05a5b48287251bfa38f3e846f78b878fe12672f51303f658e60462e28c31b19",
+      "parcel/config.py": "f60a407f9f512c69c8c6fbe4d4d1721e3dbb0e466f9ae1d12c0dd83637175da6",
+      "parcel/labels.py": "bced0ffad05950d60a4ab7c1f03e1855dd3e307366c39c165ff2d814a0b79102",
+      "parcel/routing.py": "0c9042fbfee395e9c79afd611a4c30830c1634289ef45db3d5f11ca15939964b",
+      "parcel/service.py": "b09c733e7a289de9312584db1ffcf1c60cb0bab030d9e0e8f714c9b1e7984e75"
+    },
+    "p-code-lane-selection": {
+      "PROVENANCE.json": "b3470c74c280a5102798e7a9f619939aaa89d366434730d597fb637caf2ed297",
+      "README.md": "324d0c287f5e651e665590538b6ab9ff0f075b7dd2106359b3bfb17cf55c8e2b",
+      "docs/routing.md": "f91a1ab5c30298dd19de465e36795eb40c7f1b7f74e1f19e1a3de690d1e1cc44",
+      "parcel/__init__.py": "b05a5b48287251bfa38f3e846f78b878fe12672f51303f658e60462e28c31b19",
+      "parcel/config.py": "f60a407f9f512c69c8c6fbe4d4d1721e3dbb0e466f9ae1d12c0dd83637175da6",
+      "parcel/labels.py": "bced0ffad05950d60a4ab7c1f03e1855dd3e307366c39c165ff2d814a0b79102",
+      "parcel/routing.py": "0c9042fbfee395e9c79afd611a4c30830c1634289ef45db3d5f11ca15939964b",
+      "parcel/service.py": "b09c733e7a289de9312584db1ffcf1c60cb0bab030d9e0e8f714c9b1e7984e75"
+    },
+    "p-code-label-format": {
+      "PROVENANCE.json": "b3470c74c280a5102798e7a9f619939aaa89d366434730d597fb637caf2ed297",
+      "README.md": "324d0c287f5e651e665590538b6ab9ff0f075b7dd2106359b3bfb17cf55c8e2b",
+      "docs/routing.md": "f91a1ab5c30298dd19de465e36795eb40c7f1b7f74e1f19e1a3de690d1e1cc44",
+      "parcel/__init__.py": "b05a5b48287251bfa38f3e846f78b878fe12672f51303f658e60462e28c31b19",
+      "parcel/config.py": "f60a407f9f512c69c8c6fbe4d4d1721e3dbb0e466f9ae1d12c0dd83637175da6",
+      "parcel/labels.py": "bced0ffad05950d60a4ab7c1f03e1855dd3e307366c39c165ff2d814a0b79102",
+      "parcel/routing.py": "0c9042fbfee395e9c79afd611a4c30830c1634289ef45db3d5f11ca15939964b",
+      "parcel/service.py": "b09c733e7a289de9312584db1ffcf1c60cb0bab030d9e0e8f714c9b1e7984e75"
+    },
+    "p-code-weekend-surcharge": {
+      "PROVENANCE.json": "b3470c74c280a5102798e7a9f619939aaa89d366434730d597fb637caf2ed297",
+      "README.md": "324d0c287f5e651e665590538b6ab9ff0f075b7dd2106359b3bfb17cf55c8e2b",
+      "docs/routing.md": "f91a1ab5c30298dd19de465e36795eb40c7f1b7f74e1f19e1a3de690d1e1cc44",
+      "parcel/__init__.py": "b05a5b48287251bfa38f3e846f78b878fe12672f51303f658e60462e28c31b19",
+      "parcel/config.py": "f60a407f9f512c69c8c6fbe4d4d1721e3dbb0e466f9ae1d12c0dd83637175da6",
+      "parcel/labels.py": "bced0ffad05950d60a4ab7c1f03e1855dd3e307366c39c165ff2d814a0b79102",
+      "parcel/routing.py": "0c9042fbfee395e9c79afd611a4c30830c1634289ef45db3d5f11ca15939964b",
+      "parcel/service.py": "b09c733e7a289de9312584db1ffcf1c60cb0bab030d9e0e8f714c9b1e7984e75"
+    },
+    "p-cross-prepare": {
+      "PROVENANCE.json": "b3470c74c280a5102798e7a9f619939aaa89d366434730d597fb637caf2ed297",
+      "README.md": "324d0c287f5e651e665590538b6ab9ff0f075b7dd2106359b3bfb17cf55c8e2b",
+      "docs/routing.md": "f91a1ab5c30298dd19de465e36795eb40c7f1b7f74e1f19e1a3de690d1e1cc44",
+      "parcel/__init__.py": "b05a5b48287251bfa38f3e846f78b878fe12672f51303f658e60462e28c31b19",
+      "parcel/config.py": "f60a407f9f512c69c8c6fbe4d4d1721e3dbb0e466f9ae1d12c0dd83637175da6",
+      "parcel/labels.py": "bced0ffad05950d60a4ab7c1f03e1855dd3e307366c39c165ff2d814a0b79102",
+      "parcel/routing.py": "0c9042fbfee395e9c79afd611a4c30830c1634289ef45db3d5f11ca15939964b",
+      "parcel/service.py": "b09c733e7a289de9312584db1ffcf1c60cb0bab030d9e0e8f714c9b1e7984e75"
+    },
+    "p-cross-north-route": {
+      "PROVENANCE.json": "b3470c74c280a5102798e7a9f619939aaa89d366434730d597fb637caf2ed297",
+      "README.md": "324d0c287f5e651e665590538b6ab9ff0f075b7dd2106359b3bfb17cf55c8e2b",
+      "docs/routing.md": "f91a1ab5c30298dd19de465e36795eb40c7f1b7f74e1f19e1a3de690d1e1cc44",
+      "parcel/__init__.py": "b05a5b48287251bfa38f3e846f78b878fe12672f51303f658e60462e28c31b19",
+      "parcel/config.py": "f60a407f9f512c69c8c6fbe4d4d1721e3dbb0e466f9ae1d12c0dd83637175da6",
+      "parcel/labels.py": "bced0ffad05950d60a4ab7c1f03e1855dd3e307366c39c165ff2d814a0b79102",
+      "parcel/routing.py": "0c9042fbfee395e9c79afd611a4c30830c1634289ef45db3d5f11ca15939964b",
+      "parcel/service.py": "b09c733e7a289de9312584db1ffcf1c60cb0bab030d9e0e8f714c9b1e7984e75"
+    },
+    "p-change-weekend-surcharge": {
+      "PROVENANCE.json": "b3470c74c280a5102798e7a9f619939aaa89d366434730d597fb637caf2ed297",
+      "README.md": "324d0c287f5e651e665590538b6ab9ff0f075b7dd2106359b3bfb17cf55c8e2b",
+      "docs/routing.md": "f91a1ab5c30298dd19de465e36795eb40c7f1b7f74e1f19e1a3de690d1e1cc44",
+      "parcel/__init__.py": "b05a5b48287251bfa38f3e846f78b878fe12672f51303f658e60462e28c31b19",
+      "parcel/config.py": "f60a407f9f512c69c8c6fbe4d4d1721e3dbb0e466f9ae1d12c0dd83637175da6",
+      "parcel/labels.py": "bced0ffad05950d60a4ab7c1f03e1855dd3e307366c39c165ff2d814a0b79102",
+      "parcel/routing.py": "0c9042fbfee395e9c79afd611a4c30830c1634289ef45db3d5f11ca15939964b",
+      "parcel/service.py": "b09c733e7a289de9312584db1ffcf1c60cb0bab030d9e0e8f714c9b1e7984e75"
+    },
+    "p-change-label-length": {
+      "PROVENANCE.json": "b3470c74c280a5102798e7a9f619939aaa89d366434730d597fb637caf2ed297",
+      "README.md": "324d0c287f5e651e665590538b6ab9ff0f075b7dd2106359b3bfb17cf55c8e2b",
+      "docs/routing.md": "f91a1ab5c30298dd19de465e36795eb40c7f1b7f74e1f19e1a3de690d1e1cc44",
+      "parcel/__init__.py": "b05a5b48287251bfa38f3e846f78b878fe12672f51303f658e60462e28c31b19",
+      "parcel/config.py": "f60a407f9f512c69c8c6fbe4d4d1721e3dbb0e466f9ae1d12c0dd83637175da6",
+      "parcel/labels.py": "bced0ffad05950d60a4ab7c1f03e1855dd3e307366c39c165ff2d814a0b79102",
+      "parcel/routing.py": "0c9042fbfee395e9c79afd611a4c30830c1634289ef45db3d5f11ca15939964b",
+      "parcel/service.py": "b09c733e7a289de9312584db1ffcf1c60cb0bab030d9e0e8f714c9b1e7984e75"
+    },
+    "w-doc-default-theme": {
+      "PROVENANCE.json": "b3470c74c280a5102798e7a9f619939aaa89d366434730d597fb637caf2ed297",
+      "README.md": "81a2a7c3120b83f2665efefe6076a02783d3d229f76a03270d4ded84051913c5",
+      "assets/site.css": "230761729ab0eca5ceeea3993d442a88245f301bade36cd59124708ce2624cd1",
+      "docs/accessibility.md": "98bb0981d1680bd8da25c0f023f2e79bb5f568ea94314736ea413dc820e59e91",
+      "portal/__init__.py": "780ee0a923f8945df13f7c3138964422a262fd22751e9b684f661907b3620306",
+      "portal/config.py": "92ed9e1a5f93310e17fe5a0c700641905abf1b6cfd7d2788555df1981ef239bb",
+      "portal/navigation.py": "c95c158c80173e04be723f09fd909b50542491d8bf5bd767a3592687bb75ee58",
+      "portal/render.py": "d3d1480183082902c87ff9e97fe7902019222d529f204bd3d8f72452da90e140"
+    },
+    "w-doc-focus-style": {
+      "PROVENANCE.json": "b3470c74c280a5102798e7a9f619939aaa89d366434730d597fb637caf2ed297",
+      "README.md": "81a2a7c3120b83f2665efefe6076a02783d3d229f76a03270d4ded84051913c5",
+      "assets/site.css": "230761729ab0eca5ceeea3993d442a88245f301bade36cd59124708ce2624cd1",
+      "docs/accessibility.md": "98bb0981d1680bd8da25c0f023f2e79bb5f568ea94314736ea413dc820e59e91",
+      "portal/__init__.py": "780ee0a923f8945df13f7c3138964422a262fd22751e9b684f661907b3620306",
+      "portal/config.py": "92ed9e1a5f93310e17fe5a0c700641905abf1b6cfd7d2788555df1981ef239bb",
+      "portal/navigation.py": "c95c158c80173e04be723f09fd909b50542491d8bf5bd767a3592687bb75ee58",
+      "portal/render.py": "d3d1480183082902c87ff9e97fe7902019222d529f204bd3d8f72452da90e140"
+    },
+    "w-doc-main-landmark": {
+      "PROVENANCE.json": "b3470c74c280a5102798e7a9f619939aaa89d366434730d597fb637caf2ed297",
+      "README.md": "81a2a7c3120b83f2665efefe6076a02783d3d229f76a03270d4ded84051913c5",
+      "assets/site.css": "230761729ab0eca5ceeea3993d442a88245f301bade36cd59124708ce2624cd1",
+      "docs/accessibility.md": "98bb0981d1680bd8da25c0f023f2e79bb5f568ea94314736ea413dc820e59e91",
+      "portal/__init__.py": "780ee0a923f8945df13f7c3138964422a262fd22751e9b684f661907b3620306",
+      "portal/config.py": "92ed9e1a5f93310e17fe5a0c700641905abf1b6cfd7d2788555df1981ef239bb",
+      "portal/navigation.py": "c95c158c80173e04be723f09fd909b50542491d8bf5bd767a3592687bb75ee58",
+      "portal/render.py": "d3d1480183082902c87ff9e97fe7902019222d529f204bd3d8f72452da90e140"
+    },
+    "w-code-breadcrumb": {
+      "PROVENANCE.json": "b3470c74c280a5102798e7a9f619939aaa89d366434730d597fb637caf2ed297",
+      "README.md": "81a2a7c3120b83f2665efefe6076a02783d3d229f76a03270d4ded84051913c5",
+      "assets/site.css": "230761729ab0eca5ceeea3993d442a88245f301bade36cd59124708ce2624cd1",
+      "docs/accessibility.md": "98bb0981d1680bd8da25c0f023f2e79bb5f568ea94314736ea413dc820e59e91",
+      "portal/__init__.py": "780ee0a923f8945df13f7c3138964422a262fd22751e9b684f661907b3620306",
+      "portal/config.py": "92ed9e1a5f93310e17fe5a0c700641905abf1b6cfd7d2788555df1981ef239bb",
+      "portal/navigation.py": "c95c158c80173e04be723f09fd909b50542491d8bf5bd767a3592687bb75ee58",
+      "portal/render.py": "d3d1480183082902c87ff9e97fe7902019222d529f204bd3d8f72452da90e140"
+    },
+    "w-code-skip-link": {
+      "PROVENANCE.json": "b3470c74c280a5102798e7a9f619939aaa89d366434730d597fb637caf2ed297",
+      "README.md": "81a2a7c3120b83f2665efefe6076a02783d3d229f76a03270d4ded84051913c5",
+      "assets/site.css": "230761729ab0eca5ceeea3993d442a88245f301bade36cd59124708ce2624cd1",
+      "docs/accessibility.md": "98bb0981d1680bd8da25c0f023f2e79bb5f568ea94314736ea413dc820e59e91",
+      "portal/__init__.py": "780ee0a923f8945df13f7c3138964422a262fd22751e9b684f661907b3620306",
+      "portal/config.py": "92ed9e1a5f93310e17fe5a0c700641905abf1b6cfd7d2788555df1981ef239bb",
+      "portal/navigation.py": "c95c158c80173e04be723f09fd909b50542491d8bf5bd767a3592687bb75ee58",
+      "portal/render.py": "d3d1480183082902c87ff9e97fe7902019222d529f204bd3d8f72452da90e140"
+    },
+    "w-code-mobile-style": {
+      "PROVENANCE.json": "b3470c74c280a5102798e7a9f619939aaa89d366434730d597fb637caf2ed297",
+      "README.md": "81a2a7c3120b83f2665efefe6076a02783d3d229f76a03270d4ded84051913c5",
+      "assets/site.css": "230761729ab0eca5ceeea3993d442a88245f301bade36cd59124708ce2624cd1",
+      "docs/accessibility.md": "98bb0981d1680bd8da25c0f023f2e79bb5f568ea94314736ea413dc820e59e91",
+      "portal/__init__.py": "780ee0a923f8945df13f7c3138964422a262fd22751e9b684f661907b3620306",
+      "portal/config.py": "92ed9e1a5f93310e17fe5a0c700641905abf1b6cfd7d2788555df1981ef239bb",
+      "portal/navigation.py": "c95c158c80173e04be723f09fd909b50542491d8bf5bd767a3592687bb75ee58",
+      "portal/render.py": "d3d1480183082902c87ff9e97fe7902019222d529f204bd3d8f72452da90e140"
+    },
+    "w-cross-render": {
+      "PROVENANCE.json": "b3470c74c280a5102798e7a9f619939aaa89d366434730d597fb637caf2ed297",
+      "README.md": "81a2a7c3120b83f2665efefe6076a02783d3d229f76a03270d4ded84051913c5",
+      "assets/site.css": "230761729ab0eca5ceeea3993d442a88245f301bade36cd59124708ce2624cd1",
+      "docs/accessibility.md": "98bb0981d1680bd8da25c0f023f2e79bb5f568ea94314736ea413dc820e59e91",
+      "portal/__init__.py": "780ee0a923f8945df13f7c3138964422a262fd22751e9b684f661907b3620306",
+      "portal/config.py": "92ed9e1a5f93310e17fe5a0c700641905abf1b6cfd7d2788555df1981ef239bb",
+      "portal/navigation.py": "c95c158c80173e04be723f09fd909b50542491d8bf5bd767a3592687bb75ee58",
+      "portal/render.py": "d3d1480183082902c87ff9e97fe7902019222d529f204bd3d8f72452da90e140"
+    },
+    "w-cross-accessibility": {
+      "PROVENANCE.json": "b3470c74c280a5102798e7a9f619939aaa89d366434730d597fb637caf2ed297",
+      "README.md": "81a2a7c3120b83f2665efefe6076a02783d3d229f76a03270d4ded84051913c5",
+      "assets/site.css": "230761729ab0eca5ceeea3993d442a88245f301bade36cd59124708ce2624cd1",
+      "docs/accessibility.md": "98bb0981d1680bd8da25c0f023f2e79bb5f568ea94314736ea413dc820e59e91",
+      "portal/__init__.py": "780ee0a923f8945df13f7c3138964422a262fd22751e9b684f661907b3620306",
+      "portal/config.py": "92ed9e1a5f93310e17fe5a0c700641905abf1b6cfd7d2788555df1981ef239bb",
+      "portal/navigation.py": "c95c158c80173e04be723f09fd909b50542491d8bf5bd767a3592687bb75ee58",
+      "portal/render.py": "d3d1480183082902c87ff9e97fe7902019222d529f204bd3d8f72452da90e140"
+    },
+    "w-change-breadcrumb-separator": {
+      "PROVENANCE.json": "b3470c74c280a5102798e7a9f619939aaa89d366434730d597fb637caf2ed297",
+      "README.md": "81a2a7c3120b83f2665efefe6076a02783d3d229f76a03270d4ded84051913c5",
+      "assets/site.css": "230761729ab0eca5ceeea3993d442a88245f301bade36cd59124708ce2624cd1",
+      "docs/accessibility.md": "98bb0981d1680bd8da25c0f023f2e79bb5f568ea94314736ea413dc820e59e91",
+      "portal/__init__.py": "780ee0a923f8945df13f7c3138964422a262fd22751e9b684f661907b3620306",
+      "portal/config.py": "92ed9e1a5f93310e17fe5a0c700641905abf1b6cfd7d2788555df1981ef239bb",
+      "portal/navigation.py": "c95c158c80173e04be723f09fd909b50542491d8bf5bd767a3592687bb75ee58",
+      "portal/render.py": "d3d1480183082902c87ff9e97fe7902019222d529f204bd3d8f72452da90e140"
+    },
+    "w-change-default-theme": {
+      "PROVENANCE.json": "b3470c74c280a5102798e7a9f619939aaa89d366434730d597fb637caf2ed297",
+      "README.md": "81a2a7c3120b83f2665efefe6076a02783d3d229f76a03270d4ded84051913c5",
+      "assets/site.css": "230761729ab0eca5ceeea3993d442a88245f301bade36cd59124708ce2624cd1",
+      "docs/accessibility.md": "98bb0981d1680bd8da25c0f023f2e79bb5f568ea94314736ea413dc820e59e91",
+      "portal/__init__.py": "780ee0a923f8945df13f7c3138964422a262fd22751e9b684f661907b3620306",
+      "portal/config.py": "92ed9e1a5f93310e17fe5a0c700641905abf1b6cfd7d2788555df1981ef239bb",
+      "portal/navigation.py": "c95c158c80173e04be723f09fd909b50542491d8bf5bd767a3592687bb75ee58",
+      "portal/render.py": "d3d1480183082902c87ff9e97fe7902019222d529f204bd3d8f72452da90e140"
+    },
+    "edge-contradictory-timeout": {
+      "PROVENANCE.json": "b3470c74c280a5102798e7a9f619939aaa89d366434730d597fb637caf2ed297",
+      "README.md": "dd3ae2f1d4bf271452ffded6f204fcac3e639f1dd13b338ffe1a4e7dd2481dae",
+      "docs/operations.md": "1b35c75fc71d6d8cb6de0806afc2d0b0c8929d2f4862743df82b0139b7d96c74",
+      "ledger/__init__.py": "a623e22bb9b8c2da83e511d6778f4cbbed5242d96129ac168f4168ab542d51cb",
+      "ledger/config.py": "01b6bc6b19c6824db9874af8943c0c321a30e3ef780442985f011c5069e90e09",
+      "ledger/pricing.py": "30f52304d0d0e9a2f6754972619e97d5cce726e256cde6906c834bcba82e4762",
+      "ledger/service.py": "29c7f779724021a6331fcf3c8ca2242a0218876e075b5bb151e338e1b9c70552",
+      "ledger/storage.py": "42cd1ced5a0ba956a2ac1c270ac0e3b03beed25e338c3d8c620e32a6b51cd499"
+    },
+    "edge-no-answer-blockchain": {
+      "PROVENANCE.json": "b3470c74c280a5102798e7a9f619939aaa89d366434730d597fb637caf2ed297",
+      "README.md": "324d0c287f5e651e665590538b6ab9ff0f075b7dd2106359b3bfb17cf55c8e2b",
+      "docs/routing.md": "f91a1ab5c30298dd19de465e36795eb40c7f1b7f74e1f19e1a3de690d1e1cc44",
+      "parcel/__init__.py": "b05a5b48287251bfa38f3e846f78b878fe12672f51303f658e60462e28c31b19",
+      "parcel/config.py": "f60a407f9f512c69c8c6fbe4d4d1721e3dbb0e466f9ae1d12c0dd83637175da6",
+      "parcel/labels.py": "bced0ffad05950d60a4ab7c1f03e1855dd3e307366c39c165ff2d814a0b79102",
+      "parcel/routing.py": "0c9042fbfee395e9c79afd611a4c30830c1634289ef45db3d5f11ca15939964b",
+      "parcel/service.py": "b09c733e7a289de9312584db1ffcf1c60cb0bab030d9e0e8f714c9b1e7984e75"
+    },
+    "edge-denied-admin-token": {
+      "PROVENANCE.json": "b3470c74c280a5102798e7a9f619939aaa89d366434730d597fb637caf2ed297",
+      "README.md": "81a2a7c3120b83f2665efefe6076a02783d3d229f76a03270d4ded84051913c5",
+      "assets/site.css": "230761729ab0eca5ceeea3993d442a88245f301bade36cd59124708ce2624cd1",
+      "docs/accessibility.md": "98bb0981d1680bd8da25c0f023f2e79bb5f568ea94314736ea413dc820e59e91",
+      "portal/__init__.py": "780ee0a923f8945df13f7c3138964422a262fd22751e9b684f661907b3620306",
+      "portal/navigation.py": "c95c158c80173e04be723f09fd909b50542491d8bf5bd767a3592687bb75ee58",
+      "portal/render.py": "d3d1480183082902c87ff9e97fe7902019222d529f204bd3d8f72452da90e140"
+    }
+  },
+  "input_sha256_by_task": {
+    "l-doc-default-currency": "0f4c32f5c4ad3c3592d42d58e1f536e5834e95ec87f24cb87ae82e45937868c8",
+    "l-doc-settlement-window": "701e0b0dd1c3e6c2d9ee567cf1a969ff3049a14d0bad9d83044d47b61d78bd72",
+    "l-doc-audit-retention": "0758bdf389aeda8f0f37ac47e017f047cd76e2d4039c9f63b357308b50769bdd",
+    "l-code-late-fee": "a4162ff05a0aa01873045e31e7588de4f6631cf6ec8cc6a36f6a38af285ff174",
+    "l-code-reference-normalization": "9257624aab8bf5c8d4b5010da4981336ebaf9465ccbfc280e2c45eede88e1166",
+    "l-code-retry-limit": "64d82eab720e0bb1041b540176a2795e58d0724a9b0877afa1fd63544075e82b",
+    "l-cross-quote": "bbb4d379ee57e1ed27e5ae632503c97cc6595a751c43db388314563bb9e069c9",
+    "l-cross-refund": "0663937ab3d2dd1a22bef30a7c2e122d8983a088026101baf76ff2bbee156974",
+    "l-change-late-cap": "5459926367109d8137d1eeb190476f9972f518890d533a25e1638180a05812e8",
+    "l-change-uppercase-reference": "ac88389dfecfcd0cd4fbceb0058ecb21ee7ee8c4c93a22fe892cd397d220d609",
+    "p-doc-default-lane": "786ee34fd666e4a03d8e8c4fb718a73c19a85c7ac0509dcd1db8cb09be0eac4e",
+    "p-doc-hazardous": "041138b3b4eb7c856dfbfccb744f10e0fa0abfeafed3f1d4066b65dd9c661824",
+    "p-doc-retention": "f6da1e3dc37686279581ba01a649ef3d86b8bb64b81ef83433b1c827cabd146e",
+    "p-code-lane-selection": "106682b690bc6072879c8c41cd09a472383700f331e71765523b20e99af6ba28",
+    "p-code-label-format": "295866456c1f06e922fb284abe8fee8bf1bc12eb8a13bef0a425e41ed48ce47a",
+    "p-code-weekend-surcharge": "0c77dda02d9758c1537c043f9df6065a470418e505efe6becd0c91236e2f4049",
+    "p-cross-prepare": "53b5f45aa48d1106b50294d0e136a214a054c295afc6c128aa7a2b94a9016c85",
+    "p-cross-north-route": "36fa5f8d2adbd6697bda421e942ce7cd728f7bfb487cff65571aaead63367926",
+    "p-change-weekend-surcharge": "a804309f7ee854a46f09568773f02bc6ac0b6c323e406b3a7f09b962440e24b4",
+    "p-change-label-length": "e69140be3cb663dd2d9089e6138bda8e3f03e04b2c22cba8185097338f0a452b",
+    "w-doc-default-theme": "f55bfb759ce5a1e0b0a22df7aedab2a4f48c8c29e74ce8fc7476d510e5ae3239",
+    "w-doc-focus-style": "47b02c3b34511e13399c0f36f96b43225b66b29519d28c923d2da2d207334631",
+    "w-doc-main-landmark": "7923f4396071751fb8e55adaf7eea89ac03889ad5451c2d35e6d0cad86ca5bf2",
+    "w-code-breadcrumb": "1c8f858d24ec6c5d79d0b51b34dce52141379cd6c507902a5bd860533dfc470b",
+    "w-code-skip-link": "c1ab6db7d8bb9c6e81419aedab12ad1095a6d5072397369e8bbd8635c03ad71f",
+    "w-code-mobile-style": "9776a86bfd0c7d4a806e44a86b0c1a66b1f5595d1eadf7a879d9749777b925b1",
+    "w-cross-render": "dd15dc969362c509824e043a4404c8b0d30c074834d0a4ca92e983bc887d3f0b",
+    "w-cross-accessibility": "3c51e4b0d83f4d7eca31c24044454b6b5ac50e2fab77e960d30e19204c9fc956",
+    "w-change-breadcrumb-separator": "d7fdcdc240727e67093dc22252ff02c293ad5ddfbe4676ef3d4a95d8ac303657",
+    "w-change-default-theme": "ed67c1e4a0d34e7049235abd01d62a6075346dd96154ae9b6aafeee7b92e26aa",
+    "edge-contradictory-timeout": "ea58848b38def4cc42ce3953e9e21137bfa1f3a9e323e406d092f0bd15d439aa",
+    "edge-no-answer-blockchain": "f5fd1b0e9554221ddb53f3b9261f61e8fb81e4294a02ee00b61d18b741a0f0cd",
+    "edge-denied-admin-token": "fcf0c4ed384232262f6cf9181f67081770e879c0f4f094f3f136282137bbd178"
+  },
+  "binary_sha256": "b70abb958a5fe7869f184c3cfe86669405744e525ca52750c82ee479583f038e",
+  "binary_version": {
+    "version": "repoctx.build/v1alpha5",
+    "program": "repoctx",
+    "release": "dev",
+    "revision": "b2a2650464439705f46795f953040f75e6d75500",
+    "modified": "false",
+    "distribution": "go",
+    "go_version": "go1.27.1-X:nodwarf5",
+    "platform": "linux/amd64",
+    "contracts": {
+      "go_api": "repoctx.go-api/v1alpha1",
+      "ir": "repoctx.ir/v1alpha5",
+      "context": "repoctx.context/v1alpha3",
+      "discovery": "repoctx.discovery/v1alpha1",
+      "artifacts": "repoctx.artifacts/v1alpha1",
+      "artifact_authoring": "repoctx.artifact-authoring/v1alpha2",
+      "document_links_provider": "repoctx.document-links/v1",
+      "go_imports_provider": "repoctx.go-imports/v1",
+      "obligations": "repoctx.obligations/v1alpha1",
+      "diagnostics": "repoctx.diagnostics/v1alpha1",
+      "projection": "repoctx.projection/v1alpha1",
+      "manifest": "repoctx.manifest/v1alpha3",
+      "entities": "repoctx.entities/v1alpha2",
+      "frontmatter": "repoctx.frontmatter/v1alpha1"
+    }
+  },
+  "skill_sha256": "8b00b8d4dca36eaf79f1bba819d8fc5e8564b50539ec82d88519b41db94bd79d",
+  "operator_sha256": "2631b2c708e4454cafb4a0f16140badaf4260afe4d475147dede78aeb5b6c8db",
+  "runner_helper_sha256": "3a92e12b7fd232a6f5fb63e9782b35a5433d4f6d05ce0781eadb0202695182ec",
+  "corpus_exporter_sha256": "e44ceec4484f9e9888ff11da0c23b953d9be49fb369d9da33f244693d80983e2",
+  "manifest_sha256": "f16bc184b8f9cf9f2f657dd11b8eccc186c309647c9d65262c2766ded043f1b5",
+  "rubric_sha256": "6f88ee76854b59e4d14cbc90428825e4a81500c9f50a011e4d198bcf68db03be",
+  "gold_cards_sha256": "f275145561fa93fb9c919308aaa5d886a6bf37a1ed63e3d32340ace40586af1e",
+  "codex_path": "/home/travis/.codex/packages/standalone/releases/0.155.1-x86_64-unknown-linux-musl/bin/codex",
+  "codex_version": "codex-cli 0.155.1",
+  "trial_profile": "Codex pilot: workspace write, minimal read, root/tmp deny, network disabled",
+  "operator_setup_cost_excluded": true,
+  "purpose": "Descriptive paired task run. Alias revision is unresolved; no immutable model/API budget claim."
+}

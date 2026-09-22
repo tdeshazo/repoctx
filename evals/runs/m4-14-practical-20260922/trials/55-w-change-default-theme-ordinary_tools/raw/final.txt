@@ -1,0 +1,1 @@
+Visitors without a saved preference now get the system theme; explicit light and dark choices still work. Updated [repository/portal/config.py](repository/portal/config.py) and the matching [README](repository/README.md). Verified all three cases through the renderer.

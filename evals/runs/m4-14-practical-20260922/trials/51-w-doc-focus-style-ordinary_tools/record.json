@@ -1,0 +1,121 @@
+{
+  "id": "51-w-doc-focus-style-ordinary_tools",
+  "position": 51,
+  "task_id": "w-doc-focus-style",
+  "task_type": "documentation_lookup",
+  "condition": "ordinary_tools",
+  "question": "What keyboard focus outline and offset are required?",
+  "model": "gpt-6-sol",
+  "model_revision": "unresolved_alias",
+  "reasoning_effort": "medium",
+  "input_sha256": "47b02c3b34511e13399c0f36f96b43225b66b29519d28c923d2da2d207334631",
+  "prompt_sha256": "f5be1f708fcec2cfed150b9c1edbf212026fb9dcfa5f52be651b7a213ceef638",
+  "exit_code": 0,
+  "timed_out": false,
+  "wall_seconds": 15.158544,
+  "usage": {
+    "input_tokens": 53095,
+    "cached_input_tokens": 45952,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 280,
+    "reasoning_output_tokens": 45
+  },
+  "event_count": 9,
+  "observed_tool_item_count": 2,
+  "observed_tool_item_types": {
+    "command_execution": 2
+  },
+  "tool_events": [
+    {
+      "type": "item.completed",
+      "item": {
+        "id": "item_1",
+        "type": "command_execution",
+        "command": "/usr/bin/zsh -lc \"rg -n -i 'focus (outline|offset)|outline-offset|focus-visible|keyboard focus' repository\"",
+        "aggregated_output": "repository/assets/site.css:3:  outline-offset: 2px;\nrepository/docs/accessibility.md:3:Keyboard focus uses a three-pixel blue outline with a two-pixel offset.\n",
+        "exit_code": 0,
+        "status": "completed"
+      }
+    },
+    {
+      "type": "item.completed",
+      "item": {
+        "id": "item_2",
+        "type": "command_execution",
+        "command": "/usr/bin/zsh -lc 'rg --files repository && cat repository/docs/accessibility.md repository/assets/site.css'",
+        "aggregated_output": "repository/PROVENANCE.json\nrepository/README.md\nrepository/assets/site.css\nrepository/portal/__init__.py\nrepository/portal/config.py\nrepository/portal/navigation.py\nrepository/portal/render.py\nrepository/docs/accessibility.md\n# Accessibility\n\nKeyboard focus uses a three-pixel blue outline with a two-pixel offset.\nNavigation labels must remain visible at widths below 640 pixels.\nEvery rendered page exposes exactly one main landmark.\n.skip:focus {\n  outline: 3px solid blue;\n  outline-offset: 2px;\n}\n\n@media (max-width: 639px) {\n  nav { display: block; }\n}\n",
+        "exit_code": 0,
+        "status": "completed"
+      }
+    }
+  ],
+  "command_call_count": 2,
+  "tool_call_cap": 24,
+  "tool_call_cap_respected": true,
+  "tool_call_cap_enforcement": "advisory_prompt_only",
+  "command_events": [
+    {
+      "type": "item.completed",
+      "item": {
+        "id": "item_1",
+        "type": "command_execution",
+        "command": "/usr/bin/zsh -lc \"rg -n -i 'focus (outline|offset)|outline-offset|focus-visible|keyboard focus' repository\"",
+        "aggregated_output": "repository/assets/site.css:3:  outline-offset: 2px;\nrepository/docs/accessibility.md:3:Keyboard focus uses a three-pixel blue outline with a two-pixel offset.\n",
+        "exit_code": 0,
+        "status": "completed"
+      }
+    },
+    {
+      "type": "item.completed",
+      "item": {
+        "id": "item_2",
+        "type": "command_execution",
+        "command": "/usr/bin/zsh -lc 'rg --files repository && cat repository/docs/accessibility.md repository/assets/site.css'",
+        "aggregated_output": "repository/PROVENANCE.json\nrepository/README.md\nrepository/assets/site.css\nrepository/portal/__init__.py\nrepository/portal/config.py\nrepository/portal/navigation.py\nrepository/portal/render.py\nrepository/docs/accessibility.md\n# Accessibility\n\nKeyboard focus uses a three-pixel blue outline with a two-pixel offset.\nNavigation labels must remain visible at widths below 640 pixels.\nEvery rendered page exposes exactly one main landmark.\n.skip:focus {\n  outline: 3px solid blue;\n  outline-offset: 2px;\n}\n\n@media (max-width: 639px) {\n  nav { display: block; }\n}\n",
+        "exit_code": 0,
+        "status": "completed"
+      }
+    }
+  ],
+  "errors": [],
+  "malformed_event_lines": [],
+  "answer": "Keyboard focus requires a **3px solid blue outline** with a **2px offset**. See [docs/accessibility.md](repository/docs/accessibility.md) and [assets/site.css](repository/assets/site.css).",
+  "raw": {
+    "events": "trials/51-w-doc-focus-style-ordinary_tools/raw/events.jsonl",
+    "stderr": "trials/51-w-doc-focus-style-ordinary_tools/raw/stderr.txt",
+    "final": "trials/51-w-doc-focus-style-ordinary_tools/raw/final.txt"
+  },
+  "source_before_sha256": {
+    "PROVENANCE.json": "b3470c74c280a5102798e7a9f619939aaa89d366434730d597fb637caf2ed297",
+    "README.md": "81a2a7c3120b83f2665efefe6076a02783d3d229f76a03270d4ded84051913c5",
+    "assets/site.css": "230761729ab0eca5ceeea3993d442a88245f301bade36cd59124708ce2624cd1",
+    "docs/accessibility.md": "98bb0981d1680bd8da25c0f023f2e79bb5f568ea94314736ea413dc820e59e91",
+    "portal/__init__.py": "780ee0a923f8945df13f7c3138964422a262fd22751e9b684f661907b3620306",
+    "portal/config.py": "92ed9e1a5f93310e17fe5a0c700641905abf1b6cfd7d2788555df1981ef239bb",
+    "portal/navigation.py": "c95c158c80173e04be723f09fd909b50542491d8bf5bd767a3592687bb75ee58",
+    "portal/render.py": "d3d1480183082902c87ff9e97fe7902019222d529f204bd3d8f72452da90e140"
+  },
+  "source_after_sha256": {
+    "PROVENANCE.json": "b3470c74c280a5102798e7a9f619939aaa89d366434730d597fb637caf2ed297",
+    "README.md": "81a2a7c3120b83f2665efefe6076a02783d3d229f76a03270d4ded84051913c5",
+    "assets/site.css": "230761729ab0eca5ceeea3993d442a88245f301bade36cd59124708ce2624cd1",
+    "docs/accessibility.md": "98bb0981d1680bd8da25c0f023f2e79bb5f568ea94314736ea413dc820e59e91",
+    "portal/__init__.py": "780ee0a923f8945df13f7c3138964422a262fd22751e9b684f661907b3620306",
+    "portal/config.py": "92ed9e1a5f93310e17fe5a0c700641905abf1b6cfd7d2788555df1981ef239bb",
+    "portal/navigation.py": "c95c158c80173e04be723f09fd909b50542491d8bf5bd767a3592687bb75ee58",
+    "portal/render.py": "d3d1480183082902c87ff9e97fe7902019222d529f204bd3d8f72452da90e140"
+  },
+  "changed_files": [],
+  "source_unchanged": true,
+  "source_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "source_diff_path": "trials/51-w-doc-focus-style-ordinary_tools/raw/source.diff",
+  "change_check": null,
+  "workspace_contents": [
+    ".agents",
+    ".codex",
+    ".git",
+    ".scratch",
+    "input.json",
+    "repository"
+  ]
+}

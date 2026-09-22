@@ -1,0 +1,25 @@
+{
+  "purpose": "non-model permission probe",
+  "updated_at": "2026-09-22T19:12:53.609894+00:00",
+  "filesystem": {
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  "baseline_path": {
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  "treatment_tool": {
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  "socket": {
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  "workspace_marker": true
+}

@@ -1,0 +1,14 @@
+[
+  {
+    "packet_id": "97bc89f7331e7a1a",
+    "grade": "pass",
+    "reason": "Correctly states that omitted invoice currency falls back to USD and identifies the fallback implementation.",
+    "source_grounding": "README.md states that the default invoice currency is USD; ledger/service.py uses currency or DEFAULT_CURRENCY and ledger/config.py defines DEFAULT_CURRENCY as USD."
+  },
+  {
+    "packet_id": "3e0ca94050b738f7",
+    "grade": "pass",
+    "reason": "Correctly locates breadcrumb text assembly and accurately describes its transformation and render use.",
+    "source_grounding": "portal/navigation.py breadcrumb trims and title-cases parts then joins them with ' / '; portal/render.py passes [\"docs\", title] and places the result in nav."
+  }
+]

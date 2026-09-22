@@ -1,0 +1,1 @@
+Updated [ledger/pricing.py](repository/ledger/pricing.py:7) so invoice references are trimmed and converted to uppercase. Verified the normalized reference in both invoice quotes and stored refund records.

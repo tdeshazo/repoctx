@@ -1,0 +1,50 @@
+[
+  {
+    "packet_id": "3f8c31c4c6b39131",
+    "grade": "pass",
+    "reason": "Correctly locates choose_lane and accurately describes its selection order and caller.",
+    "source_grounding": "parcel/routing.py choose_lane handles hazardous, requested, north-region, and default lanes; parcel/config.py defines the ground default and parcel/service.py calls choose_lane."
+  },
+  {
+    "packet_id": "8b762e989da2515e",
+    "grade": "partial",
+    "reason": "Accurately explains currency selection and late-fee calculation, but omits that quote_invoice normalizes the reference before calling late_fee, a substantive part of the requested trace.",
+    "source_grounding": "ledger/service.py shows normalize_reference(reference), currency or DEFAULT_CURRENCY, and late_fee(days_late, amount); ledger/config.py defines USD and ledger/pricing.py defines the capped, rounded 1% calculation."
+  },
+  {
+    "packet_id": "b07114bc9624ea3d",
+    "grade": "pass",
+    "reason": "Gives the complete documented refund-audit retention period.",
+    "source_grounding": "docs/operations.md states that refund audit records are retained for 90 days after the refund date."
+  },
+  {
+    "packet_id": "2fb4556054a59131",
+    "grade": "pass",
+    "reason": "Gives both required focus-outline properties accurately.",
+    "source_grounding": "docs/accessibility.md specifies a three-pixel blue outline and two-pixel offset; assets/site.css implements outline: 3px solid blue and outline-offset: 2px."
+  },
+  {
+    "packet_id": "734f90d13d143a0d",
+    "grade": "pass",
+    "reason": "Accurately traces the calls that supply the parcel label, lane, and price, including their applicable defaults.",
+    "source_grounding": "parcel/service.py calls format_label, choose_lane, and delivery_price for the dictionary fields; parcel/labels.py, parcel/routing.py, and parcel/config.py support the described behavior."
+  },
+  {
+    "packet_id": "e94d080592d2d5d8",
+    "grade": "pass",
+    "reason": "Correctly locates format_label and accurately describes how it builds the label.",
+    "source_grounding": "parcel/labels.py format_label trims, title-cases, and truncates the city then returns tracking_code plus destination; parcel/service.py uses it for the label field."
+  },
+  {
+    "packet_id": "f61454a87a69c014",
+    "grade": "pass",
+    "reason": "Accurately connects the documented N1 policy with the north-n1 code path and its qualification rules.",
+    "source_grounding": "docs/routing.md names depot N1 for north-region parcels; parcel/routing.py returns north-n1 after hazardous and requested-lane branches, and parcel/service.py passes the selected lane through."
+  },
+  {
+    "packet_id": "a7a977f0fedb1bd5",
+    "grade": "pass",
+    "reason": "Correctly answers that visitors with no saved preference receive the light theme.",
+    "source_grounding": "README.md documents the light default; portal/config.py defines DEFAULT_THEME as light and portal/render.py uses it when no theme is supplied."
+  }
+]

@@ -1,0 +1,16 @@
+--- before/portal/render.py
++++ after/portal/render.py
+@@ -3,10 +3,11 @@
+ 
+ 
+ def render_page(title, sections, theme=None):
++    main_id = "main-content"
+     trail = breadcrumb(["docs", title])
+     links = "".join(f"<li>{section}</li>" for section in sections)
+     return (
+-        skip_link()
+-        + f'<main id="main-content" data-theme="{theme or DEFAULT_THEME}">'
++        skip_link(main_id)
++        + f'<main id="{main_id}" data-theme="{theme or DEFAULT_THEME}">'
+         + f"<nav>{trail}</nav><h1>{title}</h1><ul>{links}</ul></main>"
+     )

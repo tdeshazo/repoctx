@@ -1,0 +1,1 @@
+Updated [ledger/pricing.py](repository/ledger/pricing.py:8) to trim whitespace and convert invoice references to uppercase. Verified the result through invoice quoting and refund recording.

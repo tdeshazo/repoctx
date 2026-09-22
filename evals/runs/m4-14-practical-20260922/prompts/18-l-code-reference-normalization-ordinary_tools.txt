@@ -1,0 +1,5 @@
+Where are imported invoice references normalized?
+
+The supplied source is in `repository/`. Use only that source and its listed files as evidence. Do not read outside the trial workspace or use the network. You may use ordinary shell tools. Use at most 24 tool calls. For a change request, make the change in `repository/`. In the final response, state the outcome and answer or action, with concise repository-relative file-path citations. Do not name your tools or condition.
+Generated temporary files may go in `.scratch/` outside the source repository.
+Use ordinary repository tools only; do not invoke repoctx.

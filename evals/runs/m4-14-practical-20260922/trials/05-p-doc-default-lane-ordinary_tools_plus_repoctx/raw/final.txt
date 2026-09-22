@@ -1,0 +1,1 @@
+The **ground** lane is the default when no service level is supplied ([repository/README.md](repository/README.md:5), [repository/parcel/config.py](repository/parcel/config.py:1)). North-region parcels have a routing exception: they use `north-n1` ([repository/parcel/routing.py](repository/parcel/routing.py:9)).

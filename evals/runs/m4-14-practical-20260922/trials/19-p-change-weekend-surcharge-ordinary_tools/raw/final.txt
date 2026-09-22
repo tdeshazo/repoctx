@@ -1,0 +1,1 @@
+Changed the fixed weekend pickup surcharge from 5 to 7 in [parcel/config.py](repository/parcel/config.py:3). Verified that a base price of 20 is quoted as 27 for weekend pickup and 20 otherwise.

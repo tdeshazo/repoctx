@@ -1,0 +1,14 @@
+[
+  {
+    "packet_id": "4b276453fa1e5e55",
+    "grade": "pass",
+    "reason": "Directly answers two business days and cites the relevant operations documentation.",
+    "source_grounding": "docs/operations.md bytes 14-85 state that settlements remain pending for two business days before becoming final."
+  },
+  {
+    "packet_id": "2f22ec26ff548ea8",
+    "grade": "pass",
+    "reason": "Identifies the conflicting 30-second documentation and 45-second configuration, cites both sources, and declines to assert one effective timeout. Its note that the visible service code does not resolve the runtime behavior is consistent with the packet.",
+    "source_grounding": "README.md bytes 231-286 say settlement calls have a 30-second request timeout, while ledger/config.py bytes 52-80 set REQUEST_TIMEOUT_SECONDS = 45. The cited ledger/service.py has no settlement call or use of that constant, so the visible sources do not settle the conflict."
+  }
+]

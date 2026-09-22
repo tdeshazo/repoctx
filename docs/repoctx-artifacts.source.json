@@ -77,8 +77,8 @@
     {
       "id": "m4-14",
       "path": "ROADMAP.md",
-      "start": "- [ ] **M4-14 \u2014 Run the confirmatory held-out workflow evaluation.** Execute the",
-      "end": "  classification report are linked; M6-07 evidence does not satisfy it."
+      "start": "- [x] **M4-14 \u2014 Run the practical paired workflow comparison.** Completed all",
+      "end": "  the existing 572-trial protocol remains unchanged optional background."
     }
   ],
   "artifacts": [
@@ -371,7 +371,7 @@
       "declared_inputs": []
     },
     {
-      "id": "repoctx:requirement.m4-14-confirmatory-evaluation",
+      "id": "repoctx:requirement.m4-14-practical-comparison",
       "kind": "requirement",
       "owner": "repoctx:maintainers",
       "applies_to": [
@@ -454,7 +454,7 @@
     },
     {
       "from": "repoctx:milestone.evaluation",
-      "to": "repoctx:requirement.m4-14-confirmatory-evaluation",
+      "to": "repoctx:requirement.m4-14-practical-comparison",
       "kind": "contains",
       "resolution": "declared",
       "sources": [

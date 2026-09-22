@@ -1,0 +1,143 @@
+{
+  "id": "02-p-code-weekend-surcharge-ordinary_tools",
+  "position": 2,
+  "task_id": "p-code-weekend-surcharge",
+  "task_type": "code_localization",
+  "condition": "ordinary_tools",
+  "question": "Locate both the weekend surcharge value and the calculation that applies it.",
+  "model": "gpt-6-sol",
+  "model_revision": "unresolved_alias",
+  "reasoning_effort": "medium",
+  "input_sha256": "0c77dda02d9758c1537c043f9df6065a470418e505efe6becd0c91236e2f4049",
+  "prompt_sha256": "9f14b385feb4f74acbdbe643569729539194b1f824f718439453b464d8651177",
+  "exit_code": 0,
+  "timed_out": false,
+  "wall_seconds": 18.266887,
+  "usage": {
+    "input_tokens": 71501,
+    "cached_input_tokens": 63744,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 405,
+    "reasoning_output_tokens": 77
+  },
+  "event_count": 11,
+  "observed_tool_item_count": 3,
+  "observed_tool_item_types": {
+    "command_execution": 3
+  },
+  "tool_events": [
+    {
+      "type": "item.completed",
+      "item": {
+        "id": "item_1",
+        "type": "command_execution",
+        "command": "/usr/bin/zsh -lc 'rg --files repository | head -80'",
+        "aggregated_output": "repository/PROVENANCE.json\nrepository/README.md\nrepository/docs/routing.md\nrepository/parcel/__init__.py\nrepository/parcel/config.py\nrepository/parcel/labels.py\nrepository/parcel/routing.py\nrepository/parcel/service.py\n",
+        "exit_code": 0,
+        "status": "completed"
+      }
+    },
+    {
+      "type": "item.completed",
+      "item": {
+        "id": "item_2",
+        "type": "command_execution",
+        "command": "/usr/bin/zsh -lc \"rg -n -i 'weekend|surcharge|fee|price|cost|rate' repository\"",
+        "aggregated_output": "repository/README.md:6:Weekend pickup adds a fixed surcharge to the quoted delivery price.\nrepository/parcel/config.py:3:WEEKEND_SURCHARGE = 5\nrepository/parcel/service.py:2:from .routing import choose_lane, delivery_price\nrepository/parcel/service.py:5:def prepare_parcel(tracking_code, city, region, base_price, hazardous=False):\nrepository/parcel/service.py:9:        \"price\": delivery_price(base_price),\nrepository/parcel/routing.py:1:from .config import DEFAULT_LANE, WEEKEND_SURCHARGE\nrepository/parcel/routing.py:12:def delivery_price(base, weekend=False):\nrepository/parcel/routing.py:13:    return base + (WEEKEND_SURCHARGE if weekend else 0)\n",
+        "exit_code": 0,
+        "status": "completed"
+      }
+    },
+    {
+      "type": "item.completed",
+      "item": {
+        "id": "item_3",
+        "type": "command_execution",
+        "command": "/usr/bin/zsh -lc 'nl -ba repository/parcel/config.py repository/parcel/routing.py repository/parcel/service.py repository/README.md'",
+        "aggregated_output": "     1\tDEFAULT_LANE = \"ground\"\n     2\tEVENT_RETENTION_DAYS = 14\n     3\tWEEKEND_SURCHARGE = 5\n     4\tfrom .config import DEFAULT_LANE, WEEKEND_SURCHARGE\n     5\t\n     6\t\n     7\tdef choose_lane(region, hazardous=False, requested=None):\n     8\t    if hazardous:\n     9\t        return \"ground\"\n    10\t    if requested:\n    11\t        return requested\n    12\t    return \"north-n1\" if region == \"north\" else DEFAULT_LANE\n    13\t\n    14\t\n    15\tdef delivery_price(base, weekend=False):\n    16\t    return base + (WEEKEND_SURCHARGE if weekend else 0)\n    17\tfrom .labels import format_label\n    18\tfrom .routing import choose_lane, delivery_price\n    19\t\n    20\t\n    21\tdef prepare_parcel(tracking_code, city, region, base_price, hazardous=False):\n    22\t    return {\n    23\t        \"label\": format_label(tracking_code, city),\n    24\t        \"lane\": choose_lane(region, hazardous=hazardous),\n    25\t        \"price\": delivery_price(base_price),\n    26\t    }\n    27\t# Parcel Path\n    28\t\n    29\tParcel Path selects a delivery lane and prints compact shipping labels.\n    30\t\n    31\tStandard parcels use the ground lane when no service level is supplied.\n    32\tWeekend pickup adds a fixed surcharge to the quoted delivery price.\n    33\tTracking events are retained for 14 days in the local event buffer.\n",
+        "exit_code": 0,
+        "status": "completed"
+      }
+    }
+  ],
+  "command_call_count": 3,
+  "tool_call_cap": 24,
+  "tool_call_cap_respected": true,
+  "tool_call_cap_enforcement": "advisory_prompt_only",
+  "command_events": [
+    {
+      "type": "item.completed",
+      "item": {
+        "id": "item_1",
+        "type": "command_execution",
+        "command": "/usr/bin/zsh -lc 'rg --files repository | head -80'",
+        "aggregated_output": "repository/PROVENANCE.json\nrepository/README.md\nrepository/docs/routing.md\nrepository/parcel/__init__.py\nrepository/parcel/config.py\nrepository/parcel/labels.py\nrepository/parcel/routing.py\nrepository/parcel/service.py\n",
+        "exit_code": 0,
+        "status": "completed"
+      }
+    },
+    {
+      "type": "item.completed",
+      "item": {
+        "id": "item_2",
+        "type": "command_execution",
+        "command": "/usr/bin/zsh -lc \"rg -n -i 'weekend|surcharge|fee|price|cost|rate' repository\"",
+        "aggregated_output": "repository/README.md:6:Weekend pickup adds a fixed surcharge to the quoted delivery price.\nrepository/parcel/config.py:3:WEEKEND_SURCHARGE = 5\nrepository/parcel/service.py:2:from .routing import choose_lane, delivery_price\nrepository/parcel/service.py:5:def prepare_parcel(tracking_code, city, region, base_price, hazardous=False):\nrepository/parcel/service.py:9:        \"price\": delivery_price(base_price),\nrepository/parcel/routing.py:1:from .config import DEFAULT_LANE, WEEKEND_SURCHARGE\nrepository/parcel/routing.py:12:def delivery_price(base, weekend=False):\nrepository/parcel/routing.py:13:    return base + (WEEKEND_SURCHARGE if weekend else 0)\n",
+        "exit_code": 0,
+        "status": "completed"
+      }
+    },
+    {
+      "type": "item.completed",
+      "item": {
+        "id": "item_3",
+        "type": "command_execution",
+        "command": "/usr/bin/zsh -lc 'nl -ba repository/parcel/config.py repository/parcel/routing.py repository/parcel/service.py repository/README.md'",
+        "aggregated_output": "     1\tDEFAULT_LANE = \"ground\"\n     2\tEVENT_RETENTION_DAYS = 14\n     3\tWEEKEND_SURCHARGE = 5\n     4\tfrom .config import DEFAULT_LANE, WEEKEND_SURCHARGE\n     5\t\n     6\t\n     7\tdef choose_lane(region, hazardous=False, requested=None):\n     8\t    if hazardous:\n     9\t        return \"ground\"\n    10\t    if requested:\n    11\t        return requested\n    12\t    return \"north-n1\" if region == \"north\" else DEFAULT_LANE\n    13\t\n    14\t\n    15\tdef delivery_price(base, weekend=False):\n    16\t    return base + (WEEKEND_SURCHARGE if weekend else 0)\n    17\tfrom .labels import format_label\n    18\tfrom .routing import choose_lane, delivery_price\n    19\t\n    20\t\n    21\tdef prepare_parcel(tracking_code, city, region, base_price, hazardous=False):\n    22\t    return {\n    23\t        \"label\": format_label(tracking_code, city),\n    24\t        \"lane\": choose_lane(region, hazardous=hazardous),\n    25\t        \"price\": delivery_price(base_price),\n    26\t    }\n    27\t# Parcel Path\n    28\t\n    29\tParcel Path selects a delivery lane and prints compact shipping labels.\n    30\t\n    31\tStandard parcels use the ground lane when no service level is supplied.\n    32\tWeekend pickup adds a fixed surcharge to the quoted delivery price.\n    33\tTracking events are retained for 14 days in the local event buffer.\n",
+        "exit_code": 0,
+        "status": "completed"
+      }
+    }
+  ],
+  "errors": [],
+  "malformed_event_lines": [],
+  "answer": "The weekend surcharge is **5**, defined in `repository/parcel/config.py:3`. The calculation in `repository/parcel/routing.py:12-13` adds it to the base price when `weekend=True`; otherwise it adds 0.",
+  "raw": {
+    "events": "trials/02-p-code-weekend-surcharge-ordinary_tools/raw/events.jsonl",
+    "stderr": "trials/02-p-code-weekend-surcharge-ordinary_tools/raw/stderr.txt",
+    "final": "trials/02-p-code-weekend-surcharge-ordinary_tools/raw/final.txt"
+  },
+  "source_before_sha256": {
+    "PROVENANCE.json": "b3470c74c280a5102798e7a9f619939aaa89d366434730d597fb637caf2ed297",
+    "README.md": "324d0c287f5e651e665590538b6ab9ff0f075b7dd2106359b3bfb17cf55c8e2b",
+    "docs/routing.md": "f91a1ab5c30298dd19de465e36795eb40c7f1b7f74e1f19e1a3de690d1e1cc44",
+    "parcel/__init__.py": "b05a5b48287251bfa38f3e846f78b878fe12672f51303f658e60462e28c31b19",
+    "parcel/config.py": "f60a407f9f512c69c8c6fbe4d4d1721e3dbb0e466f9ae1d12c0dd83637175da6",
+    "parcel/labels.py": "bced0ffad05950d60a4ab7c1f03e1855dd3e307366c39c165ff2d814a0b79102",
+    "parcel/routing.py": "0c9042fbfee395e9c79afd611a4c30830c1634289ef45db3d5f11ca15939964b",
+    "parcel/service.py": "b09c733e7a289de9312584db1ffcf1c60cb0bab030d9e0e8f714c9b1e7984e75"
+  },
+  "source_after_sha256": {
+    "PROVENANCE.json": "b3470c74c280a5102798e7a9f619939aaa89d366434730d597fb637caf2ed297",
+    "README.md": "324d0c287f5e651e665590538b6ab9ff0f075b7dd2106359b3bfb17cf55c8e2b",
+    "docs/routing.md": "f91a1ab5c30298dd19de465e36795eb40c7f1b7f74e1f19e1a3de690d1e1cc44",
+    "parcel/__init__.py": "b05a5b48287251bfa38f3e846f78b878fe12672f51303f658e60462e28c31b19",
+    "parcel/config.py": "f60a407f9f512c69c8c6fbe4d4d1721e3dbb0e466f9ae1d12c0dd83637175da6",
+    "parcel/labels.py": "bced0ffad05950d60a4ab7c1f03e1855dd3e307366c39c165ff2d814a0b79102",
+    "parcel/routing.py": "0c9042fbfee395e9c79afd611a4c30830c1634289ef45db3d5f11ca15939964b",
+    "parcel/service.py": "b09c733e7a289de9312584db1ffcf1c60cb0bab030d9e0e8f714c9b1e7984e75"
+  },
+  "changed_files": [],
+  "source_unchanged": true,
+  "source_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "source_diff_path": "trials/02-p-code-weekend-surcharge-ordinary_tools/raw/source.diff",
+  "change_check": null,
+  "workspace_contents": [
+    ".agents",
+    ".codex",
+    ".git",
+    ".scratch",
+    "input.json",
+    "repository"
+  ]
+}

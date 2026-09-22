@@ -1,0 +1,50 @@
+[
+  {
+    "packet_id": "796f97a7a4cd09be",
+    "grade": "pass",
+    "reason": "Changes the billable-day cap to 12 while preserving the one-percent calculation and making no unrelated changes.",
+    "source_grounding": "The ledger/pricing.py diff updates the cap from 10 to 12 and its matching docstring; the return expression remains amount * billable_days * 0.01."
+  },
+  {
+    "packet_id": "c134d81be85673fd",
+    "grade": "pass",
+    "reason": "Correctly identifies ground as the documented default and accurately notes the north-region routing exception.",
+    "source_grounding": "README.md states that standard parcels with no supplied service level use ground; parcel/routing.py returns north-n1 for north-region requests and DEFAULT_LANE otherwise."
+  },
+  {
+    "packet_id": "bed7471167e2db14",
+    "grade": "pass",
+    "reason": "The destination slice limit is changed from 20 to 24 while the label layout is unchanged.",
+    "source_grounding": "The parcel/labels.py diff changes only city.strip().title()[:20] to [:24]; the tracking-code, separator, and destination return format are unchanged."
+  },
+  {
+    "packet_id": "04f9771cfd1bbbe3",
+    "grade": "pass",
+    "reason": "Accurately locates and describes the narrow-screen navigation rule.",
+    "source_grounding": "assets/site.css has @media (max-width: 639px) containing nav { display: block; }."
+  },
+  {
+    "packet_id": "f2dd8f26dbf06de8",
+    "grade": "pass",
+    "reason": "Gives the complete documented retention period.",
+    "source_grounding": "docs/operations.md states that refund audit records are retained for 90 days after the refund date."
+  },
+  {
+    "packet_id": "5a3ab6a0927449de",
+    "grade": "pass",
+    "reason": "Sets the no-preference default theme to system and updates the related documentation without unrelated changes.",
+    "source_grounding": "The portal/config.py diff changes DEFAULT_THEME from light to system; portal/render.py uses theme or DEFAULT_THEME, and the README diff updates the corresponding default-theme statement."
+  },
+  {
+    "packet_id": "77fe07f34a75eb67",
+    "grade": "pass",
+    "reason": "Correctly says hazardous parcels may not use air and must travel by ground.",
+    "source_grounding": "docs/routing.md states the air restriction and ground requirement; parcel/routing.py also selects ground for hazardous parcels."
+  },
+  {
+    "packet_id": "8efafc2bd375f1ea",
+    "grade": "pass",
+    "reason": "Traces normalization at the service entry point through storage record creation, append, and return.",
+    "source_grounding": "ledger/service.py normalizes then calls append_refund; ledger/pricing.py strips and lowercases; ledger/storage.py creates the record, appends it to REFUNDS, and returns it."
+  }
+]

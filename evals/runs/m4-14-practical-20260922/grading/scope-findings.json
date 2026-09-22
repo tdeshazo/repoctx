@@ -1,0 +1,5 @@
+{
+  "violations": [],
+  "basis": "Scoped trial exports and permission probe; command scan of all 66 trials found no suspect network or evaluator-path commands; operator manually reviewed 33 treatment command lists.",
+  "reviewed_trial_count": 66
+}

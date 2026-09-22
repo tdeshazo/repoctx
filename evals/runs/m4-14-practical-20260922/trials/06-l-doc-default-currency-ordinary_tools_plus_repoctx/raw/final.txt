@@ -1,0 +1,1 @@
+An invoice uses **USD** when no currency is supplied. The invoice function falls back to `DEFAULT_CURRENCY`, which is set to `"USD"` ([ledger/service.py](repository/ledger/service.py), [ledger/config.py](repository/ledger/config.py)).

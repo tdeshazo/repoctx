@@ -7,6 +7,10 @@ project's Apache-2.0 license; its `PROVENANCE.json` records that origin and
 redistribution status. The corpus is a pilot floor, not evidence of statistical
 generalization or improved agent outcomes.
 
+**Completed development comparison:** See the [M4-14 practical paired workflow
+comparison report](../../docs/reports/m4-14-practical.md). The protocol below
+remains optional background for future confirmatory claims.
+
 The 30 answerable tasks comprise nine documentation lookups, nine code
 localizations, six cross-file analyses, and six changes. Every repository has
 ten answerable tasks. M0 remains the explicitly separate tuning corpus; the

@@ -1,0 +1,17 @@
+{
+  "version": "repoctx.m4.agent-input/v1alpha1",
+  "id": "w-change-breadcrumb-separator",
+  "question": "Use a single chevron character between breadcrumb parts instead of a slash.",
+  "repository": "portal-kit",
+  "files": [
+    "PROVENANCE.json",
+    "README.md",
+    "assets/site.css",
+    "docs/accessibility.md",
+    "portal/__init__.py",
+    "portal/config.py",
+    "portal/navigation.py",
+    "portal/render.py"
+  ],
+  "check_id": "w-chevron-breadcrumb"
+}

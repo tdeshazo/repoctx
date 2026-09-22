@@ -1,0 +1,8 @@
+.skip:focus {
+  outline: 3px solid blue;
+  outline-offset: 2px;
+}
+
+@media (max-width: 639px) {
+  nav { display: block; }
+}

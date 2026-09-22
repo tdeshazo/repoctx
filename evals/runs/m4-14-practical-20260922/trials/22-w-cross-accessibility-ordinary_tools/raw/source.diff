@@ -1,0 +1,30 @@
+--- before/portal/navigation.py
++++ after/portal/navigation.py
+@@ -1,6 +1,9 @@
++MAIN_CONTENT_ID = "main-content"
++
++
+ def breadcrumb(parts):
+     return " / ".join(part.strip().title() for part in parts)
+ 
+ 
+-def skip_link(target="main-content"):
++def skip_link(target=MAIN_CONTENT_ID):
+     return f'<a class="skip" href="#{target}">Skip to content</a>'
+--- before/portal/render.py
++++ after/portal/render.py
+@@ -1,5 +1,5 @@
+ from .config import DEFAULT_THEME
+-from .navigation import breadcrumb, skip_link
++from .navigation import MAIN_CONTENT_ID, breadcrumb, skip_link
+ 
+ 
+ def render_page(title, sections, theme=None):
+@@ -7,6 +7,6 @@
+     links = "".join(f"<li>{section}</li>" for section in sections)
+     return (
+         skip_link()
+-        + f'<main id="main-content" data-theme="{theme or DEFAULT_THEME}">'
++        + f'<main id="{MAIN_CONTENT_ID}" data-theme="{theme or DEFAULT_THEME}">'
+         + f"<nav>{trail}</nav><h1>{title}</h1><ul>{links}</ul></main>"
+     )

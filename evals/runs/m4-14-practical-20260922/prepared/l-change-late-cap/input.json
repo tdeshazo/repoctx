@@ -1,0 +1,17 @@
+{
+  "version": "repoctx.m4.agent-input/v1alpha1",
+  "id": "l-change-late-cap",
+  "question": "Raise the billable late-fee cap from 10 days to 12 days without changing the one-percent daily rate.",
+  "repository": "ledger-lite",
+  "files": [
+    "PROVENANCE.json",
+    "README.md",
+    "docs/operations.md",
+    "ledger/__init__.py",
+    "ledger/config.py",
+    "ledger/pricing.py",
+    "ledger/service.py",
+    "ledger/storage.py"
+  ],
+  "check_id": "l-late-cap-12"
+}

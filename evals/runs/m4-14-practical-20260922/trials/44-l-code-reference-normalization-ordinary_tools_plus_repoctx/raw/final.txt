@@ -1,0 +1,1 @@
+Invoice references are normalized in [`ledger/pricing.py`](repository/ledger/pricing.py:7) by trimming whitespace and converting to lowercase. [`quote_invoice`](repository/ledger/service.py:6) calls that function and puts the normalized reference in its result.

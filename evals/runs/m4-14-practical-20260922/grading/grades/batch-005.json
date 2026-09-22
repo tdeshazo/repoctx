@@ -1,0 +1,50 @@
+[
+  {
+    "packet_id": "b8263a0f683a83c5",
+    "grade": "pass",
+    "reason": "Changes the billable-day cap to 12 while preserving the one-percent calculation and avoiding unrelated edits.",
+    "source_grounding": "The ledger/pricing.py diff updates the cap and matching docstring from 10 to 12; the amount * billable_days * 0.01 calculation remains unchanged."
+  },
+  {
+    "packet_id": "205ff89b88bd5c77",
+    "grade": "pass",
+    "reason": "Correctly locates the late-fee calculation and accurately describes its formula and caller.",
+    "source_grounding": "ledger/pricing.py defines late_fee with a 1% rate, ten-day cap, and rounding; ledger/service.py quote_invoice calls it for the late_fee field."
+  },
+  {
+    "packet_id": "621e34e50247eab5",
+    "grade": "pass",
+    "reason": "Gives the complete documented event-retention period.",
+    "source_grounding": "README.md states that tracking events are retained for 14 days in the local event buffer; parcel/config.py also defines EVENT_RETENTION_DAYS = 14."
+  },
+  {
+    "packet_id": "195dc7960071ef32",
+    "grade": "pass",
+    "reason": "Correctly locates both the configured retry limit and the documented at-most-three-attempt policy.",
+    "source_grounding": "ledger/config.py defines MAX_SETTLEMENT_RETRIES = 3, and docs/operations.md says a failed settlement is retried at most three times."
+  },
+  {
+    "packet_id": "5b7e4442003abf91",
+    "grade": "pass",
+    "reason": "Correctly locates skip_link and accurately describes its default target and rendered use.",
+    "source_grounding": "portal/navigation.py skip_link returns the Skip to content anchor targeting the default main-content ID; portal/render.py calls skip_link while rendering the page."
+  },
+  {
+    "packet_id": "1d1eee1e45434eb5",
+    "grade": "pass",
+    "reason": "Accurately locates and describes the narrow-screen navigation visibility rule.",
+    "source_grounding": "assets/site.css contains @media (max-width: 639px) with nav { display: block; }; docs/accessibility.md requires navigation labels to remain visible below 640 pixels."
+  },
+  {
+    "packet_id": "d7e6551e01cfbbf4",
+    "grade": "pass",
+    "reason": "Changes normalization from lowercase to uppercase while retaining whitespace trimming, with no unrelated diff changes.",
+    "source_grounding": "The ledger/pricing.py diff changes reference.strip().lower() only to reference.strip().upper(); ledger/service.py uses normalize_reference for invoice quotes and refund records."
+  },
+  {
+    "packet_id": "37e7c64113381b76",
+    "grade": "pass",
+    "reason": "Correctly locates skip_link and states its default accessibility-link target.",
+    "source_grounding": "portal/navigation.py defines skip_link(target=\"main-content\") and returns the Skip to content anchor with href based on that target."
+  }
+]

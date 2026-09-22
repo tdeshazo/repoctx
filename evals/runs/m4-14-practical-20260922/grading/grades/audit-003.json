@@ -1,0 +1,14 @@
+[
+  {
+    "packet_id": "0f8f2955fef677aa",
+    "grade": "pass",
+    "reason": "Directly answers light and accurately explains the render_page fallback, with relevant citations to the rendering code and configured value.",
+    "source_grounding": "README.md bytes 83-157 state the default visual theme is light for visitors without a saved preference. Cited portal/render.py uses theme or DEFAULT_THEME, and cited portal/config.py sets DEFAULT_THEME to light in visible source."
+  },
+  {
+    "packet_id": "195dc7960071ef32",
+    "grade": "pass",
+    "reason": "Locates the configured retry limit of 3 and states the documented at-most-three-times policy, citing both relevant files.",
+    "source_grounding": "ledger/config.py bytes 25-51 set MAX_SETTLEMENT_RETRIES = 3. docs/operations.md bytes 155-211 say operators retry a failed settlement at most three times."
+  }
+]

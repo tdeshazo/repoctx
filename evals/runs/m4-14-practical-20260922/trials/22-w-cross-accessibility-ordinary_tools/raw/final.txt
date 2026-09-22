@@ -1,0 +1,1 @@
+The skip link and the `<main>` landmark now use one shared `main-content` identifier in `repository/portal/navigation.py` and `repository/portal/render.py`. I verified that `render_page` outputs a skip link targeting its single main landmark.

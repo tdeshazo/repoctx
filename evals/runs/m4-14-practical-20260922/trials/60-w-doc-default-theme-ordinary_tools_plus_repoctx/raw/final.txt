@@ -1,0 +1,1 @@
+Visitors with no saved preference see the **light** theme. The default is set in [portal/config.py](repository/portal/config.py:1) and used by [portal/render.py](repository/portal/render.py:10).

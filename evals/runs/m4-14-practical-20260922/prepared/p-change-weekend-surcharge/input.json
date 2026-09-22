@@ -1,0 +1,17 @@
+{
+  "version": "repoctx.m4.agent-input/v1alpha1",
+  "id": "p-change-weekend-surcharge",
+  "question": "Increase the fixed weekend pickup surcharge from 5 to 7.",
+  "repository": "parcel-path",
+  "files": [
+    "PROVENANCE.json",
+    "README.md",
+    "docs/routing.md",
+    "parcel/__init__.py",
+    "parcel/config.py",
+    "parcel/labels.py",
+    "parcel/routing.py",
+    "parcel/service.py"
+  ],
+  "check_id": "p-weekend-seven"
+}

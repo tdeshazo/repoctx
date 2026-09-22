@@ -1,0 +1,26 @@
+[
+  {
+    "packet_id": "93dcc2a14cff13c3",
+    "initial_grade": "partial",
+    "audit_grade": "pass",
+    "final_grade": "pass",
+    "reason": "The question asks how quoting chooses a currency and calculates its late fee. The response answers and cites those requested claims. Reference normalization appears in the evaluator answer but is incidental to this question; requiring it would add an unstated criterion.",
+    "basis": "question-first interpretation; independent audit and operator adjudication"
+  },
+  {
+    "packet_id": "ee73b63e30db1531",
+    "initial_grade": "partial",
+    "audit_grade": "pass",
+    "final_grade": "pass",
+    "reason": "The question asks for the skip-link target and matching landmark. The response cites the navigation and rendering files that directly establish that mapping. A separate README citation is not required by the question; source mutation is a separate audit field.",
+    "basis": "question-first interpretation; independent audit and operator adjudication"
+  },
+  {
+    "packet_id": "8b762e989da2515e",
+    "initial_grade": "partial",
+    "audit_grade": "pass",
+    "final_grade": "pass",
+    "reason": "The question asks how quoting chooses a currency and calculates the late fee. The response accurately answers and cites those requested claims. Reference normalization is incidental and not a required answer element for this question.",
+    "basis": "question-first interpretation; independent audit and operator adjudication"
+  }
+]

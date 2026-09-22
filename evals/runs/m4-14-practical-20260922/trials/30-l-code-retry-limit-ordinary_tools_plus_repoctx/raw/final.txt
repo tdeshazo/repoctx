@@ -1,0 +1,1 @@
+The configured settlement retry limit is **3** (`MAX_SETTLEMENT_RETRIES = 3`) in `repository/ledger/config.py:2`. The documented policy says operators retry a failed settlement **at most three times** in `repository/docs/operations.md:5`.

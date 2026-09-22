@@ -1,0 +1,1 @@
+Breadcrumb text is assembled in [`portal/navigation.py:1`](repository/portal/navigation.py#L1): `breadcrumb(parts)` trims and title-cases each part, then joins them with ` / `. [`portal/render.py:6`](repository/portal/render.py#L6) passes `["docs", title]` to that function and places the result in the page’s `<nav>` element.

@@ -1,0 +1,143 @@
+{
+  "id": "37-l-code-retry-limit-ordinary_tools",
+  "position": 37,
+  "task_id": "l-code-retry-limit",
+  "task_type": "code_localization",
+  "condition": "ordinary_tools",
+  "question": "Locate the configured settlement retry limit and its documented policy.",
+  "model": "gpt-6-sol",
+  "model_revision": "unresolved_alias",
+  "reasoning_effort": "medium",
+  "input_sha256": "64d82eab720e0bb1041b540176a2795e58d0724a9b0877afa1fd63544075e82b",
+  "prompt_sha256": "ef2bfc997979ed88d9271b4e8a7795ee022172cb5cdff1660c3297cf9f6aa47e",
+  "exit_code": 0,
+  "timed_out": false,
+  "wall_seconds": 17.463888,
+  "usage": {
+    "input_tokens": 71377,
+    "cached_input_tokens": 57216,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 393,
+    "reasoning_output_tokens": 75
+  },
+  "event_count": 11,
+  "observed_tool_item_count": 3,
+  "observed_tool_item_types": {
+    "command_execution": 3
+  },
+  "tool_events": [
+    {
+      "type": "item.completed",
+      "item": {
+        "id": "item_1",
+        "type": "command_execution",
+        "command": "/usr/bin/zsh -lc \"rg -n -i 'settlement.*retry|retry.*settlement|retry limit' repository\"",
+        "aggregated_output": "repository/docs/operations.md:5:Operators retry a failed settlement at most three times.\n",
+        "exit_code": 0,
+        "status": "completed"
+      }
+    },
+    {
+      "type": "item.completed",
+      "item": {
+        "id": "item_2",
+        "type": "command_execution",
+        "command": "/usr/bin/zsh -lc \"rg --files -g '\"'!**/.git/**'\"' repository\"",
+        "aggregated_output": "repository/PROVENANCE.json\nrepository/README.md\nrepository/docs/operations.md\nrepository/ledger/__init__.py\nrepository/ledger/config.py\nrepository/ledger/pricing.py\nrepository/ledger/service.py\nrepository/ledger/storage.py\n",
+        "exit_code": 0,
+        "status": "completed"
+      }
+    },
+    {
+      "type": "item.completed",
+      "item": {
+        "id": "item_3",
+        "type": "command_execution",
+        "command": "/usr/bin/zsh -lc \"rg -n '.' repository/ledger/config.py repository/docs/operations.md repository/ledger/service.py repository/README.md\"",
+        "aggregated_output": "repository/README.md:1:# Ledger Lite\nrepository/README.md:3:Ledger Lite records small-business invoices and refunds.\nrepository/README.md:5:The default invoice currency is USD unless the caller supplies another ISO code.\nrepository/README.md:6:Invoice references are normalized before storage so imports can be compared.\nrepository/README.md:7:Request timeout is 30 seconds for all settlement calls.\nrepository/README.md:9:See `docs/operations.md` for settlement and audit policy.\nrepository/ledger/service.py:1:from .config import DEFAULT_CURRENCY\nrepository/ledger/service.py:2:from .pricing import late_fee, normalize_reference\nrepository/ledger/service.py:3:from .storage import append_refund\nrepository/ledger/service.py:6:def quote_invoice(reference, amount, days_late, currency=None):\nrepository/ledger/service.py:7:    normalized = normalize_reference(reference)\nrepository/ledger/service.py:8:    return {\nrepository/ledger/service.py:9:        \"reference\": normalized,\nrepository/ledger/service.py:10:        \"currency\": currency or DEFAULT_CURRENCY,\nrepository/ledger/service.py:11:        \"late_fee\": late_fee(days_late, amount),\nrepository/ledger/service.py:12:    }\nrepository/ledger/service.py:15:def record_refund(reference, amount):\nrepository/ledger/service.py:16:    normalized = normalize_reference(reference)\nrepository/ledger/service.py:17:    return append_refund(normalized, amount)\nrepository/ledger/config.py:1:DEFAULT_CURRENCY = \"USD\"\nrepository/ledger/config.py:2:MAX_SETTLEMENT_RETRIES = 3\nrepository/ledger/config.py:3:REQUEST_TIMEOUT_SECONDS = 45\nrepository/docs/operations.md:1:# Operations\nrepository/docs/operations.md:3:Settlements remain pending for two business days before they are final.\nrepository/docs/operations.md:4:Refund audit records are retained for 90 days after the refund date.\nrepository/docs/operations.md:5:Operators retry a failed settlement at most three times.\n",
+        "exit_code": 0,
+        "status": "completed"
+      }
+    }
+  ],
+  "command_call_count": 3,
+  "tool_call_cap": 24,
+  "tool_call_cap_respected": true,
+  "tool_call_cap_enforcement": "advisory_prompt_only",
+  "command_events": [
+    {
+      "type": "item.completed",
+      "item": {
+        "id": "item_1",
+        "type": "command_execution",
+        "command": "/usr/bin/zsh -lc \"rg -n -i 'settlement.*retry|retry.*settlement|retry limit' repository\"",
+        "aggregated_output": "repository/docs/operations.md:5:Operators retry a failed settlement at most three times.\n",
+        "exit_code": 0,
+        "status": "completed"
+      }
+    },
+    {
+      "type": "item.completed",
+      "item": {
+        "id": "item_2",
+        "type": "command_execution",
+        "command": "/usr/bin/zsh -lc \"rg --files -g '\"'!**/.git/**'\"' repository\"",
+        "aggregated_output": "repository/PROVENANCE.json\nrepository/README.md\nrepository/docs/operations.md\nrepository/ledger/__init__.py\nrepository/ledger/config.py\nrepository/ledger/pricing.py\nrepository/ledger/service.py\nrepository/ledger/storage.py\n",
+        "exit_code": 0,
+        "status": "completed"
+      }
+    },
+    {
+      "type": "item.completed",
+      "item": {
+        "id": "item_3",
+        "type": "command_execution",
+        "command": "/usr/bin/zsh -lc \"rg -n '.' repository/ledger/config.py repository/docs/operations.md repository/ledger/service.py repository/README.md\"",
+        "aggregated_output": "repository/README.md:1:# Ledger Lite\nrepository/README.md:3:Ledger Lite records small-business invoices and refunds.\nrepository/README.md:5:The default invoice currency is USD unless the caller supplies another ISO code.\nrepository/README.md:6:Invoice references are normalized before storage so imports can be compared.\nrepository/README.md:7:Request timeout is 30 seconds for all settlement calls.\nrepository/README.md:9:See `docs/operations.md` for settlement and audit policy.\nrepository/ledger/service.py:1:from .config import DEFAULT_CURRENCY\nrepository/ledger/service.py:2:from .pricing import late_fee, normalize_reference\nrepository/ledger/service.py:3:from .storage import append_refund\nrepository/ledger/service.py:6:def quote_invoice(reference, amount, days_late, currency=None):\nrepository/ledger/service.py:7:    normalized = normalize_reference(reference)\nrepository/ledger/service.py:8:    return {\nrepository/ledger/service.py:9:        \"reference\": normalized,\nrepository/ledger/service.py:10:        \"currency\": currency or DEFAULT_CURRENCY,\nrepository/ledger/service.py:11:        \"late_fee\": late_fee(days_late, amount),\nrepository/ledger/service.py:12:    }\nrepository/ledger/service.py:15:def record_refund(reference, amount):\nrepository/ledger/service.py:16:    normalized = normalize_reference(reference)\nrepository/ledger/service.py:17:    return append_refund(normalized, amount)\nrepository/ledger/config.py:1:DEFAULT_CURRENCY = \"USD\"\nrepository/ledger/config.py:2:MAX_SETTLEMENT_RETRIES = 3\nrepository/ledger/config.py:3:REQUEST_TIMEOUT_SECONDS = 45\nrepository/docs/operations.md:1:# Operations\nrepository/docs/operations.md:3:Settlements remain pending for two business days before they are final.\nrepository/docs/operations.md:4:Refund audit records are retained for 90 days after the refund date.\nrepository/docs/operations.md:5:Operators retry a failed settlement at most three times.\n",
+        "exit_code": 0,
+        "status": "completed"
+      }
+    }
+  ],
+  "errors": [],
+  "malformed_event_lines": [],
+  "answer": "The configured settlement retry limit is **3** (`ledger/config.py:2`). The documented policy says operators may retry a failed settlement **at most three times** (`docs/operations.md:5`).",
+  "raw": {
+    "events": "trials/37-l-code-retry-limit-ordinary_tools/raw/events.jsonl",
+    "stderr": "trials/37-l-code-retry-limit-ordinary_tools/raw/stderr.txt",
+    "final": "trials/37-l-code-retry-limit-ordinary_tools/raw/final.txt"
+  },
+  "source_before_sha256": {
+    "PROVENANCE.json": "b3470c74c280a5102798e7a9f619939aaa89d366434730d597fb637caf2ed297",
+    "README.md": "dd3ae2f1d4bf271452ffded6f204fcac3e639f1dd13b338ffe1a4e7dd2481dae",
+    "docs/operations.md": "1b35c75fc71d6d8cb6de0806afc2d0b0c8929d2f4862743df82b0139b7d96c74",
+    "ledger/__init__.py": "a623e22bb9b8c2da83e511d6778f4cbbed5242d96129ac168f4168ab542d51cb",
+    "ledger/config.py": "01b6bc6b19c6824db9874af8943c0c321a30e3ef780442985f011c5069e90e09",
+    "ledger/pricing.py": "30f52304d0d0e9a2f6754972619e97d5cce726e256cde6906c834bcba82e4762",
+    "ledger/service.py": "29c7f779724021a6331fcf3c8ca2242a0218876e075b5bb151e338e1b9c70552",
+    "ledger/storage.py": "42cd1ced5a0ba956a2ac1c270ac0e3b03beed25e338c3d8c620e32a6b51cd499"
+  },
+  "source_after_sha256": {
+    "PROVENANCE.json": "b3470c74c280a5102798e7a9f619939aaa89d366434730d597fb637caf2ed297",
+    "README.md": "dd3ae2f1d4bf271452ffded6f204fcac3e639f1dd13b338ffe1a4e7dd2481dae",
+    "docs/operations.md": "1b35c75fc71d6d8cb6de0806afc2d0b0c8929d2f4862743df82b0139b7d96c74",
+    "ledger/__init__.py": "a623e22bb9b8c2da83e511d6778f4cbbed5242d96129ac168f4168ab542d51cb",
+    "ledger/config.py": "01b6bc6b19c6824db9874af8943c0c321a30e3ef780442985f011c5069e90e09",
+    "ledger/pricing.py": "30f52304d0d0e9a2f6754972619e97d5cce726e256cde6906c834bcba82e4762",
+    "ledger/service.py": "29c7f779724021a6331fcf3c8ca2242a0218876e075b5bb151e338e1b9c70552",
+    "ledger/storage.py": "42cd1ced5a0ba956a2ac1c270ac0e3b03beed25e338c3d8c620e32a6b51cd499"
+  },
+  "changed_files": [],
+  "source_unchanged": true,
+  "source_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "source_diff_path": "trials/37-l-code-retry-limit-ordinary_tools/raw/source.diff",
+  "change_check": null,
+  "workspace_contents": [
+    ".agents",
+    ".codex",
+    ".git",
+    ".scratch",
+    "input.json",
+    "repository"
+  ]
+}

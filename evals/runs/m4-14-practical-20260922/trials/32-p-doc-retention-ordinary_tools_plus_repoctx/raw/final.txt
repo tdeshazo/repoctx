@@ -1,0 +1,1 @@
+Tracking events are retained for **14 days** in the local event buffer. [README.md](repository/README.md:7) [parcel/config.py](repository/parcel/config.py:2)

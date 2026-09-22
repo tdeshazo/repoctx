@@ -1,0 +1,1 @@
+Updated [portal/render.py](repository/portal/render.py:5) so `render_page` passes the same `main-content` ID to the skip link and the `<main>` landmark. Verified the rendered page has one main landmark and the link points to it.

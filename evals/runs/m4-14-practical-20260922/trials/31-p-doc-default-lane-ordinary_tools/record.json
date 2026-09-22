@@ -1,0 +1,143 @@
+{
+  "id": "31-p-doc-default-lane-ordinary_tools",
+  "position": 31,
+  "task_id": "p-doc-default-lane",
+  "task_type": "documentation_lookup",
+  "condition": "ordinary_tools",
+  "question": "Which delivery lane is used when no service level is supplied?",
+  "model": "gpt-6-sol",
+  "model_revision": "unresolved_alias",
+  "reasoning_effort": "medium",
+  "input_sha256": "786ee34fd666e4a03d8e8c4fb718a73c19a85c7ac0509dcd1db8cb09be0eac4e",
+  "prompt_sha256": "b358c268d5c63168f3117e8941edd3b70b9a96400a51ad1d8a82ab02e2a41afc",
+  "exit_code": 0,
+  "timed_out": false,
+  "wall_seconds": 20.918921,
+  "usage": {
+    "input_tokens": 72022,
+    "cached_input_tokens": 57216,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 510,
+    "reasoning_output_tokens": 124
+  },
+  "event_count": 11,
+  "observed_tool_item_count": 3,
+  "observed_tool_item_types": {
+    "command_execution": 3
+  },
+  "tool_events": [
+    {
+      "type": "item.completed",
+      "item": {
+        "id": "item_1",
+        "type": "command_execution",
+        "command": "/usr/bin/zsh -lc 'ls -la repository && rg -n -i \"delivery lane|service level|service_level|servicelevel\" repository'",
+        "aggregated_output": "total 8\ndrwxr-xr-x 4 travis travis 120 Sep 22 15:27 .\ndrwxr-xr-x 7 travis travis 160 Sep 22 15:27 ..\n-rw-r--r-- 1 travis travis 108 Sep 22 15:27 PROVENANCE.json\n-rw-r--r-- 1 travis travis 296 Sep 22 15:27 README.md\ndrwxr-xr-x 2 travis travis  60 Sep 22 15:27 docs\ndrwxr-xr-x 2 travis travis 140 Sep 22 15:27 parcel\nrepository/README.md:3:Parcel Path selects a delivery lane and prints compact shipping labels.\nrepository/README.md:5:Standard parcels use the ground lane when no service level is supplied.\n",
+        "exit_code": 0,
+        "status": "completed"
+      }
+    },
+    {
+      "type": "item.completed",
+      "item": {
+        "id": "item_2",
+        "type": "command_execution",
+        "command": "/usr/bin/zsh -lc 'rg --files repository && cat repository/README.md && rg -n -i \"ground|default|service\" repository/docs repository/parcel'",
+        "aggregated_output": "repository/PROVENANCE.json\nrepository/README.md\nrepository/docs/routing.md\nrepository/parcel/__init__.py\nrepository/parcel/config.py\nrepository/parcel/labels.py\nrepository/parcel/routing.py\nrepository/parcel/service.py\n# Parcel Path\n\nParcel Path selects a delivery lane and prints compact shipping labels.\n\nStandard parcels use the ground lane when no service level is supplied.\nWeekend pickup adds a fixed surcharge to the quoted delivery price.\nTracking events are retained for 14 days in the local event buffer.\nrepository/parcel/config.py:1:DEFAULT_LANE = \"ground\"\nrepository/docs/routing.md:4:Hazardous parcels cannot use the air lane and must remain on ground transport.\nrepository/parcel/routing.py:1:from .config import DEFAULT_LANE, WEEKEND_SURCHARGE\nrepository/parcel/routing.py:6:        return \"ground\"\nrepository/parcel/routing.py:9:    return \"north-n1\" if region == \"north\" else DEFAULT_LANE\n",
+        "exit_code": 0,
+        "status": "completed"
+      }
+    },
+    {
+      "type": "item.completed",
+      "item": {
+        "id": "item_3",
+        "type": "command_execution",
+        "command": "/usr/bin/zsh -lc 'nl -ba repository/parcel/routing.py && nl -ba repository/parcel/config.py && nl -ba repository/README.md && nl -ba repository/docs/routing.md'",
+        "aggregated_output": "     1\tfrom .config import DEFAULT_LANE, WEEKEND_SURCHARGE\n     2\t\n     3\t\n     4\tdef choose_lane(region, hazardous=False, requested=None):\n     5\t    if hazardous:\n     6\t        return \"ground\"\n     7\t    if requested:\n     8\t        return requested\n     9\t    return \"north-n1\" if region == \"north\" else DEFAULT_LANE\n    10\t\n    11\t\n    12\tdef delivery_price(base, weekend=False):\n    13\t    return base + (WEEKEND_SURCHARGE if weekend else 0)\n     1\tDEFAULT_LANE = \"ground\"\n     2\tEVENT_RETENTION_DAYS = 14\n     3\tWEEKEND_SURCHARGE = 5\n     1\t# Parcel Path\n     2\t\n     3\tParcel Path selects a delivery lane and prints compact shipping labels.\n     4\t\n     5\tStandard parcels use the ground lane when no service level is supplied.\n     6\tWeekend pickup adds a fixed surcharge to the quoted delivery price.\n     7\tTracking events are retained for 14 days in the local event buffer.\n     1\t# Routing policy\n     2\t\n     3\tNorth-region parcels route through depot N1 before final delivery.\n     4\tHazardous parcels cannot use the air lane and must remain on ground transport.\n     5\tLabels include the tracking code followed by the destination city.\n",
+        "exit_code": 0,
+        "status": "completed"
+      }
+    }
+  ],
+  "command_call_count": 3,
+  "tool_call_cap": 24,
+  "tool_call_cap_respected": true,
+  "tool_call_cap_enforcement": "advisory_prompt_only",
+  "command_events": [
+    {
+      "type": "item.completed",
+      "item": {
+        "id": "item_1",
+        "type": "command_execution",
+        "command": "/usr/bin/zsh -lc 'ls -la repository && rg -n -i \"delivery lane|service level|service_level|servicelevel\" repository'",
+        "aggregated_output": "total 8\ndrwxr-xr-x 4 travis travis 120 Sep 22 15:27 .\ndrwxr-xr-x 7 travis travis 160 Sep 22 15:27 ..\n-rw-r--r-- 1 travis travis 108 Sep 22 15:27 PROVENANCE.json\n-rw-r--r-- 1 travis travis 296 Sep 22 15:27 README.md\ndrwxr-xr-x 2 travis travis  60 Sep 22 15:27 docs\ndrwxr-xr-x 2 travis travis 140 Sep 22 15:27 parcel\nrepository/README.md:3:Parcel Path selects a delivery lane and prints compact shipping labels.\nrepository/README.md:5:Standard parcels use the ground lane when no service level is supplied.\n",
+        "exit_code": 0,
+        "status": "completed"
+      }
+    },
+    {
+      "type": "item.completed",
+      "item": {
+        "id": "item_2",
+        "type": "command_execution",
+        "command": "/usr/bin/zsh -lc 'rg --files repository && cat repository/README.md && rg -n -i \"ground|default|service\" repository/docs repository/parcel'",
+        "aggregated_output": "repository/PROVENANCE.json\nrepository/README.md\nrepository/docs/routing.md\nrepository/parcel/__init__.py\nrepository/parcel/config.py\nrepository/parcel/labels.py\nrepository/parcel/routing.py\nrepository/parcel/service.py\n# Parcel Path\n\nParcel Path selects a delivery lane and prints compact shipping labels.\n\nStandard parcels use the ground lane when no service level is supplied.\nWeekend pickup adds a fixed surcharge to the quoted delivery price.\nTracking events are retained for 14 days in the local event buffer.\nrepository/parcel/config.py:1:DEFAULT_LANE = \"ground\"\nrepository/docs/routing.md:4:Hazardous parcels cannot use the air lane and must remain on ground transport.\nrepository/parcel/routing.py:1:from .config import DEFAULT_LANE, WEEKEND_SURCHARGE\nrepository/parcel/routing.py:6:        return \"ground\"\nrepository/parcel/routing.py:9:    return \"north-n1\" if region == \"north\" else DEFAULT_LANE\n",
+        "exit_code": 0,
+        "status": "completed"
+      }
+    },
+    {
+      "type": "item.completed",
+      "item": {
+        "id": "item_3",
+        "type": "command_execution",
+        "command": "/usr/bin/zsh -lc 'nl -ba repository/parcel/routing.py && nl -ba repository/parcel/config.py && nl -ba repository/README.md && nl -ba repository/docs/routing.md'",
+        "aggregated_output": "     1\tfrom .config import DEFAULT_LANE, WEEKEND_SURCHARGE\n     2\t\n     3\t\n     4\tdef choose_lane(region, hazardous=False, requested=None):\n     5\t    if hazardous:\n     6\t        return \"ground\"\n     7\t    if requested:\n     8\t        return requested\n     9\t    return \"north-n1\" if region == \"north\" else DEFAULT_LANE\n    10\t\n    11\t\n    12\tdef delivery_price(base, weekend=False):\n    13\t    return base + (WEEKEND_SURCHARGE if weekend else 0)\n     1\tDEFAULT_LANE = \"ground\"\n     2\tEVENT_RETENTION_DAYS = 14\n     3\tWEEKEND_SURCHARGE = 5\n     1\t# Parcel Path\n     2\t\n     3\tParcel Path selects a delivery lane and prints compact shipping labels.\n     4\t\n     5\tStandard parcels use the ground lane when no service level is supplied.\n     6\tWeekend pickup adds a fixed surcharge to the quoted delivery price.\n     7\tTracking events are retained for 14 days in the local event buffer.\n     1\t# Routing policy\n     2\t\n     3\tNorth-region parcels route through depot N1 before final delivery.\n     4\tHazardous parcels cannot use the air lane and must remain on ground transport.\n     5\tLabels include the tracking code followed by the destination city.\n",
+        "exit_code": 0,
+        "status": "completed"
+      }
+    }
+  ],
+  "errors": [],
+  "malformed_event_lines": [],
+  "answer": "The default is the **ground** lane when no service level is supplied ([README.md](repository/README.md:5), [config.py](repository/parcel/config.py:1)). The routing code has a north-region exception: it returns `north-n1` when no lane is requested ([routing.py](repository/parcel/routing.py:9)).",
+  "raw": {
+    "events": "trials/31-p-doc-default-lane-ordinary_tools/raw/events.jsonl",
+    "stderr": "trials/31-p-doc-default-lane-ordinary_tools/raw/stderr.txt",
+    "final": "trials/31-p-doc-default-lane-ordinary_tools/raw/final.txt"
+  },
+  "source_before_sha256": {
+    "PROVENANCE.json": "b3470c74c280a5102798e7a9f619939aaa89d366434730d597fb637caf2ed297",
+    "README.md": "324d0c287f5e651e665590538b6ab9ff0f075b7dd2106359b3bfb17cf55c8e2b",
+    "docs/routing.md": "f91a1ab5c30298dd19de465e36795eb40c7f1b7f74e1f19e1a3de690d1e1cc44",
+    "parcel/__init__.py": "b05a5b48287251bfa38f3e846f78b878fe12672f51303f658e60462e28c31b19",
+    "parcel/config.py": "f60a407f9f512c69c8c6fbe4d4d1721e3dbb0e466f9ae1d12c0dd83637175da6",
+    "parcel/labels.py": "bced0ffad05950d60a4ab7c1f03e1855dd3e307366c39c165ff2d814a0b79102",
+    "parcel/routing.py": "0c9042fbfee395e9c79afd611a4c30830c1634289ef45db3d5f11ca15939964b",
+    "parcel/service.py": "b09c733e7a289de9312584db1ffcf1c60cb0bab030d9e0e8f714c9b1e7984e75"
+  },
+  "source_after_sha256": {
+    "PROVENANCE.json": "b3470c74c280a5102798e7a9f619939aaa89d366434730d597fb637caf2ed297",
+    "README.md": "324d0c287f5e651e665590538b6ab9ff0f075b7dd2106359b3bfb17cf55c8e2b",
+    "docs/routing.md": "f91a1ab5c30298dd19de465e36795eb40c7f1b7f74e1f19e1a3de690d1e1cc44",
+    "parcel/__init__.py": "b05a5b48287251bfa38f3e846f78b878fe12672f51303f658e60462e28c31b19",
+    "parcel/config.py": "f60a407f9f512c69c8c6fbe4d4d1721e3dbb0e466f9ae1d12c0dd83637175da6",
+    "parcel/labels.py": "bced0ffad05950d60a4ab7c1f03e1855dd3e307366c39c165ff2d814a0b79102",
+    "parcel/routing.py": "0c9042fbfee395e9c79afd611a4c30830c1634289ef45db3d5f11ca15939964b",
+    "parcel/service.py": "b09c733e7a289de9312584db1ffcf1c60cb0bab030d9e0e8f714c9b1e7984e75"
+  },
+  "changed_files": [],
+  "source_unchanged": true,
+  "source_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "source_diff_path": "trials/31-p-doc-default-lane-ordinary_tools/raw/source.diff",
+  "change_check": null,
+  "workspace_contents": [
+    ".agents",
+    ".codex",
+    ".git",
+    ".scratch",
+    "input.json",
+    "repository"
+  ]
+}

@@ -1,0 +1,5 @@
+`render_page(title, sections, theme=None)` assembles the page in [portal/render.py](repository/portal/render.py:5):
+
+- **Theme:** The `<main>` element gets `data-theme` from `theme or DEFAULT_THEME`. The default is `"light"`, so an omitted or falsey theme uses light. [portal/render.py](repository/portal/render.py:10), [portal/config.py](repository/portal/config.py:1)
+- **Breadcrumb:** Rendering passes `["docs", title]` to `breadcrumb()`, which trims and title-cases each part, then joins them with ` / `. The result appears in `<nav>` before the heading. [portal/render.py](repository/portal/render.py:6), [portal/navigation.py](repository/portal/navigation.py:1), [portal/render.py](repository/portal/render.py:11)
+- **Skip link:** Rendering prepends `skip_link()` to the output. Its default target produces a link to `#main-content`, matching the `<main id="main-content">` element. [portal/render.py](repository/portal/render.py:9), [portal/navigation.py](repository/portal/navigation.py:5), [portal/render.py](repository/portal/render.py:10)

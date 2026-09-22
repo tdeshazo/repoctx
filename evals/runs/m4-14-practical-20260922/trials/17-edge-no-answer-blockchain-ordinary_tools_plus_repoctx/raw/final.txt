@@ -1,0 +1,1 @@
+No blockchain network is identified. The repository says parcel tracking events are kept for 14 days in a local event buffer. [README.md](repository/README.md:7)

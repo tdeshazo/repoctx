@@ -1,0 +1,171 @@
+{
+  "id": "53-p-change-label-length-ordinary_tools",
+  "position": 53,
+  "task_id": "p-change-label-length",
+  "task_type": "change",
+  "condition": "ordinary_tools",
+  "question": "Allow 24 destination characters on labels instead of 20 without changing the label layout.",
+  "model": "gpt-6-sol",
+  "model_revision": "unresolved_alias",
+  "reasoning_effort": "medium",
+  "input_sha256": "e69140be3cb663dd2d9089e6138bda8e3f03e04b2c22cba8185097338f0a452b",
+  "prompt_sha256": "f93784f3ec0c477e6e01279ba4ddd3354bb933d02423aeede25c21c6564a7a91",
+  "exit_code": 0,
+  "timed_out": false,
+  "wall_seconds": 24.033266,
+  "usage": {
+    "input_tokens": 90785,
+    "cached_input_tokens": 82560,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 608,
+    "reasoning_output_tokens": 98
+  },
+  "event_count": 14,
+  "observed_tool_item_count": 4,
+  "observed_tool_item_types": {
+    "command_execution": 3,
+    "file_change": 1
+  },
+  "tool_events": [
+    {
+      "type": "item.completed",
+      "item": {
+        "id": "item_1",
+        "type": "command_execution",
+        "command": "/usr/bin/zsh -lc \"pwd; rg --files repository | head -80; rg -n \\\"20|destination|label\\\" repository -g '\"'!vendor'\"' | head -180\"",
+        "aggregated_output": "/tmp/m4-14-practical-20260922/trials/53-p-change-label-length-ordinary_tools/workspace\nrepository/PROVENANCE.json\nrepository/README.md\nrepository/docs/routing.md\nrepository/parcel/__init__.py\nrepository/parcel/config.py\nrepository/parcel/labels.py\nrepository/parcel/routing.py\nrepository/parcel/service.py\nrepository/README.md:3:Parcel Path selects a delivery lane and prints compact shipping labels.\nrepository/parcel/labels.py:1:def format_label(tracking_code, city):\nrepository/parcel/labels.py:2:    destination = city.strip().title()[:20]\nrepository/parcel/labels.py:3:    return f\"{tracking_code} | {destination}\"\nrepository/docs/routing.md:5:Labels include the tracking code followed by the destination city.\nrepository/parcel/service.py:1:from .labels import format_label\nrepository/parcel/service.py:7:        \"label\": format_label(tracking_code, city),\n",
+        "exit_code": 0,
+        "status": "completed"
+      }
+    },
+    {
+      "type": "item.completed",
+      "item": {
+        "id": "item_2",
+        "type": "command_execution",
+        "command": "/usr/bin/zsh -lc \"cat repository/README.md repository/docs/routing.md repository/parcel/labels.py repository/parcel/service.py repository/parcel/config.py repository/parcel/routing.py repository/PROVENANCE.json; rg --files repository -g 'AGENTS.md' -g '*test*'\"",
+        "aggregated_output": "# Parcel Path\n\nParcel Path selects a delivery lane and prints compact shipping labels.\n\nStandard parcels use the ground lane when no service level is supplied.\nWeekend pickup adds a fixed surcharge to the quoted delivery price.\nTracking events are retained for 14 days in the local event buffer.\n# Routing policy\n\nNorth-region parcels route through depot N1 before final delivery.\nHazardous parcels cannot use the air lane and must remain on ground transport.\nLabels include the tracking code followed by the destination city.\ndef format_label(tracking_code, city):\n    destination = city.strip().title()[:20]\n    return f\"{tracking_code} | {destination}\"\nfrom .labels import format_label\nfrom .routing import choose_lane, delivery_price\n\n\ndef prepare_parcel(tracking_code, city, region, base_price, hazardous=False):\n    return {\n        \"label\": format_label(tracking_code, city),\n        \"lane\": choose_lane(region, hazardous=hazardous),\n        \"price\": delivery_price(base_price),\n    }\nDEFAULT_LANE = \"ground\"\nEVENT_RETENTION_DAYS = 14\nWEEKEND_SURCHARGE = 5\nfrom .config import DEFAULT_LANE, WEEKEND_SURCHARGE\n\n\ndef choose_lane(region, hazardous=False, requested=None):\n    if hazardous:\n        return \"ground\"\n    if requested:\n        return requested\n    return \"north-n1\" if region == \"north\" else DEFAULT_LANE\n\n\ndef delivery_price(base, weekend=False):\n    return base + (WEEKEND_SURCHARGE if weekend else 0)\n{\"origin\":\"synthetic\",\"license\":\"Apache-2.0\",\"copyright\":\"repoctx contributors\",\"redistribution\":\"cleared\"}\n",
+        "exit_code": 1,
+        "status": "failed"
+      }
+    },
+    {
+      "type": "item.completed",
+      "item": {
+        "id": "item_4",
+        "type": "file_change",
+        "changes": [
+          {
+            "path": "/tmp/m4-14-practical-20260922/trials/53-p-change-label-length-ordinary_tools/workspace/repository/parcel/labels.py",
+            "kind": "update"
+          }
+        ],
+        "status": "completed"
+      }
+    },
+    {
+      "type": "item.completed",
+      "item": {
+        "id": "item_5",
+        "type": "command_execution",
+        "command": "/usr/bin/zsh -lc \"python -c 'from parcel.labels import format_label; assert format_label(\\\"PKG-1\\\", \\\"abcdefghijklmnopqrstuvwx\\\") == \\\"PKG-1 | Abcdefghijklmnopqrstuvwx\\\"; assert format_label(\\\"PKG-1\\\", \\\"abcdefghijklmnopqrstuvwxyz\\\") == \\\"PKG-1 | Abcdefghijklmnopqrstuvwx\\\"; assert format_label(\\\"PKG-1\\\", \\\"  new york  \\\") == \\\"PKG-1 | New York\\\"'\"",
+        "aggregated_output": "",
+        "exit_code": 0,
+        "status": "completed"
+      }
+    }
+  ],
+  "command_call_count": 3,
+  "tool_call_cap": 24,
+  "tool_call_cap_respected": true,
+  "tool_call_cap_enforcement": "advisory_prompt_only",
+  "command_events": [
+    {
+      "type": "item.completed",
+      "item": {
+        "id": "item_1",
+        "type": "command_execution",
+        "command": "/usr/bin/zsh -lc \"pwd; rg --files repository | head -80; rg -n \\\"20|destination|label\\\" repository -g '\"'!vendor'\"' | head -180\"",
+        "aggregated_output": "/tmp/m4-14-practical-20260922/trials/53-p-change-label-length-ordinary_tools/workspace\nrepository/PROVENANCE.json\nrepository/README.md\nrepository/docs/routing.md\nrepository/parcel/__init__.py\nrepository/parcel/config.py\nrepository/parcel/labels.py\nrepository/parcel/routing.py\nrepository/parcel/service.py\nrepository/README.md:3:Parcel Path selects a delivery lane and prints compact shipping labels.\nrepository/parcel/labels.py:1:def format_label(tracking_code, city):\nrepository/parcel/labels.py:2:    destination = city.strip().title()[:20]\nrepository/parcel/labels.py:3:    return f\"{tracking_code} | {destination}\"\nrepository/docs/routing.md:5:Labels include the tracking code followed by the destination city.\nrepository/parcel/service.py:1:from .labels import format_label\nrepository/parcel/service.py:7:        \"label\": format_label(tracking_code, city),\n",
+        "exit_code": 0,
+        "status": "completed"
+      }
+    },
+    {
+      "type": "item.completed",
+      "item": {
+        "id": "item_2",
+        "type": "command_execution",
+        "command": "/usr/bin/zsh -lc \"cat repository/README.md repository/docs/routing.md repository/parcel/labels.py repository/parcel/service.py repository/parcel/config.py repository/parcel/routing.py repository/PROVENANCE.json; rg --files repository -g 'AGENTS.md' -g '*test*'\"",
+        "aggregated_output": "# Parcel Path\n\nParcel Path selects a delivery lane and prints compact shipping labels.\n\nStandard parcels use the ground lane when no service level is supplied.\nWeekend pickup adds a fixed surcharge to the quoted delivery price.\nTracking events are retained for 14 days in the local event buffer.\n# Routing policy\n\nNorth-region parcels route through depot N1 before final delivery.\nHazardous parcels cannot use the air lane and must remain on ground transport.\nLabels include the tracking code followed by the destination city.\ndef format_label(tracking_code, city):\n    destination = city.strip().title()[:20]\n    return f\"{tracking_code} | {destination}\"\nfrom .labels import format_label\nfrom .routing import choose_lane, delivery_price\n\n\ndef prepare_parcel(tracking_code, city, region, base_price, hazardous=False):\n    return {\n        \"label\": format_label(tracking_code, city),\n        \"lane\": choose_lane(region, hazardous=hazardous),\n        \"price\": delivery_price(base_price),\n    }\nDEFAULT_LANE = \"ground\"\nEVENT_RETENTION_DAYS = 14\nWEEKEND_SURCHARGE = 5\nfrom .config import DEFAULT_LANE, WEEKEND_SURCHARGE\n\n\ndef choose_lane(region, hazardous=False, requested=None):\n    if hazardous:\n        return \"ground\"\n    if requested:\n        return requested\n    return \"north-n1\" if region == \"north\" else DEFAULT_LANE\n\n\ndef delivery_price(base, weekend=False):\n    return base + (WEEKEND_SURCHARGE if weekend else 0)\n{\"origin\":\"synthetic\",\"license\":\"Apache-2.0\",\"copyright\":\"repoctx contributors\",\"redistribution\":\"cleared\"}\n",
+        "exit_code": 1,
+        "status": "failed"
+      }
+    },
+    {
+      "type": "item.completed",
+      "item": {
+        "id": "item_5",
+        "type": "command_execution",
+        "command": "/usr/bin/zsh -lc \"python -c 'from parcel.labels import format_label; assert format_label(\\\"PKG-1\\\", \\\"abcdefghijklmnopqrstuvwx\\\") == \\\"PKG-1 | Abcdefghijklmnopqrstuvwx\\\"; assert format_label(\\\"PKG-1\\\", \\\"abcdefghijklmnopqrstuvwxyz\\\") == \\\"PKG-1 | Abcdefghijklmnopqrstuvwx\\\"; assert format_label(\\\"PKG-1\\\", \\\"  new york  \\\") == \\\"PKG-1 | New York\\\"'\"",
+        "aggregated_output": "",
+        "exit_code": 0,
+        "status": "completed"
+      }
+    }
+  ],
+  "errors": [],
+  "malformed_event_lines": [],
+  "answer": "Labels now allow 24 destination characters instead of 20. The `tracking code | destination` layout is unchanged in [parcel/labels.py](repository/parcel/labels.py:1). Checks passed for 24-character and longer destinations, plus trimming and capitalization.",
+  "raw": {
+    "events": "trials/53-p-change-label-length-ordinary_tools/raw/events.jsonl",
+    "stderr": "trials/53-p-change-label-length-ordinary_tools/raw/stderr.txt",
+    "final": "trials/53-p-change-label-length-ordinary_tools/raw/final.txt"
+  },
+  "source_before_sha256": {
+    "PROVENANCE.json": "b3470c74c280a5102798e7a9f619939aaa89d366434730d597fb637caf2ed297",
+    "README.md": "324d0c287f5e651e665590538b6ab9ff0f075b7dd2106359b3bfb17cf55c8e2b",
+    "docs/routing.md": "f91a1ab5c30298dd19de465e36795eb40c7f1b7f74e1f19e1a3de690d1e1cc44",
+    "parcel/__init__.py": "b05a5b48287251bfa38f3e846f78b878fe12672f51303f658e60462e28c31b19",
+    "parcel/config.py": "f60a407f9f512c69c8c6fbe4d4d1721e3dbb0e466f9ae1d12c0dd83637175da6",
+    "parcel/labels.py": "bced0ffad05950d60a4ab7c1f03e1855dd3e307366c39c165ff2d814a0b79102",
+    "parcel/routing.py": "0c9042fbfee395e9c79afd611a4c30830c1634289ef45db3d5f11ca15939964b",
+    "parcel/service.py": "b09c733e7a289de9312584db1ffcf1c60cb0bab030d9e0e8f714c9b1e7984e75"
+  },
+  "source_after_sha256": {
+    "PROVENANCE.json": "b3470c74c280a5102798e7a9f619939aaa89d366434730d597fb637caf2ed297",
+    "README.md": "324d0c287f5e651e665590538b6ab9ff0f075b7dd2106359b3bfb17cf55c8e2b",
+    "docs/routing.md": "f91a1ab5c30298dd19de465e36795eb40c7f1b7f74e1f19e1a3de690d1e1cc44",
+    "parcel/__init__.py": "b05a5b48287251bfa38f3e846f78b878fe12672f51303f658e60462e28c31b19",
+    "parcel/config.py": "f60a407f9f512c69c8c6fbe4d4d1721e3dbb0e466f9ae1d12c0dd83637175da6",
+    "parcel/labels.py": "5d760363ae5bfd0ad1de8005f8ed676eef0fea6cb0142feb504dbf116f91bc3d",
+    "parcel/routing.py": "0c9042fbfee395e9c79afd611a4c30830c1634289ef45db3d5f11ca15939964b",
+    "parcel/service.py": "b09c733e7a289de9312584db1ffcf1c60cb0bab030d9e0e8f714c9b1e7984e75"
+  },
+  "changed_files": [
+    "parcel/labels.py"
+  ],
+  "source_unchanged": false,
+  "source_diff_sha256": "ae4b7ffc7e8108b8a7cad7f2f6c02fba8ed10e5d30726fcd27bfe87187d8db38",
+  "source_diff_path": "trials/53-p-change-label-length-ordinary_tools/raw/source.diff",
+  "change_check": {
+    "exit_code": 0,
+    "timed_out": false,
+    "wall_seconds": 0.116492,
+    "stdout": "{\"passed\": true, \"actual_repr\": \"'PK9 | Abcdefghijklmnopqrstuvwx'\"}\n",
+    "stderr": "",
+    "result": {
+      "passed": true,
+      "actual_repr": "'PK9 | Abcdefghijklmnopqrstuvwx'"
+    },
+    "sandboxed": true
+  },
+  "workspace_contents": [
+    ".agents",
+    ".codex",
+    ".git",
+    ".scratch",
+    "input.json",
+    "repository"
+  ]
+}

@@ -1,0 +1,942 @@
+{
+  "version": "m414-practical-adoption-audit/v1",
+  "rows": [
+    {
+      "trial_directory": "01-p-code-weekend-surcharge-ordinary_tools_plus_repoctx",
+      "task_id": "p-code-weekend-surcharge",
+      "condition": "ordinary_tools_plus_repoctx",
+      "skill_read_observed": false,
+      "repoctx_version_invoked": false,
+      "repoctx_retrieval_invoked": false,
+      "repoctx_retrieval_output_observed": false,
+      "repoctx_index_commands_invoked": 0,
+      "version_only": false,
+      "subcommands": []
+    },
+    {
+      "trial_directory": "02-p-code-weekend-surcharge-ordinary_tools",
+      "task_id": "p-code-weekend-surcharge",
+      "condition": "ordinary_tools",
+      "skill_read_observed": false,
+      "repoctx_version_invoked": false,
+      "repoctx_retrieval_invoked": false,
+      "repoctx_retrieval_output_observed": false,
+      "repoctx_index_commands_invoked": 0,
+      "version_only": false,
+      "subcommands": []
+    },
+    {
+      "trial_directory": "03-p-change-weekend-surcharge-ordinary_tools_plus_repoctx",
+      "task_id": "p-change-weekend-surcharge",
+      "condition": "ordinary_tools_plus_repoctx",
+      "skill_read_observed": false,
+      "repoctx_version_invoked": false,
+      "repoctx_retrieval_invoked": false,
+      "repoctx_retrieval_output_observed": false,
+      "repoctx_index_commands_invoked": 0,
+      "version_only": false,
+      "subcommands": []
+    },
+    {
+      "trial_directory": "04-w-cross-accessibility-ordinary_tools_plus_repoctx",
+      "task_id": "w-cross-accessibility",
+      "condition": "ordinary_tools_plus_repoctx",
+      "skill_read_observed": true,
+      "repoctx_version_invoked": true,
+      "repoctx_retrieval_invoked": false,
+      "repoctx_retrieval_output_observed": false,
+      "repoctx_index_commands_invoked": 0,
+      "version_only": true,
+      "subcommands": [
+        {
+          "subcommand": "version",
+          "command_exit_code": 0,
+          "output_bytes": 836
+        }
+      ]
+    },
+    {
+      "trial_directory": "05-p-doc-default-lane-ordinary_tools_plus_repoctx",
+      "task_id": "p-doc-default-lane",
+      "condition": "ordinary_tools_plus_repoctx",
+      "skill_read_observed": false,
+      "repoctx_version_invoked": false,
+      "repoctx_retrieval_invoked": false,
+      "repoctx_retrieval_output_observed": false,
+      "repoctx_index_commands_invoked": 0,
+      "version_only": false,
+      "subcommands": []
+    },
+    {
+      "trial_directory": "06-l-doc-default-currency-ordinary_tools_plus_repoctx",
+      "task_id": "l-doc-default-currency",
+      "condition": "ordinary_tools_plus_repoctx",
+      "skill_read_observed": false,
+      "repoctx_version_invoked": false,
+      "repoctx_retrieval_invoked": false,
+      "repoctx_retrieval_output_observed": false,
+      "repoctx_index_commands_invoked": 0,
+      "version_only": false,
+      "subcommands": []
+    },
+    {
+      "trial_directory": "07-p-doc-hazardous-ordinary_tools",
+      "task_id": "p-doc-hazardous",
+      "condition": "ordinary_tools",
+      "skill_read_observed": false,
+      "repoctx_version_invoked": false,
+      "repoctx_retrieval_invoked": false,
+      "repoctx_retrieval_output_observed": false,
+      "repoctx_index_commands_invoked": 0,
+      "version_only": false,
+      "subcommands": []
+    },
+    {
+      "trial_directory": "08-edge-contradictory-timeout-ordinary_tools",
+      "task_id": "edge-contradictory-timeout",
+      "condition": "ordinary_tools",
+      "skill_read_observed": false,
+      "repoctx_version_invoked": false,
+      "repoctx_retrieval_invoked": false,
+      "repoctx_retrieval_output_observed": false,
+      "repoctx_index_commands_invoked": 0,
+      "version_only": false,
+      "subcommands": []
+    },
+    {
+      "trial_directory": "09-l-cross-quote-ordinary_tools",
+      "task_id": "l-cross-quote",
+      "condition": "ordinary_tools",
+      "skill_read_observed": false,
+      "repoctx_version_invoked": false,
+      "repoctx_retrieval_invoked": false,
+      "repoctx_retrieval_output_observed": false,
+      "repoctx_index_commands_invoked": 0,
+      "version_only": false,
+      "subcommands": []
+    },
+    {
+      "trial_directory": "10-l-cross-refund-ordinary_tools",
+      "task_id": "l-cross-refund",
+      "condition": "ordinary_tools",
+      "skill_read_observed": false,
+      "repoctx_version_invoked": false,
+      "repoctx_retrieval_invoked": false,
+      "repoctx_retrieval_output_observed": false,
+      "repoctx_index_commands_invoked": 0,
+      "version_only": false,
+      "subcommands": []
+    },
+    {
+      "trial_directory": "11-p-change-label-length-ordinary_tools_plus_repoctx",
+      "task_id": "p-change-label-length",
+      "condition": "ordinary_tools_plus_repoctx",
+      "skill_read_observed": false,
+      "repoctx_version_invoked": false,
+      "repoctx_retrieval_invoked": false,
+      "repoctx_retrieval_output_observed": false,
+      "repoctx_index_commands_invoked": 0,
+      "version_only": false,
+      "subcommands": []
+    },
+    {
+      "trial_directory": "12-l-change-late-cap-ordinary_tools_plus_repoctx",
+      "task_id": "l-change-late-cap",
+      "condition": "ordinary_tools_plus_repoctx",
+      "skill_read_observed": false,
+      "repoctx_version_invoked": false,
+      "repoctx_retrieval_invoked": false,
+      "repoctx_retrieval_output_observed": false,
+      "repoctx_index_commands_invoked": 0,
+      "version_only": false,
+      "subcommands": []
+    },
+    {
+      "trial_directory": "13-p-doc-hazardous-ordinary_tools_plus_repoctx",
+      "task_id": "p-doc-hazardous",
+      "condition": "ordinary_tools_plus_repoctx",
+      "skill_read_observed": true,
+      "repoctx_version_invoked": true,
+      "repoctx_retrieval_invoked": true,
+      "repoctx_retrieval_output_observed": true,
+      "repoctx_index_commands_invoked": 0,
+      "version_only": false,
+      "subcommands": [
+        {
+          "subcommand": "version",
+          "command_exit_code": 0,
+          "output_bytes": 836
+        },
+        {
+          "subcommand": "discover",
+          "command_exit_code": 0,
+          "output_bytes": 6008
+        }
+      ]
+    },
+    {
+      "trial_directory": "14-w-code-mobile-style-ordinary_tools_plus_repoctx",
+      "task_id": "w-code-mobile-style",
+      "condition": "ordinary_tools_plus_repoctx",
+      "skill_read_observed": true,
+      "repoctx_version_invoked": false,
+      "repoctx_retrieval_invoked": false,
+      "repoctx_retrieval_output_observed": false,
+      "repoctx_index_commands_invoked": 0,
+      "version_only": false,
+      "subcommands": []
+    },
+    {
+      "trial_directory": "15-w-change-default-theme-ordinary_tools_plus_repoctx",
+      "task_id": "w-change-default-theme",
+      "condition": "ordinary_tools_plus_repoctx",
+      "skill_read_observed": true,
+      "repoctx_version_invoked": false,
+      "repoctx_retrieval_invoked": false,
+      "repoctx_retrieval_output_observed": false,
+      "repoctx_index_commands_invoked": 0,
+      "version_only": false,
+      "subcommands": []
+    },
+    {
+      "trial_directory": "16-l-doc-audit-retention-ordinary_tools_plus_repoctx",
+      "task_id": "l-doc-audit-retention",
+      "condition": "ordinary_tools_plus_repoctx",
+      "skill_read_observed": true,
+      "repoctx_version_invoked": true,
+      "repoctx_retrieval_invoked": true,
+      "repoctx_retrieval_output_observed": true,
+      "repoctx_index_commands_invoked": 0,
+      "version_only": false,
+      "subcommands": [
+        {
+          "subcommand": "version",
+          "command_exit_code": 0,
+          "output_bytes": 836
+        },
+        {
+          "subcommand": "discover",
+          "command_exit_code": 0,
+          "output_bytes": 4403
+        }
+      ]
+    },
+    {
+      "trial_directory": "17-edge-no-answer-blockchain-ordinary_tools_plus_repoctx",
+      "task_id": "edge-no-answer-blockchain",
+      "condition": "ordinary_tools_plus_repoctx",
+      "skill_read_observed": true,
+      "repoctx_version_invoked": true,
+      "repoctx_retrieval_invoked": true,
+      "repoctx_retrieval_output_observed": true,
+      "repoctx_index_commands_invoked": 0,
+      "version_only": false,
+      "subcommands": [
+        {
+          "subcommand": "version",
+          "command_exit_code": 0,
+          "output_bytes": 836
+        },
+        {
+          "subcommand": "discover",
+          "command_exit_code": 0,
+          "output_bytes": 5256
+        }
+      ]
+    },
+    {
+      "trial_directory": "18-l-code-reference-normalization-ordinary_tools",
+      "task_id": "l-code-reference-normalization",
+      "condition": "ordinary_tools",
+      "skill_read_observed": false,
+      "repoctx_version_invoked": false,
+      "repoctx_retrieval_invoked": false,
+      "repoctx_retrieval_output_observed": false,
+      "repoctx_index_commands_invoked": 0,
+      "version_only": false,
+      "subcommands": []
+    },
+    {
+      "trial_directory": "19-p-change-weekend-surcharge-ordinary_tools",
+      "task_id": "p-change-weekend-surcharge",
+      "condition": "ordinary_tools",
+      "skill_read_observed": false,
+      "repoctx_version_invoked": false,
+      "repoctx_retrieval_invoked": false,
+      "repoctx_retrieval_output_observed": false,
+      "repoctx_index_commands_invoked": 0,
+      "version_only": false,
+      "subcommands": []
+    },
+    {
+      "trial_directory": "20-p-code-lane-selection-ordinary_tools_plus_repoctx",
+      "task_id": "p-code-lane-selection",
+      "condition": "ordinary_tools_plus_repoctx",
+      "skill_read_observed": true,
+      "repoctx_version_invoked": true,
+      "repoctx_retrieval_invoked": true,
+      "repoctx_retrieval_output_observed": true,
+      "repoctx_index_commands_invoked": 0,
+      "version_only": false,
+      "subcommands": [
+        {
+          "subcommand": "version",
+          "command_exit_code": 0,
+          "output_bytes": 836
+        },
+        {
+          "subcommand": "discover",
+          "command_exit_code": 0,
+          "output_bytes": 6759
+        }
+      ]
+    },
+    {
+      "trial_directory": "21-l-code-late-fee-ordinary_tools_plus_repoctx",
+      "task_id": "l-code-late-fee",
+      "condition": "ordinary_tools_plus_repoctx",
+      "skill_read_observed": true,
+      "repoctx_version_invoked": false,
+      "repoctx_retrieval_invoked": false,
+      "repoctx_retrieval_output_observed": false,
+      "repoctx_index_commands_invoked": 0,
+      "version_only": false,
+      "subcommands": []
+    },
+    {
+      "trial_directory": "22-w-cross-accessibility-ordinary_tools",
+      "task_id": "w-cross-accessibility",
+      "condition": "ordinary_tools",
+      "skill_read_observed": false,
+      "repoctx_version_invoked": false,
+      "repoctx_retrieval_invoked": false,
+      "repoctx_retrieval_output_observed": false,
+      "repoctx_index_commands_invoked": 0,
+      "version_only": false,
+      "subcommands": []
+    },
+    {
+      "trial_directory": "23-l-cross-refund-ordinary_tools_plus_repoctx",
+      "task_id": "l-cross-refund",
+      "condition": "ordinary_tools_plus_repoctx",
+      "skill_read_observed": true,
+      "repoctx_version_invoked": true,
+      "repoctx_retrieval_invoked": true,
+      "repoctx_retrieval_output_observed": true,
+      "repoctx_index_commands_invoked": 0,
+      "version_only": false,
+      "subcommands": [
+        {
+          "subcommand": "version",
+          "command_exit_code": 0,
+          "output_bytes": 836
+        },
+        {
+          "subcommand": "discover",
+          "command_exit_code": 0,
+          "output_bytes": 6665
+        }
+      ]
+    },
+    {
+      "trial_directory": "24-w-cross-render-ordinary_tools_plus_repoctx",
+      "task_id": "w-cross-render",
+      "condition": "ordinary_tools_plus_repoctx",
+      "skill_read_observed": true,
+      "repoctx_version_invoked": true,
+      "repoctx_retrieval_invoked": true,
+      "repoctx_retrieval_output_observed": true,
+      "repoctx_index_commands_invoked": 0,
+      "version_only": false,
+      "subcommands": [
+        {
+          "subcommand": "version",
+          "command_exit_code": 0,
+          "output_bytes": 836
+        },
+        {
+          "subcommand": "discover",
+          "command_exit_code": 0,
+          "output_bytes": 6757
+        }
+      ]
+    },
+    {
+      "trial_directory": "25-w-doc-main-landmark-ordinary_tools_plus_repoctx",
+      "task_id": "w-doc-main-landmark",
+      "condition": "ordinary_tools_plus_repoctx",
+      "skill_read_observed": false,
+      "repoctx_version_invoked": false,
+      "repoctx_retrieval_invoked": false,
+      "repoctx_retrieval_output_observed": false,
+      "repoctx_index_commands_invoked": 0,
+      "version_only": false,
+      "subcommands": []
+    },
+    {
+      "trial_directory": "26-p-code-label-format-ordinary_tools",
+      "task_id": "p-code-label-format",
+      "condition": "ordinary_tools",
+      "skill_read_observed": false,
+      "repoctx_version_invoked": false,
+      "repoctx_retrieval_invoked": false,
+      "repoctx_retrieval_output_observed": false,
+      "repoctx_index_commands_invoked": 0,
+      "version_only": false,
+      "subcommands": []
+    },
+    {
+      "trial_directory": "27-w-code-breadcrumb-ordinary_tools_plus_repoctx",
+      "task_id": "w-code-breadcrumb",
+      "condition": "ordinary_tools_plus_repoctx",
+      "skill_read_observed": true,
+      "repoctx_version_invoked": true,
+      "repoctx_retrieval_invoked": true,
+      "repoctx_retrieval_output_observed": true,
+      "repoctx_index_commands_invoked": 0,
+      "version_only": false,
+      "subcommands": [
+        {
+          "subcommand": "version",
+          "command_exit_code": 0,
+          "output_bytes": 5387
+        },
+        {
+          "subcommand": "discover",
+          "command_exit_code": 0,
+          "output_bytes": 5387
+        }
+      ]
+    },
+    {
+      "trial_directory": "28-w-change-breadcrumb-separator-ordinary_tools",
+      "task_id": "w-change-breadcrumb-separator",
+      "condition": "ordinary_tools",
+      "skill_read_observed": false,
+      "repoctx_version_invoked": false,
+      "repoctx_retrieval_invoked": false,
+      "repoctx_retrieval_output_observed": false,
+      "repoctx_index_commands_invoked": 0,
+      "version_only": false,
+      "subcommands": []
+    },
+    {
+      "trial_directory": "29-w-code-skip-link-ordinary_tools_plus_repoctx",
+      "task_id": "w-code-skip-link",
+      "condition": "ordinary_tools_plus_repoctx",
+      "skill_read_observed": true,
+      "repoctx_version_invoked": true,
+      "repoctx_retrieval_invoked": false,
+      "repoctx_retrieval_output_observed": false,
+      "repoctx_index_commands_invoked": 0,
+      "version_only": true,
+      "subcommands": [
+        {
+          "subcommand": "version",
+          "command_exit_code": 0,
+          "output_bytes": 836
+        }
+      ]
+    },
+    {
+      "trial_directory": "30-l-code-retry-limit-ordinary_tools_plus_repoctx",
+      "task_id": "l-code-retry-limit",
+      "condition": "ordinary_tools_plus_repoctx",
+      "skill_read_observed": false,
+      "repoctx_version_invoked": false,
+      "repoctx_retrieval_invoked": false,
+      "repoctx_retrieval_output_observed": false,
+      "repoctx_index_commands_invoked": 0,
+      "version_only": false,
+      "subcommands": []
+    },
+    {
+      "trial_directory": "31-p-doc-default-lane-ordinary_tools",
+      "task_id": "p-doc-default-lane",
+      "condition": "ordinary_tools",
+      "skill_read_observed": false,
+      "repoctx_version_invoked": false,
+      "repoctx_retrieval_invoked": false,
+      "repoctx_retrieval_output_observed": false,
+      "repoctx_index_commands_invoked": 0,
+      "version_only": false,
+      "subcommands": []
+    },
+    {
+      "trial_directory": "32-p-doc-retention-ordinary_tools_plus_repoctx",
+      "task_id": "p-doc-retention",
+      "condition": "ordinary_tools_plus_repoctx",
+      "skill_read_observed": false,
+      "repoctx_version_invoked": false,
+      "repoctx_retrieval_invoked": false,
+      "repoctx_retrieval_output_observed": false,
+      "repoctx_index_commands_invoked": 0,
+      "version_only": false,
+      "subcommands": []
+    },
+    {
+      "trial_directory": "33-w-doc-default-theme-ordinary_tools",
+      "task_id": "w-doc-default-theme",
+      "condition": "ordinary_tools",
+      "skill_read_observed": false,
+      "repoctx_version_invoked": false,
+      "repoctx_retrieval_invoked": false,
+      "repoctx_retrieval_output_observed": false,
+      "repoctx_index_commands_invoked": 0,
+      "version_only": false,
+      "subcommands": []
+    },
+    {
+      "trial_directory": "34-l-change-uppercase-reference-ordinary_tools_plus_repoctx",
+      "task_id": "l-change-uppercase-reference",
+      "condition": "ordinary_tools_plus_repoctx",
+      "skill_read_observed": false,
+      "repoctx_version_invoked": false,
+      "repoctx_retrieval_invoked": false,
+      "repoctx_retrieval_output_observed": false,
+      "repoctx_index_commands_invoked": 0,
+      "version_only": false,
+      "subcommands": []
+    },
+    {
+      "trial_directory": "35-l-change-late-cap-ordinary_tools",
+      "task_id": "l-change-late-cap",
+      "condition": "ordinary_tools",
+      "skill_read_observed": false,
+      "repoctx_version_invoked": false,
+      "repoctx_retrieval_invoked": false,
+      "repoctx_retrieval_output_observed": false,
+      "repoctx_index_commands_invoked": 0,
+      "version_only": false,
+      "subcommands": []
+    },
+    {
+      "trial_directory": "36-l-change-uppercase-reference-ordinary_tools",
+      "task_id": "l-change-uppercase-reference",
+      "condition": "ordinary_tools",
+      "skill_read_observed": false,
+      "repoctx_version_invoked": false,
+      "repoctx_retrieval_invoked": false,
+      "repoctx_retrieval_output_observed": false,
+      "repoctx_index_commands_invoked": 0,
+      "version_only": false,
+      "subcommands": []
+    },
+    {
+      "trial_directory": "37-l-code-retry-limit-ordinary_tools",
+      "task_id": "l-code-retry-limit",
+      "condition": "ordinary_tools",
+      "skill_read_observed": false,
+      "repoctx_version_invoked": false,
+      "repoctx_retrieval_invoked": false,
+      "repoctx_retrieval_output_observed": false,
+      "repoctx_index_commands_invoked": 0,
+      "version_only": false,
+      "subcommands": []
+    },
+    {
+      "trial_directory": "38-p-doc-retention-ordinary_tools",
+      "task_id": "p-doc-retention",
+      "condition": "ordinary_tools",
+      "skill_read_observed": false,
+      "repoctx_version_invoked": false,
+      "repoctx_retrieval_invoked": false,
+      "repoctx_retrieval_output_observed": false,
+      "repoctx_index_commands_invoked": 0,
+      "version_only": false,
+      "subcommands": []
+    },
+    {
+      "trial_directory": "39-w-code-skip-link-ordinary_tools",
+      "task_id": "w-code-skip-link",
+      "condition": "ordinary_tools",
+      "skill_read_observed": false,
+      "repoctx_version_invoked": false,
+      "repoctx_retrieval_invoked": false,
+      "repoctx_retrieval_output_observed": false,
+      "repoctx_index_commands_invoked": 0,
+      "version_only": false,
+      "subcommands": []
+    },
+    {
+      "trial_directory": "40-w-code-mobile-style-ordinary_tools",
+      "task_id": "w-code-mobile-style",
+      "condition": "ordinary_tools",
+      "skill_read_observed": false,
+      "repoctx_version_invoked": false,
+      "repoctx_retrieval_invoked": false,
+      "repoctx_retrieval_output_observed": false,
+      "repoctx_index_commands_invoked": 0,
+      "version_only": false,
+      "subcommands": []
+    },
+    {
+      "trial_directory": "41-l-code-late-fee-ordinary_tools",
+      "task_id": "l-code-late-fee",
+      "condition": "ordinary_tools",
+      "skill_read_observed": false,
+      "repoctx_version_invoked": false,
+      "repoctx_retrieval_invoked": false,
+      "repoctx_retrieval_output_observed": false,
+      "repoctx_index_commands_invoked": 0,
+      "version_only": false,
+      "subcommands": []
+    },
+    {
+      "trial_directory": "42-w-change-breadcrumb-separator-ordinary_tools_plus_repoctx",
+      "task_id": "w-change-breadcrumb-separator",
+      "condition": "ordinary_tools_plus_repoctx",
+      "skill_read_observed": false,
+      "repoctx_version_invoked": false,
+      "repoctx_retrieval_invoked": false,
+      "repoctx_retrieval_output_observed": false,
+      "repoctx_index_commands_invoked": 0,
+      "version_only": false,
+      "subcommands": []
+    },
+    {
+      "trial_directory": "43-p-cross-north-route-ordinary_tools",
+      "task_id": "p-cross-north-route",
+      "condition": "ordinary_tools",
+      "skill_read_observed": false,
+      "repoctx_version_invoked": false,
+      "repoctx_retrieval_invoked": false,
+      "repoctx_retrieval_output_observed": false,
+      "repoctx_index_commands_invoked": 0,
+      "version_only": false,
+      "subcommands": []
+    },
+    {
+      "trial_directory": "44-l-code-reference-normalization-ordinary_tools_plus_repoctx",
+      "task_id": "l-code-reference-normalization",
+      "condition": "ordinary_tools_plus_repoctx",
+      "skill_read_observed": true,
+      "repoctx_version_invoked": false,
+      "repoctx_retrieval_invoked": false,
+      "repoctx_retrieval_output_observed": false,
+      "repoctx_index_commands_invoked": 0,
+      "version_only": false,
+      "subcommands": []
+    },
+    {
+      "trial_directory": "45-edge-denied-admin-token-ordinary_tools",
+      "task_id": "edge-denied-admin-token",
+      "condition": "ordinary_tools",
+      "skill_read_observed": false,
+      "repoctx_version_invoked": false,
+      "repoctx_retrieval_invoked": false,
+      "repoctx_retrieval_output_observed": false,
+      "repoctx_index_commands_invoked": 0,
+      "version_only": false,
+      "subcommands": []
+    },
+    {
+      "trial_directory": "46-w-cross-render-ordinary_tools",
+      "task_id": "w-cross-render",
+      "condition": "ordinary_tools",
+      "skill_read_observed": false,
+      "repoctx_version_invoked": false,
+      "repoctx_retrieval_invoked": false,
+      "repoctx_retrieval_output_observed": false,
+      "repoctx_index_commands_invoked": 0,
+      "version_only": false,
+      "subcommands": []
+    },
+    {
+      "trial_directory": "47-edge-no-answer-blockchain-ordinary_tools",
+      "task_id": "edge-no-answer-blockchain",
+      "condition": "ordinary_tools",
+      "skill_read_observed": false,
+      "repoctx_version_invoked": false,
+      "repoctx_retrieval_invoked": false,
+      "repoctx_retrieval_output_observed": false,
+      "repoctx_index_commands_invoked": 0,
+      "version_only": false,
+      "subcommands": []
+    },
+    {
+      "trial_directory": "48-l-doc-settlement-window-ordinary_tools_plus_repoctx",
+      "task_id": "l-doc-settlement-window",
+      "condition": "ordinary_tools_plus_repoctx",
+      "skill_read_observed": false,
+      "repoctx_version_invoked": false,
+      "repoctx_retrieval_invoked": false,
+      "repoctx_retrieval_output_observed": false,
+      "repoctx_index_commands_invoked": 0,
+      "version_only": false,
+      "subcommands": []
+    },
+    {
+      "trial_directory": "49-w-doc-main-landmark-ordinary_tools",
+      "task_id": "w-doc-main-landmark",
+      "condition": "ordinary_tools",
+      "skill_read_observed": false,
+      "repoctx_version_invoked": false,
+      "repoctx_retrieval_invoked": false,
+      "repoctx_retrieval_output_observed": false,
+      "repoctx_index_commands_invoked": 0,
+      "version_only": false,
+      "subcommands": []
+    },
+    {
+      "trial_directory": "50-p-code-lane-selection-ordinary_tools",
+      "task_id": "p-code-lane-selection",
+      "condition": "ordinary_tools",
+      "skill_read_observed": false,
+      "repoctx_version_invoked": false,
+      "repoctx_retrieval_invoked": false,
+      "repoctx_retrieval_output_observed": false,
+      "repoctx_index_commands_invoked": 0,
+      "version_only": false,
+      "subcommands": []
+    },
+    {
+      "trial_directory": "51-w-doc-focus-style-ordinary_tools",
+      "task_id": "w-doc-focus-style",
+      "condition": "ordinary_tools",
+      "skill_read_observed": false,
+      "repoctx_version_invoked": false,
+      "repoctx_retrieval_invoked": false,
+      "repoctx_retrieval_output_observed": false,
+      "repoctx_index_commands_invoked": 0,
+      "version_only": false,
+      "subcommands": []
+    },
+    {
+      "trial_directory": "52-p-code-label-format-ordinary_tools_plus_repoctx",
+      "task_id": "p-code-label-format",
+      "condition": "ordinary_tools_plus_repoctx",
+      "skill_read_observed": true,
+      "repoctx_version_invoked": true,
+      "repoctx_retrieval_invoked": true,
+      "repoctx_retrieval_output_observed": true,
+      "repoctx_index_commands_invoked": 0,
+      "version_only": false,
+      "subcommands": [
+        {
+          "subcommand": "version",
+          "command_exit_code": 0,
+          "output_bytes": 836
+        },
+        {
+          "subcommand": "discover",
+          "command_exit_code": 0,
+          "output_bytes": 7691
+        }
+      ]
+    },
+    {
+      "trial_directory": "53-p-change-label-length-ordinary_tools",
+      "task_id": "p-change-label-length",
+      "condition": "ordinary_tools",
+      "skill_read_observed": false,
+      "repoctx_version_invoked": false,
+      "repoctx_retrieval_invoked": false,
+      "repoctx_retrieval_output_observed": false,
+      "repoctx_index_commands_invoked": 0,
+      "version_only": false,
+      "subcommands": []
+    },
+    {
+      "trial_directory": "54-w-doc-focus-style-ordinary_tools_plus_repoctx",
+      "task_id": "w-doc-focus-style",
+      "condition": "ordinary_tools_plus_repoctx",
+      "skill_read_observed": false,
+      "repoctx_version_invoked": false,
+      "repoctx_retrieval_invoked": false,
+      "repoctx_retrieval_output_observed": false,
+      "repoctx_index_commands_invoked": 0,
+      "version_only": false,
+      "subcommands": []
+    },
+    {
+      "trial_directory": "55-w-change-default-theme-ordinary_tools",
+      "task_id": "w-change-default-theme",
+      "condition": "ordinary_tools",
+      "skill_read_observed": false,
+      "repoctx_version_invoked": false,
+      "repoctx_retrieval_invoked": false,
+      "repoctx_retrieval_output_observed": false,
+      "repoctx_index_commands_invoked": 0,
+      "version_only": false,
+      "subcommands": []
+    },
+    {
+      "trial_directory": "56-edge-contradictory-timeout-ordinary_tools_plus_repoctx",
+      "task_id": "edge-contradictory-timeout",
+      "condition": "ordinary_tools_plus_repoctx",
+      "skill_read_observed": true,
+      "repoctx_version_invoked": true,
+      "repoctx_retrieval_invoked": true,
+      "repoctx_retrieval_output_observed": true,
+      "repoctx_index_commands_invoked": 0,
+      "version_only": false,
+      "subcommands": [
+        {
+          "subcommand": "version",
+          "command_exit_code": 0,
+          "output_bytes": 836
+        },
+        {
+          "subcommand": "discover",
+          "command_exit_code": 0,
+          "output_bytes": 2943
+        }
+      ]
+    },
+    {
+      "trial_directory": "57-l-doc-settlement-window-ordinary_tools",
+      "task_id": "l-doc-settlement-window",
+      "condition": "ordinary_tools",
+      "skill_read_observed": false,
+      "repoctx_version_invoked": false,
+      "repoctx_retrieval_invoked": false,
+      "repoctx_retrieval_output_observed": false,
+      "repoctx_index_commands_invoked": 0,
+      "version_only": false,
+      "subcommands": []
+    },
+    {
+      "trial_directory": "58-p-cross-prepare-ordinary_tools_plus_repoctx",
+      "task_id": "p-cross-prepare",
+      "condition": "ordinary_tools_plus_repoctx",
+      "skill_read_observed": true,
+      "repoctx_version_invoked": false,
+      "repoctx_retrieval_invoked": false,
+      "repoctx_retrieval_output_observed": false,
+      "repoctx_index_commands_invoked": 0,
+      "version_only": false,
+      "subcommands": []
+    },
+    {
+      "trial_directory": "59-edge-denied-admin-token-ordinary_tools_plus_repoctx",
+      "task_id": "edge-denied-admin-token",
+      "condition": "ordinary_tools_plus_repoctx",
+      "skill_read_observed": false,
+      "repoctx_version_invoked": false,
+      "repoctx_retrieval_invoked": false,
+      "repoctx_retrieval_output_observed": false,
+      "repoctx_index_commands_invoked": 0,
+      "version_only": false,
+      "subcommands": []
+    },
+    {
+      "trial_directory": "60-w-doc-default-theme-ordinary_tools_plus_repoctx",
+      "task_id": "w-doc-default-theme",
+      "condition": "ordinary_tools_plus_repoctx",
+      "skill_read_observed": true,
+      "repoctx_version_invoked": true,
+      "repoctx_retrieval_invoked": true,
+      "repoctx_retrieval_output_observed": true,
+      "repoctx_index_commands_invoked": 0,
+      "version_only": false,
+      "subcommands": [
+        {
+          "subcommand": "version",
+          "command_exit_code": 0,
+          "output_bytes": 836
+        },
+        {
+          "subcommand": "discover",
+          "command_exit_code": 0,
+          "output_bytes": 4073
+        }
+      ]
+    },
+    {
+      "trial_directory": "61-p-cross-north-route-ordinary_tools_plus_repoctx",
+      "task_id": "p-cross-north-route",
+      "condition": "ordinary_tools_plus_repoctx",
+      "skill_read_observed": true,
+      "repoctx_version_invoked": true,
+      "repoctx_retrieval_invoked": true,
+      "repoctx_retrieval_output_observed": true,
+      "repoctx_index_commands_invoked": 0,
+      "version_only": false,
+      "subcommands": [
+        {
+          "subcommand": "version",
+          "command_exit_code": 0,
+          "output_bytes": 5390
+        },
+        {
+          "subcommand": "discover",
+          "command_exit_code": 0,
+          "output_bytes": 5390
+        }
+      ]
+    },
+    {
+      "trial_directory": "62-l-doc-audit-retention-ordinary_tools",
+      "task_id": "l-doc-audit-retention",
+      "condition": "ordinary_tools",
+      "skill_read_observed": false,
+      "repoctx_version_invoked": false,
+      "repoctx_retrieval_invoked": false,
+      "repoctx_retrieval_output_observed": false,
+      "repoctx_index_commands_invoked": 0,
+      "version_only": false,
+      "subcommands": []
+    },
+    {
+      "trial_directory": "63-p-cross-prepare-ordinary_tools",
+      "task_id": "p-cross-prepare",
+      "condition": "ordinary_tools",
+      "skill_read_observed": false,
+      "repoctx_version_invoked": false,
+      "repoctx_retrieval_invoked": false,
+      "repoctx_retrieval_output_observed": false,
+      "repoctx_index_commands_invoked": 0,
+      "version_only": false,
+      "subcommands": []
+    },
+    {
+      "trial_directory": "64-l-doc-default-currency-ordinary_tools",
+      "task_id": "l-doc-default-currency",
+      "condition": "ordinary_tools",
+      "skill_read_observed": false,
+      "repoctx_version_invoked": false,
+      "repoctx_retrieval_invoked": false,
+      "repoctx_retrieval_output_observed": false,
+      "repoctx_index_commands_invoked": 0,
+      "version_only": false,
+      "subcommands": []
+    },
+    {
+      "trial_directory": "65-l-cross-quote-ordinary_tools_plus_repoctx",
+      "task_id": "l-cross-quote",
+      "condition": "ordinary_tools_plus_repoctx",
+      "skill_read_observed": true,
+      "repoctx_version_invoked": true,
+      "repoctx_retrieval_invoked": true,
+      "repoctx_retrieval_output_observed": true,
+      "repoctx_index_commands_invoked": 0,
+      "version_only": false,
+      "subcommands": [
+        {
+          "subcommand": "version",
+          "command_exit_code": 0,
+          "output_bytes": 836
+        },
+        {
+          "subcommand": "discover",
+          "command_exit_code": 0,
+          "output_bytes": 6025
+        }
+      ]
+    },
+    {
+      "trial_directory": "66-w-code-breadcrumb-ordinary_tools",
+      "task_id": "w-code-breadcrumb",
+      "condition": "ordinary_tools",
+      "skill_read_observed": false,
+      "repoctx_version_invoked": false,
+      "repoctx_retrieval_invoked": false,
+      "repoctx_retrieval_output_observed": false,
+      "repoctx_index_commands_invoked": 0,
+      "version_only": false,
+      "subcommands": []
+    }
+  ],
+  "scope_suspects": []
+}

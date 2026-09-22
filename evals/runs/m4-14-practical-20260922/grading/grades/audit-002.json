@@ -1,0 +1,20 @@
+[
+  {
+    "packet_id": "ee73b63e30db1531",
+    "grade": "pass",
+    "reason": "Connects the skip link and the emitted main landmark through the shared main-content ID and identifies the two relevant source files. The wording 'now' describes an unrequested refactor shown in the diff; that edit preserves the answer's apparent behavior and is a separate audit observation. The response does not cite the README, but its target-to-landmark claim is supported by the cited navigation and rendering files.",
+    "source_grounding": "README.md bytes 227-277 document main-content as the target. portal/navigation.py bytes 87-191 show skip_link's default target and href, and portal/render.py bytes 82-414 show render_page prepends skip_link() and emits main id=main-content. The sanitized after content shares MAIN_CONTENT_ID across those two files without changing that mapping."
+  },
+  {
+    "packet_id": "04f9771cfd1bbbe3",
+    "grade": "pass",
+    "reason": "Locates the requested style and accurately explains the 639px media query and nav display rule, with a citation to the relevant CSS file.",
+    "source_grounding": "assets/site.css bytes 0-120 contain @media (max-width: 639px) with nav { display: block; }, exactly as the response states."
+  },
+  {
+    "packet_id": "0f0a57cb0f6eb602",
+    "grade": "pass",
+    "reason": "Accurately traces all three inputs through render_page into the returned markup, including the theme fallback, breadcrumb construction, and skip-link destination. Each substantive claim has a relevant file citation.",
+    "source_grounding": "portal/render.py bytes 0-79 import DEFAULT_THEME, breadcrumb, and skip_link; bytes 82-414 show theme or DEFAULT_THEME, breadcrumb(['docs', title]) inside nav, and prepended skip_link() before main id=main-content. portal/navigation.py bytes 0-84 define breadcrumb formatting and bytes 87-191 define skip_link's #main-content default. The cited visible portal/config.py sets DEFAULT_THEME to light."
+  }
+]

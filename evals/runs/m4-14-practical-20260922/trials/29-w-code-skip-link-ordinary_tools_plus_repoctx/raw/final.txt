@@ -1,0 +1,1 @@
+The function is `skip_link()` in [portal/navigation.py](repository/portal/navigation.py:5). It creates the “Skip to content” anchor, targeting `#main-content` by default. [portal/render.py](repository/portal/render.py:9) calls it when rendering a page.

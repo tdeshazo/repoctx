@@ -1,0 +1,16 @@
+{
+  "version": "repoctx.m4.agent-input/v1alpha1",
+  "id": "p-doc-retention",
+  "question": "How long are tracking events retained?",
+  "repository": "parcel-path",
+  "files": [
+    "PROVENANCE.json",
+    "README.md",
+    "docs/routing.md",
+    "parcel/__init__.py",
+    "parcel/config.py",
+    "parcel/labels.py",
+    "parcel/routing.py",
+    "parcel/service.py"
+  ]
+}

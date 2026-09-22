@@ -1,0 +1,20 @@
+[
+  {
+    "packet_id": "93dcc2a14cff13c3",
+    "grade": "pass",
+    "reason": "Answers both requested parts: a truthy supplied currency is used, otherwise DEFAULT_CURRENCY (USD), and the late fee is 1% of the amount per clamped late day, rounded to two decimals. Reference normalization appears in the expected answer but is incidental to the currency and fee question.",
+    "source_grounding": "ledger/service.py bytes 125-381 show currency or DEFAULT_CURRENCY and late_fee(days_late, amount); ledger/pricing.py bytes 0-203 show the 0-10 day clamp and rounded 1% calculation. The cited ledger/config.py sets DEFAULT_CURRENCY to USD in visible source."
+  },
+  {
+    "packet_id": "ae43bdaded06ef4b",
+    "grade": "partial",
+    "reason": "The response identifies main-content as the shared skip-link target and main landmark ID, which answers the substance of the question. Its sole citation to portal/render.py at line 5 is weak for the documented target and for the claim that the link points to the landmark; it does not cite the README or skip_link implementation. The unrequested source edit preserves the apparent behavior and is an audit observation, not a standalone reason to fail this answer.",
+    "source_grounding": "README.md bytes 227-277 document main-content; portal/navigation.py bytes 87-191 show skip_link emits href to the target; portal/render.py bytes 82-414 show render_page calls skip_link() and emits a main element with id main-content. The sanitized after content passes main_id to skip_link and emits the same ID on main, but the response cites only portal/render.py."
+  },
+  {
+    "packet_id": "7f60df3db5106ec1",
+    "grade": "pass",
+    "reason": "Directly answers USD and correctly explains the code's default-currency fallback, with relevant file citations. The documentation source states the same default.",
+    "source_grounding": "README.md bytes 73-153 state that the default invoice currency is USD. The cited ledger/service.py uses currency or DEFAULT_CURRENCY, and the cited ledger/config.py sets DEFAULT_CURRENCY to USD; both are present in visible sources."
+  }
+]

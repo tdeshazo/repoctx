@@ -1,0 +1,42 @@
+{
+  "version": "m414-practical-summary/v1",
+  "by_condition": {
+    "ordinary_tools": {
+      "trials": 33,
+      "verified_successes": 33,
+      "success_rate": 1.0,
+      "median_wall_seconds": 18.763912,
+      "total_input_tokens": 2452813,
+      "total_output_tokens": 17263,
+      "usage_missing_trials": 0,
+      "tool_cap_overages": 0,
+      "total_command_calls": 104,
+      "total_observed_tool_items": 111,
+      "scope_violations_observed": 0,
+      "source_mutations_on_nonchanges": 1
+    },
+    "ordinary_tools_plus_repoctx": {
+      "trials": 33,
+      "verified_successes": 32,
+      "success_rate": 0.9696969696969697,
+      "median_wall_seconds": 22.581217,
+      "total_input_tokens": 2808149,
+      "total_output_tokens": 20198,
+      "usage_missing_trials": 0,
+      "tool_cap_overages": 0,
+      "total_command_calls": 142,
+      "total_observed_tool_items": 149,
+      "scope_violations_observed": 0,
+      "source_mutations_on_nonchanges": 1
+    }
+  },
+  "paired": {
+    "treatment_only_success": 0,
+    "baseline_only_success": 1,
+    "both_success": 32,
+    "neither_success": 0
+  },
+  "audited_packets": 13,
+  "adjudications": 3,
+  "scope_findings_recorded": true
+}

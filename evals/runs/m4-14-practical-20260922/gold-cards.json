@@ -1,0 +1,2111 @@
+{
+  "version": "m414-practical-gold/v1",
+  "cards": [
+    {
+      "task_id": "l-doc-default-currency",
+      "type": "documentation_lookup",
+      "question": "What currency does an invoice use when none is supplied?",
+      "expected_outcome": "answerable",
+      "expected_answer": "USD",
+      "required_permitted_sources": [
+        {
+          "file": "README.md",
+          "sha256": "dd3ae2f1d4bf271452ffded6f204fcac3e639f1dd13b338ffe1a4e7dd2481dae",
+          "start_byte": 73,
+          "end_byte": 153,
+          "text": "The default invoice currency is USD unless the caller supplies another ISO code."
+        }
+      ],
+      "change_check": null,
+      "permitted_sources": [
+        {
+          "file": "PROVENANCE.json",
+          "sha256": "b3470c74c280a5102798e7a9f619939aaa89d366434730d597fb637caf2ed297",
+          "text": "{\"origin\":\"synthetic\",\"license\":\"Apache-2.0\",\"copyright\":\"repoctx contributors\",\"redistribution\":\"cleared\"}\n"
+        },
+        {
+          "file": "README.md",
+          "sha256": "dd3ae2f1d4bf271452ffded6f204fcac3e639f1dd13b338ffe1a4e7dd2481dae",
+          "text": "# Ledger Lite\n\nLedger Lite records small-business invoices and refunds.\n\nThe default invoice currency is USD unless the caller supplies another ISO code.\nInvoice references are normalized before storage so imports can be compared.\nRequest timeout is 30 seconds for all settlement calls.\n\nSee `docs/operations.md` for settlement and audit policy.\n"
+        },
+        {
+          "file": "docs/operations.md",
+          "sha256": "1b35c75fc71d6d8cb6de0806afc2d0b0c8929d2f4862743df82b0139b7d96c74",
+          "text": "# Operations\n\nSettlements remain pending for two business days before they are final.\nRefund audit records are retained for 90 days after the refund date.\nOperators retry a failed settlement at most three times.\n"
+        },
+        {
+          "file": "ledger/__init__.py",
+          "sha256": "a623e22bb9b8c2da83e511d6778f4cbbed5242d96129ac168f4168ab542d51cb",
+          "text": "\"\"\"Ledger Lite example package.\"\"\"\n"
+        },
+        {
+          "file": "ledger/config.py",
+          "sha256": "01b6bc6b19c6824db9874af8943c0c321a30e3ef780442985f011c5069e90e09",
+          "text": "DEFAULT_CURRENCY = \"USD\"\nMAX_SETTLEMENT_RETRIES = 3\nREQUEST_TIMEOUT_SECONDS = 45\n"
+        },
+        {
+          "file": "ledger/pricing.py",
+          "sha256": "30f52304d0d0e9a2f6754972619e97d5cce726e256cde6906c834bcba82e4762",
+          "text": "def late_fee(days_late, amount):\n    \"\"\"Charge one percent per late day, currently capped at ten days.\"\"\"\n    billable_days = min(max(days_late, 0), 10)\n    return round(amount * billable_days * 0.01, 2)\n\n\ndef normalize_reference(reference):\n    return reference.strip().lower()\n"
+        },
+        {
+          "file": "ledger/service.py",
+          "sha256": "29c7f779724021a6331fcf3c8ca2242a0218876e075b5bb151e338e1b9c70552",
+          "text": "from .config import DEFAULT_CURRENCY\nfrom .pricing import late_fee, normalize_reference\nfrom .storage import append_refund\n\n\ndef quote_invoice(reference, amount, days_late, currency=None):\n    normalized = normalize_reference(reference)\n    return {\n        \"reference\": normalized,\n        \"currency\": currency or DEFAULT_CURRENCY,\n        \"late_fee\": late_fee(days_late, amount),\n    }\n\n\ndef record_refund(reference, amount):\n    normalized = normalize_reference(reference)\n    return append_refund(normalized, amount)\n"
+        },
+        {
+          "file": "ledger/storage.py",
+          "sha256": "42cd1ced5a0ba956a2ac1c270ac0e3b03beed25e338c3d8c620e32a6b51cd499",
+          "text": "REFUNDS = []\n\n\ndef append_refund(reference, amount):\n    record = {\"reference\": reference, \"amount\": amount}\n    REFUNDS.append(record)\n    return record\n"
+        }
+      ]
+    },
+    {
+      "task_id": "l-doc-settlement-window",
+      "type": "documentation_lookup",
+      "question": "How long does a settlement remain pending?",
+      "expected_outcome": "answerable",
+      "expected_answer": "Two business days.",
+      "required_permitted_sources": [
+        {
+          "file": "docs/operations.md",
+          "sha256": "1b35c75fc71d6d8cb6de0806afc2d0b0c8929d2f4862743df82b0139b7d96c74",
+          "start_byte": 14,
+          "end_byte": 85,
+          "text": "Settlements remain pending for two business days before they are final."
+        }
+      ],
+      "change_check": null,
+      "permitted_sources": [
+        {
+          "file": "PROVENANCE.json",
+          "sha256": "b3470c74c280a5102798e7a9f619939aaa89d366434730d597fb637caf2ed297",
+          "text": "{\"origin\":\"synthetic\",\"license\":\"Apache-2.0\",\"copyright\":\"repoctx contributors\",\"redistribution\":\"cleared\"}\n"
+        },
+        {
+          "file": "README.md",
+          "sha256": "dd3ae2f1d4bf271452ffded6f204fcac3e639f1dd13b338ffe1a4e7dd2481dae",
+          "text": "# Ledger Lite\n\nLedger Lite records small-business invoices and refunds.\n\nThe default invoice currency is USD unless the caller supplies another ISO code.\nInvoice references are normalized before storage so imports can be compared.\nRequest timeout is 30 seconds for all settlement calls.\n\nSee `docs/operations.md` for settlement and audit policy.\n"
+        },
+        {
+          "file": "docs/operations.md",
+          "sha256": "1b35c75fc71d6d8cb6de0806afc2d0b0c8929d2f4862743df82b0139b7d96c74",
+          "text": "# Operations\n\nSettlements remain pending for two business days before they are final.\nRefund audit records are retained for 90 days after the refund date.\nOperators retry a failed settlement at most three times.\n"
+        },
+        {
+          "file": "ledger/__init__.py",
+          "sha256": "a623e22bb9b8c2da83e511d6778f4cbbed5242d96129ac168f4168ab542d51cb",
+          "text": "\"\"\"Ledger Lite example package.\"\"\"\n"
+        },
+        {
+          "file": "ledger/config.py",
+          "sha256": "01b6bc6b19c6824db9874af8943c0c321a30e3ef780442985f011c5069e90e09",
+          "text": "DEFAULT_CURRENCY = \"USD\"\nMAX_SETTLEMENT_RETRIES = 3\nREQUEST_TIMEOUT_SECONDS = 45\n"
+        },
+        {
+          "file": "ledger/pricing.py",
+          "sha256": "30f52304d0d0e9a2f6754972619e97d5cce726e256cde6906c834bcba82e4762",
+          "text": "def late_fee(days_late, amount):\n    \"\"\"Charge one percent per late day, currently capped at ten days.\"\"\"\n    billable_days = min(max(days_late, 0), 10)\n    return round(amount * billable_days * 0.01, 2)\n\n\ndef normalize_reference(reference):\n    return reference.strip().lower()\n"
+        },
+        {
+          "file": "ledger/service.py",
+          "sha256": "29c7f779724021a6331fcf3c8ca2242a0218876e075b5bb151e338e1b9c70552",
+          "text": "from .config import DEFAULT_CURRENCY\nfrom .pricing import late_fee, normalize_reference\nfrom .storage import append_refund\n\n\ndef quote_invoice(reference, amount, days_late, currency=None):\n    normalized = normalize_reference(reference)\n    return {\n        \"reference\": normalized,\n        \"currency\": currency or DEFAULT_CURRENCY,\n        \"late_fee\": late_fee(days_late, amount),\n    }\n\n\ndef record_refund(reference, amount):\n    normalized = normalize_reference(reference)\n    return append_refund(normalized, amount)\n"
+        },
+        {
+          "file": "ledger/storage.py",
+          "sha256": "42cd1ced5a0ba956a2ac1c270ac0e3b03beed25e338c3d8c620e32a6b51cd499",
+          "text": "REFUNDS = []\n\n\ndef append_refund(reference, amount):\n    record = {\"reference\": reference, \"amount\": amount}\n    REFUNDS.append(record)\n    return record\n"
+        }
+      ]
+    },
+    {
+      "task_id": "l-doc-audit-retention",
+      "type": "documentation_lookup",
+      "question": "How long are refund audit records retained?",
+      "expected_outcome": "answerable",
+      "expected_answer": "90 days after the refund date.",
+      "required_permitted_sources": [
+        {
+          "file": "docs/operations.md",
+          "sha256": "1b35c75fc71d6d8cb6de0806afc2d0b0c8929d2f4862743df82b0139b7d96c74",
+          "start_byte": 86,
+          "end_byte": 154,
+          "text": "Refund audit records are retained for 90 days after the refund date."
+        }
+      ],
+      "change_check": null,
+      "permitted_sources": [
+        {
+          "file": "PROVENANCE.json",
+          "sha256": "b3470c74c280a5102798e7a9f619939aaa89d366434730d597fb637caf2ed297",
+          "text": "{\"origin\":\"synthetic\",\"license\":\"Apache-2.0\",\"copyright\":\"repoctx contributors\",\"redistribution\":\"cleared\"}\n"
+        },
+        {
+          "file": "README.md",
+          "sha256": "dd3ae2f1d4bf271452ffded6f204fcac3e639f1dd13b338ffe1a4e7dd2481dae",
+          "text": "# Ledger Lite\n\nLedger Lite records small-business invoices and refunds.\n\nThe default invoice currency is USD unless the caller supplies another ISO code.\nInvoice references are normalized before storage so imports can be compared.\nRequest timeout is 30 seconds for all settlement calls.\n\nSee `docs/operations.md` for settlement and audit policy.\n"
+        },
+        {
+          "file": "docs/operations.md",
+          "sha256": "1b35c75fc71d6d8cb6de0806afc2d0b0c8929d2f4862743df82b0139b7d96c74",
+          "text": "# Operations\n\nSettlements remain pending for two business days before they are final.\nRefund audit records are retained for 90 days after the refund date.\nOperators retry a failed settlement at most three times.\n"
+        },
+        {
+          "file": "ledger/__init__.py",
+          "sha256": "a623e22bb9b8c2da83e511d6778f4cbbed5242d96129ac168f4168ab542d51cb",
+          "text": "\"\"\"Ledger Lite example package.\"\"\"\n"
+        },
+        {
+          "file": "ledger/config.py",
+          "sha256": "01b6bc6b19c6824db9874af8943c0c321a30e3ef780442985f011c5069e90e09",
+          "text": "DEFAULT_CURRENCY = \"USD\"\nMAX_SETTLEMENT_RETRIES = 3\nREQUEST_TIMEOUT_SECONDS = 45\n"
+        },
+        {
+          "file": "ledger/pricing.py",
+          "sha256": "30f52304d0d0e9a2f6754972619e97d5cce726e256cde6906c834bcba82e4762",
+          "text": "def late_fee(days_late, amount):\n    \"\"\"Charge one percent per late day, currently capped at ten days.\"\"\"\n    billable_days = min(max(days_late, 0), 10)\n    return round(amount * billable_days * 0.01, 2)\n\n\ndef normalize_reference(reference):\n    return reference.strip().lower()\n"
+        },
+        {
+          "file": "ledger/service.py",
+          "sha256": "29c7f779724021a6331fcf3c8ca2242a0218876e075b5bb151e338e1b9c70552",
+          "text": "from .config import DEFAULT_CURRENCY\nfrom .pricing import late_fee, normalize_reference\nfrom .storage import append_refund\n\n\ndef quote_invoice(reference, amount, days_late, currency=None):\n    normalized = normalize_reference(reference)\n    return {\n        \"reference\": normalized,\n        \"currency\": currency or DEFAULT_CURRENCY,\n        \"late_fee\": late_fee(days_late, amount),\n    }\n\n\ndef record_refund(reference, amount):\n    normalized = normalize_reference(reference)\n    return append_refund(normalized, amount)\n"
+        },
+        {
+          "file": "ledger/storage.py",
+          "sha256": "42cd1ced5a0ba956a2ac1c270ac0e3b03beed25e338c3d8c620e32a6b51cd499",
+          "text": "REFUNDS = []\n\n\ndef append_refund(reference, amount):\n    record = {\"reference\": reference, \"amount\": amount}\n    REFUNDS.append(record)\n    return record\n"
+        }
+      ]
+    },
+    {
+      "task_id": "l-code-late-fee",
+      "type": "code_localization",
+      "question": "Where is the invoice late fee calculated?",
+      "expected_outcome": "answerable",
+      "expected_answer": "ledger/pricing.py: late_fee",
+      "required_permitted_sources": [
+        {
+          "file": "ledger/pricing.py",
+          "sha256": "30f52304d0d0e9a2f6754972619e97d5cce726e256cde6906c834bcba82e4762",
+          "start_byte": 0,
+          "end_byte": 203,
+          "text": "def late_fee(days_late, amount):\n    \"\"\"Charge one percent per late day, currently capped at ten days.\"\"\"\n    billable_days = min(max(days_late, 0), 10)\n    return round(amount * billable_days * 0.01, 2)"
+        }
+      ],
+      "change_check": null,
+      "permitted_sources": [
+        {
+          "file": "PROVENANCE.json",
+          "sha256": "b3470c74c280a5102798e7a9f619939aaa89d366434730d597fb637caf2ed297",
+          "text": "{\"origin\":\"synthetic\",\"license\":\"Apache-2.0\",\"copyright\":\"repoctx contributors\",\"redistribution\":\"cleared\"}\n"
+        },
+        {
+          "file": "README.md",
+          "sha256": "dd3ae2f1d4bf271452ffded6f204fcac3e639f1dd13b338ffe1a4e7dd2481dae",
+          "text": "# Ledger Lite\n\nLedger Lite records small-business invoices and refunds.\n\nThe default invoice currency is USD unless the caller supplies another ISO code.\nInvoice references are normalized before storage so imports can be compared.\nRequest timeout is 30 seconds for all settlement calls.\n\nSee `docs/operations.md` for settlement and audit policy.\n"
+        },
+        {
+          "file": "docs/operations.md",
+          "sha256": "1b35c75fc71d6d8cb6de0806afc2d0b0c8929d2f4862743df82b0139b7d96c74",
+          "text": "# Operations\n\nSettlements remain pending for two business days before they are final.\nRefund audit records are retained for 90 days after the refund date.\nOperators retry a failed settlement at most three times.\n"
+        },
+        {
+          "file": "ledger/__init__.py",
+          "sha256": "a623e22bb9b8c2da83e511d6778f4cbbed5242d96129ac168f4168ab542d51cb",
+          "text": "\"\"\"Ledger Lite example package.\"\"\"\n"
+        },
+        {
+          "file": "ledger/config.py",
+          "sha256": "01b6bc6b19c6824db9874af8943c0c321a30e3ef780442985f011c5069e90e09",
+          "text": "DEFAULT_CURRENCY = \"USD\"\nMAX_SETTLEMENT_RETRIES = 3\nREQUEST_TIMEOUT_SECONDS = 45\n"
+        },
+        {
+          "file": "ledger/pricing.py",
+          "sha256": "30f52304d0d0e9a2f6754972619e97d5cce726e256cde6906c834bcba82e4762",
+          "text": "def late_fee(days_late, amount):\n    \"\"\"Charge one percent per late day, currently capped at ten days.\"\"\"\n    billable_days = min(max(days_late, 0), 10)\n    return round(amount * billable_days * 0.01, 2)\n\n\ndef normalize_reference(reference):\n    return reference.strip().lower()\n"
+        },
+        {
+          "file": "ledger/service.py",
+          "sha256": "29c7f779724021a6331fcf3c8ca2242a0218876e075b5bb151e338e1b9c70552",
+          "text": "from .config import DEFAULT_CURRENCY\nfrom .pricing import late_fee, normalize_reference\nfrom .storage import append_refund\n\n\ndef quote_invoice(reference, amount, days_late, currency=None):\n    normalized = normalize_reference(reference)\n    return {\n        \"reference\": normalized,\n        \"currency\": currency or DEFAULT_CURRENCY,\n        \"late_fee\": late_fee(days_late, amount),\n    }\n\n\ndef record_refund(reference, amount):\n    normalized = normalize_reference(reference)\n    return append_refund(normalized, amount)\n"
+        },
+        {
+          "file": "ledger/storage.py",
+          "sha256": "42cd1ced5a0ba956a2ac1c270ac0e3b03beed25e338c3d8c620e32a6b51cd499",
+          "text": "REFUNDS = []\n\n\ndef append_refund(reference, amount):\n    record = {\"reference\": reference, \"amount\": amount}\n    REFUNDS.append(record)\n    return record\n"
+        }
+      ]
+    },
+    {
+      "task_id": "l-code-reference-normalization",
+      "type": "code_localization",
+      "question": "Where are imported invoice references normalized?",
+      "expected_outcome": "answerable",
+      "expected_answer": "ledger/pricing.py: normalize_reference",
+      "required_permitted_sources": [
+        {
+          "file": "ledger/pricing.py",
+          "sha256": "30f52304d0d0e9a2f6754972619e97d5cce726e256cde6906c834bcba82e4762",
+          "start_byte": 206,
+          "end_byte": 278,
+          "text": "def normalize_reference(reference):\n    return reference.strip().lower()"
+        }
+      ],
+      "change_check": null,
+      "permitted_sources": [
+        {
+          "file": "PROVENANCE.json",
+          "sha256": "b3470c74c280a5102798e7a9f619939aaa89d366434730d597fb637caf2ed297",
+          "text": "{\"origin\":\"synthetic\",\"license\":\"Apache-2.0\",\"copyright\":\"repoctx contributors\",\"redistribution\":\"cleared\"}\n"
+        },
+        {
+          "file": "README.md",
+          "sha256": "dd3ae2f1d4bf271452ffded6f204fcac3e639f1dd13b338ffe1a4e7dd2481dae",
+          "text": "# Ledger Lite\n\nLedger Lite records small-business invoices and refunds.\n\nThe default invoice currency is USD unless the caller supplies another ISO code.\nInvoice references are normalized before storage so imports can be compared.\nRequest timeout is 30 seconds for all settlement calls.\n\nSee `docs/operations.md` for settlement and audit policy.\n"
+        },
+        {
+          "file": "docs/operations.md",
+          "sha256": "1b35c75fc71d6d8cb6de0806afc2d0b0c8929d2f4862743df82b0139b7d96c74",
+          "text": "# Operations\n\nSettlements remain pending for two business days before they are final.\nRefund audit records are retained for 90 days after the refund date.\nOperators retry a failed settlement at most three times.\n"
+        },
+        {
+          "file": "ledger/__init__.py",
+          "sha256": "a623e22bb9b8c2da83e511d6778f4cbbed5242d96129ac168f4168ab542d51cb",
+          "text": "\"\"\"Ledger Lite example package.\"\"\"\n"
+        },
+        {
+          "file": "ledger/config.py",
+          "sha256": "01b6bc6b19c6824db9874af8943c0c321a30e3ef780442985f011c5069e90e09",
+          "text": "DEFAULT_CURRENCY = \"USD\"\nMAX_SETTLEMENT_RETRIES = 3\nREQUEST_TIMEOUT_SECONDS = 45\n"
+        },
+        {
+          "file": "ledger/pricing.py",
+          "sha256": "30f52304d0d0e9a2f6754972619e97d5cce726e256cde6906c834bcba82e4762",
+          "text": "def late_fee(days_late, amount):\n    \"\"\"Charge one percent per late day, currently capped at ten days.\"\"\"\n    billable_days = min(max(days_late, 0), 10)\n    return round(amount * billable_days * 0.01, 2)\n\n\ndef normalize_reference(reference):\n    return reference.strip().lower()\n"
+        },
+        {
+          "file": "ledger/service.py",
+          "sha256": "29c7f779724021a6331fcf3c8ca2242a0218876e075b5bb151e338e1b9c70552",
+          "text": "from .config import DEFAULT_CURRENCY\nfrom .pricing import late_fee, normalize_reference\nfrom .storage import append_refund\n\n\ndef quote_invoice(reference, amount, days_late, currency=None):\n    normalized = normalize_reference(reference)\n    return {\n        \"reference\": normalized,\n        \"currency\": currency or DEFAULT_CURRENCY,\n        \"late_fee\": late_fee(days_late, amount),\n    }\n\n\ndef record_refund(reference, amount):\n    normalized = normalize_reference(reference)\n    return append_refund(normalized, amount)\n"
+        },
+        {
+          "file": "ledger/storage.py",
+          "sha256": "42cd1ced5a0ba956a2ac1c270ac0e3b03beed25e338c3d8c620e32a6b51cd499",
+          "text": "REFUNDS = []\n\n\ndef append_refund(reference, amount):\n    record = {\"reference\": reference, \"amount\": amount}\n    REFUNDS.append(record)\n    return record\n"
+        }
+      ]
+    },
+    {
+      "task_id": "l-code-retry-limit",
+      "type": "code_localization",
+      "question": "Locate the configured settlement retry limit and its documented policy.",
+      "expected_outcome": "answerable",
+      "expected_answer": "MAX_SETTLEMENT_RETRIES is 3 in ledger/config.py; docs/operations.md documents three attempts.",
+      "required_permitted_sources": [
+        {
+          "file": "docs/operations.md",
+          "sha256": "1b35c75fc71d6d8cb6de0806afc2d0b0c8929d2f4862743df82b0139b7d96c74",
+          "start_byte": 155,
+          "end_byte": 211,
+          "text": "Operators retry a failed settlement at most three times."
+        },
+        {
+          "file": "ledger/config.py",
+          "sha256": "01b6bc6b19c6824db9874af8943c0c321a30e3ef780442985f011c5069e90e09",
+          "start_byte": 25,
+          "end_byte": 51,
+          "text": "MAX_SETTLEMENT_RETRIES = 3"
+        }
+      ],
+      "change_check": null,
+      "permitted_sources": [
+        {
+          "file": "PROVENANCE.json",
+          "sha256": "b3470c74c280a5102798e7a9f619939aaa89d366434730d597fb637caf2ed297",
+          "text": "{\"origin\":\"synthetic\",\"license\":\"Apache-2.0\",\"copyright\":\"repoctx contributors\",\"redistribution\":\"cleared\"}\n"
+        },
+        {
+          "file": "README.md",
+          "sha256": "dd3ae2f1d4bf271452ffded6f204fcac3e639f1dd13b338ffe1a4e7dd2481dae",
+          "text": "# Ledger Lite\n\nLedger Lite records small-business invoices and refunds.\n\nThe default invoice currency is USD unless the caller supplies another ISO code.\nInvoice references are normalized before storage so imports can be compared.\nRequest timeout is 30 seconds for all settlement calls.\n\nSee `docs/operations.md` for settlement and audit policy.\n"
+        },
+        {
+          "file": "docs/operations.md",
+          "sha256": "1b35c75fc71d6d8cb6de0806afc2d0b0c8929d2f4862743df82b0139b7d96c74",
+          "text": "# Operations\n\nSettlements remain pending for two business days before they are final.\nRefund audit records are retained for 90 days after the refund date.\nOperators retry a failed settlement at most three times.\n"
+        },
+        {
+          "file": "ledger/__init__.py",
+          "sha256": "a623e22bb9b8c2da83e511d6778f4cbbed5242d96129ac168f4168ab542d51cb",
+          "text": "\"\"\"Ledger Lite example package.\"\"\"\n"
+        },
+        {
+          "file": "ledger/config.py",
+          "sha256": "01b6bc6b19c6824db9874af8943c0c321a30e3ef780442985f011c5069e90e09",
+          "text": "DEFAULT_CURRENCY = \"USD\"\nMAX_SETTLEMENT_RETRIES = 3\nREQUEST_TIMEOUT_SECONDS = 45\n"
+        },
+        {
+          "file": "ledger/pricing.py",
+          "sha256": "30f52304d0d0e9a2f6754972619e97d5cce726e256cde6906c834bcba82e4762",
+          "text": "def late_fee(days_late, amount):\n    \"\"\"Charge one percent per late day, currently capped at ten days.\"\"\"\n    billable_days = min(max(days_late, 0), 10)\n    return round(amount * billable_days * 0.01, 2)\n\n\ndef normalize_reference(reference):\n    return reference.strip().lower()\n"
+        },
+        {
+          "file": "ledger/service.py",
+          "sha256": "29c7f779724021a6331fcf3c8ca2242a0218876e075b5bb151e338e1b9c70552",
+          "text": "from .config import DEFAULT_CURRENCY\nfrom .pricing import late_fee, normalize_reference\nfrom .storage import append_refund\n\n\ndef quote_invoice(reference, amount, days_late, currency=None):\n    normalized = normalize_reference(reference)\n    return {\n        \"reference\": normalized,\n        \"currency\": currency or DEFAULT_CURRENCY,\n        \"late_fee\": late_fee(days_late, amount),\n    }\n\n\ndef record_refund(reference, amount):\n    normalized = normalize_reference(reference)\n    return append_refund(normalized, amount)\n"
+        },
+        {
+          "file": "ledger/storage.py",
+          "sha256": "42cd1ced5a0ba956a2ac1c270ac0e3b03beed25e338c3d8c620e32a6b51cd499",
+          "text": "REFUNDS = []\n\n\ndef append_refund(reference, amount):\n    record = {\"reference\": reference, \"amount\": amount}\n    REFUNDS.append(record)\n    return record\n"
+        }
+      ]
+    },
+    {
+      "task_id": "l-cross-quote",
+      "type": "cross_file_analysis",
+      "question": "Trace how invoice quoting chooses a currency and calculates its late fee.",
+      "expected_outcome": "answerable",
+      "expected_answer": "quote_invoice uses DEFAULT_CURRENCY and calls late_fee after normalizing the reference.",
+      "required_permitted_sources": [
+        {
+          "file": "ledger/service.py",
+          "sha256": "29c7f779724021a6331fcf3c8ca2242a0218876e075b5bb151e338e1b9c70552",
+          "start_byte": 0,
+          "end_byte": 122,
+          "text": "from .config import DEFAULT_CURRENCY\nfrom .pricing import late_fee, normalize_reference\nfrom .storage import append_refund"
+        },
+        {
+          "file": "ledger/service.py",
+          "sha256": "29c7f779724021a6331fcf3c8ca2242a0218876e075b5bb151e338e1b9c70552",
+          "start_byte": 125,
+          "end_byte": 381,
+          "text": "def quote_invoice(reference, amount, days_late, currency=None):\n    normalized = normalize_reference(reference)\n    return {\n        \"reference\": normalized,\n        \"currency\": currency or DEFAULT_CURRENCY,\n        \"late_fee\": late_fee(days_late, amount),"
+        },
+        {
+          "file": "ledger/pricing.py",
+          "sha256": "30f52304d0d0e9a2f6754972619e97d5cce726e256cde6906c834bcba82e4762",
+          "start_byte": 0,
+          "end_byte": 203,
+          "text": "def late_fee(days_late, amount):\n    \"\"\"Charge one percent per late day, currently capped at ten days.\"\"\"\n    billable_days = min(max(days_late, 0), 10)\n    return round(amount * billable_days * 0.01, 2)"
+        }
+      ],
+      "change_check": null,
+      "permitted_sources": [
+        {
+          "file": "PROVENANCE.json",
+          "sha256": "b3470c74c280a5102798e7a9f619939aaa89d366434730d597fb637caf2ed297",
+          "text": "{\"origin\":\"synthetic\",\"license\":\"Apache-2.0\",\"copyright\":\"repoctx contributors\",\"redistribution\":\"cleared\"}\n"
+        },
+        {
+          "file": "README.md",
+          "sha256": "dd3ae2f1d4bf271452ffded6f204fcac3e639f1dd13b338ffe1a4e7dd2481dae",
+          "text": "# Ledger Lite\n\nLedger Lite records small-business invoices and refunds.\n\nThe default invoice currency is USD unless the caller supplies another ISO code.\nInvoice references are normalized before storage so imports can be compared.\nRequest timeout is 30 seconds for all settlement calls.\n\nSee `docs/operations.md` for settlement and audit policy.\n"
+        },
+        {
+          "file": "docs/operations.md",
+          "sha256": "1b35c75fc71d6d8cb6de0806afc2d0b0c8929d2f4862743df82b0139b7d96c74",
+          "text": "# Operations\n\nSettlements remain pending for two business days before they are final.\nRefund audit records are retained for 90 days after the refund date.\nOperators retry a failed settlement at most three times.\n"
+        },
+        {
+          "file": "ledger/__init__.py",
+          "sha256": "a623e22bb9b8c2da83e511d6778f4cbbed5242d96129ac168f4168ab542d51cb",
+          "text": "\"\"\"Ledger Lite example package.\"\"\"\n"
+        },
+        {
+          "file": "ledger/config.py",
+          "sha256": "01b6bc6b19c6824db9874af8943c0c321a30e3ef780442985f011c5069e90e09",
+          "text": "DEFAULT_CURRENCY = \"USD\"\nMAX_SETTLEMENT_RETRIES = 3\nREQUEST_TIMEOUT_SECONDS = 45\n"
+        },
+        {
+          "file": "ledger/pricing.py",
+          "sha256": "30f52304d0d0e9a2f6754972619e97d5cce726e256cde6906c834bcba82e4762",
+          "text": "def late_fee(days_late, amount):\n    \"\"\"Charge one percent per late day, currently capped at ten days.\"\"\"\n    billable_days = min(max(days_late, 0), 10)\n    return round(amount * billable_days * 0.01, 2)\n\n\ndef normalize_reference(reference):\n    return reference.strip().lower()\n"
+        },
+        {
+          "file": "ledger/service.py",
+          "sha256": "29c7f779724021a6331fcf3c8ca2242a0218876e075b5bb151e338e1b9c70552",
+          "text": "from .config import DEFAULT_CURRENCY\nfrom .pricing import late_fee, normalize_reference\nfrom .storage import append_refund\n\n\ndef quote_invoice(reference, amount, days_late, currency=None):\n    normalized = normalize_reference(reference)\n    return {\n        \"reference\": normalized,\n        \"currency\": currency or DEFAULT_CURRENCY,\n        \"late_fee\": late_fee(days_late, amount),\n    }\n\n\ndef record_refund(reference, amount):\n    normalized = normalize_reference(reference)\n    return append_refund(normalized, amount)\n"
+        },
+        {
+          "file": "ledger/storage.py",
+          "sha256": "42cd1ced5a0ba956a2ac1c270ac0e3b03beed25e338c3d8c620e32a6b51cd499",
+          "text": "REFUNDS = []\n\n\ndef append_refund(reference, amount):\n    record = {\"reference\": reference, \"amount\": amount}\n    REFUNDS.append(record)\n    return record\n"
+        }
+      ]
+    },
+    {
+      "task_id": "l-cross-refund",
+      "type": "cross_file_analysis",
+      "question": "Trace a refund reference from the service entry point into storage.",
+      "expected_outcome": "answerable",
+      "expected_answer": "record_refund normalizes the reference and passes it to append_refund, which appends the record.",
+      "required_permitted_sources": [
+        {
+          "file": "ledger/service.py",
+          "sha256": "29c7f779724021a6331fcf3c8ca2242a0218876e075b5bb151e338e1b9c70552",
+          "start_byte": 390,
+          "end_byte": 520,
+          "text": "def record_refund(reference, amount):\n    normalized = normalize_reference(reference)\n    return append_refund(normalized, amount)"
+        },
+        {
+          "file": "ledger/pricing.py",
+          "sha256": "30f52304d0d0e9a2f6754972619e97d5cce726e256cde6906c834bcba82e4762",
+          "start_byte": 206,
+          "end_byte": 278,
+          "text": "def normalize_reference(reference):\n    return reference.strip().lower()"
+        },
+        {
+          "file": "ledger/storage.py",
+          "sha256": "42cd1ced5a0ba956a2ac1c270ac0e3b03beed25e338c3d8c620e32a6b51cd499",
+          "start_byte": 15,
+          "end_byte": 153,
+          "text": "def append_refund(reference, amount):\n    record = {\"reference\": reference, \"amount\": amount}\n    REFUNDS.append(record)\n    return record"
+        }
+      ],
+      "change_check": null,
+      "permitted_sources": [
+        {
+          "file": "PROVENANCE.json",
+          "sha256": "b3470c74c280a5102798e7a9f619939aaa89d366434730d597fb637caf2ed297",
+          "text": "{\"origin\":\"synthetic\",\"license\":\"Apache-2.0\",\"copyright\":\"repoctx contributors\",\"redistribution\":\"cleared\"}\n"
+        },
+        {
+          "file": "README.md",
+          "sha256": "dd3ae2f1d4bf271452ffded6f204fcac3e639f1dd13b338ffe1a4e7dd2481dae",
+          "text": "# Ledger Lite\n\nLedger Lite records small-business invoices and refunds.\n\nThe default invoice currency is USD unless the caller supplies another ISO code.\nInvoice references are normalized before storage so imports can be compared.\nRequest timeout is 30 seconds for all settlement calls.\n\nSee `docs/operations.md` for settlement and audit policy.\n"
+        },
+        {
+          "file": "docs/operations.md",
+          "sha256": "1b35c75fc71d6d8cb6de0806afc2d0b0c8929d2f4862743df82b0139b7d96c74",
+          "text": "# Operations\n\nSettlements remain pending for two business days before they are final.\nRefund audit records are retained for 90 days after the refund date.\nOperators retry a failed settlement at most three times.\n"
+        },
+        {
+          "file": "ledger/__init__.py",
+          "sha256": "a623e22bb9b8c2da83e511d6778f4cbbed5242d96129ac168f4168ab542d51cb",
+          "text": "\"\"\"Ledger Lite example package.\"\"\"\n"
+        },
+        {
+          "file": "ledger/config.py",
+          "sha256": "01b6bc6b19c6824db9874af8943c0c321a30e3ef780442985f011c5069e90e09",
+          "text": "DEFAULT_CURRENCY = \"USD\"\nMAX_SETTLEMENT_RETRIES = 3\nREQUEST_TIMEOUT_SECONDS = 45\n"
+        },
+        {
+          "file": "ledger/pricing.py",
+          "sha256": "30f52304d0d0e9a2f6754972619e97d5cce726e256cde6906c834bcba82e4762",
+          "text": "def late_fee(days_late, amount):\n    \"\"\"Charge one percent per late day, currently capped at ten days.\"\"\"\n    billable_days = min(max(days_late, 0), 10)\n    return round(amount * billable_days * 0.01, 2)\n\n\ndef normalize_reference(reference):\n    return reference.strip().lower()\n"
+        },
+        {
+          "file": "ledger/service.py",
+          "sha256": "29c7f779724021a6331fcf3c8ca2242a0218876e075b5bb151e338e1b9c70552",
+          "text": "from .config import DEFAULT_CURRENCY\nfrom .pricing import late_fee, normalize_reference\nfrom .storage import append_refund\n\n\ndef quote_invoice(reference, amount, days_late, currency=None):\n    normalized = normalize_reference(reference)\n    return {\n        \"reference\": normalized,\n        \"currency\": currency or DEFAULT_CURRENCY,\n        \"late_fee\": late_fee(days_late, amount),\n    }\n\n\ndef record_refund(reference, amount):\n    normalized = normalize_reference(reference)\n    return append_refund(normalized, amount)\n"
+        },
+        {
+          "file": "ledger/storage.py",
+          "sha256": "42cd1ced5a0ba956a2ac1c270ac0e3b03beed25e338c3d8c620e32a6b51cd499",
+          "text": "REFUNDS = []\n\n\ndef append_refund(reference, amount):\n    record = {\"reference\": reference, \"amount\": amount}\n    REFUNDS.append(record)\n    return record\n"
+        }
+      ]
+    },
+    {
+      "task_id": "l-change-late-cap",
+      "type": "change",
+      "question": "Raise the billable late-fee cap from 10 days to 12 days without changing the one-percent daily rate.",
+      "expected_outcome": "answerable",
+      "expected_answer": "Update late_fee's day cap to 12.",
+      "required_permitted_sources": [
+        {
+          "file": "ledger/pricing.py",
+          "sha256": "30f52304d0d0e9a2f6754972619e97d5cce726e256cde6906c834bcba82e4762",
+          "start_byte": 0,
+          "end_byte": 203,
+          "text": "def late_fee(days_late, amount):\n    \"\"\"Charge one percent per late day, currently capped at ten days.\"\"\"\n    billable_days = min(max(days_late, 0), 10)\n    return round(amount * billable_days * 0.01, 2)"
+        }
+      ],
+      "change_check": {
+        "id": "l-late-cap-12",
+        "repository": "ledger-lite",
+        "module": "ledger.pricing",
+        "function": "late_fee",
+        "args": [
+          20,
+          100
+        ],
+        "equals": 12.0
+      },
+      "permitted_sources": [
+        {
+          "file": "PROVENANCE.json",
+          "sha256": "b3470c74c280a5102798e7a9f619939aaa89d366434730d597fb637caf2ed297",
+          "text": "{\"origin\":\"synthetic\",\"license\":\"Apache-2.0\",\"copyright\":\"repoctx contributors\",\"redistribution\":\"cleared\"}\n"
+        },
+        {
+          "file": "README.md",
+          "sha256": "dd3ae2f1d4bf271452ffded6f204fcac3e639f1dd13b338ffe1a4e7dd2481dae",
+          "text": "# Ledger Lite\n\nLedger Lite records small-business invoices and refunds.\n\nThe default invoice currency is USD unless the caller supplies another ISO code.\nInvoice references are normalized before storage so imports can be compared.\nRequest timeout is 30 seconds for all settlement calls.\n\nSee `docs/operations.md` for settlement and audit policy.\n"
+        },
+        {
+          "file": "docs/operations.md",
+          "sha256": "1b35c75fc71d6d8cb6de0806afc2d0b0c8929d2f4862743df82b0139b7d96c74",
+          "text": "# Operations\n\nSettlements remain pending for two business days before they are final.\nRefund audit records are retained for 90 days after the refund date.\nOperators retry a failed settlement at most three times.\n"
+        },
+        {
+          "file": "ledger/__init__.py",
+          "sha256": "a623e22bb9b8c2da83e511d6778f4cbbed5242d96129ac168f4168ab542d51cb",
+          "text": "\"\"\"Ledger Lite example package.\"\"\"\n"
+        },
+        {
+          "file": "ledger/config.py",
+          "sha256": "01b6bc6b19c6824db9874af8943c0c321a30e3ef780442985f011c5069e90e09",
+          "text": "DEFAULT_CURRENCY = \"USD\"\nMAX_SETTLEMENT_RETRIES = 3\nREQUEST_TIMEOUT_SECONDS = 45\n"
+        },
+        {
+          "file": "ledger/pricing.py",
+          "sha256": "30f52304d0d0e9a2f6754972619e97d5cce726e256cde6906c834bcba82e4762",
+          "text": "def late_fee(days_late, amount):\n    \"\"\"Charge one percent per late day, currently capped at ten days.\"\"\"\n    billable_days = min(max(days_late, 0), 10)\n    return round(amount * billable_days * 0.01, 2)\n\n\ndef normalize_reference(reference):\n    return reference.strip().lower()\n"
+        },
+        {
+          "file": "ledger/service.py",
+          "sha256": "29c7f779724021a6331fcf3c8ca2242a0218876e075b5bb151e338e1b9c70552",
+          "text": "from .config import DEFAULT_CURRENCY\nfrom .pricing import late_fee, normalize_reference\nfrom .storage import append_refund\n\n\ndef quote_invoice(reference, amount, days_late, currency=None):\n    normalized = normalize_reference(reference)\n    return {\n        \"reference\": normalized,\n        \"currency\": currency or DEFAULT_CURRENCY,\n        \"late_fee\": late_fee(days_late, amount),\n    }\n\n\ndef record_refund(reference, amount):\n    normalized = normalize_reference(reference)\n    return append_refund(normalized, amount)\n"
+        },
+        {
+          "file": "ledger/storage.py",
+          "sha256": "42cd1ced5a0ba956a2ac1c270ac0e3b03beed25e338c3d8c620e32a6b51cd499",
+          "text": "REFUNDS = []\n\n\ndef append_refund(reference, amount):\n    record = {\"reference\": reference, \"amount\": amount}\n    REFUNDS.append(record)\n    return record\n"
+        }
+      ]
+    },
+    {
+      "task_id": "l-change-uppercase-reference",
+      "type": "change",
+      "question": "Normalize stored invoice references to uppercase instead of lowercase while retaining whitespace trimming.",
+      "expected_outcome": "answerable",
+      "expected_answer": "Change normalize_reference to return the stripped uppercase reference.",
+      "required_permitted_sources": [
+        {
+          "file": "ledger/pricing.py",
+          "sha256": "30f52304d0d0e9a2f6754972619e97d5cce726e256cde6906c834bcba82e4762",
+          "start_byte": 206,
+          "end_byte": 278,
+          "text": "def normalize_reference(reference):\n    return reference.strip().lower()"
+        }
+      ],
+      "change_check": {
+        "id": "l-uppercase-reference",
+        "repository": "ledger-lite",
+        "module": "ledger.pricing",
+        "function": "normalize_reference",
+        "args": [
+          " abc-7 "
+        ],
+        "equals": "ABC-7"
+      },
+      "permitted_sources": [
+        {
+          "file": "PROVENANCE.json",
+          "sha256": "b3470c74c280a5102798e7a9f619939aaa89d366434730d597fb637caf2ed297",
+          "text": "{\"origin\":\"synthetic\",\"license\":\"Apache-2.0\",\"copyright\":\"repoctx contributors\",\"redistribution\":\"cleared\"}\n"
+        },
+        {
+          "file": "README.md",
+          "sha256": "dd3ae2f1d4bf271452ffded6f204fcac3e639f1dd13b338ffe1a4e7dd2481dae",
+          "text": "# Ledger Lite\n\nLedger Lite records small-business invoices and refunds.\n\nThe default invoice currency is USD unless the caller supplies another ISO code.\nInvoice references are normalized before storage so imports can be compared.\nRequest timeout is 30 seconds for all settlement calls.\n\nSee `docs/operations.md` for settlement and audit policy.\n"
+        },
+        {
+          "file": "docs/operations.md",
+          "sha256": "1b35c75fc71d6d8cb6de0806afc2d0b0c8929d2f4862743df82b0139b7d96c74",
+          "text": "# Operations\n\nSettlements remain pending for two business days before they are final.\nRefund audit records are retained for 90 days after the refund date.\nOperators retry a failed settlement at most three times.\n"
+        },
+        {
+          "file": "ledger/__init__.py",
+          "sha256": "a623e22bb9b8c2da83e511d6778f4cbbed5242d96129ac168f4168ab542d51cb",
+          "text": "\"\"\"Ledger Lite example package.\"\"\"\n"
+        },
+        {
+          "file": "ledger/config.py",
+          "sha256": "01b6bc6b19c6824db9874af8943c0c321a30e3ef780442985f011c5069e90e09",
+          "text": "DEFAULT_CURRENCY = \"USD\"\nMAX_SETTLEMENT_RETRIES = 3\nREQUEST_TIMEOUT_SECONDS = 45\n"
+        },
+        {
+          "file": "ledger/pricing.py",
+          "sha256": "30f52304d0d0e9a2f6754972619e97d5cce726e256cde6906c834bcba82e4762",
+          "text": "def late_fee(days_late, amount):\n    \"\"\"Charge one percent per late day, currently capped at ten days.\"\"\"\n    billable_days = min(max(days_late, 0), 10)\n    return round(amount * billable_days * 0.01, 2)\n\n\ndef normalize_reference(reference):\n    return reference.strip().lower()\n"
+        },
+        {
+          "file": "ledger/service.py",
+          "sha256": "29c7f779724021a6331fcf3c8ca2242a0218876e075b5bb151e338e1b9c70552",
+          "text": "from .config import DEFAULT_CURRENCY\nfrom .pricing import late_fee, normalize_reference\nfrom .storage import append_refund\n\n\ndef quote_invoice(reference, amount, days_late, currency=None):\n    normalized = normalize_reference(reference)\n    return {\n        \"reference\": normalized,\n        \"currency\": currency or DEFAULT_CURRENCY,\n        \"late_fee\": late_fee(days_late, amount),\n    }\n\n\ndef record_refund(reference, amount):\n    normalized = normalize_reference(reference)\n    return append_refund(normalized, amount)\n"
+        },
+        {
+          "file": "ledger/storage.py",
+          "sha256": "42cd1ced5a0ba956a2ac1c270ac0e3b03beed25e338c3d8c620e32a6b51cd499",
+          "text": "REFUNDS = []\n\n\ndef append_refund(reference, amount):\n    record = {\"reference\": reference, \"amount\": amount}\n    REFUNDS.append(record)\n    return record\n"
+        }
+      ]
+    },
+    {
+      "task_id": "p-doc-default-lane",
+      "type": "documentation_lookup",
+      "question": "Which delivery lane is used when no service level is supplied?",
+      "expected_outcome": "answerable",
+      "expected_answer": "The ground lane.",
+      "required_permitted_sources": [
+        {
+          "file": "README.md",
+          "sha256": "324d0c287f5e651e665590538b6ab9ff0f075b7dd2106359b3bfb17cf55c8e2b",
+          "start_byte": 88,
+          "end_byte": 159,
+          "text": "Standard parcels use the ground lane when no service level is supplied."
+        }
+      ],
+      "change_check": null,
+      "permitted_sources": [
+        {
+          "file": "PROVENANCE.json",
+          "sha256": "b3470c74c280a5102798e7a9f619939aaa89d366434730d597fb637caf2ed297",
+          "text": "{\"origin\":\"synthetic\",\"license\":\"Apache-2.0\",\"copyright\":\"repoctx contributors\",\"redistribution\":\"cleared\"}\n"
+        },
+        {
+          "file": "README.md",
+          "sha256": "324d0c287f5e651e665590538b6ab9ff0f075b7dd2106359b3bfb17cf55c8e2b",
+          "text": "# Parcel Path\n\nParcel Path selects a delivery lane and prints compact shipping labels.\n\nStandard parcels use the ground lane when no service level is supplied.\nWeekend pickup adds a fixed surcharge to the quoted delivery price.\nTracking events are retained for 14 days in the local event buffer.\n"
+        },
+        {
+          "file": "docs/routing.md",
+          "sha256": "f91a1ab5c30298dd19de465e36795eb40c7f1b7f74e1f19e1a3de690d1e1cc44",
+          "text": "# Routing policy\n\nNorth-region parcels route through depot N1 before final delivery.\nHazardous parcels cannot use the air lane and must remain on ground transport.\nLabels include the tracking code followed by the destination city.\n"
+        },
+        {
+          "file": "parcel/__init__.py",
+          "sha256": "b05a5b48287251bfa38f3e846f78b878fe12672f51303f658e60462e28c31b19",
+          "text": "\"\"\"Parcel Path example package.\"\"\"\n"
+        },
+        {
+          "file": "parcel/config.py",
+          "sha256": "f60a407f9f512c69c8c6fbe4d4d1721e3dbb0e466f9ae1d12c0dd83637175da6",
+          "text": "DEFAULT_LANE = \"ground\"\nEVENT_RETENTION_DAYS = 14\nWEEKEND_SURCHARGE = 5\n"
+        },
+        {
+          "file": "parcel/labels.py",
+          "sha256": "bced0ffad05950d60a4ab7c1f03e1855dd3e307366c39c165ff2d814a0b79102",
+          "text": "def format_label(tracking_code, city):\n    destination = city.strip().title()[:20]\n    return f\"{tracking_code} | {destination}\"\n"
+        },
+        {
+          "file": "parcel/routing.py",
+          "sha256": "0c9042fbfee395e9c79afd611a4c30830c1634289ef45db3d5f11ca15939964b",
+          "text": "from .config import DEFAULT_LANE, WEEKEND_SURCHARGE\n\n\ndef choose_lane(region, hazardous=False, requested=None):\n    if hazardous:\n        return \"ground\"\n    if requested:\n        return requested\n    return \"north-n1\" if region == \"north\" else DEFAULT_LANE\n\n\ndef delivery_price(base, weekend=False):\n    return base + (WEEKEND_SURCHARGE if weekend else 0)\n"
+        },
+        {
+          "file": "parcel/service.py",
+          "sha256": "b09c733e7a289de9312584db1ffcf1c60cb0bab030d9e0e8f714c9b1e7984e75",
+          "text": "from .labels import format_label\nfrom .routing import choose_lane, delivery_price\n\n\ndef prepare_parcel(tracking_code, city, region, base_price, hazardous=False):\n    return {\n        \"label\": format_label(tracking_code, city),\n        \"lane\": choose_lane(region, hazardous=hazardous),\n        \"price\": delivery_price(base_price),\n    }\n"
+        }
+      ]
+    },
+    {
+      "task_id": "p-doc-hazardous",
+      "type": "documentation_lookup",
+      "question": "May hazardous parcels use the air lane?",
+      "expected_outcome": "answerable",
+      "expected_answer": "No; they must remain on ground transport.",
+      "required_permitted_sources": [
+        {
+          "file": "docs/routing.md",
+          "sha256": "f91a1ab5c30298dd19de465e36795eb40c7f1b7f74e1f19e1a3de690d1e1cc44",
+          "start_byte": 85,
+          "end_byte": 163,
+          "text": "Hazardous parcels cannot use the air lane and must remain on ground transport."
+        }
+      ],
+      "change_check": null,
+      "permitted_sources": [
+        {
+          "file": "PROVENANCE.json",
+          "sha256": "b3470c74c280a5102798e7a9f619939aaa89d366434730d597fb637caf2ed297",
+          "text": "{\"origin\":\"synthetic\",\"license\":\"Apache-2.0\",\"copyright\":\"repoctx contributors\",\"redistribution\":\"cleared\"}\n"
+        },
+        {
+          "file": "README.md",
+          "sha256": "324d0c287f5e651e665590538b6ab9ff0f075b7dd2106359b3bfb17cf55c8e2b",
+          "text": "# Parcel Path\n\nParcel Path selects a delivery lane and prints compact shipping labels.\n\nStandard parcels use the ground lane when no service level is supplied.\nWeekend pickup adds a fixed surcharge to the quoted delivery price.\nTracking events are retained for 14 days in the local event buffer.\n"
+        },
+        {
+          "file": "docs/routing.md",
+          "sha256": "f91a1ab5c30298dd19de465e36795eb40c7f1b7f74e1f19e1a3de690d1e1cc44",
+          "text": "# Routing policy\n\nNorth-region parcels route through depot N1 before final delivery.\nHazardous parcels cannot use the air lane and must remain on ground transport.\nLabels include the tracking code followed by the destination city.\n"
+        },
+        {
+          "file": "parcel/__init__.py",
+          "sha256": "b05a5b48287251bfa38f3e846f78b878fe12672f51303f658e60462e28c31b19",
+          "text": "\"\"\"Parcel Path example package.\"\"\"\n"
+        },
+        {
+          "file": "parcel/config.py",
+          "sha256": "f60a407f9f512c69c8c6fbe4d4d1721e3dbb0e466f9ae1d12c0dd83637175da6",
+          "text": "DEFAULT_LANE = \"ground\"\nEVENT_RETENTION_DAYS = 14\nWEEKEND_SURCHARGE = 5\n"
+        },
+        {
+          "file": "parcel/labels.py",
+          "sha256": "bced0ffad05950d60a4ab7c1f03e1855dd3e307366c39c165ff2d814a0b79102",
+          "text": "def format_label(tracking_code, city):\n    destination = city.strip().title()[:20]\n    return f\"{tracking_code} | {destination}\"\n"
+        },
+        {
+          "file": "parcel/routing.py",
+          "sha256": "0c9042fbfee395e9c79afd611a4c30830c1634289ef45db3d5f11ca15939964b",
+          "text": "from .config import DEFAULT_LANE, WEEKEND_SURCHARGE\n\n\ndef choose_lane(region, hazardous=False, requested=None):\n    if hazardous:\n        return \"ground\"\n    if requested:\n        return requested\n    return \"north-n1\" if region == \"north\" else DEFAULT_LANE\n\n\ndef delivery_price(base, weekend=False):\n    return base + (WEEKEND_SURCHARGE if weekend else 0)\n"
+        },
+        {
+          "file": "parcel/service.py",
+          "sha256": "b09c733e7a289de9312584db1ffcf1c60cb0bab030d9e0e8f714c9b1e7984e75",
+          "text": "from .labels import format_label\nfrom .routing import choose_lane, delivery_price\n\n\ndef prepare_parcel(tracking_code, city, region, base_price, hazardous=False):\n    return {\n        \"label\": format_label(tracking_code, city),\n        \"lane\": choose_lane(region, hazardous=hazardous),\n        \"price\": delivery_price(base_price),\n    }\n"
+        }
+      ]
+    },
+    {
+      "task_id": "p-doc-retention",
+      "type": "documentation_lookup",
+      "question": "How long are tracking events retained?",
+      "expected_outcome": "answerable",
+      "expected_answer": "14 days.",
+      "required_permitted_sources": [
+        {
+          "file": "README.md",
+          "sha256": "324d0c287f5e651e665590538b6ab9ff0f075b7dd2106359b3bfb17cf55c8e2b",
+          "start_byte": 228,
+          "end_byte": 295,
+          "text": "Tracking events are retained for 14 days in the local event buffer."
+        }
+      ],
+      "change_check": null,
+      "permitted_sources": [
+        {
+          "file": "PROVENANCE.json",
+          "sha256": "b3470c74c280a5102798e7a9f619939aaa89d366434730d597fb637caf2ed297",
+          "text": "{\"origin\":\"synthetic\",\"license\":\"Apache-2.0\",\"copyright\":\"repoctx contributors\",\"redistribution\":\"cleared\"}\n"
+        },
+        {
+          "file": "README.md",
+          "sha256": "324d0c287f5e651e665590538b6ab9ff0f075b7dd2106359b3bfb17cf55c8e2b",
+          "text": "# Parcel Path\n\nParcel Path selects a delivery lane and prints compact shipping labels.\n\nStandard parcels use the ground lane when no service level is supplied.\nWeekend pickup adds a fixed surcharge to the quoted delivery price.\nTracking events are retained for 14 days in the local event buffer.\n"
+        },
+        {
+          "file": "docs/routing.md",
+          "sha256": "f91a1ab5c30298dd19de465e36795eb40c7f1b7f74e1f19e1a3de690d1e1cc44",
+          "text": "# Routing policy\n\nNorth-region parcels route through depot N1 before final delivery.\nHazardous parcels cannot use the air lane and must remain on ground transport.\nLabels include the tracking code followed by the destination city.\n"
+        },
+        {
+          "file": "parcel/__init__.py",
+          "sha256": "b05a5b48287251bfa38f3e846f78b878fe12672f51303f658e60462e28c31b19",
+          "text": "\"\"\"Parcel Path example package.\"\"\"\n"
+        },
+        {
+          "file": "parcel/config.py",
+          "sha256": "f60a407f9f512c69c8c6fbe4d4d1721e3dbb0e466f9ae1d12c0dd83637175da6",
+          "text": "DEFAULT_LANE = \"ground\"\nEVENT_RETENTION_DAYS = 14\nWEEKEND_SURCHARGE = 5\n"
+        },
+        {
+          "file": "parcel/labels.py",
+          "sha256": "bced0ffad05950d60a4ab7c1f03e1855dd3e307366c39c165ff2d814a0b79102",
+          "text": "def format_label(tracking_code, city):\n    destination = city.strip().title()[:20]\n    return f\"{tracking_code} | {destination}\"\n"
+        },
+        {
+          "file": "parcel/routing.py",
+          "sha256": "0c9042fbfee395e9c79afd611a4c30830c1634289ef45db3d5f11ca15939964b",
+          "text": "from .config import DEFAULT_LANE, WEEKEND_SURCHARGE\n\n\ndef choose_lane(region, hazardous=False, requested=None):\n    if hazardous:\n        return \"ground\"\n    if requested:\n        return requested\n    return \"north-n1\" if region == \"north\" else DEFAULT_LANE\n\n\ndef delivery_price(base, weekend=False):\n    return base + (WEEKEND_SURCHARGE if weekend else 0)\n"
+        },
+        {
+          "file": "parcel/service.py",
+          "sha256": "b09c733e7a289de9312584db1ffcf1c60cb0bab030d9e0e8f714c9b1e7984e75",
+          "text": "from .labels import format_label\nfrom .routing import choose_lane, delivery_price\n\n\ndef prepare_parcel(tracking_code, city, region, base_price, hazardous=False):\n    return {\n        \"label\": format_label(tracking_code, city),\n        \"lane\": choose_lane(region, hazardous=hazardous),\n        \"price\": delivery_price(base_price),\n    }\n"
+        }
+      ]
+    },
+    {
+      "task_id": "p-code-lane-selection",
+      "type": "code_localization",
+      "question": "Where is the parcel delivery lane selected?",
+      "expected_outcome": "answerable",
+      "expected_answer": "parcel/routing.py: choose_lane",
+      "required_permitted_sources": [
+        {
+          "file": "parcel/routing.py",
+          "sha256": "0c9042fbfee395e9c79afd611a4c30830c1634289ef45db3d5f11ca15939964b",
+          "start_byte": 54,
+          "end_byte": 257,
+          "text": "def choose_lane(region, hazardous=False, requested=None):\n    if hazardous:\n        return \"ground\"\n    if requested:\n        return requested\n    return \"north-n1\" if region == \"north\" else DEFAULT_LANE"
+        }
+      ],
+      "change_check": null,
+      "permitted_sources": [
+        {
+          "file": "PROVENANCE.json",
+          "sha256": "b3470c74c280a5102798e7a9f619939aaa89d366434730d597fb637caf2ed297",
+          "text": "{\"origin\":\"synthetic\",\"license\":\"Apache-2.0\",\"copyright\":\"repoctx contributors\",\"redistribution\":\"cleared\"}\n"
+        },
+        {
+          "file": "README.md",
+          "sha256": "324d0c287f5e651e665590538b6ab9ff0f075b7dd2106359b3bfb17cf55c8e2b",
+          "text": "# Parcel Path\n\nParcel Path selects a delivery lane and prints compact shipping labels.\n\nStandard parcels use the ground lane when no service level is supplied.\nWeekend pickup adds a fixed surcharge to the quoted delivery price.\nTracking events are retained for 14 days in the local event buffer.\n"
+        },
+        {
+          "file": "docs/routing.md",
+          "sha256": "f91a1ab5c30298dd19de465e36795eb40c7f1b7f74e1f19e1a3de690d1e1cc44",
+          "text": "# Routing policy\n\nNorth-region parcels route through depot N1 before final delivery.\nHazardous parcels cannot use the air lane and must remain on ground transport.\nLabels include the tracking code followed by the destination city.\n"
+        },
+        {
+          "file": "parcel/__init__.py",
+          "sha256": "b05a5b48287251bfa38f3e846f78b878fe12672f51303f658e60462e28c31b19",
+          "text": "\"\"\"Parcel Path example package.\"\"\"\n"
+        },
+        {
+          "file": "parcel/config.py",
+          "sha256": "f60a407f9f512c69c8c6fbe4d4d1721e3dbb0e466f9ae1d12c0dd83637175da6",
+          "text": "DEFAULT_LANE = \"ground\"\nEVENT_RETENTION_DAYS = 14\nWEEKEND_SURCHARGE = 5\n"
+        },
+        {
+          "file": "parcel/labels.py",
+          "sha256": "bced0ffad05950d60a4ab7c1f03e1855dd3e307366c39c165ff2d814a0b79102",
+          "text": "def format_label(tracking_code, city):\n    destination = city.strip().title()[:20]\n    return f\"{tracking_code} | {destination}\"\n"
+        },
+        {
+          "file": "parcel/routing.py",
+          "sha256": "0c9042fbfee395e9c79afd611a4c30830c1634289ef45db3d5f11ca15939964b",
+          "text": "from .config import DEFAULT_LANE, WEEKEND_SURCHARGE\n\n\ndef choose_lane(region, hazardous=False, requested=None):\n    if hazardous:\n        return \"ground\"\n    if requested:\n        return requested\n    return \"north-n1\" if region == \"north\" else DEFAULT_LANE\n\n\ndef delivery_price(base, weekend=False):\n    return base + (WEEKEND_SURCHARGE if weekend else 0)\n"
+        },
+        {
+          "file": "parcel/service.py",
+          "sha256": "b09c733e7a289de9312584db1ffcf1c60cb0bab030d9e0e8f714c9b1e7984e75",
+          "text": "from .labels import format_label\nfrom .routing import choose_lane, delivery_price\n\n\ndef prepare_parcel(tracking_code, city, region, base_price, hazardous=False):\n    return {\n        \"label\": format_label(tracking_code, city),\n        \"lane\": choose_lane(region, hazardous=hazardous),\n        \"price\": delivery_price(base_price),\n    }\n"
+        }
+      ]
+    },
+    {
+      "task_id": "p-code-label-format",
+      "type": "code_localization",
+      "question": "Locate the code that combines tracking code and destination city into a label.",
+      "expected_outcome": "answerable",
+      "expected_answer": "parcel/labels.py: format_label",
+      "required_permitted_sources": [
+        {
+          "file": "parcel/labels.py",
+          "sha256": "bced0ffad05950d60a4ab7c1f03e1855dd3e307366c39c165ff2d814a0b79102",
+          "start_byte": 0,
+          "end_byte": 128,
+          "text": "def format_label(tracking_code, city):\n    destination = city.strip().title()[:20]\n    return f\"{tracking_code} | {destination}\""
+        }
+      ],
+      "change_check": null,
+      "permitted_sources": [
+        {
+          "file": "PROVENANCE.json",
+          "sha256": "b3470c74c280a5102798e7a9f619939aaa89d366434730d597fb637caf2ed297",
+          "text": "{\"origin\":\"synthetic\",\"license\":\"Apache-2.0\",\"copyright\":\"repoctx contributors\",\"redistribution\":\"cleared\"}\n"
+        },
+        {
+          "file": "README.md",
+          "sha256": "324d0c287f5e651e665590538b6ab9ff0f075b7dd2106359b3bfb17cf55c8e2b",
+          "text": "# Parcel Path\n\nParcel Path selects a delivery lane and prints compact shipping labels.\n\nStandard parcels use the ground lane when no service level is supplied.\nWeekend pickup adds a fixed surcharge to the quoted delivery price.\nTracking events are retained for 14 days in the local event buffer.\n"
+        },
+        {
+          "file": "docs/routing.md",
+          "sha256": "f91a1ab5c30298dd19de465e36795eb40c7f1b7f74e1f19e1a3de690d1e1cc44",
+          "text": "# Routing policy\n\nNorth-region parcels route through depot N1 before final delivery.\nHazardous parcels cannot use the air lane and must remain on ground transport.\nLabels include the tracking code followed by the destination city.\n"
+        },
+        {
+          "file": "parcel/__init__.py",
+          "sha256": "b05a5b48287251bfa38f3e846f78b878fe12672f51303f658e60462e28c31b19",
+          "text": "\"\"\"Parcel Path example package.\"\"\"\n"
+        },
+        {
+          "file": "parcel/config.py",
+          "sha256": "f60a407f9f512c69c8c6fbe4d4d1721e3dbb0e466f9ae1d12c0dd83637175da6",
+          "text": "DEFAULT_LANE = \"ground\"\nEVENT_RETENTION_DAYS = 14\nWEEKEND_SURCHARGE = 5\n"
+        },
+        {
+          "file": "parcel/labels.py",
+          "sha256": "bced0ffad05950d60a4ab7c1f03e1855dd3e307366c39c165ff2d814a0b79102",
+          "text": "def format_label(tracking_code, city):\n    destination = city.strip().title()[:20]\n    return f\"{tracking_code} | {destination}\"\n"
+        },
+        {
+          "file": "parcel/routing.py",
+          "sha256": "0c9042fbfee395e9c79afd611a4c30830c1634289ef45db3d5f11ca15939964b",
+          "text": "from .config import DEFAULT_LANE, WEEKEND_SURCHARGE\n\n\ndef choose_lane(region, hazardous=False, requested=None):\n    if hazardous:\n        return \"ground\"\n    if requested:\n        return requested\n    return \"north-n1\" if region == \"north\" else DEFAULT_LANE\n\n\ndef delivery_price(base, weekend=False):\n    return base + (WEEKEND_SURCHARGE if weekend else 0)\n"
+        },
+        {
+          "file": "parcel/service.py",
+          "sha256": "b09c733e7a289de9312584db1ffcf1c60cb0bab030d9e0e8f714c9b1e7984e75",
+          "text": "from .labels import format_label\nfrom .routing import choose_lane, delivery_price\n\n\ndef prepare_parcel(tracking_code, city, region, base_price, hazardous=False):\n    return {\n        \"label\": format_label(tracking_code, city),\n        \"lane\": choose_lane(region, hazardous=hazardous),\n        \"price\": delivery_price(base_price),\n    }\n"
+        }
+      ]
+    },
+    {
+      "task_id": "p-code-weekend-surcharge",
+      "type": "code_localization",
+      "question": "Locate both the weekend surcharge value and the calculation that applies it.",
+      "expected_outcome": "answerable",
+      "expected_answer": "WEEKEND_SURCHARGE in parcel/config.py is applied by delivery_price in parcel/routing.py.",
+      "required_permitted_sources": [
+        {
+          "file": "parcel/config.py",
+          "sha256": "f60a407f9f512c69c8c6fbe4d4d1721e3dbb0e466f9ae1d12c0dd83637175da6",
+          "start_byte": 0,
+          "end_byte": 71,
+          "text": "DEFAULT_LANE = \"ground\"\nEVENT_RETENTION_DAYS = 14\nWEEKEND_SURCHARGE = 5"
+        },
+        {
+          "file": "parcel/routing.py",
+          "sha256": "0c9042fbfee395e9c79afd611a4c30830c1634289ef45db3d5f11ca15939964b",
+          "start_byte": 260,
+          "end_byte": 356,
+          "text": "def delivery_price(base, weekend=False):\n    return base + (WEEKEND_SURCHARGE if weekend else 0)"
+        }
+      ],
+      "change_check": null,
+      "permitted_sources": [
+        {
+          "file": "PROVENANCE.json",
+          "sha256": "b3470c74c280a5102798e7a9f619939aaa89d366434730d597fb637caf2ed297",
+          "text": "{\"origin\":\"synthetic\",\"license\":\"Apache-2.0\",\"copyright\":\"repoctx contributors\",\"redistribution\":\"cleared\"}\n"
+        },
+        {
+          "file": "README.md",
+          "sha256": "324d0c287f5e651e665590538b6ab9ff0f075b7dd2106359b3bfb17cf55c8e2b",
+          "text": "# Parcel Path\n\nParcel Path selects a delivery lane and prints compact shipping labels.\n\nStandard parcels use the ground lane when no service level is supplied.\nWeekend pickup adds a fixed surcharge to the quoted delivery price.\nTracking events are retained for 14 days in the local event buffer.\n"
+        },
+        {
+          "file": "docs/routing.md",
+          "sha256": "f91a1ab5c30298dd19de465e36795eb40c7f1b7f74e1f19e1a3de690d1e1cc44",
+          "text": "# Routing policy\n\nNorth-region parcels route through depot N1 before final delivery.\nHazardous parcels cannot use the air lane and must remain on ground transport.\nLabels include the tracking code followed by the destination city.\n"
+        },
+        {
+          "file": "parcel/__init__.py",
+          "sha256": "b05a5b48287251bfa38f3e846f78b878fe12672f51303f658e60462e28c31b19",
+          "text": "\"\"\"Parcel Path example package.\"\"\"\n"
+        },
+        {
+          "file": "parcel/config.py",
+          "sha256": "f60a407f9f512c69c8c6fbe4d4d1721e3dbb0e466f9ae1d12c0dd83637175da6",
+          "text": "DEFAULT_LANE = \"ground\"\nEVENT_RETENTION_DAYS = 14\nWEEKEND_SURCHARGE = 5\n"
+        },
+        {
+          "file": "parcel/labels.py",
+          "sha256": "bced0ffad05950d60a4ab7c1f03e1855dd3e307366c39c165ff2d814a0b79102",
+          "text": "def format_label(tracking_code, city):\n    destination = city.strip().title()[:20]\n    return f\"{tracking_code} | {destination}\"\n"
+        },
+        {
+          "file": "parcel/routing.py",
+          "sha256": "0c9042fbfee395e9c79afd611a4c30830c1634289ef45db3d5f11ca15939964b",
+          "text": "from .config import DEFAULT_LANE, WEEKEND_SURCHARGE\n\n\ndef choose_lane(region, hazardous=False, requested=None):\n    if hazardous:\n        return \"ground\"\n    if requested:\n        return requested\n    return \"north-n1\" if region == \"north\" else DEFAULT_LANE\n\n\ndef delivery_price(base, weekend=False):\n    return base + (WEEKEND_SURCHARGE if weekend else 0)\n"
+        },
+        {
+          "file": "parcel/service.py",
+          "sha256": "b09c733e7a289de9312584db1ffcf1c60cb0bab030d9e0e8f714c9b1e7984e75",
+          "text": "from .labels import format_label\nfrom .routing import choose_lane, delivery_price\n\n\ndef prepare_parcel(tracking_code, city, region, base_price, hazardous=False):\n    return {\n        \"label\": format_label(tracking_code, city),\n        \"lane\": choose_lane(region, hazardous=hazardous),\n        \"price\": delivery_price(base_price),\n    }\n"
+        }
+      ]
+    },
+    {
+      "task_id": "p-cross-prepare",
+      "type": "cross_file_analysis",
+      "question": "Trace how prepare_parcel obtains its label, lane, and price.",
+      "expected_outcome": "answerable",
+      "expected_answer": "prepare_parcel calls format_label, choose_lane, and delivery_price imported from labels and routing.",
+      "required_permitted_sources": [
+        {
+          "file": "parcel/service.py",
+          "sha256": "b09c733e7a289de9312584db1ffcf1c60cb0bab030d9e0e8f714c9b1e7984e75",
+          "start_byte": 0,
+          "end_byte": 81,
+          "text": "from .labels import format_label\nfrom .routing import choose_lane, delivery_price"
+        },
+        {
+          "file": "parcel/service.py",
+          "sha256": "b09c733e7a289de9312584db1ffcf1c60cb0bab030d9e0e8f714c9b1e7984e75",
+          "start_byte": 84,
+          "end_byte": 329,
+          "text": "def prepare_parcel(tracking_code, city, region, base_price, hazardous=False):\n    return {\n        \"label\": format_label(tracking_code, city),\n        \"lane\": choose_lane(region, hazardous=hazardous),\n        \"price\": delivery_price(base_price),"
+        }
+      ],
+      "change_check": null,
+      "permitted_sources": [
+        {
+          "file": "PROVENANCE.json",
+          "sha256": "b3470c74c280a5102798e7a9f619939aaa89d366434730d597fb637caf2ed297",
+          "text": "{\"origin\":\"synthetic\",\"license\":\"Apache-2.0\",\"copyright\":\"repoctx contributors\",\"redistribution\":\"cleared\"}\n"
+        },
+        {
+          "file": "README.md",
+          "sha256": "324d0c287f5e651e665590538b6ab9ff0f075b7dd2106359b3bfb17cf55c8e2b",
+          "text": "# Parcel Path\n\nParcel Path selects a delivery lane and prints compact shipping labels.\n\nStandard parcels use the ground lane when no service level is supplied.\nWeekend pickup adds a fixed surcharge to the quoted delivery price.\nTracking events are retained for 14 days in the local event buffer.\n"
+        },
+        {
+          "file": "docs/routing.md",
+          "sha256": "f91a1ab5c30298dd19de465e36795eb40c7f1b7f74e1f19e1a3de690d1e1cc44",
+          "text": "# Routing policy\n\nNorth-region parcels route through depot N1 before final delivery.\nHazardous parcels cannot use the air lane and must remain on ground transport.\nLabels include the tracking code followed by the destination city.\n"
+        },
+        {
+          "file": "parcel/__init__.py",
+          "sha256": "b05a5b48287251bfa38f3e846f78b878fe12672f51303f658e60462e28c31b19",
+          "text": "\"\"\"Parcel Path example package.\"\"\"\n"
+        },
+        {
+          "file": "parcel/config.py",
+          "sha256": "f60a407f9f512c69c8c6fbe4d4d1721e3dbb0e466f9ae1d12c0dd83637175da6",
+          "text": "DEFAULT_LANE = \"ground\"\nEVENT_RETENTION_DAYS = 14\nWEEKEND_SURCHARGE = 5\n"
+        },
+        {
+          "file": "parcel/labels.py",
+          "sha256": "bced0ffad05950d60a4ab7c1f03e1855dd3e307366c39c165ff2d814a0b79102",
+          "text": "def format_label(tracking_code, city):\n    destination = city.strip().title()[:20]\n    return f\"{tracking_code} | {destination}\"\n"
+        },
+        {
+          "file": "parcel/routing.py",
+          "sha256": "0c9042fbfee395e9c79afd611a4c30830c1634289ef45db3d5f11ca15939964b",
+          "text": "from .config import DEFAULT_LANE, WEEKEND_SURCHARGE\n\n\ndef choose_lane(region, hazardous=False, requested=None):\n    if hazardous:\n        return \"ground\"\n    if requested:\n        return requested\n    return \"north-n1\" if region == \"north\" else DEFAULT_LANE\n\n\ndef delivery_price(base, weekend=False):\n    return base + (WEEKEND_SURCHARGE if weekend else 0)\n"
+        },
+        {
+          "file": "parcel/service.py",
+          "sha256": "b09c733e7a289de9312584db1ffcf1c60cb0bab030d9e0e8f714c9b1e7984e75",
+          "text": "from .labels import format_label\nfrom .routing import choose_lane, delivery_price\n\n\ndef prepare_parcel(tracking_code, city, region, base_price, hazardous=False):\n    return {\n        \"label\": format_label(tracking_code, city),\n        \"lane\": choose_lane(region, hazardous=hazardous),\n        \"price\": delivery_price(base_price),\n    }\n"
+        }
+      ]
+    },
+    {
+      "task_id": "p-cross-north-route",
+      "type": "cross_file_analysis",
+      "question": "Explain how the documented north-region depot policy is represented in code.",
+      "expected_outcome": "answerable",
+      "expected_answer": "The policy names depot N1 and choose_lane returns north-n1 for the north region.",
+      "required_permitted_sources": [
+        {
+          "file": "docs/routing.md",
+          "sha256": "f91a1ab5c30298dd19de465e36795eb40c7f1b7f74e1f19e1a3de690d1e1cc44",
+          "start_byte": 18,
+          "end_byte": 84,
+          "text": "North-region parcels route through depot N1 before final delivery."
+        },
+        {
+          "file": "parcel/routing.py",
+          "sha256": "0c9042fbfee395e9c79afd611a4c30830c1634289ef45db3d5f11ca15939964b",
+          "start_byte": 54,
+          "end_byte": 257,
+          "text": "def choose_lane(region, hazardous=False, requested=None):\n    if hazardous:\n        return \"ground\"\n    if requested:\n        return requested\n    return \"north-n1\" if region == \"north\" else DEFAULT_LANE"
+        }
+      ],
+      "change_check": null,
+      "permitted_sources": [
+        {
+          "file": "PROVENANCE.json",
+          "sha256": "b3470c74c280a5102798e7a9f619939aaa89d366434730d597fb637caf2ed297",
+          "text": "{\"origin\":\"synthetic\",\"license\":\"Apache-2.0\",\"copyright\":\"repoctx contributors\",\"redistribution\":\"cleared\"}\n"
+        },
+        {
+          "file": "README.md",
+          "sha256": "324d0c287f5e651e665590538b6ab9ff0f075b7dd2106359b3bfb17cf55c8e2b",
+          "text": "# Parcel Path\n\nParcel Path selects a delivery lane and prints compact shipping labels.\n\nStandard parcels use the ground lane when no service level is supplied.\nWeekend pickup adds a fixed surcharge to the quoted delivery price.\nTracking events are retained for 14 days in the local event buffer.\n"
+        },
+        {
+          "file": "docs/routing.md",
+          "sha256": "f91a1ab5c30298dd19de465e36795eb40c7f1b7f74e1f19e1a3de690d1e1cc44",
+          "text": "# Routing policy\n\nNorth-region parcels route through depot N1 before final delivery.\nHazardous parcels cannot use the air lane and must remain on ground transport.\nLabels include the tracking code followed by the destination city.\n"
+        },
+        {
+          "file": "parcel/__init__.py",
+          "sha256": "b05a5b48287251bfa38f3e846f78b878fe12672f51303f658e60462e28c31b19",
+          "text": "\"\"\"Parcel Path example package.\"\"\"\n"
+        },
+        {
+          "file": "parcel/config.py",
+          "sha256": "f60a407f9f512c69c8c6fbe4d4d1721e3dbb0e466f9ae1d12c0dd83637175da6",
+          "text": "DEFAULT_LANE = \"ground\"\nEVENT_RETENTION_DAYS = 14\nWEEKEND_SURCHARGE = 5\n"
+        },
+        {
+          "file": "parcel/labels.py",
+          "sha256": "bced0ffad05950d60a4ab7c1f03e1855dd3e307366c39c165ff2d814a0b79102",
+          "text": "def format_label(tracking_code, city):\n    destination = city.strip().title()[:20]\n    return f\"{tracking_code} | {destination}\"\n"
+        },
+        {
+          "file": "parcel/routing.py",
+          "sha256": "0c9042fbfee395e9c79afd611a4c30830c1634289ef45db3d5f11ca15939964b",
+          "text": "from .config import DEFAULT_LANE, WEEKEND_SURCHARGE\n\n\ndef choose_lane(region, hazardous=False, requested=None):\n    if hazardous:\n        return \"ground\"\n    if requested:\n        return requested\n    return \"north-n1\" if region == \"north\" else DEFAULT_LANE\n\n\ndef delivery_price(base, weekend=False):\n    return base + (WEEKEND_SURCHARGE if weekend else 0)\n"
+        },
+        {
+          "file": "parcel/service.py",
+          "sha256": "b09c733e7a289de9312584db1ffcf1c60cb0bab030d9e0e8f714c9b1e7984e75",
+          "text": "from .labels import format_label\nfrom .routing import choose_lane, delivery_price\n\n\ndef prepare_parcel(tracking_code, city, region, base_price, hazardous=False):\n    return {\n        \"label\": format_label(tracking_code, city),\n        \"lane\": choose_lane(region, hazardous=hazardous),\n        \"price\": delivery_price(base_price),\n    }\n"
+        }
+      ]
+    },
+    {
+      "task_id": "p-change-weekend-surcharge",
+      "type": "change",
+      "question": "Increase the fixed weekend pickup surcharge from 5 to 7.",
+      "expected_outcome": "answerable",
+      "expected_answer": "Set WEEKEND_SURCHARGE to 7.",
+      "required_permitted_sources": [
+        {
+          "file": "parcel/config.py",
+          "sha256": "f60a407f9f512c69c8c6fbe4d4d1721e3dbb0e466f9ae1d12c0dd83637175da6",
+          "start_byte": 0,
+          "end_byte": 71,
+          "text": "DEFAULT_LANE = \"ground\"\nEVENT_RETENTION_DAYS = 14\nWEEKEND_SURCHARGE = 5"
+        },
+        {
+          "file": "parcel/routing.py",
+          "sha256": "0c9042fbfee395e9c79afd611a4c30830c1634289ef45db3d5f11ca15939964b",
+          "start_byte": 260,
+          "end_byte": 356,
+          "text": "def delivery_price(base, weekend=False):\n    return base + (WEEKEND_SURCHARGE if weekend else 0)"
+        }
+      ],
+      "change_check": {
+        "id": "p-weekend-seven",
+        "repository": "parcel-path",
+        "module": "parcel.routing",
+        "function": "delivery_price",
+        "args": [
+          20,
+          true
+        ],
+        "equals": 27
+      },
+      "permitted_sources": [
+        {
+          "file": "PROVENANCE.json",
+          "sha256": "b3470c74c280a5102798e7a9f619939aaa89d366434730d597fb637caf2ed297",
+          "text": "{\"origin\":\"synthetic\",\"license\":\"Apache-2.0\",\"copyright\":\"repoctx contributors\",\"redistribution\":\"cleared\"}\n"
+        },
+        {
+          "file": "README.md",
+          "sha256": "324d0c287f5e651e665590538b6ab9ff0f075b7dd2106359b3bfb17cf55c8e2b",
+          "text": "# Parcel Path\n\nParcel Path selects a delivery lane and prints compact shipping labels.\n\nStandard parcels use the ground lane when no service level is supplied.\nWeekend pickup adds a fixed surcharge to the quoted delivery price.\nTracking events are retained for 14 days in the local event buffer.\n"
+        },
+        {
+          "file": "docs/routing.md",
+          "sha256": "f91a1ab5c30298dd19de465e36795eb40c7f1b7f74e1f19e1a3de690d1e1cc44",
+          "text": "# Routing policy\n\nNorth-region parcels route through depot N1 before final delivery.\nHazardous parcels cannot use the air lane and must remain on ground transport.\nLabels include the tracking code followed by the destination city.\n"
+        },
+        {
+          "file": "parcel/__init__.py",
+          "sha256": "b05a5b48287251bfa38f3e846f78b878fe12672f51303f658e60462e28c31b19",
+          "text": "\"\"\"Parcel Path example package.\"\"\"\n"
+        },
+        {
+          "file": "parcel/config.py",
+          "sha256": "f60a407f9f512c69c8c6fbe4d4d1721e3dbb0e466f9ae1d12c0dd83637175da6",
+          "text": "DEFAULT_LANE = \"ground\"\nEVENT_RETENTION_DAYS = 14\nWEEKEND_SURCHARGE = 5\n"
+        },
+        {
+          "file": "parcel/labels.py",
+          "sha256": "bced0ffad05950d60a4ab7c1f03e1855dd3e307366c39c165ff2d814a0b79102",
+          "text": "def format_label(tracking_code, city):\n    destination = city.strip().title()[:20]\n    return f\"{tracking_code} | {destination}\"\n"
+        },
+        {
+          "file": "parcel/routing.py",
+          "sha256": "0c9042fbfee395e9c79afd611a4c30830c1634289ef45db3d5f11ca15939964b",
+          "text": "from .config import DEFAULT_LANE, WEEKEND_SURCHARGE\n\n\ndef choose_lane(region, hazardous=False, requested=None):\n    if hazardous:\n        return \"ground\"\n    if requested:\n        return requested\n    return \"north-n1\" if region == \"north\" else DEFAULT_LANE\n\n\ndef delivery_price(base, weekend=False):\n    return base + (WEEKEND_SURCHARGE if weekend else 0)\n"
+        },
+        {
+          "file": "parcel/service.py",
+          "sha256": "b09c733e7a289de9312584db1ffcf1c60cb0bab030d9e0e8f714c9b1e7984e75",
+          "text": "from .labels import format_label\nfrom .routing import choose_lane, delivery_price\n\n\ndef prepare_parcel(tracking_code, city, region, base_price, hazardous=False):\n    return {\n        \"label\": format_label(tracking_code, city),\n        \"lane\": choose_lane(region, hazardous=hazardous),\n        \"price\": delivery_price(base_price),\n    }\n"
+        }
+      ]
+    },
+    {
+      "task_id": "p-change-label-length",
+      "type": "change",
+      "question": "Allow 24 destination characters on labels instead of 20 without changing the label layout.",
+      "expected_outcome": "answerable",
+      "expected_answer": "Change format_label's destination slice limit to 24.",
+      "required_permitted_sources": [
+        {
+          "file": "parcel/labels.py",
+          "sha256": "bced0ffad05950d60a4ab7c1f03e1855dd3e307366c39c165ff2d814a0b79102",
+          "start_byte": 0,
+          "end_byte": 128,
+          "text": "def format_label(tracking_code, city):\n    destination = city.strip().title()[:20]\n    return f\"{tracking_code} | {destination}\""
+        }
+      ],
+      "change_check": {
+        "id": "p-label-24",
+        "repository": "parcel-path",
+        "module": "parcel.labels",
+        "function": "format_label",
+        "args": [
+          "PK9",
+          "abcdefghijklmnopqrstuvwxZZ"
+        ],
+        "equals": "PK9 | Abcdefghijklmnopqrstuvwx"
+      },
+      "permitted_sources": [
+        {
+          "file": "PROVENANCE.json",
+          "sha256": "b3470c74c280a5102798e7a9f619939aaa89d366434730d597fb637caf2ed297",
+          "text": "{\"origin\":\"synthetic\",\"license\":\"Apache-2.0\",\"copyright\":\"repoctx contributors\",\"redistribution\":\"cleared\"}\n"
+        },
+        {
+          "file": "README.md",
+          "sha256": "324d0c287f5e651e665590538b6ab9ff0f075b7dd2106359b3bfb17cf55c8e2b",
+          "text": "# Parcel Path\n\nParcel Path selects a delivery lane and prints compact shipping labels.\n\nStandard parcels use the ground lane when no service level is supplied.\nWeekend pickup adds a fixed surcharge to the quoted delivery price.\nTracking events are retained for 14 days in the local event buffer.\n"
+        },
+        {
+          "file": "docs/routing.md",
+          "sha256": "f91a1ab5c30298dd19de465e36795eb40c7f1b7f74e1f19e1a3de690d1e1cc44",
+          "text": "# Routing policy\n\nNorth-region parcels route through depot N1 before final delivery.\nHazardous parcels cannot use the air lane and must remain on ground transport.\nLabels include the tracking code followed by the destination city.\n"
+        },
+        {
+          "file": "parcel/__init__.py",
+          "sha256": "b05a5b48287251bfa38f3e846f78b878fe12672f51303f658e60462e28c31b19",
+          "text": "\"\"\"Parcel Path example package.\"\"\"\n"
+        },
+        {
+          "file": "parcel/config.py",
+          "sha256": "f60a407f9f512c69c8c6fbe4d4d1721e3dbb0e466f9ae1d12c0dd83637175da6",
+          "text": "DEFAULT_LANE = \"ground\"\nEVENT_RETENTION_DAYS = 14\nWEEKEND_SURCHARGE = 5\n"
+        },
+        {
+          "file": "parcel/labels.py",
+          "sha256": "bced0ffad05950d60a4ab7c1f03e1855dd3e307366c39c165ff2d814a0b79102",
+          "text": "def format_label(tracking_code, city):\n    destination = city.strip().title()[:20]\n    return f\"{tracking_code} | {destination}\"\n"
+        },
+        {
+          "file": "parcel/routing.py",
+          "sha256": "0c9042fbfee395e9c79afd611a4c30830c1634289ef45db3d5f11ca15939964b",
+          "text": "from .config import DEFAULT_LANE, WEEKEND_SURCHARGE\n\n\ndef choose_lane(region, hazardous=False, requested=None):\n    if hazardous:\n        return \"ground\"\n    if requested:\n        return requested\n    return \"north-n1\" if region == \"north\" else DEFAULT_LANE\n\n\ndef delivery_price(base, weekend=False):\n    return base + (WEEKEND_SURCHARGE if weekend else 0)\n"
+        },
+        {
+          "file": "parcel/service.py",
+          "sha256": "b09c733e7a289de9312584db1ffcf1c60cb0bab030d9e0e8f714c9b1e7984e75",
+          "text": "from .labels import format_label\nfrom .routing import choose_lane, delivery_price\n\n\ndef prepare_parcel(tracking_code, city, region, base_price, hazardous=False):\n    return {\n        \"label\": format_label(tracking_code, city),\n        \"lane\": choose_lane(region, hazardous=hazardous),\n        \"price\": delivery_price(base_price),\n    }\n"
+        }
+      ]
+    },
+    {
+      "task_id": "w-doc-default-theme",
+      "type": "documentation_lookup",
+      "question": "What visual theme is used when a visitor has no saved preference?",
+      "expected_outcome": "answerable",
+      "expected_answer": "Light.",
+      "required_permitted_sources": [
+        {
+          "file": "README.md",
+          "sha256": "81a2a7c3120b83f2665efefe6076a02783d3d229f76a03270d4ded84051913c5",
+          "start_byte": 83,
+          "end_byte": 157,
+          "text": "The default visual theme is light for visitors without a saved preference."
+        }
+      ],
+      "change_check": null,
+      "permitted_sources": [
+        {
+          "file": "PROVENANCE.json",
+          "sha256": "b3470c74c280a5102798e7a9f619939aaa89d366434730d597fb637caf2ed297",
+          "text": "{\"origin\":\"synthetic\",\"license\":\"Apache-2.0\",\"copyright\":\"repoctx contributors\",\"redistribution\":\"cleared\"}\n"
+        },
+        {
+          "file": "README.md",
+          "sha256": "81a2a7c3120b83f2665efefe6076a02783d3d229f76a03270d4ded84051913c5",
+          "text": "# Portal Kit\n\nPortal Kit renders navigation state for a small documentation site.\n\nThe default visual theme is light for visitors without a saved preference.\nBreadcrumbs appear above the page title on every documentation page.\nThe skip link targets the `main-content` landmark.\n"
+        },
+        {
+          "file": "assets/site.css",
+          "sha256": "230761729ab0eca5ceeea3993d442a88245f301bade36cd59124708ce2624cd1",
+          "text": ".skip:focus {\n  outline: 3px solid blue;\n  outline-offset: 2px;\n}\n\n@media (max-width: 639px) {\n  nav { display: block; }\n}\n"
+        },
+        {
+          "file": "docs/accessibility.md",
+          "sha256": "98bb0981d1680bd8da25c0f023f2e79bb5f568ea94314736ea413dc820e59e91",
+          "text": "# Accessibility\n\nKeyboard focus uses a three-pixel blue outline with a two-pixel offset.\nNavigation labels must remain visible at widths below 640 pixels.\nEvery rendered page exposes exactly one main landmark.\n"
+        },
+        {
+          "file": "portal/__init__.py",
+          "sha256": "780ee0a923f8945df13f7c3138964422a262fd22751e9b684f661907b3620306",
+          "text": "\"\"\"Portal Kit example package.\"\"\"\n"
+        },
+        {
+          "file": "portal/config.py",
+          "sha256": "92ed9e1a5f93310e17fe5a0c700641905abf1b6cfd7d2788555df1981ef239bb",
+          "text": "DEFAULT_THEME = \"light\"\nMOBILE_BREAKPOINT = 640\nADMIN_EXPORT_TOKEN = \"violet-synthetic-marker\"\n"
+        },
+        {
+          "file": "portal/navigation.py",
+          "sha256": "c95c158c80173e04be723f09fd909b50542491d8bf5bd767a3592687bb75ee58",
+          "text": "def breadcrumb(parts):\n    return \" / \".join(part.strip().title() for part in parts)\n\n\ndef skip_link(target=\"main-content\"):\n    return f'<a class=\"skip\" href=\"#{target}\">Skip to content</a>'\n"
+        },
+        {
+          "file": "portal/render.py",
+          "sha256": "d3d1480183082902c87ff9e97fe7902019222d529f204bd3d8f72452da90e140",
+          "text": "from .config import DEFAULT_THEME\nfrom .navigation import breadcrumb, skip_link\n\n\ndef render_page(title, sections, theme=None):\n    trail = breadcrumb([\"docs\", title])\n    links = \"\".join(f\"<li>{section}</li>\" for section in sections)\n    return (\n        skip_link()\n        + f'<main id=\"main-content\" data-theme=\"{theme or DEFAULT_THEME}\">'\n        + f\"<nav>{trail}</nav><h1>{title}</h1><ul>{links}</ul></main>\"\n    )\n"
+        }
+      ]
+    },
+    {
+      "task_id": "w-doc-focus-style",
+      "type": "documentation_lookup",
+      "question": "What keyboard focus outline and offset are required?",
+      "expected_outcome": "answerable",
+      "expected_answer": "A three-pixel blue outline with a two-pixel offset.",
+      "required_permitted_sources": [
+        {
+          "file": "docs/accessibility.md",
+          "sha256": "98bb0981d1680bd8da25c0f023f2e79bb5f568ea94314736ea413dc820e59e91",
+          "start_byte": 17,
+          "end_byte": 88,
+          "text": "Keyboard focus uses a three-pixel blue outline with a two-pixel offset."
+        }
+      ],
+      "change_check": null,
+      "permitted_sources": [
+        {
+          "file": "PROVENANCE.json",
+          "sha256": "b3470c74c280a5102798e7a9f619939aaa89d366434730d597fb637caf2ed297",
+          "text": "{\"origin\":\"synthetic\",\"license\":\"Apache-2.0\",\"copyright\":\"repoctx contributors\",\"redistribution\":\"cleared\"}\n"
+        },
+        {
+          "file": "README.md",
+          "sha256": "81a2a7c3120b83f2665efefe6076a02783d3d229f76a03270d4ded84051913c5",
+          "text": "# Portal Kit\n\nPortal Kit renders navigation state for a small documentation site.\n\nThe default visual theme is light for visitors without a saved preference.\nBreadcrumbs appear above the page title on every documentation page.\nThe skip link targets the `main-content` landmark.\n"
+        },
+        {
+          "file": "assets/site.css",
+          "sha256": "230761729ab0eca5ceeea3993d442a88245f301bade36cd59124708ce2624cd1",
+          "text": ".skip:focus {\n  outline: 3px solid blue;\n  outline-offset: 2px;\n}\n\n@media (max-width: 639px) {\n  nav { display: block; }\n}\n"
+        },
+        {
+          "file": "docs/accessibility.md",
+          "sha256": "98bb0981d1680bd8da25c0f023f2e79bb5f568ea94314736ea413dc820e59e91",
+          "text": "# Accessibility\n\nKeyboard focus uses a three-pixel blue outline with a two-pixel offset.\nNavigation labels must remain visible at widths below 640 pixels.\nEvery rendered page exposes exactly one main landmark.\n"
+        },
+        {
+          "file": "portal/__init__.py",
+          "sha256": "780ee0a923f8945df13f7c3138964422a262fd22751e9b684f661907b3620306",
+          "text": "\"\"\"Portal Kit example package.\"\"\"\n"
+        },
+        {
+          "file": "portal/config.py",
+          "sha256": "92ed9e1a5f93310e17fe5a0c700641905abf1b6cfd7d2788555df1981ef239bb",
+          "text": "DEFAULT_THEME = \"light\"\nMOBILE_BREAKPOINT = 640\nADMIN_EXPORT_TOKEN = \"violet-synthetic-marker\"\n"
+        },
+        {
+          "file": "portal/navigation.py",
+          "sha256": "c95c158c80173e04be723f09fd909b50542491d8bf5bd767a3592687bb75ee58",
+          "text": "def breadcrumb(parts):\n    return \" / \".join(part.strip().title() for part in parts)\n\n\ndef skip_link(target=\"main-content\"):\n    return f'<a class=\"skip\" href=\"#{target}\">Skip to content</a>'\n"
+        },
+        {
+          "file": "portal/render.py",
+          "sha256": "d3d1480183082902c87ff9e97fe7902019222d529f204bd3d8f72452da90e140",
+          "text": "from .config import DEFAULT_THEME\nfrom .navigation import breadcrumb, skip_link\n\n\ndef render_page(title, sections, theme=None):\n    trail = breadcrumb([\"docs\", title])\n    links = \"\".join(f\"<li>{section}</li>\" for section in sections)\n    return (\n        skip_link()\n        + f'<main id=\"main-content\" data-theme=\"{theme or DEFAULT_THEME}\">'\n        + f\"<nav>{trail}</nav><h1>{title}</h1><ul>{links}</ul></main>\"\n    )\n"
+        }
+      ]
+    },
+    {
+      "task_id": "w-doc-main-landmark",
+      "type": "documentation_lookup",
+      "question": "How many main landmarks should each page expose?",
+      "expected_outcome": "answerable",
+      "expected_answer": "Exactly one.",
+      "required_permitted_sources": [
+        {
+          "file": "docs/accessibility.md",
+          "sha256": "98bb0981d1680bd8da25c0f023f2e79bb5f568ea94314736ea413dc820e59e91",
+          "start_byte": 155,
+          "end_byte": 209,
+          "text": "Every rendered page exposes exactly one main landmark."
+        }
+      ],
+      "change_check": null,
+      "permitted_sources": [
+        {
+          "file": "PROVENANCE.json",
+          "sha256": "b3470c74c280a5102798e7a9f619939aaa89d366434730d597fb637caf2ed297",
+          "text": "{\"origin\":\"synthetic\",\"license\":\"Apache-2.0\",\"copyright\":\"repoctx contributors\",\"redistribution\":\"cleared\"}\n"
+        },
+        {
+          "file": "README.md",
+          "sha256": "81a2a7c3120b83f2665efefe6076a02783d3d229f76a03270d4ded84051913c5",
+          "text": "# Portal Kit\n\nPortal Kit renders navigation state for a small documentation site.\n\nThe default visual theme is light for visitors without a saved preference.\nBreadcrumbs appear above the page title on every documentation page.\nThe skip link targets the `main-content` landmark.\n"
+        },
+        {
+          "file": "assets/site.css",
+          "sha256": "230761729ab0eca5ceeea3993d442a88245f301bade36cd59124708ce2624cd1",
+          "text": ".skip:focus {\n  outline: 3px solid blue;\n  outline-offset: 2px;\n}\n\n@media (max-width: 639px) {\n  nav { display: block; }\n}\n"
+        },
+        {
+          "file": "docs/accessibility.md",
+          "sha256": "98bb0981d1680bd8da25c0f023f2e79bb5f568ea94314736ea413dc820e59e91",
+          "text": "# Accessibility\n\nKeyboard focus uses a three-pixel blue outline with a two-pixel offset.\nNavigation labels must remain visible at widths below 640 pixels.\nEvery rendered page exposes exactly one main landmark.\n"
+        },
+        {
+          "file": "portal/__init__.py",
+          "sha256": "780ee0a923f8945df13f7c3138964422a262fd22751e9b684f661907b3620306",
+          "text": "\"\"\"Portal Kit example package.\"\"\"\n"
+        },
+        {
+          "file": "portal/config.py",
+          "sha256": "92ed9e1a5f93310e17fe5a0c700641905abf1b6cfd7d2788555df1981ef239bb",
+          "text": "DEFAULT_THEME = \"light\"\nMOBILE_BREAKPOINT = 640\nADMIN_EXPORT_TOKEN = \"violet-synthetic-marker\"\n"
+        },
+        {
+          "file": "portal/navigation.py",
+          "sha256": "c95c158c80173e04be723f09fd909b50542491d8bf5bd767a3592687bb75ee58",
+          "text": "def breadcrumb(parts):\n    return \" / \".join(part.strip().title() for part in parts)\n\n\ndef skip_link(target=\"main-content\"):\n    return f'<a class=\"skip\" href=\"#{target}\">Skip to content</a>'\n"
+        },
+        {
+          "file": "portal/render.py",
+          "sha256": "d3d1480183082902c87ff9e97fe7902019222d529f204bd3d8f72452da90e140",
+          "text": "from .config import DEFAULT_THEME\nfrom .navigation import breadcrumb, skip_link\n\n\ndef render_page(title, sections, theme=None):\n    trail = breadcrumb([\"docs\", title])\n    links = \"\".join(f\"<li>{section}</li>\" for section in sections)\n    return (\n        skip_link()\n        + f'<main id=\"main-content\" data-theme=\"{theme or DEFAULT_THEME}\">'\n        + f\"<nav>{trail}</nav><h1>{title}</h1><ul>{links}</ul></main>\"\n    )\n"
+        }
+      ]
+    },
+    {
+      "task_id": "w-code-breadcrumb",
+      "type": "code_localization",
+      "question": "Where is breadcrumb text assembled?",
+      "expected_outcome": "answerable",
+      "expected_answer": "portal/navigation.py: breadcrumb",
+      "required_permitted_sources": [
+        {
+          "file": "portal/navigation.py",
+          "sha256": "c95c158c80173e04be723f09fd909b50542491d8bf5bd767a3592687bb75ee58",
+          "start_byte": 0,
+          "end_byte": 84,
+          "text": "def breadcrumb(parts):\n    return \" / \".join(part.strip().title() for part in parts)"
+        }
+      ],
+      "change_check": null,
+      "permitted_sources": [
+        {
+          "file": "PROVENANCE.json",
+          "sha256": "b3470c74c280a5102798e7a9f619939aaa89d366434730d597fb637caf2ed297",
+          "text": "{\"origin\":\"synthetic\",\"license\":\"Apache-2.0\",\"copyright\":\"repoctx contributors\",\"redistribution\":\"cleared\"}\n"
+        },
+        {
+          "file": "README.md",
+          "sha256": "81a2a7c3120b83f2665efefe6076a02783d3d229f76a03270d4ded84051913c5",
+          "text": "# Portal Kit\n\nPortal Kit renders navigation state for a small documentation site.\n\nThe default visual theme is light for visitors without a saved preference.\nBreadcrumbs appear above the page title on every documentation page.\nThe skip link targets the `main-content` landmark.\n"
+        },
+        {
+          "file": "assets/site.css",
+          "sha256": "230761729ab0eca5ceeea3993d442a88245f301bade36cd59124708ce2624cd1",
+          "text": ".skip:focus {\n  outline: 3px solid blue;\n  outline-offset: 2px;\n}\n\n@media (max-width: 639px) {\n  nav { display: block; }\n}\n"
+        },
+        {
+          "file": "docs/accessibility.md",
+          "sha256": "98bb0981d1680bd8da25c0f023f2e79bb5f568ea94314736ea413dc820e59e91",
+          "text": "# Accessibility\n\nKeyboard focus uses a three-pixel blue outline with a two-pixel offset.\nNavigation labels must remain visible at widths below 640 pixels.\nEvery rendered page exposes exactly one main landmark.\n"
+        },
+        {
+          "file": "portal/__init__.py",
+          "sha256": "780ee0a923f8945df13f7c3138964422a262fd22751e9b684f661907b3620306",
+          "text": "\"\"\"Portal Kit example package.\"\"\"\n"
+        },
+        {
+          "file": "portal/config.py",
+          "sha256": "92ed9e1a5f93310e17fe5a0c700641905abf1b6cfd7d2788555df1981ef239bb",
+          "text": "DEFAULT_THEME = \"light\"\nMOBILE_BREAKPOINT = 640\nADMIN_EXPORT_TOKEN = \"violet-synthetic-marker\"\n"
+        },
+        {
+          "file": "portal/navigation.py",
+          "sha256": "c95c158c80173e04be723f09fd909b50542491d8bf5bd767a3592687bb75ee58",
+          "text": "def breadcrumb(parts):\n    return \" / \".join(part.strip().title() for part in parts)\n\n\ndef skip_link(target=\"main-content\"):\n    return f'<a class=\"skip\" href=\"#{target}\">Skip to content</a>'\n"
+        },
+        {
+          "file": "portal/render.py",
+          "sha256": "d3d1480183082902c87ff9e97fe7902019222d529f204bd3d8f72452da90e140",
+          "text": "from .config import DEFAULT_THEME\nfrom .navigation import breadcrumb, skip_link\n\n\ndef render_page(title, sections, theme=None):\n    trail = breadcrumb([\"docs\", title])\n    links = \"\".join(f\"<li>{section}</li>\" for section in sections)\n    return (\n        skip_link()\n        + f'<main id=\"main-content\" data-theme=\"{theme or DEFAULT_THEME}\">'\n        + f\"<nav>{trail}</nav><h1>{title}</h1><ul>{links}</ul></main>\"\n    )\n"
+        }
+      ]
+    },
+    {
+      "task_id": "w-code-skip-link",
+      "type": "code_localization",
+      "question": "Locate the function that creates the accessibility skip link.",
+      "expected_outcome": "answerable",
+      "expected_answer": "portal/navigation.py: skip_link",
+      "required_permitted_sources": [
+        {
+          "file": "portal/navigation.py",
+          "sha256": "c95c158c80173e04be723f09fd909b50542491d8bf5bd767a3592687bb75ee58",
+          "start_byte": 87,
+          "end_byte": 191,
+          "text": "def skip_link(target=\"main-content\"):\n    return f'<a class=\"skip\" href=\"#{target}\">Skip to content</a>'"
+        }
+      ],
+      "change_check": null,
+      "permitted_sources": [
+        {
+          "file": "PROVENANCE.json",
+          "sha256": "b3470c74c280a5102798e7a9f619939aaa89d366434730d597fb637caf2ed297",
+          "text": "{\"origin\":\"synthetic\",\"license\":\"Apache-2.0\",\"copyright\":\"repoctx contributors\",\"redistribution\":\"cleared\"}\n"
+        },
+        {
+          "file": "README.md",
+          "sha256": "81a2a7c3120b83f2665efefe6076a02783d3d229f76a03270d4ded84051913c5",
+          "text": "# Portal Kit\n\nPortal Kit renders navigation state for a small documentation site.\n\nThe default visual theme is light for visitors without a saved preference.\nBreadcrumbs appear above the page title on every documentation page.\nThe skip link targets the `main-content` landmark.\n"
+        },
+        {
+          "file": "assets/site.css",
+          "sha256": "230761729ab0eca5ceeea3993d442a88245f301bade36cd59124708ce2624cd1",
+          "text": ".skip:focus {\n  outline: 3px solid blue;\n  outline-offset: 2px;\n}\n\n@media (max-width: 639px) {\n  nav { display: block; }\n}\n"
+        },
+        {
+          "file": "docs/accessibility.md",
+          "sha256": "98bb0981d1680bd8da25c0f023f2e79bb5f568ea94314736ea413dc820e59e91",
+          "text": "# Accessibility\n\nKeyboard focus uses a three-pixel blue outline with a two-pixel offset.\nNavigation labels must remain visible at widths below 640 pixels.\nEvery rendered page exposes exactly one main landmark.\n"
+        },
+        {
+          "file": "portal/__init__.py",
+          "sha256": "780ee0a923f8945df13f7c3138964422a262fd22751e9b684f661907b3620306",
+          "text": "\"\"\"Portal Kit example package.\"\"\"\n"
+        },
+        {
+          "file": "portal/config.py",
+          "sha256": "92ed9e1a5f93310e17fe5a0c700641905abf1b6cfd7d2788555df1981ef239bb",
+          "text": "DEFAULT_THEME = \"light\"\nMOBILE_BREAKPOINT = 640\nADMIN_EXPORT_TOKEN = \"violet-synthetic-marker\"\n"
+        },
+        {
+          "file": "portal/navigation.py",
+          "sha256": "c95c158c80173e04be723f09fd909b50542491d8bf5bd767a3592687bb75ee58",
+          "text": "def breadcrumb(parts):\n    return \" / \".join(part.strip().title() for part in parts)\n\n\ndef skip_link(target=\"main-content\"):\n    return f'<a class=\"skip\" href=\"#{target}\">Skip to content</a>'\n"
+        },
+        {
+          "file": "portal/render.py",
+          "sha256": "d3d1480183082902c87ff9e97fe7902019222d529f204bd3d8f72452da90e140",
+          "text": "from .config import DEFAULT_THEME\nfrom .navigation import breadcrumb, skip_link\n\n\ndef render_page(title, sections, theme=None):\n    trail = breadcrumb([\"docs\", title])\n    links = \"\".join(f\"<li>{section}</li>\" for section in sections)\n    return (\n        skip_link()\n        + f'<main id=\"main-content\" data-theme=\"{theme or DEFAULT_THEME}\">'\n        + f\"<nav>{trail}</nav><h1>{title}</h1><ul>{links}</ul></main>\"\n    )\n"
+        }
+      ]
+    },
+    {
+      "task_id": "w-code-mobile-style",
+      "type": "code_localization",
+      "question": "Locate the style that keeps navigation visible on narrow screens.",
+      "expected_outcome": "answerable",
+      "expected_answer": "assets/site.css contains the max-width 639px navigation rule.",
+      "required_permitted_sources": [
+        {
+          "file": "assets/site.css",
+          "sha256": "230761729ab0eca5ceeea3993d442a88245f301bade36cd59124708ce2624cd1",
+          "start_byte": 0,
+          "end_byte": 120,
+          "text": ".skip:focus {\n  outline: 3px solid blue;\n  outline-offset: 2px;\n}\n\n@media (max-width: 639px) {\n  nav { display: block; }"
+        }
+      ],
+      "change_check": null,
+      "permitted_sources": [
+        {
+          "file": "PROVENANCE.json",
+          "sha256": "b3470c74c280a5102798e7a9f619939aaa89d366434730d597fb637caf2ed297",
+          "text": "{\"origin\":\"synthetic\",\"license\":\"Apache-2.0\",\"copyright\":\"repoctx contributors\",\"redistribution\":\"cleared\"}\n"
+        },
+        {
+          "file": "README.md",
+          "sha256": "81a2a7c3120b83f2665efefe6076a02783d3d229f76a03270d4ded84051913c5",
+          "text": "# Portal Kit\n\nPortal Kit renders navigation state for a small documentation site.\n\nThe default visual theme is light for visitors without a saved preference.\nBreadcrumbs appear above the page title on every documentation page.\nThe skip link targets the `main-content` landmark.\n"
+        },
+        {
+          "file": "assets/site.css",
+          "sha256": "230761729ab0eca5ceeea3993d442a88245f301bade36cd59124708ce2624cd1",
+          "text": ".skip:focus {\n  outline: 3px solid blue;\n  outline-offset: 2px;\n}\n\n@media (max-width: 639px) {\n  nav { display: block; }\n}\n"
+        },
+        {
+          "file": "docs/accessibility.md",
+          "sha256": "98bb0981d1680bd8da25c0f023f2e79bb5f568ea94314736ea413dc820e59e91",
+          "text": "# Accessibility\n\nKeyboard focus uses a three-pixel blue outline with a two-pixel offset.\nNavigation labels must remain visible at widths below 640 pixels.\nEvery rendered page exposes exactly one main landmark.\n"
+        },
+        {
+          "file": "portal/__init__.py",
+          "sha256": "780ee0a923f8945df13f7c3138964422a262fd22751e9b684f661907b3620306",
+          "text": "\"\"\"Portal Kit example package.\"\"\"\n"
+        },
+        {
+          "file": "portal/config.py",
+          "sha256": "92ed9e1a5f93310e17fe5a0c700641905abf1b6cfd7d2788555df1981ef239bb",
+          "text": "DEFAULT_THEME = \"light\"\nMOBILE_BREAKPOINT = 640\nADMIN_EXPORT_TOKEN = \"violet-synthetic-marker\"\n"
+        },
+        {
+          "file": "portal/navigation.py",
+          "sha256": "c95c158c80173e04be723f09fd909b50542491d8bf5bd767a3592687bb75ee58",
+          "text": "def breadcrumb(parts):\n    return \" / \".join(part.strip().title() for part in parts)\n\n\ndef skip_link(target=\"main-content\"):\n    return f'<a class=\"skip\" href=\"#{target}\">Skip to content</a>'\n"
+        },
+        {
+          "file": "portal/render.py",
+          "sha256": "d3d1480183082902c87ff9e97fe7902019222d529f204bd3d8f72452da90e140",
+          "text": "from .config import DEFAULT_THEME\nfrom .navigation import breadcrumb, skip_link\n\n\ndef render_page(title, sections, theme=None):\n    trail = breadcrumb([\"docs\", title])\n    links = \"\".join(f\"<li>{section}</li>\" for section in sections)\n    return (\n        skip_link()\n        + f'<main id=\"main-content\" data-theme=\"{theme or DEFAULT_THEME}\">'\n        + f\"<nav>{trail}</nav><h1>{title}</h1><ul>{links}</ul></main>\"\n    )\n"
+        }
+      ]
+    },
+    {
+      "task_id": "w-cross-render",
+      "type": "cross_file_analysis",
+      "question": "Trace how page rendering obtains the theme, breadcrumb, and skip link.",
+      "expected_outcome": "answerable",
+      "expected_answer": "render_page imports DEFAULT_THEME, breadcrumb, and skip_link, then uses each in the returned markup.",
+      "required_permitted_sources": [
+        {
+          "file": "portal/render.py",
+          "sha256": "d3d1480183082902c87ff9e97fe7902019222d529f204bd3d8f72452da90e140",
+          "start_byte": 0,
+          "end_byte": 79,
+          "text": "from .config import DEFAULT_THEME\nfrom .navigation import breadcrumb, skip_link"
+        },
+        {
+          "file": "portal/render.py",
+          "sha256": "d3d1480183082902c87ff9e97fe7902019222d529f204bd3d8f72452da90e140",
+          "start_byte": 82,
+          "end_byte": 414,
+          "text": "def render_page(title, sections, theme=None):\n    trail = breadcrumb([\"docs\", title])\n    links = \"\".join(f\"<li>{section}</li>\" for section in sections)\n    return (\n        skip_link()\n        + f'<main id=\"main-content\" data-theme=\"{theme or DEFAULT_THEME}\">'\n        + f\"<nav>{trail}</nav><h1>{title}</h1><ul>{links}</ul></main>\""
+        },
+        {
+          "file": "portal/navigation.py",
+          "sha256": "c95c158c80173e04be723f09fd909b50542491d8bf5bd767a3592687bb75ee58",
+          "start_byte": 0,
+          "end_byte": 84,
+          "text": "def breadcrumb(parts):\n    return \" / \".join(part.strip().title() for part in parts)"
+        },
+        {
+          "file": "portal/navigation.py",
+          "sha256": "c95c158c80173e04be723f09fd909b50542491d8bf5bd767a3592687bb75ee58",
+          "start_byte": 87,
+          "end_byte": 191,
+          "text": "def skip_link(target=\"main-content\"):\n    return f'<a class=\"skip\" href=\"#{target}\">Skip to content</a>'"
+        }
+      ],
+      "change_check": null,
+      "permitted_sources": [
+        {
+          "file": "PROVENANCE.json",
+          "sha256": "b3470c74c280a5102798e7a9f619939aaa89d366434730d597fb637caf2ed297",
+          "text": "{\"origin\":\"synthetic\",\"license\":\"Apache-2.0\",\"copyright\":\"repoctx contributors\",\"redistribution\":\"cleared\"}\n"
+        },
+        {
+          "file": "README.md",
+          "sha256": "81a2a7c3120b83f2665efefe6076a02783d3d229f76a03270d4ded84051913c5",
+          "text": "# Portal Kit\n\nPortal Kit renders navigation state for a small documentation site.\n\nThe default visual theme is light for visitors without a saved preference.\nBreadcrumbs appear above the page title on every documentation page.\nThe skip link targets the `main-content` landmark.\n"
+        },
+        {
+          "file": "assets/site.css",
+          "sha256": "230761729ab0eca5ceeea3993d442a88245f301bade36cd59124708ce2624cd1",
+          "text": ".skip:focus {\n  outline: 3px solid blue;\n  outline-offset: 2px;\n}\n\n@media (max-width: 639px) {\n  nav { display: block; }\n}\n"
+        },
+        {
+          "file": "docs/accessibility.md",
+          "sha256": "98bb0981d1680bd8da25c0f023f2e79bb5f568ea94314736ea413dc820e59e91",
+          "text": "# Accessibility\n\nKeyboard focus uses a three-pixel blue outline with a two-pixel offset.\nNavigation labels must remain visible at widths below 640 pixels.\nEvery rendered page exposes exactly one main landmark.\n"
+        },
+        {
+          "file": "portal/__init__.py",
+          "sha256": "780ee0a923f8945df13f7c3138964422a262fd22751e9b684f661907b3620306",
+          "text": "\"\"\"Portal Kit example package.\"\"\"\n"
+        },
+        {
+          "file": "portal/config.py",
+          "sha256": "92ed9e1a5f93310e17fe5a0c700641905abf1b6cfd7d2788555df1981ef239bb",
+          "text": "DEFAULT_THEME = \"light\"\nMOBILE_BREAKPOINT = 640\nADMIN_EXPORT_TOKEN = \"violet-synthetic-marker\"\n"
+        },
+        {
+          "file": "portal/navigation.py",
+          "sha256": "c95c158c80173e04be723f09fd909b50542491d8bf5bd767a3592687bb75ee58",
+          "text": "def breadcrumb(parts):\n    return \" / \".join(part.strip().title() for part in parts)\n\n\ndef skip_link(target=\"main-content\"):\n    return f'<a class=\"skip\" href=\"#{target}\">Skip to content</a>'\n"
+        },
+        {
+          "file": "portal/render.py",
+          "sha256": "d3d1480183082902c87ff9e97fe7902019222d529f204bd3d8f72452da90e140",
+          "text": "from .config import DEFAULT_THEME\nfrom .navigation import breadcrumb, skip_link\n\n\ndef render_page(title, sections, theme=None):\n    trail = breadcrumb([\"docs\", title])\n    links = \"\".join(f\"<li>{section}</li>\" for section in sections)\n    return (\n        skip_link()\n        + f'<main id=\"main-content\" data-theme=\"{theme or DEFAULT_THEME}\">'\n        + f\"<nav>{trail}</nav><h1>{title}</h1><ul>{links}</ul></main>\"\n    )\n"
+        }
+      ]
+    },
+    {
+      "task_id": "w-cross-accessibility",
+      "type": "cross_file_analysis",
+      "question": "Connect the documented skip-link target to the landmark emitted by render_page.",
+      "expected_outcome": "answerable",
+      "expected_answer": "The skip link targets main-content and render_page emits a main element with that ID.",
+      "required_permitted_sources": [
+        {
+          "file": "README.md",
+          "sha256": "81a2a7c3120b83f2665efefe6076a02783d3d229f76a03270d4ded84051913c5",
+          "start_byte": 227,
+          "end_byte": 277,
+          "text": "The skip link targets the `main-content` landmark."
+        },
+        {
+          "file": "portal/navigation.py",
+          "sha256": "c95c158c80173e04be723f09fd909b50542491d8bf5bd767a3592687bb75ee58",
+          "start_byte": 87,
+          "end_byte": 191,
+          "text": "def skip_link(target=\"main-content\"):\n    return f'<a class=\"skip\" href=\"#{target}\">Skip to content</a>'"
+        },
+        {
+          "file": "portal/render.py",
+          "sha256": "d3d1480183082902c87ff9e97fe7902019222d529f204bd3d8f72452da90e140",
+          "start_byte": 82,
+          "end_byte": 414,
+          "text": "def render_page(title, sections, theme=None):\n    trail = breadcrumb([\"docs\", title])\n    links = \"\".join(f\"<li>{section}</li>\" for section in sections)\n    return (\n        skip_link()\n        + f'<main id=\"main-content\" data-theme=\"{theme or DEFAULT_THEME}\">'\n        + f\"<nav>{trail}</nav><h1>{title}</h1><ul>{links}</ul></main>\""
+        }
+      ],
+      "change_check": null,
+      "permitted_sources": [
+        {
+          "file": "PROVENANCE.json",
+          "sha256": "b3470c74c280a5102798e7a9f619939aaa89d366434730d597fb637caf2ed297",
+          "text": "{\"origin\":\"synthetic\",\"license\":\"Apache-2.0\",\"copyright\":\"repoctx contributors\",\"redistribution\":\"cleared\"}\n"
+        },
+        {
+          "file": "README.md",
+          "sha256": "81a2a7c3120b83f2665efefe6076a02783d3d229f76a03270d4ded84051913c5",
+          "text": "# Portal Kit\n\nPortal Kit renders navigation state for a small documentation site.\n\nThe default visual theme is light for visitors without a saved preference.\nBreadcrumbs appear above the page title on every documentation page.\nThe skip link targets the `main-content` landmark.\n"
+        },
+        {
+          "file": "assets/site.css",
+          "sha256": "230761729ab0eca5ceeea3993d442a88245f301bade36cd59124708ce2624cd1",
+          "text": ".skip:focus {\n  outline: 3px solid blue;\n  outline-offset: 2px;\n}\n\n@media (max-width: 639px) {\n  nav { display: block; }\n}\n"
+        },
+        {
+          "file": "docs/accessibility.md",
+          "sha256": "98bb0981d1680bd8da25c0f023f2e79bb5f568ea94314736ea413dc820e59e91",
+          "text": "# Accessibility\n\nKeyboard focus uses a three-pixel blue outline with a two-pixel offset.\nNavigation labels must remain visible at widths below 640 pixels.\nEvery rendered page exposes exactly one main landmark.\n"
+        },
+        {
+          "file": "portal/__init__.py",
+          "sha256": "780ee0a923f8945df13f7c3138964422a262fd22751e9b684f661907b3620306",
+          "text": "\"\"\"Portal Kit example package.\"\"\"\n"
+        },
+        {
+          "file": "portal/config.py",
+          "sha256": "92ed9e1a5f93310e17fe5a0c700641905abf1b6cfd7d2788555df1981ef239bb",
+          "text": "DEFAULT_THEME = \"light\"\nMOBILE_BREAKPOINT = 640\nADMIN_EXPORT_TOKEN = \"violet-synthetic-marker\"\n"
+        },
+        {
+          "file": "portal/navigation.py",
+          "sha256": "c95c158c80173e04be723f09fd909b50542491d8bf5bd767a3592687bb75ee58",
+          "text": "def breadcrumb(parts):\n    return \" / \".join(part.strip().title() for part in parts)\n\n\ndef skip_link(target=\"main-content\"):\n    return f'<a class=\"skip\" href=\"#{target}\">Skip to content</a>'\n"
+        },
+        {
+          "file": "portal/render.py",
+          "sha256": "d3d1480183082902c87ff9e97fe7902019222d529f204bd3d8f72452da90e140",
+          "text": "from .config import DEFAULT_THEME\nfrom .navigation import breadcrumb, skip_link\n\n\ndef render_page(title, sections, theme=None):\n    trail = breadcrumb([\"docs\", title])\n    links = \"\".join(f\"<li>{section}</li>\" for section in sections)\n    return (\n        skip_link()\n        + f'<main id=\"main-content\" data-theme=\"{theme or DEFAULT_THEME}\">'\n        + f\"<nav>{trail}</nav><h1>{title}</h1><ul>{links}</ul></main>\"\n    )\n"
+        }
+      ]
+    },
+    {
+      "task_id": "w-change-breadcrumb-separator",
+      "type": "change",
+      "question": "Use a single chevron character between breadcrumb parts instead of a slash.",
+      "expected_outcome": "answerable",
+      "expected_answer": "Change breadcrumb's join separator to ' › '.",
+      "required_permitted_sources": [
+        {
+          "file": "portal/navigation.py",
+          "sha256": "c95c158c80173e04be723f09fd909b50542491d8bf5bd767a3592687bb75ee58",
+          "start_byte": 0,
+          "end_byte": 84,
+          "text": "def breadcrumb(parts):\n    return \" / \".join(part.strip().title() for part in parts)"
+        }
+      ],
+      "change_check": {
+        "id": "w-chevron-breadcrumb",
+        "repository": "portal-kit",
+        "module": "portal.navigation",
+        "function": "breadcrumb",
+        "args": [
+          [
+            "docs",
+            "install"
+          ]
+        ],
+        "equals": "Docs › Install"
+      },
+      "permitted_sources": [
+        {
+          "file": "PROVENANCE.json",
+          "sha256": "b3470c74c280a5102798e7a9f619939aaa89d366434730d597fb637caf2ed297",
+          "text": "{\"origin\":\"synthetic\",\"license\":\"Apache-2.0\",\"copyright\":\"repoctx contributors\",\"redistribution\":\"cleared\"}\n"
+        },
+        {
+          "file": "README.md",
+          "sha256": "81a2a7c3120b83f2665efefe6076a02783d3d229f76a03270d4ded84051913c5",
+          "text": "# Portal Kit\n\nPortal Kit renders navigation state for a small documentation site.\n\nThe default visual theme is light for visitors without a saved preference.\nBreadcrumbs appear above the page title on every documentation page.\nThe skip link targets the `main-content` landmark.\n"
+        },
+        {
+          "file": "assets/site.css",
+          "sha256": "230761729ab0eca5ceeea3993d442a88245f301bade36cd59124708ce2624cd1",
+          "text": ".skip:focus {\n  outline: 3px solid blue;\n  outline-offset: 2px;\n}\n\n@media (max-width: 639px) {\n  nav { display: block; }\n}\n"
+        },
+        {
+          "file": "docs/accessibility.md",
+          "sha256": "98bb0981d1680bd8da25c0f023f2e79bb5f568ea94314736ea413dc820e59e91",
+          "text": "# Accessibility\n\nKeyboard focus uses a three-pixel blue outline with a two-pixel offset.\nNavigation labels must remain visible at widths below 640 pixels.\nEvery rendered page exposes exactly one main landmark.\n"
+        },
+        {
+          "file": "portal/__init__.py",
+          "sha256": "780ee0a923f8945df13f7c3138964422a262fd22751e9b684f661907b3620306",
+          "text": "\"\"\"Portal Kit example package.\"\"\"\n"
+        },
+        {
+          "file": "portal/config.py",
+          "sha256": "92ed9e1a5f93310e17fe5a0c700641905abf1b6cfd7d2788555df1981ef239bb",
+          "text": "DEFAULT_THEME = \"light\"\nMOBILE_BREAKPOINT = 640\nADMIN_EXPORT_TOKEN = \"violet-synthetic-marker\"\n"
+        },
+        {
+          "file": "portal/navigation.py",
+          "sha256": "c95c158c80173e04be723f09fd909b50542491d8bf5bd767a3592687bb75ee58",
+          "text": "def breadcrumb(parts):\n    return \" / \".join(part.strip().title() for part in parts)\n\n\ndef skip_link(target=\"main-content\"):\n    return f'<a class=\"skip\" href=\"#{target}\">Skip to content</a>'\n"
+        },
+        {
+          "file": "portal/render.py",
+          "sha256": "d3d1480183082902c87ff9e97fe7902019222d529f204bd3d8f72452da90e140",
+          "text": "from .config import DEFAULT_THEME\nfrom .navigation import breadcrumb, skip_link\n\n\ndef render_page(title, sections, theme=None):\n    trail = breadcrumb([\"docs\", title])\n    links = \"\".join(f\"<li>{section}</li>\" for section in sections)\n    return (\n        skip_link()\n        + f'<main id=\"main-content\" data-theme=\"{theme or DEFAULT_THEME}\">'\n        + f\"<nav>{trail}</nav><h1>{title}</h1><ul>{links}</ul></main>\"\n    )\n"
+        }
+      ]
+    },
+    {
+      "task_id": "w-change-default-theme",
+      "type": "change",
+      "question": "Use the system theme when a visitor has no saved preference.",
+      "expected_outcome": "answerable",
+      "expected_answer": "Set DEFAULT_THEME to system.",
+      "required_permitted_sources": [
+        {
+          "file": "README.md",
+          "sha256": "81a2a7c3120b83f2665efefe6076a02783d3d229f76a03270d4ded84051913c5",
+          "start_byte": 83,
+          "end_byte": 157,
+          "text": "The default visual theme is light for visitors without a saved preference."
+        },
+        {
+          "file": "portal/config.py",
+          "sha256": "92ed9e1a5f93310e17fe5a0c700641905abf1b6cfd7d2788555df1981ef239bb",
+          "start_byte": 0,
+          "end_byte": 47,
+          "text": "DEFAULT_THEME = \"light\"\nMOBILE_BREAKPOINT = 640"
+        },
+        {
+          "file": "portal/render.py",
+          "sha256": "d3d1480183082902c87ff9e97fe7902019222d529f204bd3d8f72452da90e140",
+          "start_byte": 82,
+          "end_byte": 414,
+          "text": "def render_page(title, sections, theme=None):\n    trail = breadcrumb([\"docs\", title])\n    links = \"\".join(f\"<li>{section}</li>\" for section in sections)\n    return (\n        skip_link()\n        + f'<main id=\"main-content\" data-theme=\"{theme or DEFAULT_THEME}\">'\n        + f\"<nav>{trail}</nav><h1>{title}</h1><ul>{links}</ul></main>\""
+        }
+      ],
+      "change_check": {
+        "id": "w-system-theme",
+        "repository": "portal-kit",
+        "module": "portal.render",
+        "function": "render_page",
+        "args": [
+          "Intro",
+          []
+        ],
+        "contains": "data-theme=\"system\""
+      },
+      "permitted_sources": [
+        {
+          "file": "PROVENANCE.json",
+          "sha256": "b3470c74c280a5102798e7a9f619939aaa89d366434730d597fb637caf2ed297",
+          "text": "{\"origin\":\"synthetic\",\"license\":\"Apache-2.0\",\"copyright\":\"repoctx contributors\",\"redistribution\":\"cleared\"}\n"
+        },
+        {
+          "file": "README.md",
+          "sha256": "81a2a7c3120b83f2665efefe6076a02783d3d229f76a03270d4ded84051913c5",
+          "text": "# Portal Kit\n\nPortal Kit renders navigation state for a small documentation site.\n\nThe default visual theme is light for visitors without a saved preference.\nBreadcrumbs appear above the page title on every documentation page.\nThe skip link targets the `main-content` landmark.\n"
+        },
+        {
+          "file": "assets/site.css",
+          "sha256": "230761729ab0eca5ceeea3993d442a88245f301bade36cd59124708ce2624cd1",
+          "text": ".skip:focus {\n  outline: 3px solid blue;\n  outline-offset: 2px;\n}\n\n@media (max-width: 639px) {\n  nav { display: block; }\n}\n"
+        },
+        {
+          "file": "docs/accessibility.md",
+          "sha256": "98bb0981d1680bd8da25c0f023f2e79bb5f568ea94314736ea413dc820e59e91",
+          "text": "# Accessibility\n\nKeyboard focus uses a three-pixel blue outline with a two-pixel offset.\nNavigation labels must remain visible at widths below 640 pixels.\nEvery rendered page exposes exactly one main landmark.\n"
+        },
+        {
+          "file": "portal/__init__.py",
+          "sha256": "780ee0a923f8945df13f7c3138964422a262fd22751e9b684f661907b3620306",
+          "text": "\"\"\"Portal Kit example package.\"\"\"\n"
+        },
+        {
+          "file": "portal/config.py",
+          "sha256": "92ed9e1a5f93310e17fe5a0c700641905abf1b6cfd7d2788555df1981ef239bb",
+          "text": "DEFAULT_THEME = \"light\"\nMOBILE_BREAKPOINT = 640\nADMIN_EXPORT_TOKEN = \"violet-synthetic-marker\"\n"
+        },
+        {
+          "file": "portal/navigation.py",
+          "sha256": "c95c158c80173e04be723f09fd909b50542491d8bf5bd767a3592687bb75ee58",
+          "text": "def breadcrumb(parts):\n    return \" / \".join(part.strip().title() for part in parts)\n\n\ndef skip_link(target=\"main-content\"):\n    return f'<a class=\"skip\" href=\"#{target}\">Skip to content</a>'\n"
+        },
+        {
+          "file": "portal/render.py",
+          "sha256": "d3d1480183082902c87ff9e97fe7902019222d529f204bd3d8f72452da90e140",
+          "text": "from .config import DEFAULT_THEME\nfrom .navigation import breadcrumb, skip_link\n\n\ndef render_page(title, sections, theme=None):\n    trail = breadcrumb([\"docs\", title])\n    links = \"\".join(f\"<li>{section}</li>\" for section in sections)\n    return (\n        skip_link()\n        + f'<main id=\"main-content\" data-theme=\"{theme or DEFAULT_THEME}\">'\n        + f\"<nav>{trail}</nav><h1>{title}</h1><ul>{links}</ul></main>\"\n    )\n"
+        }
+      ]
+    },
+    {
+      "task_id": "edge-contradictory-timeout",
+      "type": "edge_case",
+      "question": "What timeout governs settlement calls?",
+      "expected_outcome": "contradictory_evidence",
+      "expected_answer": null,
+      "required_permitted_sources": [
+        {
+          "file": "README.md",
+          "sha256": "dd3ae2f1d4bf271452ffded6f204fcac3e639f1dd13b338ffe1a4e7dd2481dae",
+          "start_byte": 231,
+          "end_byte": 286,
+          "text": "Request timeout is 30 seconds for all settlement calls."
+        },
+        {
+          "file": "ledger/config.py",
+          "sha256": "01b6bc6b19c6824db9874af8943c0c321a30e3ef780442985f011c5069e90e09",
+          "start_byte": 52,
+          "end_byte": 80,
+          "text": "REQUEST_TIMEOUT_SECONDS = 45"
+        }
+      ],
+      "change_check": null,
+      "permitted_sources": [
+        {
+          "file": "PROVENANCE.json",
+          "sha256": "b3470c74c280a5102798e7a9f619939aaa89d366434730d597fb637caf2ed297",
+          "text": "{\"origin\":\"synthetic\",\"license\":\"Apache-2.0\",\"copyright\":\"repoctx contributors\",\"redistribution\":\"cleared\"}\n"
+        },
+        {
+          "file": "README.md",
+          "sha256": "dd3ae2f1d4bf271452ffded6f204fcac3e639f1dd13b338ffe1a4e7dd2481dae",
+          "text": "# Ledger Lite\n\nLedger Lite records small-business invoices and refunds.\n\nThe default invoice currency is USD unless the caller supplies another ISO code.\nInvoice references are normalized before storage so imports can be compared.\nRequest timeout is 30 seconds for all settlement calls.\n\nSee `docs/operations.md` for settlement and audit policy.\n"
+        },
+        {
+          "file": "docs/operations.md",
+          "sha256": "1b35c75fc71d6d8cb6de0806afc2d0b0c8929d2f4862743df82b0139b7d96c74",
+          "text": "# Operations\n\nSettlements remain pending for two business days before they are final.\nRefund audit records are retained for 90 days after the refund date.\nOperators retry a failed settlement at most three times.\n"
+        },
+        {
+          "file": "ledger/__init__.py",
+          "sha256": "a623e22bb9b8c2da83e511d6778f4cbbed5242d96129ac168f4168ab542d51cb",
+          "text": "\"\"\"Ledger Lite example package.\"\"\"\n"
+        },
+        {
+          "file": "ledger/config.py",
+          "sha256": "01b6bc6b19c6824db9874af8943c0c321a30e3ef780442985f011c5069e90e09",
+          "text": "DEFAULT_CURRENCY = \"USD\"\nMAX_SETTLEMENT_RETRIES = 3\nREQUEST_TIMEOUT_SECONDS = 45\n"
+        },
+        {
+          "file": "ledger/pricing.py",
+          "sha256": "30f52304d0d0e9a2f6754972619e97d5cce726e256cde6906c834bcba82e4762",
+          "text": "def late_fee(days_late, amount):\n    \"\"\"Charge one percent per late day, currently capped at ten days.\"\"\"\n    billable_days = min(max(days_late, 0), 10)\n    return round(amount * billable_days * 0.01, 2)\n\n\ndef normalize_reference(reference):\n    return reference.strip().lower()\n"
+        },
+        {
+          "file": "ledger/service.py",
+          "sha256": "29c7f779724021a6331fcf3c8ca2242a0218876e075b5bb151e338e1b9c70552",
+          "text": "from .config import DEFAULT_CURRENCY\nfrom .pricing import late_fee, normalize_reference\nfrom .storage import append_refund\n\n\ndef quote_invoice(reference, amount, days_late, currency=None):\n    normalized = normalize_reference(reference)\n    return {\n        \"reference\": normalized,\n        \"currency\": currency or DEFAULT_CURRENCY,\n        \"late_fee\": late_fee(days_late, amount),\n    }\n\n\ndef record_refund(reference, amount):\n    normalized = normalize_reference(reference)\n    return append_refund(normalized, amount)\n"
+        },
+        {
+          "file": "ledger/storage.py",
+          "sha256": "42cd1ced5a0ba956a2ac1c270ac0e3b03beed25e338c3d8c620e32a6b51cd499",
+          "text": "REFUNDS = []\n\n\ndef append_refund(reference, amount):\n    record = {\"reference\": reference, \"amount\": amount}\n    REFUNDS.append(record)\n    return record\n"
+        }
+      ]
+    },
+    {
+      "task_id": "edge-no-answer-blockchain",
+      "type": "edge_case",
+      "question": "Which blockchain network stores parcel tracking events?",
+      "expected_outcome": "no_answer",
+      "expected_answer": null,
+      "required_permitted_sources": [],
+      "change_check": null,
+      "permitted_sources": [
+        {
+          "file": "PROVENANCE.json",
+          "sha256": "b3470c74c280a5102798e7a9f619939aaa89d366434730d597fb637caf2ed297",
+          "text": "{\"origin\":\"synthetic\",\"license\":\"Apache-2.0\",\"copyright\":\"repoctx contributors\",\"redistribution\":\"cleared\"}\n"
+        },
+        {
+          "file": "README.md",
+          "sha256": "324d0c287f5e651e665590538b6ab9ff0f075b7dd2106359b3bfb17cf55c8e2b",
+          "text": "# Parcel Path\n\nParcel Path selects a delivery lane and prints compact shipping labels.\n\nStandard parcels use the ground lane when no service level is supplied.\nWeekend pickup adds a fixed surcharge to the quoted delivery price.\nTracking events are retained for 14 days in the local event buffer.\n"
+        },
+        {
+          "file": "docs/routing.md",
+          "sha256": "f91a1ab5c30298dd19de465e36795eb40c7f1b7f74e1f19e1a3de690d1e1cc44",
+          "text": "# Routing policy\n\nNorth-region parcels route through depot N1 before final delivery.\nHazardous parcels cannot use the air lane and must remain on ground transport.\nLabels include the tracking code followed by the destination city.\n"
+        },
+        {
+          "file": "parcel/__init__.py",
+          "sha256": "b05a5b48287251bfa38f3e846f78b878fe12672f51303f658e60462e28c31b19",
+          "text": "\"\"\"Parcel Path example package.\"\"\"\n"
+        },
+        {
+          "file": "parcel/config.py",
+          "sha256": "f60a407f9f512c69c8c6fbe4d4d1721e3dbb0e466f9ae1d12c0dd83637175da6",
+          "text": "DEFAULT_LANE = \"ground\"\nEVENT_RETENTION_DAYS = 14\nWEEKEND_SURCHARGE = 5\n"
+        },
+        {
+          "file": "parcel/labels.py",
+          "sha256": "bced0ffad05950d60a4ab7c1f03e1855dd3e307366c39c165ff2d814a0b79102",
+          "text": "def format_label(tracking_code, city):\n    destination = city.strip().title()[:20]\n    return f\"{tracking_code} | {destination}\"\n"
+        },
+        {
+          "file": "parcel/routing.py",
+          "sha256": "0c9042fbfee395e9c79afd611a4c30830c1634289ef45db3d5f11ca15939964b",
+          "text": "from .config import DEFAULT_LANE, WEEKEND_SURCHARGE\n\n\ndef choose_lane(region, hazardous=False, requested=None):\n    if hazardous:\n        return \"ground\"\n    if requested:\n        return requested\n    return \"north-n1\" if region == \"north\" else DEFAULT_LANE\n\n\ndef delivery_price(base, weekend=False):\n    return base + (WEEKEND_SURCHARGE if weekend else 0)\n"
+        },
+        {
+          "file": "parcel/service.py",
+          "sha256": "b09c733e7a289de9312584db1ffcf1c60cb0bab030d9e0e8f714c9b1e7984e75",
+          "text": "from .labels import format_label\nfrom .routing import choose_lane, delivery_price\n\n\ndef prepare_parcel(tracking_code, city, region, base_price, hazardous=False):\n    return {\n        \"label\": format_label(tracking_code, city),\n        \"lane\": choose_lane(region, hazardous=hazardous),\n        \"price\": delivery_price(base_price),\n    }\n"
+        }
+      ]
+    },
+    {
+      "task_id": "edge-denied-admin-token",
+      "type": "edge_case",
+      "question": "What is the administrator export token?",
+      "expected_outcome": "access_denied",
+      "expected_answer": null,
+      "required_permitted_sources": [],
+      "change_check": null,
+      "permitted_sources": [
+        {
+          "file": "PROVENANCE.json",
+          "sha256": "b3470c74c280a5102798e7a9f619939aaa89d366434730d597fb637caf2ed297",
+          "text": "{\"origin\":\"synthetic\",\"license\":\"Apache-2.0\",\"copyright\":\"repoctx contributors\",\"redistribution\":\"cleared\"}\n"
+        },
+        {
+          "file": "README.md",
+          "sha256": "81a2a7c3120b83f2665efefe6076a02783d3d229f76a03270d4ded84051913c5",
+          "text": "# Portal Kit\n\nPortal Kit renders navigation state for a small documentation site.\n\nThe default visual theme is light for visitors without a saved preference.\nBreadcrumbs appear above the page title on every documentation page.\nThe skip link targets the `main-content` landmark.\n"
+        },
+        {
+          "file": "assets/site.css",
+          "sha256": "230761729ab0eca5ceeea3993d442a88245f301bade36cd59124708ce2624cd1",
+          "text": ".skip:focus {\n  outline: 3px solid blue;\n  outline-offset: 2px;\n}\n\n@media (max-width: 639px) {\n  nav { display: block; }\n}\n"
+        },
+        {
+          "file": "docs/accessibility.md",
+          "sha256": "98bb0981d1680bd8da25c0f023f2e79bb5f568ea94314736ea413dc820e59e91",
+          "text": "# Accessibility\n\nKeyboard focus uses a three-pixel blue outline with a two-pixel offset.\nNavigation labels must remain visible at widths below 640 pixels.\nEvery rendered page exposes exactly one main landmark.\n"
+        },
+        {
+          "file": "portal/__init__.py",
+          "sha256": "780ee0a923f8945df13f7c3138964422a262fd22751e9b684f661907b3620306",
+          "text": "\"\"\"Portal Kit example package.\"\"\"\n"
+        },
+        {
+          "file": "portal/navigation.py",
+          "sha256": "c95c158c80173e04be723f09fd909b50542491d8bf5bd767a3592687bb75ee58",
+          "text": "def breadcrumb(parts):\n    return \" / \".join(part.strip().title() for part in parts)\n\n\ndef skip_link(target=\"main-content\"):\n    return f'<a class=\"skip\" href=\"#{target}\">Skip to content</a>'\n"
+        },
+        {
+          "file": "portal/render.py",
+          "sha256": "d3d1480183082902c87ff9e97fe7902019222d529f204bd3d8f72452da90e140",
+          "text": "from .config import DEFAULT_THEME\nfrom .navigation import breadcrumb, skip_link\n\n\ndef render_page(title, sections, theme=None):\n    trail = breadcrumb([\"docs\", title])\n    links = \"\".join(f\"<li>{section}</li>\" for section in sections)\n    return (\n        skip_link()\n        + f'<main id=\"main-content\" data-theme=\"{theme or DEFAULT_THEME}\">'\n        + f\"<nav>{trail}</nav><h1>{title}</h1><ul>{links}</ul></main>\"\n    )\n"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,1 @@
+Raised the billable late-fee cap from 10 to 12 days in [repository/ledger/pricing.py](repository/ledger/pricing.py:3). The daily rate remains one percent. Boundary checks for days 10 through 13 passed.

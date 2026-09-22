@@ -1,0 +1,467 @@
+{
+  "version": "m414-practical-mapping/v1",
+  "items": [
+    {
+      "packet_id": "7f60df3db5106ec1",
+      "trial_directory": "06-l-doc-default-currency-ordinary_tools_plus_repoctx",
+      "task_id": "l-doc-default-currency",
+      "condition": "ordinary_tools_plus_repoctx",
+      "answer_sha256": "cb32c61ffeb49d2e2d6e0d5397631bbc71194008d186ec27200a0ab9e5d35eb5"
+    },
+    {
+      "packet_id": "ae43bdaded06ef4b",
+      "trial_directory": "04-w-cross-accessibility-ordinary_tools_plus_repoctx",
+      "task_id": "w-cross-accessibility",
+      "condition": "ordinary_tools_plus_repoctx",
+      "answer_sha256": "006578802ffc590536b578fafc4bce14e836b359f310d3cca3f0579e561062e5"
+    },
+    {
+      "packet_id": "ac97e38308c6cc5e",
+      "trial_directory": "03-p-change-weekend-surcharge-ordinary_tools_plus_repoctx",
+      "task_id": "p-change-weekend-surcharge",
+      "condition": "ordinary_tools_plus_repoctx",
+      "answer_sha256": "ecda81e52dc1cf55710d05059280de7bb82b607803f4deece610998d25703dd5"
+    },
+    {
+      "packet_id": "ca20962b87a2c591",
+      "trial_directory": "08-edge-contradictory-timeout-ordinary_tools",
+      "task_id": "edge-contradictory-timeout",
+      "condition": "ordinary_tools",
+      "answer_sha256": "6474a54daad58f107d1caf778e016e323313579f73a62dfe53564d09188f50db"
+    },
+    {
+      "packet_id": "93dcc2a14cff13c3",
+      "trial_directory": "09-l-cross-quote-ordinary_tools",
+      "task_id": "l-cross-quote",
+      "condition": "ordinary_tools",
+      "answer_sha256": "91727fa5c2e5dde09e6ea7316a5d69cb75e0b62b9a9a69177563613c683c3dfc"
+    },
+    {
+      "packet_id": "791679872edc3771",
+      "trial_directory": "02-p-code-weekend-surcharge-ordinary_tools",
+      "task_id": "p-code-weekend-surcharge",
+      "condition": "ordinary_tools",
+      "answer_sha256": "11fe494b12a2e1f3f28f5ca35b6b082a0a797c36146342701d3ea43f07234a19"
+    },
+    {
+      "packet_id": "d432f829ddee24c3",
+      "trial_directory": "01-p-code-weekend-surcharge-ordinary_tools_plus_repoctx",
+      "task_id": "p-code-weekend-surcharge",
+      "condition": "ordinary_tools_plus_repoctx",
+      "answer_sha256": "b7bc1df5d09c2d1daec7bdf501501c7cf172652ff602310f8bececb6eaca6cd8"
+    },
+    {
+      "packet_id": "91ae20ba52522982",
+      "trial_directory": "07-p-doc-hazardous-ordinary_tools",
+      "task_id": "p-doc-hazardous",
+      "condition": "ordinary_tools",
+      "answer_sha256": "d4509e243e2e277a2e52e88961bae5a32ca9d56279e49bd8d58070292ed960ff"
+    },
+    {
+      "packet_id": "bed7471167e2db14",
+      "trial_directory": "11-p-change-label-length-ordinary_tools_plus_repoctx",
+      "task_id": "p-change-label-length",
+      "condition": "ordinary_tools_plus_repoctx",
+      "answer_sha256": "af595d47d2e9017a9683904be274b404d2cfa937fdbd6fff52839772358b13cc"
+    },
+    {
+      "packet_id": "77fe07f34a75eb67",
+      "trial_directory": "13-p-doc-hazardous-ordinary_tools_plus_repoctx",
+      "task_id": "p-doc-hazardous",
+      "condition": "ordinary_tools_plus_repoctx",
+      "answer_sha256": "6bf0b0c87a5ce1c0d33d29be992fbd8d617c2f2d85aa005ccf35e4d3f428e586"
+    },
+    {
+      "packet_id": "f2dd8f26dbf06de8",
+      "trial_directory": "16-l-doc-audit-retention-ordinary_tools_plus_repoctx",
+      "task_id": "l-doc-audit-retention",
+      "condition": "ordinary_tools_plus_repoctx",
+      "answer_sha256": "5826edfad50c3140a7ca44dd1d3f2aabb5941b506a80a203d80ccd27cbc18038"
+    },
+    {
+      "packet_id": "5a3ab6a0927449de",
+      "trial_directory": "15-w-change-default-theme-ordinary_tools_plus_repoctx",
+      "task_id": "w-change-default-theme",
+      "condition": "ordinary_tools_plus_repoctx",
+      "answer_sha256": "09357e2199871c51419bb3a40d69d1656c97ec8f230aab1f454f57d186378517"
+    },
+    {
+      "packet_id": "8efafc2bd375f1ea",
+      "trial_directory": "10-l-cross-refund-ordinary_tools",
+      "task_id": "l-cross-refund",
+      "condition": "ordinary_tools",
+      "answer_sha256": "bb9cc07140b9f41c9cd5948213aa1ce06ef641f86d5e08a51bbf384fcd391b17"
+    },
+    {
+      "packet_id": "04f9771cfd1bbbe3",
+      "trial_directory": "14-w-code-mobile-style-ordinary_tools_plus_repoctx",
+      "task_id": "w-code-mobile-style",
+      "condition": "ordinary_tools_plus_repoctx",
+      "answer_sha256": "5aba7e89c37904fdf7d922ad7bd13e35a35ae3245c1710af7798edff275115a8"
+    },
+    {
+      "packet_id": "c134d81be85673fd",
+      "trial_directory": "05-p-doc-default-lane-ordinary_tools_plus_repoctx",
+      "task_id": "p-doc-default-lane",
+      "condition": "ordinary_tools_plus_repoctx",
+      "answer_sha256": "b6f527dfbc12fd57ef3d23e5e92403ecf8826ac9f29117320ec63dfe28f82f5e"
+    },
+    {
+      "packet_id": "796f97a7a4cd09be",
+      "trial_directory": "12-l-change-late-cap-ordinary_tools_plus_repoctx",
+      "task_id": "l-change-late-cap",
+      "condition": "ordinary_tools_plus_repoctx",
+      "answer_sha256": "98e3d16b82806c35bcf6922035be72a7c0ce1a753906c7d72f21e72ac27e23df"
+    },
+    {
+      "packet_id": "ab02cdb4d08c0014",
+      "trial_directory": "25-w-doc-main-landmark-ordinary_tools_plus_repoctx",
+      "task_id": "w-doc-main-landmark",
+      "condition": "ordinary_tools_plus_repoctx",
+      "answer_sha256": "dc67f9aece6c8402b9693406bcd2358675983ff91b94584a02d40770f829e0c9"
+    },
+    {
+      "packet_id": "d20a1ae8105a3cb8",
+      "trial_directory": "21-l-code-late-fee-ordinary_tools_plus_repoctx",
+      "task_id": "l-code-late-fee",
+      "condition": "ordinary_tools_plus_repoctx",
+      "answer_sha256": "abf2f7a76ccd690024cec5048b5e1db365003143d759633ed9cac307b7dabe83"
+    },
+    {
+      "packet_id": "5f35c7cafef1b095",
+      "trial_directory": "17-edge-no-answer-blockchain-ordinary_tools_plus_repoctx",
+      "task_id": "edge-no-answer-blockchain",
+      "condition": "ordinary_tools_plus_repoctx",
+      "answer_sha256": "874f66d87a6744897974f1ee54feeaabe94650410dd9728c3b5bd0b3f52db3af"
+    },
+    {
+      "packet_id": "ee73b63e30db1531",
+      "trial_directory": "22-w-cross-accessibility-ordinary_tools",
+      "task_id": "w-cross-accessibility",
+      "condition": "ordinary_tools",
+      "answer_sha256": "22ad889d73d5ca8bddf69c75529b251289f191856ce3d8b1af0676a8cba25588"
+    },
+    {
+      "packet_id": "4045b1ac34126c69",
+      "trial_directory": "19-p-change-weekend-surcharge-ordinary_tools",
+      "task_id": "p-change-weekend-surcharge",
+      "condition": "ordinary_tools",
+      "answer_sha256": "51a3fe88a4812b60000bd14e62be396f9bc3b3263a378bef670cec35415b8b6f"
+    },
+    {
+      "packet_id": "2bb2ebb20fa9a67f",
+      "trial_directory": "18-l-code-reference-normalization-ordinary_tools",
+      "task_id": "l-code-reference-normalization",
+      "condition": "ordinary_tools",
+      "answer_sha256": "78619fb3007dbd26cbcee63ae3b7f861dd74685f06266a68486e7dbcd74a1468"
+    },
+    {
+      "packet_id": "0f0a57cb0f6eb602",
+      "trial_directory": "24-w-cross-render-ordinary_tools_plus_repoctx",
+      "task_id": "w-cross-render",
+      "condition": "ordinary_tools_plus_repoctx",
+      "answer_sha256": "3c079f8131a26557c9ef4215ba3aecd7373cee589d6068139eeb4d2c2db253dd"
+    },
+    {
+      "packet_id": "e06276c325802bdf",
+      "trial_directory": "23-l-cross-refund-ordinary_tools_plus_repoctx",
+      "task_id": "l-cross-refund",
+      "condition": "ordinary_tools_plus_repoctx",
+      "answer_sha256": "9015afee14fb6f0dc1497aae848a47ce475e20b62bef02f8fa27de555e526e85"
+    },
+    {
+      "packet_id": "ba2c120f076351cd",
+      "trial_directory": "20-p-code-lane-selection-ordinary_tools_plus_repoctx",
+      "task_id": "p-code-lane-selection",
+      "condition": "ordinary_tools_plus_repoctx",
+      "answer_sha256": "91d3f9a2053675fc0e250a435f956c33bb41b8a7cd6d970c83a8179df08402aa"
+    },
+    {
+      "packet_id": "d99958193e4c9f4c",
+      "trial_directory": "32-p-doc-retention-ordinary_tools_plus_repoctx",
+      "task_id": "p-doc-retention",
+      "condition": "ordinary_tools_plus_repoctx",
+      "answer_sha256": "c6500d2eb5ef98b2dbce0b74270f41cd7b772d5e9a34f2287f7a89d176df8b61"
+    },
+    {
+      "packet_id": "2d2d00eb0348ba94",
+      "trial_directory": "31-p-doc-default-lane-ordinary_tools",
+      "task_id": "p-doc-default-lane",
+      "condition": "ordinary_tools",
+      "answer_sha256": "4916fc928b03a535f8d5c1d96073e1e65e4dc48b95fa771ff83f44711b6d0f50"
+    },
+    {
+      "packet_id": "f214cadff5d8d39e",
+      "trial_directory": "26-p-code-label-format-ordinary_tools",
+      "task_id": "p-code-label-format",
+      "condition": "ordinary_tools",
+      "answer_sha256": "b0f9744b518ed64067051c0fce1b61d6bfa8fe5feedacaa4bb58ac90552be054"
+    },
+    {
+      "packet_id": "0f8f2955fef677aa",
+      "trial_directory": "33-w-doc-default-theme-ordinary_tools",
+      "task_id": "w-doc-default-theme",
+      "condition": "ordinary_tools",
+      "answer_sha256": "d15f205520dc1612c5f24081014ec5efb96fbd7a1f17c1b58adfca35950a4997"
+    },
+    {
+      "packet_id": "e2796f5263af2f7f",
+      "trial_directory": "30-l-code-retry-limit-ordinary_tools_plus_repoctx",
+      "task_id": "l-code-retry-limit",
+      "condition": "ordinary_tools_plus_repoctx",
+      "answer_sha256": "3e6c6c1ceceb3d4e92df5a2a727072b7725a78611f108130d1002e5b8d0cf03f"
+    },
+    {
+      "packet_id": "eb87a6c694dbb6b1",
+      "trial_directory": "28-w-change-breadcrumb-separator-ordinary_tools",
+      "task_id": "w-change-breadcrumb-separator",
+      "condition": "ordinary_tools",
+      "answer_sha256": "ab9f80a153cd441fc1d945e9ebbcfbe722ff3fefe38edfab25aa29aa2475976f"
+    },
+    {
+      "packet_id": "1ecefc3469d9d273",
+      "trial_directory": "27-w-code-breadcrumb-ordinary_tools_plus_repoctx",
+      "task_id": "w-code-breadcrumb",
+      "condition": "ordinary_tools_plus_repoctx",
+      "answer_sha256": "13180301d361900f4dce6c64b7a4e309a0b8d063d94b1c822a642ad056e6811d"
+    },
+    {
+      "packet_id": "621e34e50247eab5",
+      "trial_directory": "38-p-doc-retention-ordinary_tools",
+      "task_id": "p-doc-retention",
+      "condition": "ordinary_tools",
+      "answer_sha256": "6d37ed84c9e5d090a3313d25e37d31f4485079cca43d9d4250e60ee7f81c23fc"
+    },
+    {
+      "packet_id": "d7e6551e01cfbbf4",
+      "trial_directory": "36-l-change-uppercase-reference-ordinary_tools",
+      "task_id": "l-change-uppercase-reference",
+      "condition": "ordinary_tools",
+      "answer_sha256": "f23ca91bb51e12a0ababb861901e87df53346ab49d24454f40b940c97302d484"
+    },
+    {
+      "packet_id": "5b7e4442003abf91",
+      "trial_directory": "29-w-code-skip-link-ordinary_tools_plus_repoctx",
+      "task_id": "w-code-skip-link",
+      "condition": "ordinary_tools_plus_repoctx",
+      "answer_sha256": "7003d0c8169a2ea048625d6cf3f85051190c3ed76af02ff1623a5c6973fda793"
+    },
+    {
+      "packet_id": "b8263a0f683a83c5",
+      "trial_directory": "35-l-change-late-cap-ordinary_tools",
+      "task_id": "l-change-late-cap",
+      "condition": "ordinary_tools",
+      "answer_sha256": "984b76f8ba1847db9b9176fcee346878f4cb98ca7d8293fe282e9af18f928fcc"
+    },
+    {
+      "packet_id": "205ff89b88bd5c77",
+      "trial_directory": "41-l-code-late-fee-ordinary_tools",
+      "task_id": "l-code-late-fee",
+      "condition": "ordinary_tools",
+      "answer_sha256": "7f0149927446471afca794c65bdcbcd06671a733b2deb9269c969cfd263c7160"
+    },
+    {
+      "packet_id": "195dc7960071ef32",
+      "trial_directory": "37-l-code-retry-limit-ordinary_tools",
+      "task_id": "l-code-retry-limit",
+      "condition": "ordinary_tools",
+      "answer_sha256": "f5deb61030ece0cc370c2487d31c58ecbf176a920b3da18f5dcf685c143d1616"
+    },
+    {
+      "packet_id": "37e7c64113381b76",
+      "trial_directory": "39-w-code-skip-link-ordinary_tools",
+      "task_id": "w-code-skip-link",
+      "condition": "ordinary_tools",
+      "answer_sha256": "18cd4a2087d880e6c35e8d3e0f8df6bbf33e6bfb186ca921b46f1b6a762c2041"
+    },
+    {
+      "packet_id": "1d1eee1e45434eb5",
+      "trial_directory": "40-w-code-mobile-style-ordinary_tools",
+      "task_id": "w-code-mobile-style",
+      "condition": "ordinary_tools",
+      "answer_sha256": "d0027408b6fa039edda42d06d53e93a2dfbbc93166cee1d2f19febe3fc6ead9a"
+    },
+    {
+      "packet_id": "c793f16aa9b1d7ee",
+      "trial_directory": "47-edge-no-answer-blockchain-ordinary_tools",
+      "task_id": "edge-no-answer-blockchain",
+      "condition": "ordinary_tools",
+      "answer_sha256": "50a8194871a9a635b56d9ad60f9154bd26ef22c4c9c69d85ea39d808a90be3c6"
+    },
+    {
+      "packet_id": "78e3cfa969096630",
+      "trial_directory": "49-w-doc-main-landmark-ordinary_tools",
+      "task_id": "w-doc-main-landmark",
+      "condition": "ordinary_tools",
+      "answer_sha256": "d3796edb2e77879aff536c25076c88dfdf2448e00b4ca08f247bc28facca9ccc"
+    },
+    {
+      "packet_id": "4b276453fa1e5e55",
+      "trial_directory": "48-l-doc-settlement-window-ordinary_tools_plus_repoctx",
+      "task_id": "l-doc-settlement-window",
+      "condition": "ordinary_tools_plus_repoctx",
+      "answer_sha256": "0879ed37acda79a131669c6ec0783c1d394aba54e9e56bf5c35a9fe665bc26bb"
+    },
+    {
+      "packet_id": "bebcb22c06fb5de4",
+      "trial_directory": "43-p-cross-north-route-ordinary_tools",
+      "task_id": "p-cross-north-route",
+      "condition": "ordinary_tools",
+      "answer_sha256": "c2a634ed582d2fd54b2e82bc9fec5dc565eff7f450726bbbf32d00f2eaf5d326"
+    },
+    {
+      "packet_id": "c0f1628486c80464",
+      "trial_directory": "34-l-change-uppercase-reference-ordinary_tools_plus_repoctx",
+      "task_id": "l-change-uppercase-reference",
+      "condition": "ordinary_tools_plus_repoctx",
+      "answer_sha256": "7937a398a7ab5dc51615ff73eca2bee8586b1681f98808ef1bd771016c788698"
+    },
+    {
+      "packet_id": "96fed602eb5eacd7",
+      "trial_directory": "45-edge-denied-admin-token-ordinary_tools",
+      "task_id": "edge-denied-admin-token",
+      "condition": "ordinary_tools",
+      "answer_sha256": "30468e3648497f49d8b04f690230eb4c09e9a5202ffbbfeba0b31259053625bb"
+    },
+    {
+      "packet_id": "d29957c36d010c74",
+      "trial_directory": "44-l-code-reference-normalization-ordinary_tools_plus_repoctx",
+      "task_id": "l-code-reference-normalization",
+      "condition": "ordinary_tools_plus_repoctx",
+      "answer_sha256": "81f4d68c57dc0a5c6980f1687f16af9a01fa456550385779ebf03f76154b4bad"
+    },
+    {
+      "packet_id": "ab29abaf25a9bf4c",
+      "trial_directory": "46-w-cross-render-ordinary_tools",
+      "task_id": "w-cross-render",
+      "condition": "ordinary_tools",
+      "answer_sha256": "3693f69dbfcdb7b7f6ee934a2d4c18c7742e8b8d5713f56ecf534e0727cfa5e3"
+    },
+    {
+      "packet_id": "769a42360459f5e3",
+      "trial_directory": "51-w-doc-focus-style-ordinary_tools",
+      "task_id": "w-doc-focus-style",
+      "condition": "ordinary_tools",
+      "answer_sha256": "3a83dcb5867cc71bdea946cd71fdd926971be3ef20a6738226df86701dce0d5e"
+    },
+    {
+      "packet_id": "8d2cf5db5d1925c2",
+      "trial_directory": "42-w-change-breadcrumb-separator-ordinary_tools_plus_repoctx",
+      "task_id": "w-change-breadcrumb-separator",
+      "condition": "ordinary_tools_plus_repoctx",
+      "answer_sha256": "c5919c9d6592f2a5baf2ce736ef88ddab8107ef8cb070efd958b730a9e37a397"
+    },
+    {
+      "packet_id": "2f22ec26ff548ea8",
+      "trial_directory": "56-edge-contradictory-timeout-ordinary_tools_plus_repoctx",
+      "task_id": "edge-contradictory-timeout",
+      "condition": "ordinary_tools_plus_repoctx",
+      "answer_sha256": "4206d4cca00ebdb6ccf559f3a13208853bfb11d1214456bbc1f98a77d8710524"
+    },
+    {
+      "packet_id": "474863c20b371e85",
+      "trial_directory": "57-l-doc-settlement-window-ordinary_tools",
+      "task_id": "l-doc-settlement-window",
+      "condition": "ordinary_tools",
+      "answer_sha256": "758263c572f2d4cfe37cb0da02904b75d9599a5da9a664c555b9e0c2a061dea6"
+    },
+    {
+      "packet_id": "3462bc8548127d27",
+      "trial_directory": "53-p-change-label-length-ordinary_tools",
+      "task_id": "p-change-label-length",
+      "condition": "ordinary_tools",
+      "answer_sha256": "0b6e10056a02458cdeb27735ad3728eddc113df25a50dbd76d02ccfbd5a96619"
+    },
+    {
+      "packet_id": "9d1f4724f29423d5",
+      "trial_directory": "59-edge-denied-admin-token-ordinary_tools_plus_repoctx",
+      "task_id": "edge-denied-admin-token",
+      "condition": "ordinary_tools_plus_repoctx",
+      "answer_sha256": "4aa36d561b9fe9c13247312df63e5c38d9a14559600e534b55c52a2b972ce1c7"
+    },
+    {
+      "packet_id": "c4ea90e7ec58762d",
+      "trial_directory": "58-p-cross-prepare-ordinary_tools_plus_repoctx",
+      "task_id": "p-cross-prepare",
+      "condition": "ordinary_tools_plus_repoctx",
+      "answer_sha256": "9805b143c8c1f6ca7edb416ed9522620c00ec0b84a339ad20c7bc5660b67e2ce"
+    },
+    {
+      "packet_id": "5f0bebbb91266a58",
+      "trial_directory": "55-w-change-default-theme-ordinary_tools",
+      "task_id": "w-change-default-theme",
+      "condition": "ordinary_tools",
+      "answer_sha256": "cf2322bf001de611db34c4f9f76bb5c596d6a95261a8765d93e9c440eb60eb81"
+    },
+    {
+      "packet_id": "b07114bc9624ea3d",
+      "trial_directory": "62-l-doc-audit-retention-ordinary_tools",
+      "task_id": "l-doc-audit-retention",
+      "condition": "ordinary_tools",
+      "answer_sha256": "0edd5c3570686a28ac9a39627ebf8414b26831ea43ac607d85a906d4662efe87"
+    },
+    {
+      "packet_id": "a7a977f0fedb1bd5",
+      "trial_directory": "60-w-doc-default-theme-ordinary_tools_plus_repoctx",
+      "task_id": "w-doc-default-theme",
+      "condition": "ordinary_tools_plus_repoctx",
+      "answer_sha256": "d40183e618593ce2d6a59c0c36136084f89e1ca76dd2141a49ca8761ac3b124c"
+    },
+    {
+      "packet_id": "734f90d13d143a0d",
+      "trial_directory": "63-p-cross-prepare-ordinary_tools",
+      "task_id": "p-cross-prepare",
+      "condition": "ordinary_tools",
+      "answer_sha256": "f680a31d66f16b2319bdb43002b0f034588c062ee77b3f2f3d47bb1454b95b4d"
+    },
+    {
+      "packet_id": "2fb4556054a59131",
+      "trial_directory": "54-w-doc-focus-style-ordinary_tools_plus_repoctx",
+      "task_id": "w-doc-focus-style",
+      "condition": "ordinary_tools_plus_repoctx",
+      "answer_sha256": "dcaa3ffbc2cd3e7c6e12881ff03f03169e15275bb71c991d3fac9f2eabdb2956"
+    },
+    {
+      "packet_id": "3f8c31c4c6b39131",
+      "trial_directory": "50-p-code-lane-selection-ordinary_tools",
+      "task_id": "p-code-lane-selection",
+      "condition": "ordinary_tools",
+      "answer_sha256": "97554fb3d02bd61beaa17147944580a9aaf2e8ba36ed2dd5c5e951b818da9901"
+    },
+    {
+      "packet_id": "e94d080592d2d5d8",
+      "trial_directory": "52-p-code-label-format-ordinary_tools_plus_repoctx",
+      "task_id": "p-code-label-format",
+      "condition": "ordinary_tools_plus_repoctx",
+      "answer_sha256": "6a88e10ff9fdd6eb2a449ed630c6a46d34ac974342acf0fce6e8bf6bc27717eb"
+    },
+    {
+      "packet_id": "8b762e989da2515e",
+      "trial_directory": "65-l-cross-quote-ordinary_tools_plus_repoctx",
+      "task_id": "l-cross-quote",
+      "condition": "ordinary_tools_plus_repoctx",
+      "answer_sha256": "b365aca26ac0f2d86758b31b9ed58a0f6e67b78c25e4dacd6d9a39588f79abc7"
+    },
+    {
+      "packet_id": "f61454a87a69c014",
+      "trial_directory": "61-p-cross-north-route-ordinary_tools_plus_repoctx",
+      "task_id": "p-cross-north-route",
+      "condition": "ordinary_tools_plus_repoctx",
+      "answer_sha256": "bd2354bfaeb743f7a1c878f2306f8d35a94f63e358549b699e1d823be07cd91f"
+    },
+    {
+      "packet_id": "97bc89f7331e7a1a",
+      "trial_directory": "64-l-doc-default-currency-ordinary_tools",
+      "task_id": "l-doc-default-currency",
+      "condition": "ordinary_tools",
+      "answer_sha256": "6df2422f1c5d032b24fc7b43771b2a988e5a3435a8f88e3fd802337f58986fba"
+    },
+    {
+      "packet_id": "3e0ca94050b738f7",
+      "trial_directory": "66-w-code-breadcrumb-ordinary_tools",
+      "task_id": "w-code-breadcrumb",
+      "condition": "ordinary_tools",
+      "answer_sha256": "359459e83d44fd835e6de724145b9384e1d4a4a0b223466b7c981966b6826ab4"
+    }
+  ]
+}

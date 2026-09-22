@@ -1,0 +1,5 @@
+`render_page` obtains all three when it builds the HTML:
+
+- **Theme:** It uses the `theme` argument when truthy; otherwise it uses `DEFAULT_THEME`, which is `"light"`. The value goes on the main element as `data-theme`. (`repository/portal/render.py:5,10`; `repository/portal/config.py:1`)
+- **Breadcrumb:** It passes `["docs", title]` to `breadcrumb()`, which trims and title-cases each part, then joins them with ` / `. The result appears in `<nav>` above the title. (`repository/portal/render.py:6,11`; `repository/portal/navigation.py:1-2`)
+- **Skip link:** It calls `skip_link()` with its default target, `main-content`, and places the resulting anchor before `<main id="main-content">`. (`repository/portal/render.py:9-10`; `repository/portal/navigation.py:5-6`)

@@ -1,0 +1,1 @@
+No. Hazardous parcels must use ground transport, and the routing code selects `"ground"` when a parcel is marked hazardous. See `repository/docs/routing.md` and `repository/parcel/routing.py`.

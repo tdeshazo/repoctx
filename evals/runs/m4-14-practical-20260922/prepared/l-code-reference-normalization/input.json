@@ -1,0 +1,16 @@
+{
+  "version": "repoctx.m4.agent-input/v1alpha1",
+  "id": "l-code-reference-normalization",
+  "question": "Where are imported invoice references normalized?",
+  "repository": "ledger-lite",
+  "files": [
+    "PROVENANCE.json",
+    "README.md",
+    "docs/operations.md",
+    "ledger/__init__.py",
+    "ledger/config.py",
+    "ledger/pricing.py",
+    "ledger/service.py",
+    "ledger/storage.py"
+  ]
+}

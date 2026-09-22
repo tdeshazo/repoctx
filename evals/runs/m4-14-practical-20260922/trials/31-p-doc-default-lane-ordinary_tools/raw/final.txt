@@ -1,0 +1,1 @@
+The default is the **ground** lane when no service level is supplied ([README.md](repository/README.md:5), [config.py](repository/parcel/config.py:1)). The routing code has a north-region exception: it returns `north-n1` when no lane is requested ([routing.py](repository/parcel/routing.py:9)).

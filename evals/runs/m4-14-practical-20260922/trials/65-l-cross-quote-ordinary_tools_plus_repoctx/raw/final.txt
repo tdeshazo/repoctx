@@ -1,0 +1,3 @@
+`quote_invoice` uses the caller’s `currency` when it is truthy; otherwise it uses `DEFAULT_CURRENCY`, which is `"USD"`. The code does not validate or convert the currency. (`repository/ledger/service.py:6-11`, `repository/ledger/config.py:1`)
+
+It passes `days_late` and `amount` to `late_fee`. That function clamps billable days to 0–10, charges 1% of the amount per billable day, and rounds the result to two decimal places. (`repository/ledger/service.py:11`, `repository/ledger/pricing.py:1-4`)

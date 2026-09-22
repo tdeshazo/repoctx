@@ -1,0 +1,17 @@
+{
+  "version": "repoctx.m4.agent-input/v1alpha1",
+  "id": "l-change-uppercase-reference",
+  "question": "Normalize stored invoice references to uppercase instead of lowercase while retaining whitespace trimming.",
+  "repository": "ledger-lite",
+  "files": [
+    "PROVENANCE.json",
+    "README.md",
+    "docs/operations.md",
+    "ledger/__init__.py",
+    "ledger/config.py",
+    "ledger/pricing.py",
+    "ledger/service.py",
+    "ledger/storage.py"
+  ],
+  "check_id": "l-uppercase-reference"
+}

@@ -1,0 +1,16 @@
+{
+  "version": "repoctx.m4.agent-input/v1alpha1",
+  "id": "edge-contradictory-timeout",
+  "question": "What timeout governs settlement calls?",
+  "repository": "ledger-lite",
+  "files": [
+    "PROVENANCE.json",
+    "README.md",
+    "docs/operations.md",
+    "ledger/__init__.py",
+    "ledger/config.py",
+    "ledger/pricing.py",
+    "ledger/service.py",
+    "ledger/storage.py"
+  ]
+}

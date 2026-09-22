@@ -1,0 +1,50 @@
+[
+  {
+    "packet_id": "e2796f5263af2f7f",
+    "grade": "pass",
+    "reason": "Locates both the configured retry limit and the matching documented policy accurately.",
+    "source_grounding": "ledger/config.py defines MAX_SETTLEMENT_RETRIES = 3, and docs/operations.md says operators retry a failed settlement at most three times."
+  },
+  {
+    "packet_id": "ba2c120f076351cd",
+    "grade": "pass",
+    "reason": "Correctly locates choose_lane and accurately describes its lane-selection branches.",
+    "source_grounding": "parcel/routing.py choose_lane handles hazardous, requested, north-region, and default cases; parcel/service.py calls it for the lane field."
+  },
+  {
+    "packet_id": "eb87a6c694dbb6b1",
+    "grade": "pass",
+    "reason": "Changes the breadcrumb separator to the requested single chevron with no unrelated diff changes.",
+    "source_grounding": "The portal/navigation.py diff changes only the breadcrumb join separator from ' / ' to ' › '."
+  },
+  {
+    "packet_id": "d99958193e4c9f4c",
+    "grade": "pass",
+    "reason": "Gives the complete documented retention period.",
+    "source_grounding": "README.md states that tracking events are retained for 14 days in the local event buffer; parcel/config.py also defines EVENT_RETENTION_DAYS = 14."
+  },
+  {
+    "packet_id": "f214cadff5d8d39e",
+    "grade": "pass",
+    "reason": "Correctly locates format_label and accurately describes its city processing and label composition.",
+    "source_grounding": "parcel/labels.py format_label trims, title-cases, limits the destination to 20 characters, and returns tracking_code plus destination; parcel/service.py calls it."
+  },
+  {
+    "packet_id": "0f8f2955fef677aa",
+    "grade": "pass",
+    "reason": "Correctly answers that the no-preference theme is light and explains the fallback.",
+    "source_grounding": "portal/render.py uses theme or DEFAULT_THEME and portal/config.py defines DEFAULT_THEME as light; README.md documents the same no-saved-preference default."
+  },
+  {
+    "packet_id": "1ecefc3469d9d273",
+    "grade": "pass",
+    "reason": "Correctly locates breadcrumb text assembly and accurately describes the transformation and caller.",
+    "source_grounding": "portal/navigation.py breadcrumb strips and title-cases parts then joins them with ' / '; portal/render.py passes [\"docs\", title] and renders the result in nav."
+  },
+  {
+    "packet_id": "2d2d00eb0348ba94",
+    "grade": "pass",
+    "reason": "Correctly identifies ground as the documented default and accurately notes the north-region exception.",
+    "source_grounding": "README.md states that standard parcels with no supplied service level use ground; parcel/config.py defines the ground default and parcel/routing.py returns north-n1 for the north region."
+  }
+]

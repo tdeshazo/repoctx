@@ -1,0 +1,1 @@
+The weekend surcharge is **5**, defined in `repository/parcel/config.py:3`. The calculation in `repository/parcel/routing.py:12-13` adds it to the base price when `weekend=True`; otherwise it adds 0.

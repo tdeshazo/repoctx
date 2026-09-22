@@ -1,0 +1,1 @@
+Labels now allow 24 destination characters instead of 20. The `tracking code | destination` layout is unchanged in [parcel/labels.py](repository/parcel/labels.py:1). Checks passed for 24-character and longer destinations, plus trimming and capitalization.

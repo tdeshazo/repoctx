@@ -1,0 +1,74 @@
+{
+  "packet_id": "2f22ec26ff548ea8",
+  "task_type": "edge_case",
+  "question": "What timeout governs settlement calls?",
+  "expected_outcome": "contradictory_evidence",
+  "expected_answer": null,
+  "required_permitted_sources": [
+    {
+      "file": "README.md",
+      "sha256": "dd3ae2f1d4bf271452ffded6f204fcac3e639f1dd13b338ffe1a4e7dd2481dae",
+      "start_byte": 231,
+      "end_byte": 286,
+      "text": "Request timeout is 30 seconds for all settlement calls."
+    },
+    {
+      "file": "ledger/config.py",
+      "sha256": "01b6bc6b19c6824db9874af8943c0c321a30e3ef780442985f011c5069e90e09",
+      "start_byte": 52,
+      "end_byte": 80,
+      "text": "REQUEST_TIMEOUT_SECONDS = 45"
+    }
+  ],
+  "visible_sources": [
+    {
+      "file": "PROVENANCE.json",
+      "sha256": "b3470c74c280a5102798e7a9f619939aaa89d366434730d597fb637caf2ed297",
+      "text": "{\"origin\":\"synthetic\",\"license\":\"Apache-2.0\",\"copyright\":\"repoctx contributors\",\"redistribution\":\"cleared\"}\n"
+    },
+    {
+      "file": "README.md",
+      "sha256": "dd3ae2f1d4bf271452ffded6f204fcac3e639f1dd13b338ffe1a4e7dd2481dae",
+      "text": "# Ledger Lite\n\nLedger Lite records small-business invoices and refunds.\n\nThe default invoice currency is USD unless the caller supplies another ISO code.\nInvoice references are normalized before storage so imports can be compared.\nRequest timeout is 30 seconds for all settlement calls.\n\nSee `docs/operations.md` for settlement and audit policy.\n"
+    },
+    {
+      "file": "docs/operations.md",
+      "sha256": "1b35c75fc71d6d8cb6de0806afc2d0b0c8929d2f4862743df82b0139b7d96c74",
+      "text": "# Operations\n\nSettlements remain pending for two business days before they are final.\nRefund audit records are retained for 90 days after the refund date.\nOperators retry a failed settlement at most three times.\n"
+    },
+    {
+      "file": "ledger/__init__.py",
+      "sha256": "a623e22bb9b8c2da83e511d6778f4cbbed5242d96129ac168f4168ab542d51cb",
+      "text": "\"\"\"Ledger Lite example package.\"\"\"\n"
+    },
+    {
+      "file": "ledger/config.py",
+      "sha256": "01b6bc6b19c6824db9874af8943c0c321a30e3ef780442985f011c5069e90e09",
+      "text": "DEFAULT_CURRENCY = \"USD\"\nMAX_SETTLEMENT_RETRIES = 3\nREQUEST_TIMEOUT_SECONDS = 45\n"
+    },
+    {
+      "file": "ledger/pricing.py",
+      "sha256": "30f52304d0d0e9a2f6754972619e97d5cce726e256cde6906c834bcba82e4762",
+      "text": "def late_fee(days_late, amount):\n    \"\"\"Charge one percent per late day, currently capped at ten days.\"\"\"\n    billable_days = min(max(days_late, 0), 10)\n    return round(amount * billable_days * 0.01, 2)\n\n\ndef normalize_reference(reference):\n    return reference.strip().lower()\n"
+    },
+    {
+      "file": "ledger/service.py",
+      "sha256": "29c7f779724021a6331fcf3c8ca2242a0218876e075b5bb151e338e1b9c70552",
+      "text": "from .config import DEFAULT_CURRENCY\nfrom .pricing import late_fee, normalize_reference\nfrom .storage import append_refund\n\n\ndef quote_invoice(reference, amount, days_late, currency=None):\n    normalized = normalize_reference(reference)\n    return {\n        \"reference\": normalized,\n        \"currency\": currency or DEFAULT_CURRENCY,\n        \"late_fee\": late_fee(days_late, amount),\n    }\n\n\ndef record_refund(reference, amount):\n    normalized = normalize_reference(reference)\n    return append_refund(normalized, amount)\n"
+    },
+    {
+      "file": "ledger/storage.py",
+      "sha256": "42cd1ced5a0ba956a2ac1c270ac0e3b03beed25e338c3d8c620e32a6b51cd499",
+      "text": "REFUNDS = []\n\n\ndef append_refund(reference, amount):\n    record = {\"reference\": reference, \"amount\": amount}\n    REFUNDS.append(record)\n    return record\n"
+    }
+  ],
+  "model_response": "The source does not establish an effective runtime timeout for settlement calls. The [README](repository/README.md:7) says **30 seconds**, while [config.py](repository/ledger/config.py:3) sets `REQUEST_TIMEOUT_SECONDS` to **45**. The available [service code](repository/ledger/service.py:1) does not implement a settlement call or use that setting, so the conflict cannot be resolved from this repository.",
+  "review": {
+    "grade": null,
+    "reason": "",
+    "source_grounding": ""
+  },
+  "source_changes": {
+    "changed_files": []
+  }
+}

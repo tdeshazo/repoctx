@@ -1,0 +1,50 @@
+[
+  {
+    "packet_id": "7f60df3db5106ec1",
+    "grade": "pass",
+    "reason": "Correctly states that an omitted invoice currency falls back to USD and identifies the fallback implementation.",
+    "source_grounding": "README.md states that the default invoice currency is USD; ledger/service.py uses currency or DEFAULT_CURRENCY and ledger/config.py defines DEFAULT_CURRENCY as USD."
+  },
+  {
+    "packet_id": "791679872edc3771",
+    "grade": "pass",
+    "reason": "Locates both the value and the conditional calculation accurately.",
+    "source_grounding": "parcel/config.py defines WEEKEND_SURCHARGE = 5, and parcel/routing.py delivery_price adds it when weekend is true and otherwise adds 0."
+  },
+  {
+    "packet_id": "91ae20ba52522982",
+    "grade": "pass",
+    "reason": "Answers no and includes the required ground-transport restriction.",
+    "source_grounding": "docs/routing.md says hazardous parcels cannot use air and must remain on ground transport; parcel/routing.py also returns ground for hazardous parcels."
+  },
+  {
+    "packet_id": "d432f829ddee24c3",
+    "grade": "pass",
+    "reason": "Correctly locates surcharge value 5 and the delivery_price conditional that applies it.",
+    "source_grounding": "parcel/config.py defines WEEKEND_SURCHARGE = 5; parcel/routing.py delivery_price adds it to base only for weekend delivery."
+  },
+  {
+    "packet_id": "ac97e38308c6cc5e",
+    "grade": "pass",
+    "reason": "The requested fixed surcharge is changed from 5 to 7 with no unrelated diff changes.",
+    "source_grounding": "The parcel/config.py diff changes only WEEKEND_SURCHARGE from 5 to 7; parcel/routing.py applies that constant for weekend prices."
+  },
+  {
+    "packet_id": "93dcc2a14cff13c3",
+    "grade": "partial",
+    "reason": "Accurately explains currency selection and late-fee calculation, but omits that quote_invoice normalizes the reference before calling late_fee, a substantive expected part of the trace.",
+    "source_grounding": "ledger/service.py shows currency or DEFAULT_CURRENCY, normalize_reference(reference), and late_fee(days_late, amount); ledger/config.py defines USD and ledger/pricing.py defines the 1% capped-and-rounded calculation."
+  },
+  {
+    "packet_id": "ca20962b87a2c591",
+    "grade": "pass",
+    "reason": "Identifies both conflicting timeout values and appropriately declines to assert which governs settlement calls.",
+    "source_grounding": "README.md states a 30-second settlement-call timeout, while ledger/config.py sets REQUEST_TIMEOUT_SECONDS to 45; ledger/service.py contains no settlement-call implementation using that setting."
+  },
+  {
+    "packet_id": "ae43bdaded06ef4b",
+    "grade": "partial",
+    "reason": "It conveys that main-content connects the skip link and main landmark, but does not cite the documented target or skip_link source and makes an unrequested edit for an analysis request.",
+    "source_grounding": "README.md documents main-content as the skip-link target, portal/navigation.py defaults skip_link to that target, and portal/render.py emits main with that ID; the supplied diff unnecessarily refactors render.py without changing this behavior."
+  }
+]

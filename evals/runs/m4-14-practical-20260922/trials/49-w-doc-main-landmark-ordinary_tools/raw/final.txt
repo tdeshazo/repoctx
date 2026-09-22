@@ -1,0 +1,1 @@
+Each rendered page should expose **exactly one main landmark**, as specified in [repository/docs/accessibility.md](repository/docs/accessibility.md:5).

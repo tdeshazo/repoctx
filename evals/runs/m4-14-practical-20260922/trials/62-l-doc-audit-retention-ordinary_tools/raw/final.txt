@@ -1,0 +1,1 @@
+Refund audit records are retained for **90 days after the refund date**. [repository/docs/operations.md](repository/docs/operations.md:4)

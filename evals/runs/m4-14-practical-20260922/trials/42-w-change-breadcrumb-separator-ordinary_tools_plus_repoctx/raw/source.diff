@@ -1,0 +1,9 @@
+--- before/portal/navigation.py
++++ after/portal/navigation.py
+@@ -1,5 +1,5 @@
+ def breadcrumb(parts):
+-    return " / ".join(part.strip().title() for part in parts)
++    return " › ".join(part.strip().title() for part in parts)
+ 
+ 
+ def skip_link(target="main-content"):

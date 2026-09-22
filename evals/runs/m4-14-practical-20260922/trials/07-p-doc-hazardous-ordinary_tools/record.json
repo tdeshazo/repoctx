@@ -1,0 +1,143 @@
+{
+  "id": "07-p-doc-hazardous-ordinary_tools",
+  "position": 7,
+  "task_id": "p-doc-hazardous",
+  "task_type": "documentation_lookup",
+  "condition": "ordinary_tools",
+  "question": "May hazardous parcels use the air lane?",
+  "model": "gpt-6-sol",
+  "model_revision": "unresolved_alias",
+  "reasoning_effort": "medium",
+  "input_sha256": "041138b3b4eb7c856dfbfccb744f10e0fa0abfeafed3f1d4066b65dd9c661824",
+  "prompt_sha256": "7d8a64229f82175455cac39ac670b85c134876b3de77fdd31ae63f1e77cbb930",
+  "exit_code": 0,
+  "timed_out": false,
+  "wall_seconds": 18.924839,
+  "usage": {
+    "input_tokens": 71275,
+    "cached_input_tokens": 56960,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 260,
+    "reasoning_output_tokens": 23
+  },
+  "event_count": 11,
+  "observed_tool_item_count": 3,
+  "observed_tool_item_types": {
+    "command_execution": 3
+  },
+  "tool_events": [
+    {
+      "type": "item.completed",
+      "item": {
+        "id": "item_1",
+        "type": "command_execution",
+        "command": "/usr/bin/zsh -lc 'pwd && rg --files repository'",
+        "aggregated_output": "/tmp/m4-14-practical-20260922/trials/07-p-doc-hazardous-ordinary_tools/workspace\nrepository/PROVENANCE.json\nrepository/README.md\nrepository/docs/routing.md\nrepository/parcel/__init__.py\nrepository/parcel/config.py\nrepository/parcel/labels.py\nrepository/parcel/routing.py\nrepository/parcel/service.py\n",
+        "exit_code": 0,
+        "status": "completed"
+      }
+    },
+    {
+      "type": "item.completed",
+      "item": {
+        "id": "item_2",
+        "type": "command_execution",
+        "command": "/usr/bin/zsh -lc \"rg -n -i 'hazard|air lane|air|parcel|source|listed' repository/README.md repository/docs/routing.md repository/parcel repository/PROVENANCE.json\"",
+        "aggregated_output": "repository/docs/routing.md:3:North-region parcels route through depot N1 before final delivery.\nrepository/docs/routing.md:4:Hazardous parcels cannot use the air lane and must remain on ground transport.\nrepository/README.md:1:# Parcel Path\nrepository/README.md:3:Parcel Path selects a delivery lane and prints compact shipping labels.\nrepository/README.md:5:Standard parcels use the ground lane when no service level is supplied.\nrepository/parcel/__init__.py:1:\"\"\"Parcel Path example package.\"\"\"\nrepository/parcel/service.py:5:def prepare_parcel(tracking_code, city, region, base_price, hazardous=False):\nrepository/parcel/service.py:8:        \"lane\": choose_lane(region, hazardous=hazardous),\nrepository/parcel/routing.py:4:def choose_lane(region, hazardous=False, requested=None):\nrepository/parcel/routing.py:5:    if hazardous:\n",
+        "exit_code": 0,
+        "status": "completed"
+      }
+    },
+    {
+      "type": "item.completed",
+      "item": {
+        "id": "item_3",
+        "type": "command_execution",
+        "command": "/usr/bin/zsh -lc 'cat repository/docs/routing.md repository/parcel/routing.py repository/parcel/config.py repository/parcel/service.py'",
+        "aggregated_output": "# Routing policy\n\nNorth-region parcels route through depot N1 before final delivery.\nHazardous parcels cannot use the air lane and must remain on ground transport.\nLabels include the tracking code followed by the destination city.\nfrom .config import DEFAULT_LANE, WEEKEND_SURCHARGE\n\n\ndef choose_lane(region, hazardous=False, requested=None):\n    if hazardous:\n        return \"ground\"\n    if requested:\n        return requested\n    return \"north-n1\" if region == \"north\" else DEFAULT_LANE\n\n\ndef delivery_price(base, weekend=False):\n    return base + (WEEKEND_SURCHARGE if weekend else 0)\nDEFAULT_LANE = \"ground\"\nEVENT_RETENTION_DAYS = 14\nWEEKEND_SURCHARGE = 5\nfrom .labels import format_label\nfrom .routing import choose_lane, delivery_price\n\n\ndef prepare_parcel(tracking_code, city, region, base_price, hazardous=False):\n    return {\n        \"label\": format_label(tracking_code, city),\n        \"lane\": choose_lane(region, hazardous=hazardous),\n        \"price\": delivery_price(base_price),\n    }\n",
+        "exit_code": 0,
+        "status": "completed"
+      }
+    }
+  ],
+  "command_call_count": 3,
+  "tool_call_cap": 24,
+  "tool_call_cap_respected": true,
+  "tool_call_cap_enforcement": "advisory_prompt_only",
+  "command_events": [
+    {
+      "type": "item.completed",
+      "item": {
+        "id": "item_1",
+        "type": "command_execution",
+        "command": "/usr/bin/zsh -lc 'pwd && rg --files repository'",
+        "aggregated_output": "/tmp/m4-14-practical-20260922/trials/07-p-doc-hazardous-ordinary_tools/workspace\nrepository/PROVENANCE.json\nrepository/README.md\nrepository/docs/routing.md\nrepository/parcel/__init__.py\nrepository/parcel/config.py\nrepository/parcel/labels.py\nrepository/parcel/routing.py\nrepository/parcel/service.py\n",
+        "exit_code": 0,
+        "status": "completed"
+      }
+    },
+    {
+      "type": "item.completed",
+      "item": {
+        "id": "item_2",
+        "type": "command_execution",
+        "command": "/usr/bin/zsh -lc \"rg -n -i 'hazard|air lane|air|parcel|source|listed' repository/README.md repository/docs/routing.md repository/parcel repository/PROVENANCE.json\"",
+        "aggregated_output": "repository/docs/routing.md:3:North-region parcels route through depot N1 before final delivery.\nrepository/docs/routing.md:4:Hazardous parcels cannot use the air lane and must remain on ground transport.\nrepository/README.md:1:# Parcel Path\nrepository/README.md:3:Parcel Path selects a delivery lane and prints compact shipping labels.\nrepository/README.md:5:Standard parcels use the ground lane when no service level is supplied.\nrepository/parcel/__init__.py:1:\"\"\"Parcel Path example package.\"\"\"\nrepository/parcel/service.py:5:def prepare_parcel(tracking_code, city, region, base_price, hazardous=False):\nrepository/parcel/service.py:8:        \"lane\": choose_lane(region, hazardous=hazardous),\nrepository/parcel/routing.py:4:def choose_lane(region, hazardous=False, requested=None):\nrepository/parcel/routing.py:5:    if hazardous:\n",
+        "exit_code": 0,
+        "status": "completed"
+      }
+    },
+    {
+      "type": "item.completed",
+      "item": {
+        "id": "item_3",
+        "type": "command_execution",
+        "command": "/usr/bin/zsh -lc 'cat repository/docs/routing.md repository/parcel/routing.py repository/parcel/config.py repository/parcel/service.py'",
+        "aggregated_output": "# Routing policy\n\nNorth-region parcels route through depot N1 before final delivery.\nHazardous parcels cannot use the air lane and must remain on ground transport.\nLabels include the tracking code followed by the destination city.\nfrom .config import DEFAULT_LANE, WEEKEND_SURCHARGE\n\n\ndef choose_lane(region, hazardous=False, requested=None):\n    if hazardous:\n        return \"ground\"\n    if requested:\n        return requested\n    return \"north-n1\" if region == \"north\" else DEFAULT_LANE\n\n\ndef delivery_price(base, weekend=False):\n    return base + (WEEKEND_SURCHARGE if weekend else 0)\nDEFAULT_LANE = \"ground\"\nEVENT_RETENTION_DAYS = 14\nWEEKEND_SURCHARGE = 5\nfrom .labels import format_label\nfrom .routing import choose_lane, delivery_price\n\n\ndef prepare_parcel(tracking_code, city, region, base_price, hazardous=False):\n    return {\n        \"label\": format_label(tracking_code, city),\n        \"lane\": choose_lane(region, hazardous=hazardous),\n        \"price\": delivery_price(base_price),\n    }\n",
+        "exit_code": 0,
+        "status": "completed"
+      }
+    }
+  ],
+  "errors": [],
+  "malformed_event_lines": [],
+  "answer": "No. Hazardous parcels must use ground transport, and the routing code selects `\"ground\"` when a parcel is marked hazardous. See `repository/docs/routing.md` and `repository/parcel/routing.py`.",
+  "raw": {
+    "events": "trials/07-p-doc-hazardous-ordinary_tools/raw/events.jsonl",
+    "stderr": "trials/07-p-doc-hazardous-ordinary_tools/raw/stderr.txt",
+    "final": "trials/07-p-doc-hazardous-ordinary_tools/raw/final.txt"
+  },
+  "source_before_sha256": {
+    "PROVENANCE.json": "b3470c74c280a5102798e7a9f619939aaa89d366434730d597fb637caf2ed297",
+    "README.md": "324d0c287f5e651e665590538b6ab9ff0f075b7dd2106359b3bfb17cf55c8e2b",
+    "docs/routing.md": "f91a1ab5c30298dd19de465e36795eb40c7f1b7f74e1f19e1a3de690d1e1cc44",
+    "parcel/__init__.py": "b05a5b48287251bfa38f3e846f78b878fe12672f51303f658e60462e28c31b19",
+    "parcel/config.py": "f60a407f9f512c69c8c6fbe4d4d1721e3dbb0e466f9ae1d12c0dd83637175da6",
+    "parcel/labels.py": "bced0ffad05950d60a4ab7c1f03e1855dd3e307366c39c165ff2d814a0b79102",
+    "parcel/routing.py": "0c9042fbfee395e9c79afd611a4c30830c1634289ef45db3d5f11ca15939964b",
+    "parcel/service.py": "b09c733e7a289de9312584db1ffcf1c60cb0bab030d9e0e8f714c9b1e7984e75"
+  },
+  "source_after_sha256": {
+    "PROVENANCE.json": "b3470c74c280a5102798e7a9f619939aaa89d366434730d597fb637caf2ed297",
+    "README.md": "324d0c287f5e651e665590538b6ab9ff0f075b7dd2106359b3bfb17cf55c8e2b",
+    "docs/routing.md": "f91a1ab5c30298dd19de465e36795eb40c7f1b7f74e1f19e1a3de690d1e1cc44",
+    "parcel/__init__.py": "b05a5b48287251bfa38f3e846f78b878fe12672f51303f658e60462e28c31b19",
+    "parcel/config.py": "f60a407f9f512c69c8c6fbe4d4d1721e3dbb0e466f9ae1d12c0dd83637175da6",
+    "parcel/labels.py": "bced0ffad05950d60a4ab7c1f03e1855dd3e307366c39c165ff2d814a0b79102",
+    "parcel/routing.py": "0c9042fbfee395e9c79afd611a4c30830c1634289ef45db3d5f11ca15939964b",
+    "parcel/service.py": "b09c733e7a289de9312584db1ffcf1c60cb0bab030d9e0e8f714c9b1e7984e75"
+  },
+  "changed_files": [],
+  "source_unchanged": true,
+  "source_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "source_diff_path": "trials/07-p-doc-hazardous-ordinary_tools/raw/source.diff",
+  "change_check": null,
+  "workspace_contents": [
+    ".agents",
+    ".codex",
+    ".git",
+    ".scratch",
+    "input.json",
+    "repository"
+  ]
+}

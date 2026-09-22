@@ -1,0 +1,1 @@
+Visitors without a saved preference now use the system theme (`portal/config.py:1`). The README reflects the change (`README.md:5`). I verified that an explicit theme preference still takes precedence.

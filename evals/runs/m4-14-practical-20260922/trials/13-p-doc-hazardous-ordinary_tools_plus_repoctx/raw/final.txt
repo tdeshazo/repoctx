@@ -1,0 +1,1 @@
+No. Hazardous parcels cannot use the air lane; they must travel by ground. The routing code also selects `ground` for hazardous parcels. [docs/routing.md](repository/docs/routing.md:4), [parcel/routing.py](repository/parcel/routing.py:5)

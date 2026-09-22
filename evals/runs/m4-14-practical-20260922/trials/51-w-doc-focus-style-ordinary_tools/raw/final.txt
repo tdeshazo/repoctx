@@ -1,0 +1,1 @@
+Keyboard focus requires a **3px solid blue outline** with a **2px offset**. See [docs/accessibility.md](repository/docs/accessibility.md) and [assets/site.css](repository/assets/site.css).

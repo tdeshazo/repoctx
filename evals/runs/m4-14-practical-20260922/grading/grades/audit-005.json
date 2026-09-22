@@ -1,0 +1,20 @@
+[
+  {
+    "packet_id": "8b762e989da2515e",
+    "grade": "pass",
+    "reason": "Answers both requested parts: quote_invoice uses a truthy supplied currency or falls back to DEFAULT_CURRENCY (USD), and it passes days_late and amount to a fee function that clamps days to 0-10, charges 1% per day, and rounds to two decimals. The reference-normalization detail in the expected answer is incidental to the currency and fee question.",
+    "source_grounding": "ledger/service.py bytes 125-381 show currency or DEFAULT_CURRENCY and late_fee(days_late, amount). ledger/pricing.py bytes 0-203 show the clamp, rate, and rounding. The cited visible ledger/config.py sets DEFAULT_CURRENCY to USD."
+  },
+  {
+    "packet_id": "2fb4556054a59131",
+    "grade": "pass",
+    "reason": "States the required three-pixel solid blue focus outline and two-pixel offset, with citations to the documentation and matching CSS.",
+    "source_grounding": "docs/accessibility.md bytes 17-88 specify a three-pixel blue outline and two-pixel offset; cited assets/site.css declares outline: 3px solid blue and outline-offset: 2px for .skip:focus."
+  },
+  {
+    "packet_id": "3e0ca94050b738f7",
+    "grade": "pass",
+    "reason": "Locates breadcrumb assembly in portal/navigation.py's breadcrumb function and accurately explains its formatting and use by render_page, citing both relevant files.",
+    "source_grounding": "portal/navigation.py bytes 0-84 define breadcrumb(parts) as stripped, title-cased parts joined with ' / '. Cited portal/render.py calls breadcrumb(['docs', title]) and inserts the result into nav."
+  }
+]
