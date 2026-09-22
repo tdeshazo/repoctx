@@ -6,11 +6,13 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import os
 from pathlib import Path
 import random
 import re
 import subprocess
 import sys
+from typing import Any
 
 
 ROOT = Path(__file__).resolve().parent
@@ -52,6 +54,23 @@ def load_object(path: Path, label: str) -> dict[str, Any]:
         raise ValueError(f"cannot read {label}: {exc}") from exc
     require(isinstance(value, dict), f"{label} must be a JSON object")
     return value
+
+
+def require_outside_project(path: Path, label: str) -> Path:
+    lexical = Path(os.path.abspath(path))
+    try:
+        lexical.relative_to(PROJECT)
+    except ValueError:
+        pass
+    else:
+        raise ValueError(f"{label} must be outside the agent-readable project tree")
+
+    resolved = path.resolve()
+    try:
+        resolved.relative_to(PROJECT)
+    except ValueError:
+        return resolved
+    raise ValueError(f"{label} must be outside the agent-readable project tree")
 
 
 def sha256(value: Any, label: str) -> None:
@@ -231,6 +250,9 @@ def build_schedule(tasks: list[dict[str, Any]], protocol: dict[str, Any]) -> lis
 
 
 def freeze(tasks_path: Path, lock_path: Path, output_path: Path) -> dict[str, Any]:
+    tasks_path = require_outside_project(tasks_path, "operator-only task manifest")
+    lock_path = require_outside_project(lock_path, "operator-only run lock")
+    output_path = require_outside_project(output_path, "operator-only frozen schedule")
     protocol = load_object(PROTOCOL_PATH, "protocol")
     validate_protocol(protocol)
     tasks_document = load_object(tasks_path, "task manifest")
