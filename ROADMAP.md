@@ -608,10 +608,11 @@ positive agent-performance claim.
   windows. Do not silently redefine existing IDs, spans, completeness labels,
   or trust semantics. Evidence: [contract policy](docs/COMPATIBILITY.md)
   and [implementation record](docs/reports/m6-01-evidence.md).
-- [ ] **M6-02 — Maintain conformance fixtures.** Test current indexes, explicit
+- [x] **M6-02 — Maintain conformance fixtures.** Test current indexes, explicit
   rejection of stale/unsupported versions, JSON/Markdown projections, tokenizer
   callbacks, progressive disclosure, and provider capability negotiation.
   Preserve application-owned roots, policies, and payload caps across adapters.
+  Evidence: [current-contract conformance fixtures](docs/reports/m6-02-evidence.md).
 - [ ] **M6-03 — Validate distribution.** Test source builds, both Go entry
   points, Python wheel/sdist installation, launcher behavior, and clean-machine
   operation for each advertised platform. Document supported toolchains and CGO

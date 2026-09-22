@@ -1,0 +1,3 @@
+# Private fixture
+
+CONFORMANCE_SECRET_MUST_NOT_APPEAR

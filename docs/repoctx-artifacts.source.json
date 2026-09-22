@@ -75,10 +75,10 @@
       "end": "positive agent-performance claim."
     },
     {
-      "id": "m6-02",
+      "id": "m6-03",
       "path": "ROADMAP.md",
-      "start": "- [ ] **M6-02 — Maintain conformance fixtures.** Test current indexes, explicit",
-      "end": "  Preserve application-owned roots, policies, and payload caps across adapters."
+      "start": "- [ ] **M6-03 — Validate distribution.** Test source builds, both Go entry",
+      "end": "  requirements; do not imply untested platform or wheel portability."
     }
   ],
   "artifacts": [
@@ -343,7 +343,7 @@
       "declared_inputs": []
     },
     {
-      "id": "repoctx:requirement.m6-02-conformance-fixtures",
+      "id": "repoctx:requirement.m6-03-distribution",
       "kind": "requirement",
       "applies_to": [
         {
@@ -353,7 +353,7 @@
       ],
       "lifecycle": "active",
       "sources": [
-        "m6-02"
+        "m6-03"
       ],
       "declared_inputs": []
     }
@@ -424,11 +424,11 @@
     },
     {
       "from": "repoctx:milestone.m6-stabilization",
-      "to": "repoctx:requirement.m6-02-conformance-fixtures",
+      "to": "repoctx:requirement.m6-03-distribution",
       "kind": "contains",
       "resolution": "declared",
       "sources": [
-        "m6-02"
+        "m6-03"
       ]
     }
   ]
