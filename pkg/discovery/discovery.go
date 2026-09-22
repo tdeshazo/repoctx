@@ -23,6 +23,7 @@ type engine struct {
 	glob          *regexp.Regexp
 	search        *regexp.Regexp
 	terms         []string
+	identifiers   []string
 	requested     map[string][]ReadRequest
 	found         map[string]bool
 	ignoreBuffers map[string][]byte
@@ -77,6 +78,7 @@ func Run(ctx context.Context, options Options) (ResultSet, error) {
 		}
 	}
 	e.terms = queryTerms(o.Query)
+	e.identifiers = queryIdentifiers(o.Query)
 	for _, r := range o.Reads {
 		e.requested[r.Path] = append(e.requested[r.Path], r)
 	}
@@ -365,11 +367,17 @@ func (e *engine) add(result Result) {
 }
 
 func better(a, b Result) bool {
+	if a.identifierMatches != b.identifierMatches {
+		return a.identifierMatches > b.identifierMatches
+	}
 	if a.Score.DistinctTerms != b.Score.DistinctTerms {
 		return a.Score.DistinctTerms > b.Score.DistinctTerms
 	}
 	if a.metadataRank != b.metadataRank {
 		return a.metadataRank > b.metadataRank
+	}
+	if a.identifierMatches > 0 && evidenceClassRank(a) != evidenceClassRank(b) {
+		return evidenceClassRank(a) > evidenceClassRank(b)
 	}
 	if a.Score.PathTerms != b.Score.PathTerms {
 		return a.Score.PathTerms > b.Score.PathTerms
@@ -384,4 +392,15 @@ func better(a, b Result) bool {
 		return a.Evidence == nil && b.Evidence != nil
 	}
 	return a.Evidence.StartByte < b.Evidence.StartByte
+}
+
+func evidenceClassRank(result Result) int {
+	switch result.Candidate {
+	case "documentation":
+		return 2
+	case "configuration":
+		return 0
+	default:
+		return 1
+	}
 }

@@ -82,10 +82,11 @@ type Evidence struct {
 // Result carries an inventory entry with optional matched terms and evidence.
 type Result struct {
 	Entry
-	MatchedTerms []string  `json:"matched_terms"`
-	Score        Score     `json:"score"`
-	Evidence     *Evidence `json:"evidence,omitempty"`
-	metadataRank int       `json:"-"`
+	MatchedTerms      []string  `json:"matched_terms"`
+	Score             Score     `json:"score"`
+	Evidence          *Evidence `json:"evidence,omitempty"`
+	metadataRank      int       `json:"-"`
+	identifierMatches int       `json:"-"`
 }
 
 // Response reports observed source, never an atomic filesystem snapshot.

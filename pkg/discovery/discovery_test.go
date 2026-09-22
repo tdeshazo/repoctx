@@ -278,6 +278,83 @@ func TestDiscoverDiversifiesBroadRelevantResults(t *testing.T) {
 	}
 }
 
+func TestDiscoverBoundedIdentifierRetrieval(t *testing.T) {
+	filler := func(term string, lines int) string {
+		return strings.Repeat(term+" "+strings.Repeat("x", 160)+"\n", lines)
+	}
+	tests := []struct {
+		name, query, decisive string
+		maxBytes              int
+		files                 map[string]string
+	}{
+		{
+			name: "exact identifier outranks split generated noise", query: "M4-07",
+			decisive: "M4-07 requires an atomic checkpoint.", maxBytes: 5000,
+			files: map[string]string{
+				"ROADMAP.md":     filler("unrelated roadmap context", 5) + "- [ ] M4-07 requires an atomic checkpoint.\n" + filler("later roadmap context", 5),
+				"generated.json": filler("hash m4 payload 07", 40),
+			},
+		},
+		{
+			name: "answer window fits beside response metadata", query: "M4-08 persisted evidence evaluation",
+			decisive: "M4-08 evaluates persisted evidence after compaction.", maxBytes: 8000,
+			files: map[string]string{
+				"ROADMAP.md": filler("persisted evidence evaluation", 30) +
+					"- [ ] M4-08 evaluates persisted evidence after compaction.\n" +
+					filler("persisted evidence evaluation", 30),
+			},
+		},
+		{
+			name: "later actionable identifier window is retained", query: "M4-09 context failure diagnosis",
+			decisive: "M4-09 diagnose context failures and retain supporting traces.", maxBytes: 12000,
+			files: map[string]string{
+				"ROADMAP.md": "Planning input mentions M4-09 context failure diagnosis.\n" +
+					filler("context failure diagnosis", 45) +
+					"- [ ] M4-09 diagnose context failures and retain supporting traces.\n",
+			},
+		},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			o := DefaultOptions()
+			o.Root, o.Query, o.MaxBytes, o.Depth = fixture(t, tc.files), tc.query, tc.maxBytes, 0
+			r := run(t, o)
+			var found bool
+			for _, result := range r.Response.Results {
+				if result.Evidence == nil || !strings.Contains(result.Evidence.Text, tc.decisive) {
+					continue
+				}
+				found = true
+				source, err := os.ReadFile(filepath.Join(o.Root, filepath.FromSlash(result.Path)))
+				if err != nil {
+					t.Fatal(err)
+				}
+				if got := string(source[result.Evidence.StartByte:result.Evidence.EndByte]); got != result.Evidence.Text {
+					t.Fatalf("evidence is not the exact source span: %q", got)
+				}
+				if result.Evidence.StartByte == 0 && result.Evidence.EndByte == len(source) {
+					t.Fatal("bounded result did not identify an excerpt")
+				}
+			}
+			if !found {
+				t.Fatalf("decisive evidence was not retained: %+v", r.Response.Results)
+			}
+		})
+	}
+
+	o := DefaultOptions()
+	o.Root = fixture(t, map[string]string{"ROADMAP.md": "- [ ] M4-10 nearby requirement\n"})
+	o.Query, o.MaxBytes, o.Depth = "M4-10 nearby requirement", 5000, 0
+	if r := run(t, o); len(r.Response.Results) != 1 || !strings.Contains(r.Response.Results[0].Evidence.Text, "nearby requirement") {
+		t.Fatalf("nearby identifier query regressed: %+v", r.Response.Results)
+	}
+	o.Query = "Z9-99 quasar nebula"
+	if r := run(t, o); len(r.Response.Results) != 0 || r.Response.Incomplete {
+		t.Fatalf("no-answer query should be complete and empty: %+v", r.Response)
+	}
+}
+
 func resultPaths(results []Result) []string {
 	paths := make([]string, 0, len(results))
 	for _, result := range results {

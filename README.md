@@ -202,8 +202,14 @@ special files are never followed/opened as content. There is no secret scanner.
 `-regex` enables Go regular expressions. Slashless `-glob` patterns match file
 basenames; patterns containing `/` match root-relative paths. `discover` splits
 task text into distinct lowercase Unicode letter/digit terms and matches
-substrings in paths and source. Windows first rank by distinct matched terms,
-path terms, source occurrences capped at ten per term, path, and byte offset.
+substrings in paths and source. Punctuated fields that look like identifiers,
+such as `M4-12` or `rcx.topic.retry`, remain intact: results with exact identifier
+matches rank first, and their source windows center on lines containing the
+intact identifier. Ordinary hyphenated prose keeps the term-based behavior.
+Discovery windows cannot grow beyond one requested context window by chaining
+nearby weak matches. Windows then rank by distinct matched terms, declared
+document metadata, evidence class for exact identifier matches, path terms,
+source occurrences capped at ten per term, path, and byte offset.
 For broad queries whose best window matches at least four terms, `discover`
 builds an eight-result coverage prefix from matches with at least half the best
 distinct-term score: the best documentation, configuration, and source result

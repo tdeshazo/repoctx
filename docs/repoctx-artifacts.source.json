@@ -69,16 +69,16 @@
       "end": "go build -o repoctx-cmd ./cmd/repoctx"
     },
     {
-      "id": "bounded-retrieval",
+      "id": "agent-workflow",
       "path": "ROADMAP.md",
-      "start": "## 1. Next roadmap priority: make bounded retrieval useful",
-      "end": "reference to the actionable requirement."
+      "start": "## 2. Test the actual agent workflow",
+      "end": "## 2. Test the actual agent workflow"
     },
     {
-      "id": "m4-12",
+      "id": "m4-13",
       "path": "ROADMAP.md",
-      "start": "- [ ] **M4-12 \u2014 Reproduce and fix remaining bounded-retrieval failures.** Replay",
-      "end": "  and budget failures; retain focused regression coverage for the decisive evidence."
+      "start": "- [ ] **M4-13 \u2014 Run a small paired workflow pilot.** Compare ordinary repository",
+      "end": "  use compilation when the task benefits from symbols and relationships."
     }
   ],
   "artifacts": [
@@ -354,7 +354,7 @@
       "runner_check_id": "go-vet-all"
     },
     {
-      "id": "repoctx:milestone.bounded-retrieval",
+      "id": "repoctx:milestone.agent-workflow",
       "kind": "component",
       "owner": "repoctx:maintainers",
       "applies_to": [
@@ -366,12 +366,12 @@
       "lifecycle": "active",
       "sensitivity": "public",
       "sources": [
-        "bounded-retrieval"
+        "agent-workflow"
       ],
       "declared_inputs": []
     },
     {
-      "id": "repoctx:requirement.m4-12-bounded-retrieval",
+      "id": "repoctx:requirement.m4-13-paired-pilot",
       "kind": "requirement",
       "owner": "repoctx:maintainers",
       "applies_to": [
@@ -383,7 +383,7 @@
       "lifecycle": "active",
       "sensitivity": "public",
       "sources": [
-        "m4-12"
+        "m4-13"
       ],
       "declared_inputs": []
     }
@@ -453,12 +453,12 @@
       ]
     },
     {
-      "from": "repoctx:milestone.bounded-retrieval",
-      "to": "repoctx:requirement.m4-12-bounded-retrieval",
+      "from": "repoctx:milestone.agent-workflow",
+      "to": "repoctx:requirement.m4-13-paired-pilot",
       "kind": "contains",
       "resolution": "declared",
       "sources": [
-        "m4-12"
+        "m4-13"
       ]
     }
   ]

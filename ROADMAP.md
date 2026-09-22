@@ -28,10 +28,11 @@ Start with the three [recorded context failures](docs/reports/m4-09-evidence.md)
 identifier noise, an answer-bearing window that did not fit, and a clipped
 reference to the actionable requirement.
 
-- [ ] **M4-12 — Reproduce and fix remaining bounded-retrieval failures.** Replay
+- [x] **M4-12 — Reproduce and fix remaining bounded-retrieval failures.** Replay
   the three recorded cases against current code before choosing fixes. Distinguish
   already-resolved cases from remaining identifier matching, window selection,
   and budget failures; retain focused regression coverage for the decisive evidence.
+  Evidence: [bounded retrieval replay](docs/reports/m4-12-bounded-retrieval.md).
 
 Prefer exact identifier matches when appropriate, useful query-centered windows,
 and enough room for evidence after response metadata. Preserve diverse relevant

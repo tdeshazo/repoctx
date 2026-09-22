@@ -11,9 +11,19 @@ import (
 type window struct{ start, end int }
 
 func queryTerms(query string) []string {
-	terms := strings.FieldsFunc(strings.ToLower(query), func(r rune) bool {
-		return !unicode.IsLetter(r) && !unicode.IsDigit(r)
-	})
+	terms := []string{}
+	for _, field := range strings.Fields(strings.ToLower(query)) {
+		field = strings.TrimFunc(field, func(r rune) bool {
+			return !unicode.IsLetter(r) && !unicode.IsDigit(r)
+		})
+		if isIdentifier(field) {
+			terms = append(terms, field)
+			continue
+		}
+		terms = append(terms, strings.FieldsFunc(field, func(r rune) bool {
+			return !unicode.IsLetter(r) && !unicode.IsDigit(r)
+		})...)
+	}
 	sort.Strings(terms)
 	unique := []string{}
 	for _, term := range terms {
@@ -22,6 +32,44 @@ func queryTerms(query string) []string {
 		}
 	}
 	return unique
+}
+
+func isIdentifier(field string) bool {
+	if field == "" || !strings.ContainsFunc(field, func(r rune) bool {
+		return !unicode.IsLetter(r) && !unicode.IsDigit(r)
+	}) {
+		return false
+	}
+	return strings.ContainsFunc(field, unicode.IsDigit) || strings.ContainsAny(field, "._/:#")
+}
+
+// queryIdentifiers retains punctuated query fields such as M4-12 as indivisible
+// ranking and window-selection signals. Ordinary punctuation at the edge of a
+// word is ignored, and plain words continue through the lexical term path.
+func queryIdentifiers(query string) []string {
+	identifiers := []string{}
+	for _, field := range strings.Fields(strings.ToLower(query)) {
+		field = strings.TrimFunc(field, func(r rune) bool {
+			return !unicode.IsLetter(r) && !unicode.IsDigit(r)
+		})
+		if !isIdentifier(field) {
+			continue
+		}
+		identifiers = append(identifiers, field)
+	}
+	sort.Strings(identifiers)
+	return identifiers
+}
+
+func identifierMatches(identifiers []string, path, text string) int {
+	path, text = strings.ToLower(path), strings.ToLower(text)
+	matches := 0
+	for _, identifier := range identifiers {
+		if strings.Contains(path, identifier) || strings.Contains(text, identifier) {
+			matches++
+		}
+	}
+	return matches
 }
 
 func lexical(terms []string, p, text string) ([]string, Score) {
@@ -62,6 +110,35 @@ func mergeWindows(windows []window) []window {
 		} else {
 			merged = append(merged, w)
 		}
+	}
+	return merged
+}
+
+// mergeDiscoveryWindows prevents nearby weak term matches from chaining a
+// query-centered excerpt into most of a file. Overlapping context still merges
+// when the union fits the size of one ordinary context window.
+func mergeDiscoveryWindows(windows []window, maxLines int) []window {
+	sort.Slice(windows, func(i, j int) bool {
+		if windows[i].start != windows[j].start {
+			return windows[i].start < windows[j].start
+		}
+		return windows[i].end < windows[j].end
+	})
+	merged := []window{}
+	for _, candidate := range windows {
+		if len(merged) == 0 {
+			merged = append(merged, candidate)
+			continue
+		}
+		last := &merged[len(merged)-1]
+		if candidate.start == last.start && candidate.end == last.end {
+			continue
+		}
+		if candidate.start <= last.end && max(last.end, candidate.end)-last.start <= maxLines {
+			last.end = max(last.end, candidate.end)
+			continue
+		}
+		merged = append(merged, candidate)
 	}
 	return merged
 }
@@ -111,6 +188,7 @@ func (e *engine) inspect(entry Entry) error {
 			windows = append(windows, window{start: start - 1, end: end})
 		}
 	} else {
+		identifierFocused := e.o.Operation == "discover" && len(e.identifiers) > 0
 		for line, start := range starts {
 			if err := e.ctx.Err(); err != nil {
 				return err
@@ -123,6 +201,8 @@ func (e *engine) inspect(entry Entry) error {
 			hit := false
 			if e.search != nil {
 				hit = e.search.MatchString(strings.TrimSuffix(text, "\n"))
+			} else if identifierFocused {
+				hit = identifierMatches(e.identifiers, "", text) > 0
 			} else {
 				_, s := lexical(e.terms, "", text)
 				hit = s.DistinctTerms > 0
@@ -140,7 +220,11 @@ func (e *engine) inspect(entry Entry) error {
 	}
 	digest := sha256.Sum256(b)
 	hash := hex.EncodeToString(digest[:])
-	for _, w := range mergeWindows(windows) {
+	selectedWindows := mergeWindows(windows)
+	if e.o.Operation == "discover" {
+		selectedWindows = mergeDiscoveryWindows(windows, 2*e.o.ContextLines+1)
+	}
+	for _, w := range selectedWindows {
 		start, end := starts[w.start], len(b)
 		if w.end < len(starts) {
 			end = starts[w.end]
@@ -164,6 +248,7 @@ func (e *engine) inspect(entry Entry) error {
 		}
 		if e.o.Operation == "discover" && e.o.Query != "" {
 			result.metadataRank = metadataRankValue
+			result.identifierMatches = identifierMatches(e.identifiers, entry.Path, text)
 		}
 		e.add(result)
 	}
