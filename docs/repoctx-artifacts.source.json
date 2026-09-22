@@ -75,10 +75,10 @@
       "end": "positive agent-performance claim."
     },
     {
-      "id": "m6-01",
+      "id": "m6-02",
       "path": "ROADMAP.md",
-      "start": "- [ ] **M6-01 — Define compatibility policy.** Version the Go API, repository IR,",
-      "end": "  completeness labels, or trust semantics."
+      "start": "- [ ] **M6-02 — Maintain conformance fixtures.** Test old supported indexes,",
+      "end": "  application-owned roots, policies, and payload caps across adapters."
     }
   ],
   "artifacts": [
@@ -343,7 +343,7 @@
       "declared_inputs": []
     },
     {
-      "id": "repoctx:requirement.m6-01-compatibility-policy",
+      "id": "repoctx:requirement.m6-02-conformance-fixtures",
       "kind": "requirement",
       "applies_to": [
         {
@@ -353,7 +353,7 @@
       ],
       "lifecycle": "active",
       "sources": [
-        "m6-01"
+        "m6-02"
       ],
       "declared_inputs": []
     }
@@ -424,11 +424,11 @@
     },
     {
       "from": "repoctx:milestone.m6-stabilization",
-      "to": "repoctx:requirement.m6-01-compatibility-policy",
+      "to": "repoctx:requirement.m6-02-conformance-fixtures",
       "kind": "contains",
       "resolution": "declared",
       "sources": [
-        "m6-01"
+        "m6-02"
       ]
     }
   ]

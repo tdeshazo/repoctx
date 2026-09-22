@@ -1,6 +1,10 @@
 package cli
 
-import "testing"
+import (
+	"testing"
+
+	"github.com/tdeshazo/repoctx/pkg/compat"
+)
 
 func TestCurrentBuildInfoUsesInjectedProvenance(t *testing.T) {
 	originalRelease := buildRelease
@@ -23,7 +27,14 @@ func TestCurrentBuildInfoUsesInjectedProvenance(t *testing.T) {
 		info.Modified != buildModified || info.Distribution != buildDistribution {
 		t.Fatalf("injected provenance lost: %+v", info)
 	}
-	if info.Version != buildInfoVersion || info.Contracts.IR != "repoctx.ir/v1alpha4" ||
+	if buildInfoVersion != "repoctx.build/v1alpha2" {
+		t.Fatalf("build info version = %q", buildInfoVersion)
+	}
+	if info.Version != buildInfoVersion || info.Contracts.GoAPI != compat.GoAPI ||
+		info.Contracts.IR != "repoctx.ir/v1alpha4" ||
+		info.Contracts.ArtifactAuthoring != "repoctx.artifact-authoring/v1alpha1" ||
+		info.Contracts.DocumentLinks != "repoctx.document-links/v1" ||
+		info.Contracts.GoImports != "repoctx.go-imports/v1" ||
 		info.Contracts.Obligations != "repoctx.obligations/v1alpha1" {
 		t.Fatalf("build contract incomplete: %+v", info)
 	}

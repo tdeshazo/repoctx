@@ -601,11 +601,12 @@ positive agent-performance claim.
 
 ### Work
 
-- [ ] **M6-01 — Define compatibility policy.** Version the Go API, repository IR,
+- [x] **M6-01 — Define compatibility policy.** Version the Go API, repository IR,
   agent context, and optional artifact/provider contracts explicitly. Specify
   supported readers, unknown-field handling, migrations, deprecations, and when
   recompilation is required. Do not silently redefine existing IDs, spans,
-  completeness labels, or trust semantics.
+  completeness labels, or trust semantics. Evidence: [compatibility policy](docs/COMPATIBILITY.md)
+  and [implementation record](docs/reports/m6-01-evidence.md).
 - [ ] **M6-02 — Maintain conformance fixtures.** Test old supported indexes,
   unsupported-version errors, JSON/Markdown projections, tokenizer callbacks,
   progressive disclosure, and provider capability negotiation. Preserve

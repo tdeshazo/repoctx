@@ -30,21 +30,28 @@ func TestRootAndLegacyVersionMatch(t *testing.T) {
 		Modified     string `json:"modified"`
 		Distribution string `json:"distribution"`
 		Contracts    struct {
-			IR          string `json:"ir"`
-			Context     string `json:"context"`
-			Discovery   string `json:"discovery"`
-			Artifacts   string `json:"artifacts"`
-			Obligations string `json:"obligations"`
+			GoAPI             string `json:"go_api"`
+			IR                string `json:"ir"`
+			Context           string `json:"context"`
+			Discovery         string `json:"discovery"`
+			Artifacts         string `json:"artifacts"`
+			ArtifactAuthoring string `json:"artifact_authoring"`
+			DocumentLinks     string `json:"document_links_provider"`
+			GoImports         string `json:"go_imports_provider"`
+			Obligations       string `json:"obligations"`
 		} `json:"contracts"`
 	}
 	if err := json.Unmarshal(root, &info); err != nil {
 		t.Fatal(err)
 	}
-	if info.Version != "repoctx.build/v1alpha1" || info.Program != "repoctx" ||
+	if info.Version != "repoctx.build/v1alpha2" || info.Program != "repoctx" ||
 		info.Release == "" || info.Revision == "" || info.Modified == "" ||
-		info.Distribution != "go" || info.Contracts.IR == "" ||
+		info.Distribution != "go" || info.Contracts.GoAPI == "" ||
+		info.Contracts.IR == "" ||
 		info.Contracts.Context == "" || info.Contracts.Discovery == "" ||
-		info.Contracts.Artifacts == "" || info.Contracts.Obligations == "" {
+		info.Contracts.Artifacts == "" || info.Contracts.ArtifactAuthoring == "" ||
+		info.Contracts.DocumentLinks == "" || info.Contracts.GoImports == "" ||
+		info.Contracts.Obligations == "" {
 		t.Fatalf("incomplete version output: %+v", info)
 	}
 	if got := runCommand(t, ".", "--version"); !bytes.HasPrefix(got, []byte("repoctx ")) {

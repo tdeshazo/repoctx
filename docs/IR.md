@@ -191,10 +191,11 @@ indexes; compressed byte count is unrelated to model context consumption.
 
 ## Compatibility
 
-Version 3 upgrades 24-hex truncated hashes to 64-hex SHA-256 and adds optional
-symbol receiver `r` and occurrence owner `o`. It also corrects source spans and
-lexical ownership. `compiler.Read` accepts version 2 for `stats` and `graph`, but
-agent serving requires version 3. Recompile older indexes; merely changing their
-version string does not establish the new invariants.
+The compiler writes `repoctx.ir/v1alpha4`. `compiler.Read` accepts v1alpha2,
+v1alpha3, and v1alpha4 for structural inspection, but agent serving requires a
+v1alpha4 compilation-input manifest. Recompile older indexes; merely changing a
+version string does not establish newer invariants. The complete supported
+reader, migration, and immutable-semantics rules are in the
+[compatibility policy](COMPATIBILITY.md).
 
 The public packages are `pkg/ir`, `pkg/compiler` and `pkg/agentctx`.

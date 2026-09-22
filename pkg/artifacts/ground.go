@@ -15,12 +15,16 @@ import (
 )
 
 const (
-	documentLinkProviderName    = "repoctx.document-links"
-	documentLinkProviderVersion = "repoctx.document-links/v1"
-	goImportProviderName        = "repoctx.go-imports"
-	goImportProviderVersion     = "repoctx.go-imports/v1"
-	defaultGroundingLimit       = 4096
-	maximumGroundingLimit       = 16384
+	// DocumentLinkProviderName identifies the Markdown link grounding provider.
+	DocumentLinkProviderName = "repoctx.document-links"
+	// DocumentLinkProviderVersion identifies its resolution and coverage semantics.
+	DocumentLinkProviderVersion = "repoctx.document-links/v1"
+	// GoImportProviderName identifies the Go import grounding provider.
+	GoImportProviderName = "repoctx.go-imports"
+	// GoImportProviderVersion identifies its resolution and coverage semantics.
+	GoImportProviderVersion = "repoctx.go-imports/v1"
+	defaultGroundingLimit   = 4096
+	maximumGroundingLimit   = 16384
 )
 
 // GroundOptions selects optional, non-executing relationship adapters. A nil
@@ -290,7 +294,7 @@ func (c *groundingCollector) addDocumentLinks(repo *ir.Repository) {
 		target, fragment, local, err := localDocumentTarget(from, raw)
 		if err != nil {
 			c.diagnostic(GroundingDiagnostic{
-				Code: "document_target_invalid", Provider: documentLinkProviderName,
+				Code: "document_target_invalid", Provider: DocumentLinkProviderName,
 				From: "file:" + from, Target: raw, Path: from,
 			})
 			continue
@@ -300,7 +304,7 @@ func (c *groundingCollector) addDocumentLinks(repo *ir.Repository) {
 		}
 		if !files[target] {
 			c.diagnostic(GroundingDiagnostic{
-				Code: "document_target_unavailable_in_index", Provider: documentLinkProviderName,
+				Code: "document_target_unavailable_in_index", Provider: DocumentLinkProviderName,
 				From: "file:" + from, Target: raw, Path: from,
 			})
 			continue
@@ -314,7 +318,7 @@ func (c *groundingCollector) addDocumentLinks(repo *ir.Repository) {
 			To:         to,
 			Kind:       "references",
 			Resolution: "syntactic",
-			Provider:   documentLinkProviderName,
+			Provider:   DocumentLinkProviderName,
 			Sites:      []GroundingSite{indexedSite(repo, edge.From)},
 		})
 	}
@@ -342,7 +346,7 @@ func (c *groundingCollector) addGoImports(repo *ir.Repository, modulePath string
 				code = "provider_target_ambiguous"
 			}
 			c.diagnostic(GroundingDiagnostic{
-				Code: code, Provider: goImportProviderName,
+				Code: code, Provider: GoImportProviderName,
 				From: from, Target: raw, Path: repo.String(file.Path),
 			})
 			continue
@@ -352,7 +356,7 @@ func (c *groundingCollector) addGoImports(repo *ir.Repository, modulePath string
 			To:          resolved[0],
 			Kind:        "depends_on",
 			Resolution:  "provider_resolved",
-			Provider:    goImportProviderName,
+			Provider:    GoImportProviderName,
 			ImportAlias: goImportAlias(repo, edge.From),
 			Sites:       []GroundingSite{indexedSite(repo, edge.From)},
 		})
@@ -485,12 +489,12 @@ func documentLinkProvider(repo *ir.Repository) (ProviderMetadata, error) {
 	if err := providerSupports(repo, ir.LangMarkdown, "document link"); err != nil {
 		return ProviderMetadata{}, err
 	}
-	inputID, err := providerInputID(repo, documentLinkProviderVersion, "")
+	inputID, err := providerInputID(repo, DocumentLinkProviderVersion, "")
 	if err != nil {
 		return ProviderMetadata{}, err
 	}
 	return ProviderMetadata{
-		Name: documentLinkProviderName, Version: documentLinkProviderVersion, InputID: inputID,
+		Name: DocumentLinkProviderName, Version: DocumentLinkProviderVersion, InputID: inputID,
 		Coverage: ProviderCoverage{
 			Languages: []string{"markdown"}, Kinds: []string{"references"},
 			Resolutions: []string{"syntactic"},
@@ -507,12 +511,12 @@ func goImportProvider(repo *ir.Repository, modulePath string) (ProviderMetadata,
 	if err := providerSupports(repo, ir.LangGo, "go import"); err != nil {
 		return ProviderMetadata{}, err
 	}
-	inputID, err := providerInputID(repo, goImportProviderVersion, modulePath)
+	inputID, err := providerInputID(repo, GoImportProviderVersion, modulePath)
 	if err != nil {
 		return ProviderMetadata{}, err
 	}
 	return ProviderMetadata{
-		Name: goImportProviderName, Version: goImportProviderVersion, InputID: inputID,
+		Name: GoImportProviderName, Version: GoImportProviderVersion, InputID: inputID,
 		Coverage: ProviderCoverage{
 			Languages: []string{"go"}, Kinds: []string{"depends_on"},
 			Resolutions: []string{"provider_resolved"},

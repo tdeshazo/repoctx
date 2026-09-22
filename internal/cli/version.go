@@ -10,12 +10,13 @@ import (
 
 	"github.com/tdeshazo/repoctx/pkg/agentctx"
 	"github.com/tdeshazo/repoctx/pkg/artifacts"
+	"github.com/tdeshazo/repoctx/pkg/compat"
 	"github.com/tdeshazo/repoctx/pkg/compiler"
 	"github.com/tdeshazo/repoctx/pkg/discovery"
 	"github.com/tdeshazo/repoctx/pkg/obligation"
 )
 
-const buildInfoVersion = "repoctx.build/v1alpha1"
+const buildInfoVersion = "repoctx.build/v1alpha2"
 
 // These defaults describe an ordinary local Go build. Release tooling may set
 // them with -ldflags -X; the values remain descriptive and unauthenticated.
@@ -27,11 +28,15 @@ var (
 )
 
 type contractVersions struct {
-	IR          string `json:"ir"`
-	Context     string `json:"context"`
-	Discovery   string `json:"discovery"`
-	Artifacts   string `json:"artifacts"`
-	Obligations string `json:"obligations"`
+	GoAPI             string `json:"go_api"`
+	IR                string `json:"ir"`
+	Context           string `json:"context"`
+	Discovery         string `json:"discovery"`
+	Artifacts         string `json:"artifacts"`
+	ArtifactAuthoring string `json:"artifact_authoring"`
+	DocumentLinks     string `json:"document_links_provider"`
+	GoImports         string `json:"go_imports_provider"`
+	Obligations       string `json:"obligations"`
 }
 
 type buildInfo struct {
@@ -103,11 +108,15 @@ func currentBuildInfo() buildInfo {
 		GoVersion:    runtime.Version(),
 		Platform:     runtime.GOOS + "/" + runtime.GOARCH,
 		Contracts: contractVersions{
-			IR:          compiler.IRVersion,
-			Context:     agentctx.Version,
-			Discovery:   discovery.Version,
-			Artifacts:   artifacts.Version,
-			Obligations: obligation.Version,
+			GoAPI:             compat.GoAPI,
+			IR:                compiler.IRVersion,
+			Context:           agentctx.Version,
+			Discovery:         discovery.Version,
+			Artifacts:         artifacts.Version,
+			ArtifactAuthoring: artifacts.AuthoringVersion,
+			DocumentLinks:     artifacts.DocumentLinkProviderVersion,
+			GoImports:         artifacts.GoImportProviderVersion,
+			Obligations:       obligation.Version,
 		},
 	}
 }
@@ -127,11 +136,15 @@ func writeBuildInfoText(info buildInfo) {
 	fmt.Printf("go: %s\n", info.GoVersion)
 	fmt.Printf("platform: %s\n", info.Platform)
 	fmt.Printf(
-		"contracts: ir=%s context=%s discovery=%s artifacts=%s obligations=%s\n",
+		"contracts: go-api=%s ir=%s context=%s discovery=%s artifacts=%s artifact-authoring=%s document-links=%s go-imports=%s obligations=%s\n",
+		info.Contracts.GoAPI,
 		info.Contracts.IR,
 		info.Contracts.Context,
 		info.Contracts.Discovery,
 		info.Contracts.Artifacts,
+		info.Contracts.ArtifactAuthoring,
+		info.Contracts.DocumentLinks,
+		info.Contracts.GoImports,
 		info.Contracts.Obligations,
 	)
 }
