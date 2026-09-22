@@ -27,10 +27,12 @@ authority. A parser must not promote repository prose into instructions.
 
 In the research architecture, the source index and optional artifact model supply
 part of the canonical repository context IR (R-CIR); task selection produces the
-prompt/context IR (PIR). Execution capabilities (EIR) and software-result
-verification (OIR) remain harness-owned. repoctx may describe obligations and
-consume externally produced evidence without granting permissions or executing
-repository commands.
+prompt/context IR (PIR). M0-M6 establish that evidence-focused core. The
+target-state expansion in M7-M11 adds canonical repository semantics, policy-aware
+views, and non-executing execution/verification plans (EIR/OIR). A trusted harness
+continues to own permissions, process execution, observations, approvals, and the
+authenticity of returned results. repoctx may compile and validate those contracts
+without granting a repository authority over the harness.
 
 Optional file-backed evidence integration belongs in the model-neutral adapter
 and agent workflow documentation. The harness owns session checkpoints, plans,
@@ -62,8 +64,9 @@ The repository artifact declaration model is not a session evidence store.
 
 - Building an autonomous coding agent, general workflow engine, or policy
   enforcement service inside repoctx.
-- Running repository-provided build, test, plugin, or shell commands during
-  ordinary compilation or retrieval.
+- Directly running repository-provided build, test, plugin, or shell commands.
+  repoctx may compile caller-authorized command and check plans for a separate
+  trusted runner, but plan construction never grants execution permission.
 - Claiming complete runtime semantics across all supported languages.
 - Requiring embeddings, a model API, a vector database, or a long-running server
   for the core local workflow.
@@ -109,10 +112,21 @@ infrastructure starts in M0 rather than waiting until optimization.
 | M4 | Next | Controlled retrieval and agent-outcome evaluation | M1 and M2; M3 for artifact-specific claims | Proposed |
 | M5 | Later, evidence-gated | Incremental compilation and efficient repeated serving | M2 and a measured M4 bottleneck | Proposed |
 | M6 | Release gate | Stable contracts, supported distribution, and maintainability | Relevant preceding gates for each shipped capability | Proposed |
+| M7 | Target expansion | Canonical manifest and repository semantic model | M3 and current-contract conformance | Proposed |
+| M8 | Target expansion | Authority, trust, validation, and provenance policy | M7 | Proposed |
+| M9 | Target expansion | Multi-view semantic analysis and explainable task planning | M7 and M8 | Proposed |
+| M10 | Target expansion | Non-executing EIR/OIR lowering and result ingestion | M7 and M8 | Proposed |
+| M11 | Target expansion | Vendor projections and reviewed maintenance feedback | M9 and M10 | Proposed |
 
 A release may ship a completed subset. Untested optional providers and service
 features must remain experimental or disabled. Stable protocol behavior does
 not, by itself, justify a performance or task-success claim.
+
+M7-M11 are new target-state work, not retroactive requirements for completed
+M0-M5 gates. Finish the outstanding M4 evidence gates and M6-03/M6-04 release
+work before treating the expansion as the next delivery sequence. Each expansion
+milestone must reuse existing identities, evidence spans, diagnostics, and caller
+authority boundaries instead of creating parallel representations.
 
 ## 4. M0 — Establish reproducible contracts and evaluation fixtures
 
@@ -644,7 +658,244 @@ positive agent-performance claim.
 - [ ] Every release claim links to a test, fixture, evaluation report, or stated
   limitation appropriate to that claim.
 
-## 11. Cross-cutting release gates
+## 11. M7 — Compile a canonical repository model
+
+**Objective:** Turn the optional artifact catalog and source index into one
+model-neutral R-CIR without making repository metadata self-authorizing.
+
+**Primary surfaces:** A bounded `agent-context.yaml` manifest, typed document
+frontmatter, `pkg/artifacts`, `pkg/ir`, compiler input identity, and migration of
+the existing deterministic artifact-authoring workflow.
+
+### Work
+
+- [ ] **M7-01 — Define the canonical manifest contract.** Specify a strict,
+  bounded, schema-validated `agent-context.yaml` that declares source roots,
+  artifact sources, components, provider inputs, derived views, and supported
+  capabilities. Separate authored semantic fields from generated hashes and
+  coordinates. Unknown or duplicate fields, unsafe aliases, excessive nesting,
+  and unavailable inputs must fail with bounded diagnostics.
+- [ ] **M7-02 — Add typed repository entities.** Compile document frontmatter,
+  components, decisions, contracts, requirements, verification obligations,
+  owners, scopes, lifecycle, supersession, sensitivity, and freshness into stable
+  R-CIR entities. Preserve the existing syntax graph and source-only workflow;
+  every semantic assertion retains its exact source and declaration status.
+- [ ] **M7-03 — Unify artifact authoring and compilation.** Make the current
+  deterministic artifact generator an input adapter for the canonical model,
+  with one semantic declaration path and no agent-authored hashes or coordinates.
+  Detect duplicate identity across manifests, generated catalogs, and document
+  frontmatter rather than selecting one by load order.
+- [ ] **M7-04 — Expand compilation identity.** Record optional Git revision and
+  dirty state, submodules, toolchain and target profiles, policy identity, provider
+  inputs, and declared negative dependencies. Keep content identity usable without
+  Git and distinguish reproducibility metadata from authentication.
+- [ ] **M7-05 — Publish R-CIR diagnostics and migration evidence.** Add schemas,
+  conformance fixtures, malformed/adversarial manifest tests, source maps, and a
+  dogfood manifest for repoctx. Because development contracts are unstable, use a
+  new current contract and rebuild rather than adding compatibility readers.
+
+### Acceptance gates
+
+- [ ] One canonical compile produces syntax, document, artifact, ownership,
+  lifecycle, and freshness entities with exact source provenance and no duplicate
+  source of truth.
+- [ ] Reordering declarations or relocating an identical checkout does not change
+  semantic output; changing any meaning-bearing input invalidates the affected
+  identity or reports the dependency as unavailable.
+- [ ] Repository metadata cannot activate providers, authorize commands, widen
+  scope, or promote itself from a claim to trusted policy.
+- [ ] Repositories without a canonical manifest retain the bounded source-only
+  workflow and advertise unavailable semantic capabilities explicitly.
+
+## 12. M8 — Resolve authority, trust, and provenance
+
+**Objective:** Produce policy-filtered views whose authority and disclosure
+decisions are explicit, reproducible, and controlled outside repository content.
+
+**Primary surfaces:** Trusted policy profiles, branch and source trust classes,
+scope/ACL enforcement, validation gates, diagnostics, and attestable compilation
+provenance.
+
+### Work
+
+- [ ] **M8-01 — Define trusted authority profiles.** Add caller-owned inputs for
+  accepted artifact IDs, owner identities, precedence rules, branch/source trust,
+  lifecycle policy, and conflict handling. Resolve normative, advisory, generated,
+  and historical material without using file order or repository claims as trust.
+- [ ] **M8-02 — Enforce sensitivity before derivation.** Apply path, component,
+  artifact, and sensitivity ACLs before parsing optional content, indexing text,
+  constructing graphs, caching fragments, or emitting diagnostics. Prove that
+  denied names and derived metadata cannot cross authority scopes.
+- [ ] **M8-03 — Add validation and gating adapters.** Define bounded interfaces
+  for schema/link validation, freshness checks, secret scanning, and policy checks.
+  Providers report version, authenticated configuration identity, coverage, and
+  unavailable/blocked results; repository declarations cannot load or execute a
+  provider.
+- [ ] **M8-04 — Standardize compiler diagnostics.** Preserve stable diagnostic
+  codes, severity, exact source locations, responsible pass/provider, affected
+  capability, and remediation category. Add a SARIF projection without treating
+  SARIF output as proof that a check ran successfully.
+- [ ] **M8-05 — Emit optional provenance attestations.** Bind canonical inputs,
+  compiler and provider identities, policy profile, derived-view digests, and
+  output contracts in a signable statement. Signing and key trust remain caller
+  responsibilities; unsigned hashes remain consistency evidence only.
+
+### Acceptance gates
+
+- [ ] Base/head branch fixtures demonstrate that untrusted changes cannot grant
+  themselves authority, reveal denied content, activate providers, or weaken a
+  required gate.
+- [ ] Conflicts, supersession, stale inputs, unavailable validators, and filtered
+  entities remain visible in diagnostics and capability/coverage metadata.
+- [ ] Cache keys and generated views include the effective authority scope and
+  policy identity; no test exposes content or metadata across incompatible scopes.
+- [ ] A verifier can reproduce every attestation subject from declared inputs and
+  distinguish unsigned consistency metadata from authenticated provenance.
+
+## 13. M9 — Build semantic views and explainable task plans
+
+**Objective:** Move from lexical-plus-syntax retrieval to capability-aware task
+planning across repository structure, while retaining deterministic fallbacks.
+
+**Primary surfaces:** Provider graph, derived-view manifest, task classifier,
+retrieval planner, explanation records, and dependency-aware invalidation.
+
+### Work
+
+- [ ] **M9-01 — Add demand-driven semantic providers.** Define providers for
+  build/test targets, ownership, contracts, and mature SCIP/LSP symbol coverage.
+  Keep declared, syntactic, heuristic, and provider-resolved edges distinct and
+  publish per-language and per-component coverage.
+- [ ] **M9-02 — Materialize named derived views.** Produce content-addressed
+  lexical, structural, build, contract, diagnostic, and summary views with one
+  capability manifest. Add dense retrieval only after a held-out comparison shows
+  a gap that the deterministic views cannot meet under the same trust policy.
+- [ ] **M9-03 — Classify and resolve task scope.** Convert task text and explicit
+  caller facts into a bounded change class, candidate components, applicable
+  artifacts, authority decisions, freshness requirements, and verification needs.
+  Ambiguity yields alternatives or a required clarification, not an invented fact.
+- [ ] **M9-04 — Emit complete selection explanations.** For every included,
+  excluded, or fallback item, expose the retrieval seed, graph/dependency path,
+  scope and authority decision, freshness state, protected spans, budget cost,
+  provider coverage, and competing evidence. Retain the current concise bundle
+  format and make detailed explanations separately retrievable by stable ID.
+- [ ] **M9-05 — Understand documentation routing.** Compile document IDs,
+  frontmatter relations, topic maps, generated-catalog status, and canonical-leaf
+  precedence. Add a regression where a broad architecture query selects primary
+  topic leaves rather than spending its budget on a generated catalog containing
+  repeated terms.
+- [ ] **M9-06 — Invalidate dependent views precisely.** Track source-to-entity,
+  entity-to-edge, provider-input, and view dependencies so a change rebuilds every
+  affected view without discarding unrelated content. Clean and incremental
+  compilation must remain canonically identical.
+
+### Acceptance gates
+
+- [ ] Held-out tasks demonstrate source-linked component, build/test, ownership,
+  contract, and diagnostic retrieval with explicit provider coverage and no
+  promotion of heuristic edges to verified semantics.
+- [ ] Every selected item answers why it was included, why a stronger-looking
+  alternative was excluded, which authority/freshness decision applied, and what
+  evidence or capability was unavailable.
+- [ ] The documentation-routing dogfood query reaches canonical leaves within its
+  declared budget and records generated indexes as routing aids rather than
+  primary evidence when authoritative leaves are available.
+- [ ] New views meet M4 quality and safety decision rules; dense or learned
+  retrieval remains optional unless it improves a predeclared workload without
+  violating scope, provenance, or quality guardrails.
+
+## 14. M10 — Lower executable and verification plans
+
+**Objective:** Compile non-executing EIR/OIR contracts that a separately trusted
+harness can inspect, authorize, execute, and return as authenticated observations.
+
+**Primary surfaces:** Command/check registry, EIR and OIR schemas, task-plan
+lowering, runner capability negotiation, and result/evidence ingestion.
+
+### Work
+
+- [ ] **M10-01 — Define trusted command and check registries.** Model command IDs,
+  arguments, working directories, environment requirements, timeouts, network and
+  filesystem capabilities, caches, target platforms, and output contracts.
+  Repository declarations remain inactive until a caller-owned registry accepts
+  them; raw shell text is never authority.
+- [ ] **M10-02 — Define EIR.** Lower a task plan into exact commands, environment
+  and worktree requirements, capability requests, sandbox expectations, cache
+  identities, prerequisites, and observability handles. The EIR is data and cannot
+  execute itself or imply that requested permissions were granted.
+- [ ] **M10-03 — Define OIR.** Represent required/optional/unavailable tests,
+  schemas, compatibility checks, diagnostics, acceptance criteria, review owners,
+  SBOM/provenance requirements, expected statuses, waivers, and evidence formats.
+  Bind every obligation to task, snapshot, artifact, and source identities.
+- [ ] **M10-04 — Ingest runner observations.** Validate signed or caller-authenticated
+  results containing registry identity, resolved command/check, environment,
+  timestamps, exit status, diagnostics, logs/artifacts, and incomplete/skipped
+  reasons. Never infer success from a declaration, missing result, or zero
+  diagnostics alone.
+- [ ] **M10-05 — Ship a reference harness adapter.** Demonstrate capability
+  negotiation and result round-tripping with a fake/non-privileged runner. Keep
+  process launching outside core packages and include denial, timeout, stale plan,
+  mismatched snapshot, and tampered-result fixtures.
+
+### Acceptance gates
+
+- [ ] Identical trusted inputs produce identical EIR/OIR; repository changes,
+  policy changes, or runner-capability changes invalidate or relower the plan.
+- [ ] No repoctx API or CLI executes a planned command, grants a capability,
+  claims a check passed without a bound result, or hides a skipped prerequisite.
+- [ ] A trusted harness can map each observation back to the exact task, source
+  generation, registry entry, environment profile, and verification obligation.
+- [ ] Adversarial fixtures cannot smuggle executable syntax through IDs,
+  arguments, environment fields, projections, logs, or diagnostic text.
+
+## 15. M11 — Generate projections and reviewed improvements
+
+**Objective:** Lower canonical, authority-resolved context into consumer-specific
+forms without making projections canonical or silently rewriting policy.
+
+**Primary surfaces:** Projection interface, AGENTS/Claude/Copilot/Gemini targets,
+capability negotiation, drift detection, and reviewable maintenance proposals.
+
+### Work
+
+- [ ] **M11-01 — Define a projection contract.** Separate a small trusted
+  imperative core from task contracts, repository evidence, execution affordances,
+  and verification obligations. Every target advertises representable features,
+  omissions, size limits, escaping rules, and source-map support.
+- [ ] **M11-02 — Generate vendor instruction projections.** Emit deterministic
+  AGENTS, Claude, Copilot, and Gemini forms only from caller-approved policy and
+  canonical entities. Retrieved repository prose remains quoted data. Generated
+  files carry source/profile identities and must not become a second authority.
+- [ ] **M11-03 — Test equivalence and drift.** Add golden and metamorphic fixtures
+  proving common semantics survive every projection, target-specific loss is
+  explicit, injection-shaped source stays data, and checked-in projections fail
+  validation when their canonical inputs change.
+- [ ] **M11-04 — Add runtime capability negotiation.** Select projections and
+  fallback evidence from declared consumer limits rather than vendor-name guesses.
+  Unsupported EIR/OIR or source-map features remain visible and cannot be silently
+  discarded.
+- [ ] **M11-05 — Produce reviewed maintenance proposals.** Convert recurring
+  retrieval failures, stale declarations, broken relationships, and projection
+  drift into source-linked proposed patches or diagnostics. Require an owner and
+  ordinary review before changing canonical authority, policy, or evaluation
+  expectations; never self-apply guidance changes.
+- [ ] **M11-06 — Evaluate and release the expanded compiler.** Extend M4 trials to
+  semantic views, EIR/OIR handoff, projections, and compaction recovery. Complete
+  distribution, security, provenance, and maintenance evidence for every newly
+  advertised target before declaring it supported.
+
+### Acceptance gates
+
+- [ ] Cross-target fixtures preserve canonical authority, scope, trust, evidence,
+  and verification semantics; all lossy lowering is machine-visible.
+- [ ] Repository-controlled text cannot enter an imperative instruction lane or
+  gain permissions through any projection.
+- [ ] Generated projections are reproducible, source-linked, drift-checked, and
+  replaceable without changing canonical R-CIR/PIR/EIR/OIR identities.
+- [ ] Maintenance output is a reviewable proposal with evidence and ownership,
+  never an unreviewed mutation or a task-success claim.
+
+## 16. Cross-cutting release gates
 
 These apply throughout the roadmap, not only at M6.
 
@@ -659,7 +910,7 @@ These apply throughout the roadmap, not only at M6.
 | Contract changes | Changed wire meanings receive a new identifier and current-version conformance coverage |
 | Outcome claims | Correctness, cost, latency, and software success are independently supported rather than inferred from index size |
 
-## 12. Deferred directions
+## 17. Deferred directions
 
 The following require an evaluation-backed proposal rather than automatic
 inclusion in the core:
@@ -672,16 +923,14 @@ inclusion in the core:
   tasks that bounded symbol discovery, exact symbol expansion, source regex, and
   existing graph traversal cannot satisfy. Keep any future syntax explicitly
   language-aware and result-bounded rather than presenting it as semantic proof.
-- **Vendor-specific adapters or MCP transport:** when integrations require them;
-  they must preserve the same evidence and trust contracts.
-- **Generated agent instruction projections:** only from separately approved
-  policy sources, never by promoting retrieved repository text into instructions.
+- **MCP or other remote transport:** when integrations require it; transport must
+  preserve the same evidence, policy, capability-negotiation, and trust contracts.
 - **Learned summaries, latent context, or KV artifacts:** after sufficient,
   source-linked textual evidence and model-specific evaluation exist.
 - **Automated guidance tuning:** only with held-out evaluation, reviewed changes,
   and no silent self-modification of authoritative repository artifacts.
 
-## 13. Execution and maintenance
+## 18. Execution and maintenance
 
 Start with three small implementation tracks: baseline/fixtures and reproduction
 of the suspected import-site issue; document units plus body-text retrieval; and
@@ -719,7 +968,7 @@ deliberately does not interpret repository ignore files.
 traceable, bounded evidence, with complete input identity and visible limitations.
 More indexed bytes, more graph edges, or fewer tokens alone do not establish it.
 
-## Baseline source references
+## 19. Baseline source references
 
 These links are repository-relative for use at the repository root. The baseline
 commit above identifies the versions reviewed; linked files will evolve as the
