@@ -144,17 +144,33 @@ func TestExactEvidenceAndBatchedReads(t *testing.T) {
 
 func TestReadRangeEOFRecovery(t *testing.T) {
 	o := DefaultOptions()
-	o.Root = fixture(t, map[string]string{"doc.txt": "one\ntwo\nthree"})
+	o.Root = fixture(t, map[string]string{
+		"doc.txt":   "one\ntwo\nthree",
+		"empty.txt": "",
+		"short.txt": "one",
+	})
 	o.Operation = "read"
-	o.Reads = []ReadRequest{{Path: "doc.txt", StartLine: 2, EndLine: 9}}
+	o.Reads = []ReadRequest{
+		{Path: "doc.txt", StartLine: 2, EndLine: 9},
+		{Path: "empty.txt", StartLine: 1, EndLine: 2},
+		{Path: "short.txt", StartLine: 4},
+	}
 	_, err := Run(context.Background(), o)
 	var usage *UsageError
 	if !errors.As(err, &usage) {
 		t.Fatalf("expected usage error, got %v", err)
 	}
-	if !strings.Contains(err.Error(), "line range exceeds observed file \"doc.txt\" (3 lines)") ||
-		!strings.Contains(err.Error(), "-file 'doc.txt:2:0' to read through EOF") {
-		t.Fatalf("missing actionable EOF recovery hint: %v", err)
+	for _, want := range []string{
+		"requested end line 9 for 'doc.txt:2:9' exceeds observed file \"doc.txt\" (3 lines)",
+		"-file 'doc.txt:2:0' to read through EOF",
+		"requested end line 2 for 'empty.txt:1:2' exceeds observed file \"empty.txt\" (1 line)",
+		"-file 'empty.txt:1:0' to read through EOF",
+		"requested start line 4 for 'short.txt:4:0' exceeds observed file \"short.txt\" (1 line)",
+		"choose a start line from 1 through 1",
+	} {
+		if !strings.Contains(err.Error(), want) {
+			t.Fatalf("missing range recovery detail %q: %v", want, err)
+		}
 	}
 
 	o.Reads = []ReadRequest{{Path: "doc.txt", StartLine: 2, EndLine: 0}}
@@ -165,6 +181,16 @@ func TestReadRangeEOFRecovery(t *testing.T) {
 	evidence := r.Response.Results[0].Evidence
 	if evidence.Text != "two\nthree" || evidence.StartLine != 2 || evidence.EndLine != 3 {
 		t.Fatalf("EOF recovery did not preserve exact requested bytes: %+v", evidence)
+	}
+
+	o.Reads = []ReadRequest{{Path: "empty.txt", StartLine: 1, EndLine: 0}}
+	r = run(t, o)
+	if len(r.Response.Results) != 1 {
+		t.Fatalf("unexpected empty-file EOF result: %+v", r.Response.Results)
+	}
+	evidence = r.Response.Results[0].Evidence
+	if evidence.Text != "" || evidence.StartLine != 1 || evidence.EndLine != 1 {
+		t.Fatalf("empty-file EOF read changed its observed span: %+v", evidence)
 	}
 }
 

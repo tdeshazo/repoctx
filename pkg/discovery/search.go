@@ -21,6 +21,20 @@ func shellQuote(value string) string {
 	return "'" + strings.ReplaceAll(value, "'", "'\"'\"'") + "'"
 }
 
+func readRangeLabel(request ReadRequest) string {
+	if request.StartLine == 0 && request.EndLine == 0 {
+		return request.Path
+	}
+	return request.Path + ":" + strconv.Itoa(request.StartLine) + ":" + strconv.Itoa(request.EndLine)
+}
+
+func observedLineCount(count int) string {
+	if count == 1 {
+		return "1 line"
+	}
+	return strconv.Itoa(count) + " lines"
+}
+
 func queryTerms(query string) []string {
 	terms := []string{}
 	for _, field := range strings.Fields(strings.ToLower(query)) {
@@ -240,6 +254,7 @@ func (e *engine) inspect(entry Entry) error {
 	}
 	windows := []window{}
 	if e.o.Operation == "read" {
+		invalidRange := false
 		for _, request := range requests {
 			start, end := request.StartLine, request.EndLine
 			if start == 0 {
@@ -249,23 +264,28 @@ func (e *engine) inspect(entry Entry) error {
 				end = len(starts)
 			}
 			if start > len(starts) {
-				return invalid(
-					"line range exceeds observed file %q (%d lines); choose a start line from 1 through %d",
-					entry.Path,
-					len(starts),
-					len(starts),
-				)
+				e.rangeErrors[request] = "requested start line " + strconv.Itoa(start) +
+					" for " + shellQuote(readRangeLabel(request)) +
+					" exceeds observed file " + strconv.Quote(entry.Path) +
+					" (" + observedLineCount(len(starts)) + "); choose a start line from 1 through " +
+					strconv.Itoa(len(starts))
+				invalidRange = true
+				continue
 			}
 			if end > len(starts) {
 				followUp := entry.Path + ":" + strconv.Itoa(start) + ":0"
-				return invalid(
-					"line range exceeds observed file %q (%d lines); retry with -file %s to read through EOF",
-					entry.Path,
-					len(starts),
-					shellQuote(followUp),
-				)
+				e.rangeErrors[request] = "requested end line " + strconv.Itoa(end) +
+					" for " + shellQuote(readRangeLabel(request)) +
+					" exceeds observed file " + strconv.Quote(entry.Path) +
+					" (" + observedLineCount(len(starts)) + "); retry with -file " +
+					shellQuote(followUp) + " to read through EOF"
+				invalidRange = true
+				continue
 			}
 			windows = append(windows, window{start: start - 1, end: end})
+		}
+		if invalidRange {
+			return nil
 		}
 	} else {
 		identifierFocused := e.o.Operation == "discover" && len(e.identifiers) > 0

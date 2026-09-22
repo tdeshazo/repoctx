@@ -25,6 +25,7 @@ type engine struct {
 	terms         []string
 	identifiers   []string
 	requested     map[string][]ReadRequest
+	rangeErrors   map[ReadRequest]string
 	found         map[string]bool
 	ignoreBuffers map[string][]byte
 	resultLimit   bool
@@ -52,7 +53,7 @@ func Run(ctx context.Context, options Options) (ResultSet, error) {
 	}
 	defer root.Close()
 	e := &engine{
-		ctx: ctx, root: root, o: o, requested: map[string][]ReadRequest{}, found: map[string]bool{},
+		ctx: ctx, root: root, o: o, requested: map[string][]ReadRequest{}, rangeErrors: map[ReadRequest]string{}, found: map[string]bool{},
 		ignoreBuffers: map[string][]byte{},
 		response: Response{
 			Version: Version, Options: o, Overview: []Entry{}, Results: []Result{}, Omissions: []Omission{},
@@ -84,6 +85,18 @@ func Run(ctx context.Context, options Options) (ResultSet, error) {
 	}
 	if err := e.walk(".", nil, nil); err != nil {
 		return ResultSet{}, err
+	}
+	if len(e.rangeErrors) > 0 {
+		messages := make([]string, 0, len(e.rangeErrors))
+		seen := map[string]bool{}
+		for _, request := range o.Reads {
+			message, isInvalid := e.rangeErrors[request]
+			if isInvalid && !seen[message] {
+				messages = append(messages, message)
+				seen[message] = true
+			}
+		}
+		return ResultSet{}, invalid("invalid read ranges:\n- %s", strings.Join(messages, "\n- "))
 	}
 	if o.Operation == "discover" && o.Query != "" {
 		e.response.Results = diversifyDiscoveryResults(e.response.Results)
