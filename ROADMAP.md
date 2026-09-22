@@ -32,18 +32,24 @@ earlier M6-07 directed pass does not establish reliable EOF handling across task
 See the [actionable feedback](docs/reports/real-repoctx-skill-2026-09-22-feedback.md)
 for evidence, limitations, and verification criteria.
 
-- [ ] **First: fix recurring EOF read friction.** Inspect the evaluated version
-  and failed commands, reproduce the errors, and make valid bounded retries
-  obvious. Verify exact spans, output limits, and recovery on fresh agent tasks.
-- [ ] **Next: reduce demonstrated retrieval overhead.** Inspect the largest
-  regressions and apparent wins before changing guidance. Remove observed
-  redundant work and retain the stop rule for sufficient or known-file evidence.
-- [ ] **Before rerunning: repair external harness accounting.** Reconcile PATH
-  and explicit-path invocations to 37 commands and 39 subcommands; distinguish
-  the 11 Repoctx EOF failures from the one downstream public-check failure.
-- [ ] **Then: run a controlled comparison.** Pin versions, isolate treatment
-  changes, interleave repeated trials, and freeze fresh tasks and decision rules.
-  Report correctness, usage components, time, and compilation cost separately.
+- [x] **Report all invalid ranges in a batched read.** The [EOF correction](pkg/discovery/search.go)
+  gives a through-EOF retry for each oversized end; focused tests cover multiple
+  invalid ranges, empty files, and starts beyond EOF. Fresh agent recovery remains
+  to be checked.
+- [x] **Inspect retrieval traces and narrow the skill guidance.** The
+  [four-task trace review](docs/reports/real-repoctx-skill-2026-09-22-retrieval-traces.md)
+  records repeated reads and failed batches. The [skill](skills/repoctx/SKILL.md)
+  now asks for missing lines only and a single corrected batch retry. Measure
+  any token or call savings on fresh matched tasks.
+- [x] **Replay saved tool-call accounting.** The [accounting utility](scripts/README.md)
+  reproduces 37 command events, 39 subcommands, 11 EOF failures, and one
+  downstream failure. Wire equivalent counting into the external live harness
+  before its next run; this repository cannot change that harness in place.
+- [x] **Freeze a controlled comparison design.** The
+  [protocol and schedule freezer](evals/real-skill-comparison/README.md) specify
+  pinned inputs, matched conditions, balanced order, repeats, and cost fields.
+  Fresh task definitions, a runtime runner, and actual trials remain open;
+  no comparative effect has been measured under this protocol.
 
 ## 1. Bounded retrieval corrections
 
