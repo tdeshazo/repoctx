@@ -87,6 +87,18 @@ class RepoctxCallAccountingTests(unittest.TestCase):
             ["eof_read", "eof_read"],
         )
 
+    def test_successful_shell_event_with_eof_text_is_not_a_failure(self):
+        with tempfile.TemporaryDirectory() as directory:
+            events = Path(directory) / "events.jsonl"
+            row = command_event("item_1", "repoctx read -file x:5:99", 0,
+                                "requested end line 99 exceeds observed file (20 lines)")
+            events.write_text(json.dumps(row) + "\n", encoding="utf-8")
+
+            report = ACCOUNTING.build_report([events])
+
+        self.assertEqual(report["summary"]["eof_read_failures"], 0)
+        self.assertIsNone(report["events"][0]["failure_class"])
+
 
 if __name__ == "__main__":
     unittest.main()

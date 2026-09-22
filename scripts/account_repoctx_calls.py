@@ -171,8 +171,8 @@ def account_event_file(path: Path) -> list[dict[str, Any]]:
 
         output = _event_output(item)
         exit_code = item.get("exit_code")
-        eof_failure = "read" in subcommands and has_eof_error(output)
         failed = type(exit_code) is int and exit_code != 0
+        eof_failure = failed and "read" in subcommands and has_eof_error(output)
         records.append({
             "source": str(path),
             "line": line_number,
