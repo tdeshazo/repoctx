@@ -1,10 +1,10 @@
 # Real-repository skill evaluation: actionable feedback
 
-Recorded 2026-09-22 from the external
-[no-prefill follow-up report](/home/travis/Workspace/evals/reports/real-repoctx-skill-2026-09-22-v2/REPORT.md).
+Recorded 2026-09-22 from the external no-prefill follow-up report at
+`~/Workspace/evals/reports/real-repoctx-skill-2026-09-22-v2/REPORT.md`.
 This feedback reviews that report and the current repository guidance; it does
-not independently audit the saved trials. The source link requires the local
-evaluation workspace. The findings needed for these actions are retained below.
+not independently audit the saved trials. The source requires the local
+evaluation workspace; the findings needed for these actions are retained below.
 
 ## Evidence and decision
 
