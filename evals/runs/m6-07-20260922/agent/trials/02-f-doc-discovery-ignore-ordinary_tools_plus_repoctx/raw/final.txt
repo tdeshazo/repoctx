@@ -1,0 +1,7 @@
+In a normal discovery run:
+
+- Hidden entries are excluded by default. `--hidden` includes them, except `.git`.
+- Local `.gitignore` and `.ignore` rules are applied by default. `--no-ignore` disables those rules. Global Git configuration and tracked status are not consulted.
+- Caller scope is independent: `--allow` restricts visible prefixes, while `--deny` excludes prefixes and wins over allow rules.
+
+Neither `--hidden` nor `--no-ignore` can expose a caller-denied path. Denied paths are rejected before inventory/read, denied subtrees are not traversed, and explicit reads become `not_available_in_visible_inventory`. Evidence: `pkg/discovery/discovery.go`, `pkg/discovery/ignore.go`, and `pkg/discovery/discovery_test.go`.

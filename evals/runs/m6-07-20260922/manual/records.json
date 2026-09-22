@@ -1,0 +1,113 @@
+[
+  {
+    "name": "discover",
+    "command": [
+      "/tmp/repoctx-first-use-1dc9657",
+      "discover",
+      "-root",
+      "/tmp/repoctx-m6-07-20260922/source-export",
+      "-query",
+      "discovery max bytes output",
+      "-max-bytes",
+      "3000"
+    ],
+    "exit_code": 0,
+    "wall_seconds": 0.0603026509998017,
+    "stdout_bytes": 2751,
+    "stdout": "discover.stdout",
+    "stderr": "discover.stderr"
+  },
+  {
+    "name": "compile",
+    "command": [
+      "/tmp/repoctx-first-use-1dc9657",
+      "compile",
+      "-root",
+      "/tmp/repoctx-m6-07-20260922/source-export",
+      "-o",
+      "/tmp/repoctx-m6-07-manual-20260922/source.ir.json.gz"
+    ],
+    "exit_code": 0,
+    "wall_seconds": 0.7525780290015973,
+    "stdout_bytes": 0,
+    "stdout": "compile.stdout",
+    "stderr": "compile.stderr"
+  },
+  {
+    "name": "validate",
+    "command": [
+      "/tmp/repoctx-first-use-1dc9657",
+      "validate",
+      "/tmp/repoctx-m6-07-manual-20260922/source.ir.json.gz"
+    ],
+    "exit_code": 0,
+    "wall_seconds": 0.40132044999700156,
+    "stdout_bytes": 108,
+    "stdout": "validate.stdout",
+    "stderr": "validate.stderr"
+  },
+  {
+    "name": "context",
+    "command": [
+      "/tmp/repoctx-first-use-1dc9657",
+      "context",
+      "-root",
+      "/tmp/repoctx-m6-07-20260922/source-export",
+      "-query",
+      "chooseSymbols",
+      "-depth",
+      "1",
+      "-max-bytes",
+      "12000",
+      "/tmp/repoctx-m6-07-manual-20260922/source.ir.json.gz"
+    ],
+    "exit_code": 0,
+    "wall_seconds": 0.49097586199786747,
+    "stdout_bytes": 11737,
+    "stdout": "context.stdout",
+    "stderr": "context.stderr"
+  },
+  {
+    "name": "read",
+    "command": [
+      "/tmp/repoctx-first-use-1dc9657",
+      "read",
+      "-root",
+      "/tmp/repoctx-m6-07-20260922/source-export",
+      "-file",
+      "README.md:267:290",
+      "-max-bytes",
+      "5000"
+    ],
+    "exit_code": 0,
+    "wall_seconds": 0.008999955000035698,
+    "stdout_bytes": 2773,
+    "stdout": "read.stdout",
+    "stderr": "read.stderr"
+  },
+  {
+    "name": "expand",
+    "command": [
+      "/tmp/repoctx-first-use-1dc9657",
+      "context",
+      "-root",
+      "/tmp/repoctx-m6-07-20260922/source-export",
+      "-symbol",
+      "go:pkg/agentctx/agentctx#chooseSymbols",
+      "-expect-snapshot",
+      "sha256:c99cbbf1bfc201529b7ba1ecedef5d62b39565f26a24706bc6b38153a739faed",
+      "-direction",
+      "in",
+      "-depth",
+      "1",
+      "-max-bytes",
+      "12000",
+      "/tmp/repoctx-m6-07-manual-20260922/source.ir.json.gz"
+    ],
+    "exit_code": 0,
+    "wall_seconds": 0.4766715719997592,
+    "stdout_bytes": 11783,
+    "stdout": "expand.stdout",
+    "stderr": "expand.stderr"
+  }
+]

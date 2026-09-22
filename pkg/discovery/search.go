@@ -4,6 +4,7 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"sort"
+	"strconv"
 	"strings"
 	"unicode"
 	"unicode/utf8"
@@ -14,6 +15,10 @@ type window struct{ start, end int }
 type discoveryWindow struct {
 	window
 	line int
+}
+
+func shellQuote(value string) string {
+	return "'" + strings.ReplaceAll(value, "'", "'\"'\"'") + "'"
 }
 
 func queryTerms(query string) []string {
@@ -243,8 +248,22 @@ func (e *engine) inspect(entry Entry) error {
 			if end == 0 {
 				end = len(starts)
 			}
-			if start > len(starts) || end > len(starts) {
-				return invalid("line range exceeds observed file %q (%d lines)", entry.Path, len(starts))
+			if start > len(starts) {
+				return invalid(
+					"line range exceeds observed file %q (%d lines); choose a start line from 1 through %d",
+					entry.Path,
+					len(starts),
+					len(starts),
+				)
+			}
+			if end > len(starts) {
+				followUp := entry.Path + ":" + strconv.Itoa(start) + ":0"
+				return invalid(
+					"line range exceeds observed file %q (%d lines); retry with -file %s to read through EOF",
+					entry.Path,
+					len(starts),
+					shellQuote(followUp),
+				)
 			}
 			windows = append(windows, window{start: start - 1, end: end})
 		}

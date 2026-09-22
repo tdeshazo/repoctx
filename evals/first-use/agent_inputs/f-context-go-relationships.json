@@ -1,0 +1,6 @@
+{
+  "id": "f-context-go-relationships",
+  "type": "cross_file_relationships",
+  "repository": "repoctx-source@1dc9657",
+  "prompt": "I'm planning a change to how indexed context expands a selected symbol. Trace how the context subcommand turns CLI options into selected graph neighbors and a byte-bounded response. Identify the key functions and files, the default traversal settings, how incoming and outgoing edges are handled, why unit or unresolved targets are skipped during expansion, and what call links cannot prove."
+}

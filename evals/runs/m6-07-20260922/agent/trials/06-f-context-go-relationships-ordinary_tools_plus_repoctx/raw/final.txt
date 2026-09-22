@@ -1,0 +1,17 @@
+The path is:
+
+- [`internal/cli/context.go:20-71`](repository/internal/cli/context.go:20) parses CLI options, maps `calls`, `defines`, and `imports` to IR edge kinds, reads the index, and calls `agentctx.Build`.
+- [`pkg/agentctx/build.go:46-132`](repository/pkg/agentctx/build.go:46) normalizes options, validates the v1alpha5 index/snapshot/scope, verifies source files, calls selection, and initializes the bundle.
+- [`pkg/agentctx/select.go:53-265`](repository/pkg/agentctx/select.go:53) creates explicit or lexical seeds, then expands selected symbols through the graph.
+- [`pkg/agentctx/build.go:146-326`](repository/pkg/agentctx/build.go:146) adds symbol/unit evidence, imports, and relationships under budgets.
+- [`pkg/agentctx/render.go:6-84`](repository/pkg/agentctx/render.go:6) serializes the complete response and measures the actual rendered bytes.
+
+Defaults are depth `1`, direction `both`, relations `calls,defines`, 12 symbols, 8 units, 128 candidates, 48 relationships, and a 32,768-byte serialized payload cap. Depth accepts `0..4`; expansion scans at most 100,000 arcs. The CLI’s byte/4 token number is only an estimate.
+
+Traversal uses the graph’s forward and reverse CSR tables, built in [`pkg/ir/graph.go:53-127`](repository/pkg/ir/graph.go:53). `out` walks `Graph.Out` from the current node; `in` walks `Graph.In` to find callers/owners; `both` performs both walks. Relation kinds are filtered before adding neighbors. Depth zero retains only seeds, and candidate limits mark omissions rather than producing an unbounded graph.
+
+Unit/package anchors and unresolved call targets are external graph nodes, not repository symbols. `select.go` skips them with `n >= len(r.Symbols)`, and also skips symbols outside the permitted verified source set ([`select.go:210-225`](repository/pkg/agentctx/select.go:210)). This prevents ubiquitous unresolved names such as `print`, or package-unit anchors, from becoming hubs that connect unrelated code. They can still appear as adjacent relationship labels: [`relationships.go:57-68`](repository/pkg/agentctx/relationships.go:57).
+
+The response is bounded by trying source evidence against a reserved source budget, then adding imports and relationships with further `fits` checks. Source selection reserves one quarter of `max-bytes`, capped at 4096 bytes, for topology/import context ([`build.go:146-158`](repository/pkg/agentctx/build.go:146)). The final rendered JSON/Markdown is measured again; overflow fails rather than truncating the payload ([`build.go:328-363`](repository/pkg/agentctx/build.go:328)).
+
+Call links are syntax-derived candidates, not proof of runtime dispatch. The compiler resolves a call only when a unique function/method/type matches language, directory, unit, and basename ([`compiler.go:465-487`](repository/pkg/compiler/compiler.go:465)). Such links are labeled `name_heuristic`; unknown targets are `unresolved` ([`relationships.go:97-103`](repository/pkg/agentctx/relationships.go:97)). They cannot prove type resolution, overload/interface/method dispatch, dynamic behavior, module resolution, execution, or causality.

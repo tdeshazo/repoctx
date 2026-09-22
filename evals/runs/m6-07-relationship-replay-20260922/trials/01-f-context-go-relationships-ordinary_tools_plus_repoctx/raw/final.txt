@@ -1,0 +1,32 @@
+The `context` flow is:
+
+`internal/cli/context.go:20-71` parses CLI flags, converts `-relations` to IR edge kinds, reads the IR, and calls `agentctx.Build`. Defaults are:
+
+- `depth=1` (valid range `0..4`)
+- `direction=both`
+- `relations=calls,defines`
+- `max-bytes=32768`
+- `max-symbols=12`
+- `max-candidates=128`
+- `max-relations=48`
+- `max-units=8`
+
+Key stages:
+
+1. `pkg/agentctx/build.go:46-83` validates the index, snapshot/policy, source bytes, and calls `choose`.
+2. `pkg/agentctx/units.go:223-336` combines explicit or lexical symbol seeds with retrieval-unit candidates.
+3. `pkg/agentctx/select.go:53-245` performs bounded graph expansion:
+   - Seeds are explicit semantic IDs or lexical matches.
+   - It traverses `r.Graph.Out` unless direction is `in`.
+   - It traverses `r.Graph.In` unless direction is `out`.
+   - BFS stops at the requested depth, `max-candidates`, or 100,000 scanned arcs.
+   - Neighbors are recorded with depth, score, source symbol, relation, and direction.
+4. `pkg/agentctx/build.go:146-243` materializes selected symbols/units, trying full source first and progressively smaller excerpts under budget.
+5. `pkg/agentctx/relationships.go:18-168` renders adjacent relationship records, capped by `max-relations`.
+6. `pkg/agentctx/render.go:9-92` serializes the complete JSON/Markdown payload and measures the actual rendered bytes. `fits` reserves 128 bytes per incremental trial; `Build` reserves up to one quarter of `max-bytes` for topology/import context. The final payload is rechecked; JSON is never truncated.
+
+Incoming/outgoing handling uses the graph’s materialized forward and reverse CSR tables. Selection obeys `-direction`, but the final relationship summary examines both `Out` and `In` adjacency for selected symbols, so it may show observed edge kinds beyond the traversal filter.
+
+Unit and unresolved targets are intentionally not expanded in `select.go:210-215`: graph node IDs at or above `len(r.Symbols)` are external nodes, including package/unit hubs and unresolved names; targets without permitted source are also skipped. This prevents ubiquitous names such as `print` or package hubs from connecting unrelated code. They can still appear as named relationship endpoints in the adjacent summary.
+
+Call links are not proof of runtime calls. `relationships.go:98-103` labels repository-target calls `name_heuristic` and external callees `unresolved`. The bundle explicitly lacks type resolution, module resolution, dispatch, interface/implementation, inheritance, and runtime semantics. Remaining links are syntax-based same-unit name heuristics; cross-language same-spelling calls do not establish links. Missing or omitted edges therefore cannot prove that a caller/callee relationship is absent.

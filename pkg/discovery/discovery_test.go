@@ -142,6 +142,32 @@ func TestExactEvidenceAndBatchedReads(t *testing.T) {
 	}
 }
 
+func TestReadRangeEOFRecovery(t *testing.T) {
+	o := DefaultOptions()
+	o.Root = fixture(t, map[string]string{"doc.txt": "one\ntwo\nthree"})
+	o.Operation = "read"
+	o.Reads = []ReadRequest{{Path: "doc.txt", StartLine: 2, EndLine: 9}}
+	_, err := Run(context.Background(), o)
+	var usage *UsageError
+	if !errors.As(err, &usage) {
+		t.Fatalf("expected usage error, got %v", err)
+	}
+	if !strings.Contains(err.Error(), "line range exceeds observed file \"doc.txt\" (3 lines)") ||
+		!strings.Contains(err.Error(), "-file 'doc.txt:2:0' to read through EOF") {
+		t.Fatalf("missing actionable EOF recovery hint: %v", err)
+	}
+
+	o.Reads = []ReadRequest{{Path: "doc.txt", StartLine: 2, EndLine: 0}}
+	r := run(t, o)
+	if len(r.Response.Results) != 1 {
+		t.Fatalf("unexpected EOF recovery result: %+v", r.Response.Results)
+	}
+	evidence := r.Response.Results[0].Evidence
+	if evidence.Text != "two\nthree" || evidence.StartLine != 2 || evidence.EndLine != 3 {
+		t.Fatalf("EOF recovery did not preserve exact requested bytes: %+v", evidence)
+	}
+}
+
 func TestDiscoverAnswerBearingBodies(t *testing.T) {
 	o := DefaultOptions()
 	o.Root = fixture(t, map[string]string{

@@ -1,0 +1,4 @@
+db58cce686542a3c39baa372196c7e0a23e513ab52de3951b4d940549492fd2d  agent_inputs/f-doc-discovery-ignore.json
+92a885896f9ddc0313ad20aaedb7ab57cc73e2f28d238f5b0d46f0adcb8af01e  agent_inputs/f-discover-then-read.json
+c78e4402f9f51287f9c1368e1dc7759a6ba87cb6a972d49bc0c76b7d90c4a12b  agent_inputs/f-context-go-relationships.json
+11c7db469c76e44e553beaa334553507a7e12051367ead75c5b42ca6858ed359  evaluator/expected.json

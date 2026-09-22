@@ -1,0 +1,6 @@
+{
+  "id": "f-doc-discovery-ignore",
+  "type": "documentation_behavior",
+  "repository": "repoctx-source@1dc9657",
+  "prompt": "I'm trying to inspect a repository that has generated files and dotfiles. In a normal discovery run, what controls whether ignored or hidden entries appear, and can those switches expose a path deliberately denied by the caller?"
+}

@@ -97,17 +97,6 @@ repoctx search -root /path/to/repo -query 'exact error text' -context-lines 3
 repoctx read -root /path/to/repo -file src/server.go:40:100 -file go.mod
 ```
 
-Reuse the exact inclusive path and line range returned by discovery or context.
-If the end line is unknown, use `-file PATH:START:0` to read through the end of
-the file (or request the whole file); do not guess an oversized endpoint, which
-is a usage error. Keep the output bound and check `incomplete`, `omissions`,
-and `warnings` before treating the read as complete. For example:
-
-```sh
-repoctx read -root /path/to/repo -file internal/worker/units.go:120:0 \
-  -max-bytes 12000
-```
-
 `overview -depth 2` provides orientation alone. `search` defaults to literal
 matching; `-regex` and `-ignore-case` are explicit options. Read ranges are
 inclusive, and repeated `-file` requests are supported. All arguments are flags.

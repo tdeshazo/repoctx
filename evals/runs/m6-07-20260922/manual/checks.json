@@ -1,0 +1,61 @@
+{
+  "discover": {
+    "source_spans_verified": 2,
+    "output_bytes": 2751,
+    "incomplete": true,
+    "omissions": [
+      {
+        "reason": "overview_limit"
+      },
+      {
+        "reason": "result_limit"
+      },
+      {
+        "reason": "output_limit"
+      }
+    ]
+  },
+  "read": {
+    "source_spans_verified": 1,
+    "output_bytes": 2773,
+    "incomplete": false,
+    "omissions": []
+  },
+  "context": {
+    "source_spans_verified": 4,
+    "output_bytes": 11737,
+    "incomplete": null,
+    "omissions": {
+      "candidates": 126,
+      "budget": 126,
+      "symbol_limit": 0,
+      "excerpts": 1,
+      "relations": 27,
+      "imports": 0,
+      "traversal_limited": true,
+      "unit_limit": 0
+    }
+  },
+  "expand": {
+    "source_spans_verified": 4,
+    "output_bytes": 11783,
+    "incomplete": null,
+    "omissions": {
+      "candidates": 0,
+      "budget": 0,
+      "symbol_limit": 0,
+      "excerpts": 1,
+      "relations": 27,
+      "imports": 0,
+      "traversal_limited": false,
+      "unit_limit": 0
+    }
+  },
+  "context_neighbor": {
+    "expected": "choose",
+    "observed": [
+      "chooseSymbols",
+      "choose"
+    ]
+  }
+}

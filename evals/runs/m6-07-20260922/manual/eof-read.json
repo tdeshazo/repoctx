@@ -1,0 +1,22 @@
+{
+  "classification": "operator validation after replay; not an agent trial",
+  "command": [
+    "/tmp/repoctx-first-use-1dc9657",
+    "read",
+    "-root",
+    "/tmp/repoctx-m6-07-20260922/source-export",
+    "-file",
+    "pkg/agentctx/units.go:223:0",
+    "-max-bytes",
+    "12000"
+  ],
+  "exit_code": 0,
+  "wall_seconds": 0.00838236900017364,
+  "stdout_bytes": 4905,
+  "incomplete": false,
+  "exact_source_through_eof": true,
+  "observed_start_line": 223,
+  "observed_end_line": 336,
+  "stdout": "eof-read.stdout",
+  "stderr": "eof-read.stderr"
+}

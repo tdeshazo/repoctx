@@ -1,0 +1,6 @@
+{
+  "id": "f-discover-then-read",
+  "type": "bounded_discovery_followup",
+  "repository": "repoctx-source@1dc9657",
+  "prompt": "We are investigating why a broad discovery search did not return every matching excerpt. What does the tool do when its final output exceeds max bytes, and what should an integration inspect before using the result? I need a concise behavior explanation, including a safe follow-up."
+}

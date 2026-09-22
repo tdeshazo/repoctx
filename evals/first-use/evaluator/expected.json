@@ -1,0 +1,125 @@
+{
+  "version": "repoctx.m6-07.first-use.expected/v1",
+  "visibility": "evaluator_only",
+  "source_revision": "1dc9657c30c06ff26320fead0a23d28fbd947781",
+  "repository": "repoctx-source@1dc9657",
+  "tasks": [
+    {
+      "id": "f-doc-discovery-ignore",
+      "expected_answer": "Hidden entries are excluded unless -hidden is set. Local .gitignore and .ignore rules are honored unless -no-ignore is set, independently of hidden visibility. Neither switch bypasses allow/deny scope; deny wins and .git is always excluded.",
+      "required_evidence": [
+        {
+          "path": "README.md",
+          "lines": "221-235",
+          "text": "It honors nested repository-local `.gitignore` and"
+        },
+        {
+          "path": "README.md",
+          "lines": "230-234",
+          "text": "Hidden entries are excluded unless `-hidden` is supplied. `-no-ignore` disables"
+        },
+        {
+          "path": "pkg/discovery/ignore.go",
+          "lines": "148-162",
+          "text": "for _, deny := range o.DenyPaths"
+        }
+      ],
+      "scoring": {
+        "pass_condition": "Answer states the hidden control, ignore control, and that scope denial remains effective.",
+        "critical_claims": [
+          "-hidden includes hidden entries",
+          "-no-ignore disables local ignore rules independently of hidden visibility",
+          "allow/deny prefixes are not bypassed and deny wins"
+        ]
+      }
+    },
+    {
+      "id": "f-discover-then-read",
+      "expected_answer": "If the serialized discovery response exceeds max bytes, rendering marks it incomplete and records an output_limit omission. It removes overview entries first and then result records until the complete serialized response fits; it does not slice bytes or turn a requested range into a prefix. If even response metadata cannot fit, the command errors. Before relying on a result, inspect incomplete, omissions, and warnings; when more source is needed, follow a returned path and range with a focused read.",
+      "required_evidence": [
+        {
+          "path": "pkg/discovery/render.go",
+          "lines": "31-53",
+          "text": "response.Incomplete = true"
+        },
+        {
+          "path": "pkg/discovery/render.go",
+          "lines": "40-53",
+          "text": "response.Overview = response.Overview[:len(response.Overview)-1]"
+        },
+        {
+          "path": "README.md",
+          "lines": "277-280",
+          "text": "Check incomplete, omissions, and warnings."
+        },
+        {
+          "path": "README.md",
+          "lines": "31-34",
+          "text": "use focused search or read follow-ups only when more context is needed"
+        }
+      ],
+      "scoring": {
+        "pass_condition": "Answer explains output-limit incompleteness, record-level trimming without partial evidence, the metadata error case, and the stated inspection/focused-read follow-up.",
+        "critical_claims": [
+          "sets incomplete and records output_limit",
+          "drops overview before results rather than slicing evidence bytes",
+          "inspect incomplete, omissions, and warnings before relying on output",
+          "use a focused read for needed source context"
+        ]
+      }
+    },
+    {
+      "id": "f-context-go-relationships",
+      "expected_answer": "internal/cli/context.go's contextCmd parses depth, direction, relation, and byte-limit options (defaults: depth 1, both directions, calls plus defines) and passes them to agentctx.Build. pkg/agentctx/build.go's build calls pkg/agentctx/units.go's choose, which delegates symbol selection to pkg/agentctx/select.go's chooseSymbols. chooseSymbols reads the configured outgoing and incoming CSR edges, follows only selected relation kinds to permitted symbol sources, and does not expand external unit or unresolved-name hubs. build adds bounded adjacent relationship records through relationships, renders the bundle, and rejects a final payload over the byte budget. Call links are syntax-level same-language, same-unit name heuristics; they are not type-checked or proof of runtime dispatch. Review those four files, plus pkg/agentctx/relationships.go for relationship sites.",
+      "required_evidence": [
+        {
+          "path": "internal/cli/context.go",
+          "lines": "20-71",
+          "text": "agentctx.Build(repo, agentctx.Options"
+        },
+        {
+          "path": "pkg/agentctx/build.go",
+          "lines": "76-100",
+          "text": "candidates, seeds, limited, e := choose(ctx, r, o, sources)"
+        },
+        {
+          "path": "pkg/agentctx/units.go",
+          "lines": "223-230",
+          "text": "candidates, ids, limited, err := chooseSymbols(ctx, r, o, sources)"
+        },
+        {
+          "path": "pkg/agentctx/select.go",
+          "lines": "167-225",
+          "text": "Do not traverse unit hubs or globally merged unresolved names."
+        },
+        {
+          "path": "pkg/agentctx/build.go",
+          "lines": "301-339",
+          "text": "rels, omittedRelations := relationships(r, b, sources, o.MaxRelations)"
+        },
+        {
+          "path": "pkg/agentctx/relationships.go",
+          "lines": "52-108",
+          "text": "Only adjacent arcs, not a graph dump. External/unit nodes are named boundaries"
+        },
+        {
+          "path": "README.md",
+          "lines": "516-529",
+          "text": "Call links use same-language, same-unit name heuristics, not type-checked dispatch."
+        }
+      ],
+      "scoring": {
+        "pass_condition": "Answer traces contextCmd to Build, choose, chooseSymbols, relationships, and the final byte check; it explains configured bidirectional traversal, hub exclusion, and the call-link limitation.",
+        "critical_claims": [
+          "contextCmd passes depth, direction, and relations into agentctx.Build",
+          "build calls choose and choose delegates symbol selection to chooseSymbols",
+          "chooseSymbols scans the configured incoming and outgoing CSR edges and filters to wanted source-backed symbols",
+          "unit and unresolved hubs are not expanded",
+          "relationships are bounded adjacent arcs with source locations where available",
+          "the final rendered payload is rejected when it exceeds the byte budget",
+          "call links are not type-checked or proof of runtime behavior"
+        ]
+      }
+    }
+  ]
+}

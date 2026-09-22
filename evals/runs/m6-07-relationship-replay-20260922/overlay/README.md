@@ -52,16 +52,6 @@ repoctx context -root . -query 'the component or API' -depth 1 \
   -max-bytes 12000 /tmp/repoctx.ir.json.gz
 ```
 
-Reuse the exact inclusive path and line range returned by discovery or context
-for a focused read. If the end line is unknown, use `-file PATH:START:0` to
-read through the end of the file (or request the whole file); do not guess an
-oversized endpoint. Keep the output bound and check `incomplete`, `omissions`,
-and `warnings` before treating the read as complete. For example:
-
-```sh
-repoctx read -root . -file internal/worker/units.go:120:0 -max-bytes 12000
-```
-
 Compilation is optional for orientation and focused source reads. Manifests,
 artifact catalogs, persisted file-reference bundles, and checkpoints are
 caller-controlled extensions; an ordinary lookup does not require authoring

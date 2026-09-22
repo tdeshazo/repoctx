@@ -12,7 +12,7 @@ expanding the architecture.
 | --- | --- |
 | Foundations, retrieval, input identity, and optional artifacts (M0–M3) | Recorded complete in the [historical plan](docs/history/roadmap-2026-09-22.md); preserve existing capabilities. |
 | Evaluation (M4) | Fixtures, controls, accounting, and prototypes exist. The small exploratory M4-13 pilot completed four paired synthetic tasks with both conditions at 4/4; it found no efficiency gain. Agent-outcome acceptance gates remain open. See the [pilot report](docs/reports/m4-13-workflow-pilot.md) and [evaluation protocol](evals/m4/README.md). |
-| Default workflow (M6-07) | Guidance is implemented in the README and agent skill. Realistic first-use verification remains open; the synthetic pilot is feasibility evidence, not completion evidence. |
+| Default workflow (M6-07) | The first-use record covered three paired tasks: both conditions passed the documentation and discovery tasks, while both were partial on the cross-file relationship task. A focused guidance replay remained partial and exposed oversized-range recovery friction. Guidance now distinguishes literal search from task discovery and gives a concrete indexed caller/callee trigger; M6-07 remains open for reliable bounded reads and a complete cross-file trace. See the [first-use record](docs/reports/m6-07-first-use.md). |
 | Performance and distribution (M5–M6) | Recorded complete for their declared workloads and supported distribution. These results do not establish agent task success. |
 | Canonical model (M7) | M7-01 through M7-03 implemented. Further expansion is paused; maintain the existing implementation. |
 | Authority, semantic views, execution plans, and projections (M8–M11) | Deferred proposals, not the next delivery sequence. |
@@ -92,6 +92,22 @@ The discovery-first guidance is implemented in the README and agent skill. Keep
 M6-07 open until a realistic first-use task verifies that the revised primer
 reaches useful evidence with clear follow-ups; the synthetic pilot alone is not
 enough to establish that result.
+
+The initial first-use run passed the documentation and discovery tasks in both
+conditions, but both answers to the cross-file relationship task omitted the
+required `build` → `choose` → `chooseSymbols` intermediate. The run also
+observed multiword literal searches returning no results. The README and agent
+skill now explain the literal-versus-task search choice and when an indexed
+caller/callee follow-up is useful. A small post-replay bounded-read diagnostic
+fix now points oversized-range errors to the `:START:0` EOF form; it addresses
+observed usage errors and carries no agent-benefit claim.
+
+The focused treatment replay still omitted the required cross-file chain and
+did not name the relationship source locations. It also guessed read endpoints
+beyond EOF, producing bounded-read usage errors. M6-07 remains open. The next
+action is to check recovery and a complete cross-file trace on a fresh
+representative task with reliable bounded reads; retain this observed case as a
+regression reference.
 
 Start with index-free discovery and bounded reads. Introduce compilation when
 indexed symbols and relationships help. Keep manifests, artifact catalogs,

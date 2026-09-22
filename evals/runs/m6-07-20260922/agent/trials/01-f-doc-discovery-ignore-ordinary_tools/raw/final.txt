@@ -1,0 +1,7 @@
+- Hidden entries are controlled by `--hidden`; otherwise dot-prefixed entries are omitted (except `.git`, which is always excluded).
+- Repository ignore rules are controlled by `--no-ignore`; without it, `.gitignore` and `.ignore` apply.
+- Neither switch can expose caller-denied paths. `--deny` takes precedence over `--allow`, hidden visibility, and ignore bypasses. Denied paths are skipped before inspection, including explicit reads.
+
+Evidence: [README.md](../repository/README.md), [pkg/discovery/ignore.go](../repository/pkg/discovery/ignore.go), [pkg/discovery/discovery.go](../repository/pkg/discovery/discovery.go), and the scope tests in [discovery_test.go](../repository/pkg/discovery/discovery_test.go).
+
+The focused Go test command could not run because the environment blocked its temporary build directory/dependency setup.

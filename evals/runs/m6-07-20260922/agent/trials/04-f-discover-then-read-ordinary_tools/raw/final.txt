@@ -1,0 +1,17 @@
+When serialized output exceeds `max_bytes`, the tool:
+
+- Sets `incomplete: true`.
+- Adds an omission with reason `output_limit`.
+- Removes overview entries first, then result records from the end until the complete JSON/Markdown payload fits.
+- Never byte-truncates records or emits invalid JSON. If even metadata cannot fit, it returns an error.
+
+Before using the result, inspect:
+
+- `incomplete`
+- `omissions[].reason`—including `output_limit`, `result_limit`, `scan_limit`, etc.
+- `warnings`
+- The effective limits in `options`
+
+An incomplete result is not exhaustive. Safely follow up by taking returned paths/evidence and issuing targeted `read` or `search` requests—optionally with a larger `max_bytes` or narrower scope—and only treat coverage as complete when `incomplete` is false and relevant omissions are absent.
+
+See [`render.go`](/tmp/repoctx-m6-07-20260922/trials/04-f-discover-then-read-ordinary_tools/workspace/repository/pkg/discovery/render.go:25) and the documented contract in [`README.md`](/tmp/repoctx-m6-07-20260922/trials/04-f-discover-then-read-ordinary_tools/workspace/repository/README.md:264).

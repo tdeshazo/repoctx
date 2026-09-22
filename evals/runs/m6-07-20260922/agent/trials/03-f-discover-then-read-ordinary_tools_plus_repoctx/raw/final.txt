@@ -1,0 +1,9 @@
+When the final serialized payload exceeds `-max-bytes`, repoctx:
+
+- Sets `incomplete: true` and adds an `omissions` entry with reason `output_limit`.
+- Drops whole overview entries first, then whole result records from the end until the payload fits.
+- Never byte-truncates JSON or partially truncates an excerpt. If even response metadata cannot fit, it returns an error.
+
+An integration must inspect `incomplete`, `omissions`, and `warnings` before treating results as complete; missing excerpts must not be interpreted as non-matches. The byte limit covers the complete rendered payload, including escaping and metadata ([render.go](/tmp/repoctx-m6-07-20260922/trials/03-f-discover-then-read-ordinary_tools_plus_repoctx/workspace/repository/pkg/discovery/render.go:29), [README.md](/tmp/repoctx-m6-07-20260922/trials/03-f-discover-then-read-ordinary_tools_plus_repoctx/workspace/repository/README.md:269)).
+
+Safe follow-up: retry with a larger `-max-bytes`, or narrow the query and then use `read` on the returned paths/ranges.

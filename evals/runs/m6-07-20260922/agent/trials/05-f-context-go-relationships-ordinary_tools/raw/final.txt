@@ -1,0 +1,37 @@
+The `context` path is:
+
+1. CLI parsing: [`internal/cli/context.go:20`](/tmp/repoctx-m6-07-20260922/trials/05-f-context-go-relationships-ordinary_tools/workspace/repository/internal/cli/context.go:20)
+   - Parses `-symbol`, `-unit`, `-query`, `-depth`, `-direction`, `-relations`, and limits.
+   - Defaults: depth `1`, direction `both`, relations `calls,defines`, max bytes `32768`, symbols `12`, candidates `128`, relations `48`, units `8`.
+   - Converts relation names into `ir.EdgeKind` values, then calls `agentctx.Build`.
+
+2. Validation and setup: [`pkg/agentctx/build.go:46`](/tmp/repoctx-m6-07-20260922/trials/05-f-context-go-relationships-ordinary_tools/workspace/repository/pkg/agentctx/build.go:46)
+   - `normalize` applies/validates defaults and bounds.
+   - The index version, authorization scope, expected snapshot, and source hashes are checked.
+   - `choose` selects lexical/explicit seeds and graph neighbors.
+
+3. Seed and graph expansion: [`pkg/agentctx/select.go:167`](/tmp/repoctx-m6-07-20260922/trials/05-f-context-go-relationships-ordinary_tools/workspace/repository/pkg/agentctx/select.go:167)
+   - Explicit symbols take priority; otherwise up to three high-ranking lexical symbol seeds are selected.
+   - BFS-like expansion stops at the requested depth. Depth `0` means seeds only.
+   - Outgoing traversal reads `Graph.Out`; incoming traversal reads `Graph.In`. `both` uses both CSR tables.
+   - Each edge must match `-relations`; `references` is not accepted for traversal.
+   - Expansion scans at most 100,000 arcs and is bounded by `MaxCandidates`.
+
+Unit and unresolved targets are skipped by:
+
+```go
+if n >= len(r.Symbols) || !wanted[k] || sources[r.Symbols[n].File] == nil {
+    continue
+}
+```
+
+The first condition excludes external graph nodes: package/file units, modules, and unresolved symbols. The source check excludes denied, unavailable, or otherwise unserved repository symbols. This prevents unit hubs and globally merged unresolved names such as `print` from connecting unrelated code. Graph construction is in [`pkg/compiler/compiler.go:617`](/tmp/repoctx-m6-07-20260922/trials/05-f-context-go-relationships-ordinary_tools/workspace/repository/pkg/compiler/compiler.go:617).
+
+4. Byte-bounded response construction: [`pkg/agentctx/build.go:138`](/tmp/repoctx-m6-07-20260922/trials/05-f-context-go-relationships-ordinary_tools/workspace/repository/pkg/agentctx/build.go:138)
+   - Reserves one quarter of `MaxBytes`, capped at 4096, for imports and graph evidence.
+   - Adds symbols/units greedily, shrinking definitions to excerpts when necessary.
+   - Adds imports as supporting evidence, then adjacent relationships via [`relationships`](/tmp/repoctx-m6-07-20260922/trials/05-f-context-go-relationships-ordinary_tools/workspace/repository/pkg/agentctx/relationships.go:19).
+   - Every trial is rendered and measured. JSON includes the final newline; Markdown includes its complete fenced representation.
+   - [`Render`](/tmp/repoctx-m6-07-20260922/trials/05-f-context-go-relationships-ordinary_tools/workspace/repository/pkg/agentctx/render.go:9) measures actual serialized bytes, not source bytes or gzip size. Final overflow returns an error; JSON is never truncated.
+
+Relationship output is adjacent evidence only, capped by `MaxRelations`; it may show edge kinds not used for traversal. Calls targeting repository symbols are marked `name_heuristic`; unresolved calls are `unresolved`. Call links use same-language, same-unit name heuristics, without type checking, dispatch resolution, complete alias/module resolution, or runtime semantics. Therefore they cannot prove the runtime callee, causality, behavior, or absence of an unlisted call.

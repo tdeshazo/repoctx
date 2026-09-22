@@ -1,0 +1,37 @@
+{
+  "version": "repoctx.m6-07.first-use.replay-scores/v1",
+  "classification": "targeted development replay; not paired, held-out, or aggregate evaluation evidence",
+  "scored_at": "2026-09-22",
+  "source_revision": "1dc9657c30c06ff26320fead0a23d28fbd947781",
+  "frozen_key": "evals/first-use/evaluator/expected.json",
+  "frozen_key_sha256": "11c7db469c76e44e553beaa334553507a7e12051367ead75c5b42ca6858ed359",
+  "score_rule": "Each frozen critical claim is scored from the final answer. A claim is not inferred from a source citation alone.",
+  "trial": {
+    "id": "01-f-context-go-relationships-ordinary_tools_plus_repoctx",
+    "task_id": "f-context-go-relationships",
+    "condition": "ordinary_tools_plus_repoctx",
+    "required_claims": [
+      {"claim": "contextCmd passes depth, direction, and relations into agentctx.Build", "pass": true},
+      {"claim": "build calls choose and choose delegates symbol selection to chooseSymbols", "pass": false, "reason": "The answer says build calls choose and describes units.go, but does not state that choose delegates symbol selection to chooseSymbols."},
+      {"claim": "chooseSymbols scans the configured incoming and outgoing CSR edges and filters to wanted source-backed symbols", "pass": true},
+      {"claim": "unit and unresolved hubs are not expanded", "pass": true},
+      {"claim": "relationships are bounded adjacent arcs with source locations where available", "pass": false, "reason": "The answer states adjacency and the max-relations cap, but does not state that relationship records include available source locations."},
+      {"claim": "the final rendered payload is rejected when it exceeds the byte budget", "pass": true},
+      {"claim": "call links are not type-checked or proof of runtime behavior", "pass": true}
+    ],
+    "required_claims_passed": 5,
+    "required_claims_total": 7,
+    "task_result": "partial",
+    "audit": {
+      "exit_code": 0,
+      "timed_out": false,
+      "source_unchanged": true,
+      "observed_tool_item_count": 12,
+      "wall_seconds": 77.053016,
+      "nonzero_command_events": 5,
+      "nonzero_command_event_cause": "Each requested a read range ending beyond the observed file length: render.go:110→104, types.go:180→178, generation.go:180→174, units.go:340→336, or graph.go:145→131. These are range-endpoint errors, not flag-ordering errors.",
+      "repoctx_compile_invoked": false,
+      "repoctx_context_invoked": false
+    }
+  }
+}

@@ -1,0 +1,129 @@
+{
+  "version": "repoctx.m6-07.first-use.scores/v1",
+  "scored_at": "2026-09-22",
+  "source_revision": "1dc9657c30c06ff26320fead0a23d28fbd947781",
+  "frozen_key": "evals/first-use/evaluator/expected.json",
+  "frozen_key_sha256": "11c7db469c76e44e553beaa334553507a7e12051367ead75c5b42ca6858ed359",
+  "score_rule": "Each frozen critical claim is scored from the final answer. A claim is not inferred from a source citation alone.",
+  "condition_totals": [
+    {
+      "condition": "ordinary_tools",
+      "trial_count": 3,
+      "wall_seconds": 174.948746,
+      "observed_tool_item_count": 22,
+      "usage": {
+        "input_tokens": 816488,
+        "output_tokens": 6662,
+        "input_plus_output_tokens": 823150,
+        "cached_input_tokens": 683520,
+        "reasoning_output_tokens": 2073
+      }
+    },
+    {
+      "condition": "ordinary_tools_plus_repoctx",
+      "trial_count": 3,
+      "wall_seconds": 187.765054,
+      "observed_tool_item_count": 20,
+      "usage": {
+        "input_tokens": 724490,
+        "output_tokens": 6110,
+        "input_plus_output_tokens": 730600,
+        "cached_input_tokens": 591104,
+        "reasoning_output_tokens": 1973
+      }
+    }
+  ],
+  "trials": [
+    {
+      "id": "01-f-doc-discovery-ignore-ordinary_tools",
+      "task_id": "f-doc-discovery-ignore",
+      "condition": "ordinary_tools",
+      "required_claims": [
+        {"claim": "-hidden includes hidden entries", "pass": true},
+        {"claim": "-no-ignore disables local ignore rules independently of hidden visibility", "pass": true},
+        {"claim": "allow/deny prefixes are not bypassed and deny wins", "pass": true}
+      ],
+      "required_claims_passed": 3,
+      "required_claims_total": 3,
+      "task_result": "pass",
+      "unsupported_answer_claims": [
+        "The final answer says a focused Go test could not run, but its recorded command events contain no go test invocation."
+      ]
+    },
+    {
+      "id": "02-f-doc-discovery-ignore-ordinary_tools_plus_repoctx",
+      "task_id": "f-doc-discovery-ignore",
+      "condition": "ordinary_tools_plus_repoctx",
+      "required_claims": [
+        {"claim": "-hidden includes hidden entries", "pass": true},
+        {"claim": "-no-ignore disables local ignore rules independently of hidden visibility", "pass": true},
+        {"claim": "allow/deny prefixes are not bypassed and deny wins", "pass": true}
+      ],
+      "required_claims_passed": 3,
+      "required_claims_total": 3,
+      "task_result": "pass"
+    },
+    {
+      "id": "03-f-discover-then-read-ordinary_tools_plus_repoctx",
+      "task_id": "f-discover-then-read",
+      "condition": "ordinary_tools_plus_repoctx",
+      "required_claims": [
+        {"claim": "sets incomplete and records output_limit", "pass": true},
+        {"claim": "drops overview before results rather than slicing evidence bytes", "pass": true},
+        {"claim": "inspect incomplete, omissions, and warnings before relying on output", "pass": true},
+        {"claim": "use a focused read for needed source context", "pass": true}
+      ],
+      "required_claims_passed": 4,
+      "required_claims_total": 4,
+      "task_result": "pass"
+    },
+    {
+      "id": "04-f-discover-then-read-ordinary_tools",
+      "task_id": "f-discover-then-read",
+      "condition": "ordinary_tools",
+      "required_claims": [
+        {"claim": "sets incomplete and records output_limit", "pass": true},
+        {"claim": "drops overview before results rather than slicing evidence bytes", "pass": true},
+        {"claim": "inspect incomplete, omissions, and warnings before relying on output", "pass": true},
+        {"claim": "use a focused read for needed source context", "pass": true}
+      ],
+      "required_claims_passed": 4,
+      "required_claims_total": 4,
+      "task_result": "pass"
+    },
+    {
+      "id": "05-f-context-go-relationships-ordinary_tools",
+      "task_id": "f-context-go-relationships",
+      "condition": "ordinary_tools",
+      "required_claims": [
+        {"claim": "contextCmd passes depth, direction, and relations into agentctx.Build", "pass": true},
+        {"claim": "build calls choose and choose delegates symbol selection to chooseSymbols", "pass": false, "reason": "The answer names choose but omits the pkg/agentctx/units.go choose intermediate and does not state its delegation to chooseSymbols."},
+        {"claim": "chooseSymbols scans the configured incoming and outgoing CSR edges and filters to wanted source-backed symbols", "pass": true},
+        {"claim": "unit and unresolved hubs are not expanded", "pass": true},
+        {"claim": "relationships are bounded adjacent arcs with source locations where available", "pass": false, "reason": "The answer states adjacency and the relationship cap, but does not state that available source locations are included."},
+        {"claim": "the final rendered payload is rejected when it exceeds the byte budget", "pass": true},
+        {"claim": "call links are not type-checked or proof of runtime behavior", "pass": true}
+      ],
+      "required_claims_passed": 5,
+      "required_claims_total": 7,
+      "task_result": "partial"
+    },
+    {
+      "id": "06-f-context-go-relationships-ordinary_tools_plus_repoctx",
+      "task_id": "f-context-go-relationships",
+      "condition": "ordinary_tools_plus_repoctx",
+      "required_claims": [
+        {"claim": "contextCmd passes depth, direction, and relations into agentctx.Build", "pass": true},
+        {"claim": "build calls choose and choose delegates symbol selection to chooseSymbols", "pass": false, "reason": "The answer describes selection but omits the pkg/agentctx/units.go choose intermediate and its chooseSymbols delegation."},
+        {"claim": "chooseSymbols scans the configured incoming and outgoing CSR edges and filters to wanted source-backed symbols", "pass": true},
+        {"claim": "unit and unresolved hubs are not expanded", "pass": true},
+        {"claim": "relationships are bounded adjacent arcs with source locations where available", "pass": false, "reason": "The answer states adjacent labels and caps, but not the available source locations in relationship records."},
+        {"claim": "the final rendered payload is rejected when it exceeds the byte budget", "pass": true},
+        {"claim": "call links are not type-checked or proof of runtime behavior", "pass": true}
+      ],
+      "required_claims_passed": 5,
+      "required_claims_total": 7,
+      "task_result": "partial"
+    }
+  ]
+}

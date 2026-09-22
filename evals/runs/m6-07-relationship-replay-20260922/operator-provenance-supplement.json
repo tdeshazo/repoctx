@@ -1,0 +1,27 @@
+{
+  "audit": "post-run operator provenance supplement",
+  "created_after_finished_at": "2026-09-22T17:50:53.892396+00:00",
+  "classification": "targeted development replay; not paired, held-out, or aggregate evaluation evidence",
+  "operator_source": {
+    "snapshot_path": "/tmp/repoctx-m6-07-relationship-replay-20260922/operator-source.py",
+    "snapshot_sha256": "109631073c271314fd0d2b01ba42990cb1af8e31185a3cfb62248a2a41f112e4",
+    "current_path": "/tmp/run_m6_07_relationship_replay.py",
+    "current_sha256": "109631073c271314fd0d2b01ba42990cb1af8e31185a3cfb62248a2a41f112e4",
+    "snapshot_matches_current": true
+  },
+  "shared_runner": {
+    "path": "/home/travis/Workspace/repository_context_program/repoctx/scripts/run_first_use.py",
+    "sha256": "6b97c08e40cb49534424b78931645de3a9ba2623a311c071be7fa813e1c1b4e5"
+  },
+  "shared_runner_helper": {
+    "path": "/home/travis/Workspace/repository_context_program/repoctx/scripts/run_workflow_pilot.py",
+    "sha256": "3a92e12b7fd232a6f5fb63e9782b35a5433d4f6d05ce0781eadb0202695182ec"
+  },
+  "protocol_initial": {
+    "path": "/tmp/repoctx-m6-07-relationship-replay-20260922/protocol.initial.json",
+    "sha256": "5ef0186f2da5f371dfc21b5b83beecc1e25b0b69536734a1018f953ba118cefb",
+    "checksum_file": "/tmp/repoctx-m6-07-relationship-replay-20260922/protocol.initial.sha256",
+    "checksum_valid": true
+  },
+  "field_rationale": "The initial and final protocol preserve the imported shared runner under `runner` and `runner_helper`. They intentionally have no top-level `runner_sha256` because this replay is launched by the separate operator script. This supplement records that operator snapshot, verifies it remains byte-identical to the current operator file, and does not alter either protocol."
+}
