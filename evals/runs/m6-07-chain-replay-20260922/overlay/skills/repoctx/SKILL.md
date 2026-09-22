@@ -153,11 +153,10 @@ the initial context request with an exact function or API name from discovery
 or a source excerpt. Use only symbol IDs returned by context; do not invent or
 guess them. Choose `-direction in` for callers or `-direction out` for callees,
 inspect edge labels and warnings, and verify each caller/callee edge against its
-cited callsite. Report each caller→callee edge with that callsite. When one
-caller has multiple calls, list separate edges from the shared caller; do not
-summarize their source or execution order as one chain. Follow intermediate
-wrappers with targeted context or source reads. Keep the claim bounded by the
-returned evidence; do not describe the graph as an exhaustive call chain.
+cited callsite. Calls ordered within one caller are siblings, not arrows between
+one another. Follow intermediate wrappers with targeted context or source reads.
+Keep the claim bounded by the returned evidence; do not describe the graph as
+an exhaustive call chain.
 
 ## Expand only when needed
 

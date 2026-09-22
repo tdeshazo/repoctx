@@ -1,0 +1,17 @@
+97cf2d3b5289203c745375dd712d8f8af5ff02e51bcdd34c34622b9c6cfa6a4b  ./archive-manifest.json
+f65913139941c8d49fc295c0ccec35c9908dc96d8d79781da8706206aa464f8f  ./effective-source-hashes.json
+b772fa2fa9b5928c9c00575fdd81858d3356fd9ab991c55773e5a474b1a09d28  ./operators/operator-source.py
+3a92e12b7fd232a6f5fb63e9782b35a5433d4f6d05ce0781eadb0202695182ec  ./operators/runner-helper-source.py
+6b97c08e40cb49534424b78931645de3a9ba2623a311c071be7fa813e1c1b4e5  ./operators/runner-source.py
+826b073b29d46e9469fa008323320603fbbd6a418e6720389d3eb1e902680a1e  ./original-source-hashes.json
+7f0010adf31d1949a522fc2a4ea92d5e63fe76be3c8e4df1eb86b759b994e542  ./overlay/skills/repoctx/SKILL.md
+804aa4fa68ef1e3f98a6d153003dfab10ecfc3ec1a43d37b92706fe7674501c3  ./protocol.initial.json
+e3329cb18f845c0afac7bba3b1556ad1ba0f11ecdeab09dafea68bad0f2c3961  ./protocol.initial.sha256
+0a7a45950a3f032e24258f63dd021f5079063e942752c4a015ed5ff63b2a4854  ./protocol.json
+44510a6a352d9bd1bc7e86af6882f25a6fc5358543afc7bb3a1dc0709683f815  ./setup/probe.json
+b3380b6eeeb386273edeca1b35b6dcf590a5d9d3c3021c7049f9641510e0142a  ./task-inputs/f-artifacts-check-chain.json
+2ddacc531b700ad64d8e8df7c73add5a7003690dd9a415a831e800324b6e5f53  ./trials/01-f-artifacts-check-chain-ordinary_tools_plus_repoctx/raw/events.jsonl
+4a913143d9d5a9b45e7ad5554cf708701b5edb0b4e1e1807bff8aa5e789f4d71  ./trials/01-f-artifacts-check-chain-ordinary_tools_plus_repoctx/raw/final.txt
+1aa26269eb1cc57f86b235a03cda53c004edb5b1e9fc99d4da4f00843293d721  ./trials/01-f-artifacts-check-chain-ordinary_tools_plus_repoctx/raw/stderr.txt
+7f23e9078ce28e952f8fa056ecf64509301407ee92188d79a8fe97f2a81de7ed  ./trials/01-f-artifacts-check-chain-ordinary_tools_plus_repoctx/record.json
+8e5d845ec6e4ec093ba51d6b7bc1c95168d9016d25bdd05cfcc284d2f933b7cb  ./trials.jsonl

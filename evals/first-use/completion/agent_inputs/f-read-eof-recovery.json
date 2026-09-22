@@ -1,0 +1,7 @@
+{
+  "id": "f-read-eof-recovery",
+  "type": "bounded_read_recovery",
+  "repository": "repoctx-source@20c335b3f0e6d82bdd6b0f52c605b1a7138e585e",
+  "prompt": "A focused read failed: `repoctx read -root . -file pkg/agentctx/units.go:223:340 -max-bytes 12000` says the line range exceeds the observed file. Trace this request from CLI parsing to the range check across the actual functions and files. Explain why it is rejected, give the exact safe retry that reads from line 223 through EOF, and show the returned evidence path and inclusive line span. Cite each function and the user-facing guidance as `path:line`. Before relying on the retry, name the response completeness fields you would inspect."
+}
+

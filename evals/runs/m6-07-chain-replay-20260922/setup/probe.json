@@ -1,0 +1,97 @@
+{
+  "purpose": "non-model M6-07 tuned-chain-replay named-profile probe",
+  "workspace": "/tmp/repoctx-m6-07-chain-replay-20260922/setup/sandbox-a",
+  "evaluator_denied": "/home/travis/Workspace/repository_context_program/repoctx/evals/first-use/completion/evaluator/expected.json",
+  "sibling_denied": "/tmp/repoctx-m6-07-chain-replay-20260922/setup/sandbox-b/other-workspace.txt",
+  "pinned_repoctx": "/tmp/repoctx-m6-07-chain-replay-20260922/setup/sandbox-a/.tools/repoctx",
+  "workspace_write_succeeded": true,
+  "evaluator_and_sibling_read_denied": true,
+  "filesystem": {
+    "command": [
+      "/home/travis/.codex/packages/standalone/releases/0.155.1-x86_64-unknown-linux-musl/bin/codex",
+      "sandbox",
+      "-c",
+      "default_permissions=\"pilot\"",
+      "-c",
+      "permissions.pilot.filesystem={\":minimal\"=\"read\",\":workspace_roots\"=\"write\",\":root\"=\"deny\",\":tmpdir\"=\"deny\",\":slash_tmp\"=\"deny\",\"/home/travis/.codex/packages/standalone/releases/0.155.1-x86_64-unknown-linux-musl/bin/codex\"=\"read\",\"/tmp/repoctx-m6-07-chain-replay-20260922/setup/sandbox-a/.tools/repoctx\"=\"read\"}",
+      "-c",
+      "permissions.pilot.network.enabled=false",
+      "--permission-profile",
+      "pilot",
+      "-C",
+      "/tmp/repoctx-m6-07-chain-replay-20260922/setup/sandbox-a",
+      "/bin/sh",
+      "-c",
+      "printf probe > /tmp/repoctx-m6-07-chain-replay-20260922/setup/sandbox-a/.scratch/profile-marker.txt && test ! -r /home/travis/Workspace/repository_context_program/repoctx/evals/first-use/completion/evaluator/expected.json && test ! -r /tmp/repoctx-m6-07-chain-replay-20260922/setup/sandbox-b/other-workspace.txt && /tmp/repoctx-m6-07-chain-replay-20260922/setup/sandbox-a/.tools/repoctx version -format json >/dev/null"
+    ],
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  "treatment_tool_operation": {
+    "command": [
+      "/home/travis/.codex/packages/standalone/releases/0.155.1-x86_64-unknown-linux-musl/bin/codex",
+      "sandbox",
+      "-c",
+      "default_permissions=\"pilot\"",
+      "-c",
+      "permissions.pilot.filesystem={\":minimal\"=\"read\",\":workspace_roots\"=\"write\",\":root\"=\"deny\",\":tmpdir\"=\"deny\",\":slash_tmp\"=\"deny\",\"/home/travis/.codex/packages/standalone/releases/0.155.1-x86_64-unknown-linux-musl/bin/codex\"=\"read\",\"/tmp/repoctx-m6-07-chain-replay-20260922/setup/sandbox-a/.tools/repoctx\"=\"read\"}",
+      "-c",
+      "permissions.pilot.network.enabled=false",
+      "--permission-profile",
+      "pilot",
+      "-C",
+      "/tmp/repoctx-m6-07-chain-replay-20260922/setup/sandbox-a",
+      "/bin/sh",
+      "-c",
+      "PATH=/tmp/repoctx-m6-07-chain-replay-20260922/setup/sandbox-a/.tools:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin; repoctx discover -root repository -query repoctx -max-bytes 12000"
+    ],
+    "returncode": 0,
+    "stdout": "{\"version\":\"repoctx.discovery/v1alpha1\",\"options\":{\"root\":\"/tmp/repoctx-m6-07-chain-replay-20260922/setup/sandbox-a/repository\",\"operation\":\"discover\",\"query\":\"repoctx\",\"type\":\"file\",\"regex\":false,\"ignore_case\":false,\"hidden\":false,\"no_ignore\":false,\"allow\":[],\"deny\":[],\"reads\":[],\"depth\":2,\"context_lines\":3,\"max_bytes\":12000,\"max_source_bytes\":2097152,\"max_read_bytes\":268435456,\"max_results\":100,\"max_entries\":100000,\"format\":\"json\"},\"usage\":{\"entries\":252,\"files\":202,\"directories\":44,\"read_bytes\":1139101},\"overview\":[],\"results\":[{\"path\":\"docs/repoctx-artifacts.json\",\"type\":\"file\",\"candidate\":\"configuration\",\"matched_terms\":[\"repoctx\"],\"score\":{\"distinct_terms\":1,\"path_terms\":1,\"occurrences\":10},\"evidence\":{\"sha256\":\"1e57d1f103c15758c4f0c6df3d4a4e0876606fb6c78d9d97e9c6ec91010b5244\",\"start_byte\":2,\"end_byte\":1965,\"start_line\":2,\"end_line\":8,\"text\":\"  \\\"version\\\": \\\"repoctx.artifacts/v1alpha1\\\",\\n  \\\"namespace\\\": \\\"repoctx\\\",\\n  \\\"artifacts\\\": [\\n    {\\\"id\\\":\\\"repoctx:component.compiler\\\",\\\"kind\\\":\\\"component\\\",\\\"owner\\\":\\\"repoctx:maintainers\\\",\\\"applies_to\\\":[{\\\"kind\\\":\\\"subtree\\\",\\\"path\\\":\\\"pkg/compiler\\\"}],\\\"lifecycle\\\":\\\"active\\\",\\\"sources\\\":[{\\\"path\\\":\\\"pkg/compiler/compiler.go\\\",\\\"sha256\\\":\\\"9514870861b60252da54008f0c81cc4e4088d9ffdc833a308461c851010320eb\\\",\\\"start_byte\\\":0,\\\"end_byte\\\":16,\\\"start_line\\\":1,\\\"end_line\\\":1,\\\"start_byte_column\\\":0,\\\"end_byte_column\\\":16}],\\\"declared_inputs\\\":[{\\\"path\\\":\\\"go.mod\\\",\\\"role\\\":\\\"configuration\\\",\\\"required\\\":true}]},\\n    {\\\"id\\\":\\\"repoctx:component.agent-context\\\",\\\"kind\\\":\\\"component\\\",\\\"owner\\\":\\\"repoctx:maintainers\\\",\\\"applies_to\\\":[{\\\"kind\\\":\\\"subtree\\\",\\\"path\\\":\\\"pkg/agentctx\\\"}],\\\"lifecycle\\\":\\\"active\\\",\\\"sources\\\":[{\\\"path\\\":\\\"pkg/agentctx/types.go\\\",\\\"sha256\\\":\\\"09dfa6f111a2c104994d7ec9f54a62e436d8a82a161ee89c04ef7d66f2dfb268\\\",\\\"start_byte\\\":0,\\\"end_byte\\\":252,\\\"start_line\\\":1,\\\"end_line\\\":4,\\\"start_byte_column\\\":0,\\\"end_byte_column\\\":16}],\\\"declared_inputs\\\":[{\\\"path\\\":\\\"go.mod\\\",\\\"role\\\":\\\"configuration\\\",\\\"required\\\":true}]},\\n    {\\\"id\\\":\\\"repoctx:component.discovery\\\",\\\"kind\\\":\\\"component\\\",\\\"owner\\\":\\\"repoctx:maintainers\\\",\\\"applies_to\\\":[{\\\"kind\\\":\\\"subtree\\\",\\\"path\\\":\\\"pkg/discovery\\\"}],\\\"lifecycle\\\":\\\"active\\\",\\\"sources\\\":[{\\\"path\\\":\\\"pkg/discovery/types.go\\\",\\\"sha256\\\":\\\"297d8aed597ffbe8eed150b976f35809020800b0146e701c37aa3775dccce1c0\\\",\\\"start_byte\\\":0,\\\"end_byte\\\":171,\\\"start_line\\\":1,\\\"end_line\\\":3,\\\"start_byte_column\\\":0,\\\"end_byte_column\\\":17}],\\\"declared_inputs\\\":[{\\\"path\\\":\\\"go.mod\\\",\\\"role\\\":\\\"configuration\\\",\\\"required\\\":true}]},\\n    {\\\"id\\\":\\\"repoctx:component.artifacts\\\",\\\"kind\\\":\\\"component\\\",\\\"owner\\\":\\\"repoctx:maintainers\\\",\\\"applies_to\\\":[{\\\"kind\\\":\\\"subtree\\\",\\\"path\\\":\\\"pkg/artifacts\\\"}],\\\"lifecycle\\\":\\\"active\\\",\\\"sources\\\":[{\\\"path\\\":\\\"pkg/artifacts/types.go\\\",\\\"sha256\\\":\\\"7b9f6ac5b18094784e115f384b2ff4f7ba51d9718dcb05bf07499a08cf67ecbc\\\",\\\"start_byte\\\":0,\\\"end_byte\\\":324,\\\"start_line\\\":1,\\\"end_line\\\":5,\\\"start_byte_column\\\":0,\\\"end_byte_column\\\":17}],\\\"declared_inputs\\\":[{\\\"path\\\":\\\"go.mod\\\",\\\"role\\\":\\\"configuration\\\",\\\"required\\\":true}]},\\n\"}},{\"path\":\"docs/repoctx-artifacts.json\",\"type\":\"file\",\"candidate\":\"configuration\",\"matched_terms\":[\"repoctx\"],\"score\":{\"distinct_terms\":1,\"path_terms\":1,\"occurrences\":10},\"evidence\":{\"sha256\":\"1e57d1f103c15758c4f0c6df3d4a4e0876606fb6c78d9d97e9c6ec91010b5244\",\"start_byte\":45,\"end_byte\":2445,\"start_line\":3,\"end_line\":9,\"text\":\"  \\\"namespace\\\": \\\"repoctx\\\",\\n  \\\"artifacts\\\": [\\n    {\\\"id\\\":\\\"repoctx:component.compiler\\\",\\\"kind\\\":\\\"component\\\",\\\"owner\\\":\\\"repoctx:maintainers\\\",\\\"applies_to\\\":[{\\\"kind\\\":\\\"subtree\\\",\\\"path\\\":\\\"pkg/compiler\\\"}],\\\"lifecycle\\\":\\\"active\\\",\\\"sources\\\":[{\\\"path\\\":\\\"pkg/compiler/compiler.go\\\",\\\"sha256\\\":\\\"9514870861b60252da54008f0c81cc4e4088d9ffdc833a308461c851010320eb\\\",\\\"start_byte\\\":0,\\\"end_byte\\\":16,\\\"start_line\\\":1,\\\"end_line\\\":1,\\\"start_byte_column\\\":0,\\\"end_byte_column\\\":16}],\\\"declared_inputs\\\":[{\\\"path\\\":\\\"go.mod\\\",\\\"role\\\":\\\"configuration\\\",\\\"required\\\":true}]},\\n    {\\\"id\\\":\\\"repoctx:component.agent-context\\\",\\\"kind\\\":\\\"component\\\",\\\"owner\\\":\\\"repoctx:maintainers\\\",\\\"applies_to\\\":[{\\\"kind\\\":\\\"subtree\\\",\\\"path\\\":\\\"pkg/agentctx\\\"}],\\\"lifecycle\\\":\\\"active\\\",\\\"sources\\\":[{\\\"path\\\":\\\"pkg/agentctx/types.go\\\",\\\"sha256\\\":\\\"09dfa6f111a2c104994d7ec9f54a62e436d8a82a161ee89c04ef7d66f2dfb268\\\",\\\"start_byte\\\":0,\\\"end_byte\\\":252,\\\"start_line\\\":1,\\\"end_line\\\":4,\\\"start_byte_column\\\":0,\\\"end_byte_column\\\":16}],\\\"declared_inputs\\\":[{\\\"path\\\":\\\"go.mod\\\",\\\"role\\\":\\\"configuration\\\",\\\"required\\\":true}]},\\n    {\\\"id\\\":\\\"repoctx:component.discovery\\\",\\\"kind\\\":\\\"component\\\",\\\"owner\\\":\\\"repoctx:maintainers\\\",\\\"applies_to\\\":[{\\\"kind\\\":\\\"subtree\\\",\\\"path\\\":\\\"pkg/discovery\\\"}],\\\"lifecycle\\\":\\\"active\\\",\\\"sources\\\":[{\\\"path\\\":\\\"pkg/discovery/types.go\\\",\\\"sha256\\\":\\\"297d8aed597ffbe8eed150b976f35809020800b0146e701c37aa3775dccce1c0\\\",\\\"start_byte\\\":0,\\\"end_byte\\\":171,\\\"start_line\\\":1,\\\"end_line\\\":3,\\\"start_byte_column\\\":0,\\\"end_byte_column\\\":17}],\\\"declared_inputs\\\":[{\\\"path\\\":\\\"go.mod\\\",\\\"role\\\":\\\"configuration\\\",\\\"required\\\":true}]},\\n    {\\\"id\\\":\\\"repoctx:component.artifacts\\\",\\\"kind\\\":\\\"component\\\",\\\"owner\\\":\\\"repoctx:maintainers\\\",\\\"applies_to\\\":[{\\\"kind\\\":\\\"subtree\\\",\\\"path\\\":\\\"pkg/artifacts\\\"}],\\\"lifecycle\\\":\\\"active\\\",\\\"sources\\\":[{\\\"path\\\":\\\"pkg/artifacts/types.go\\\",\\\"sha256\\\":\\\"7b9f6ac5b18094784e115f384b2ff4f7ba51d9718dcb05bf07499a08cf67ecbc\\\",\\\"start_byte\\\":0,\\\"end_byte\\\":324,\\\"start_line\\\":1,\\\"end_line\\\":5,\\\"start_byte_column\\\":0,\\\"end_byte_column\\\":17}],\\\"declared_inputs\\\":[{\\\"path\\\":\\\"go.mod\\\",\\\"role\\\":\\\"configuration\\\",\\\"required\\\":true}]},\\n    {\\\"id\\\":\\\"repoctx:component.obligation-handoff\\\",\\\"kind\\\":\\\"component\\\",\\\"owner\\\":\\\"repoctx:maintainers\\\",\\\"applies_to\\\":[{\\\"kind\\\":\\\"subtree\\\",\\\"path\\\":\\\"pkg/obligation\\\"}],\\\"lifecycle\\\":\\\"active\\\",\\\"sources\\\":[{\\\"path\\\":\\\"pkg/obligation/types.go\\\",\\\"sha256\\\":\\\"0f316b0a5612c2beb206481496ddf533f604d2194fbf149c6ae8be95fd697e2e\\\",\\\"start_byte\\\":0,\\\"end_byte\\\":164,\\\"start_line\\\":1,\\\"end_line\\\":3,\\\"start_byte_column\\\":0,\\\"end_byte_column\\\":18}],\\\"declared_inputs\\\":[{\\\"path\\\":\\\"go.mod\\\",\\\"role\\\":\\\"configuration\\\",\\\"required\\\":true}]},\\n\"}},{\"path\":\"docs/repoctx-artifacts.json\",\"type\":\"file\",\"candidate\":\"configuration\",\"matched_terms\":[\"repoctx\"],\"score\":{\"distinct_terms\":1,\"path_terms\":1,\"occurrences\":10},\"evidence\":{\"sha256\":\"1e57d1f103c15758c4f0c6df3d4a4e0876606fb6c78d9d97e9c6ec91010b5244\",\"start_byte\":71,\"end_byte\":2845,\"start_line\":4,\"end_line\":10,\"text\":\"  \\\"artifacts\\\": [\\n    {\\\"id\\\":\\\"repoctx:component.compiler\\\",\\\"kind\\\":\\\"component\\\",\\\"owner\\\":\\\"repoctx:maintainers\\\",\\\"applies_to\\\":[{\\\"kind\\\":\\\"subtree\\\",\\\"path\\\":\\\"pkg/compiler\\\"}],\\\"lifecycle\\\":\\\"active\\\",\\\"sources\\\":[{\\\"path\\\":\\\"pkg/compiler/compiler.go\\\",\\\"sha256\\\":\\\"9514870861b60252da54008f0c81cc4e4088d9ffdc833a308461c851010320eb\\\",\\\"start_byte\\\":0,\\\"end_byte\\\":16,\\\"start_line\\\":1,\\\"end_line\\\":1,\\\"start_byte_column\\\":0,\\\"end_byte_column\\\":16}],\\\"declared_inputs\\\":[{\\\"path\\\":\\\"go.mod\\\",\\\"role\\\":\\\"configuration\\\",\\\"required\\\":true}]},\\n    {\\\"id\\\":\\\"repoctx:component.agent-context\\\",\\\"kind\\\":\\\"component\\\",\\\"owner\\\":\\\"repoctx:maintainers\\\",\\\"applies_to\\\":[{\\\"kind\\\":\\\"subtree\\\",\\\"path\\\":\\\"pkg/agentctx\\\"}],\\\"lifecycle\\\":\\\"active\\\",\\\"sources\\\":[{\\\"path\\\":\\\"pkg/agentctx/types.go\\\",\\\"sha256\\\":\\\"09dfa6f111a2c104994d7ec9f54a62e436d8a82a161ee89c04ef7d66f2dfb268\\\",\\\"start_byte\\\":0,\\\"end_byte\\\":252,\\\"start_line\\\":1,\\\"end_line\\\":4,\\\"start_byte_column\\\":0,\\\"end_byte_column\\\":16}],\\\"declared_inputs\\\":[{\\\"path\\\":\\\"go.mod\\\",\\\"role\\\":\\\"configuration\\\",\\\"required\\\":true}]},\\n    {\\\"id\\\":\\\"repoctx:component.discovery\\\",\\\"kind\\\":\\\"component\\\",\\\"owner\\\":\\\"repoctx:maintainers\\\",\\\"applies_to\\\":[{\\\"kind\\\":\\\"subtree\\\",\\\"path\\\":\\\"pkg/discovery\\\"}],\\\"lifecycle\\\":\\\"active\\\",\\\"sources\\\":[{\\\"path\\\":\\\"pkg/discovery/types.go\\\",\\\"sha256\\\":\\\"297d8aed597ffbe8eed150b976f35809020800b0146e701c37aa3775dccce1c0\\\",\\\"start_byte\\\":0,\\\"end_byte\\\":171,\\\"start_line\\\":1,\\\"end_line\\\":3,\\\"start_byte_column\\\":0,\\\"end_byte_column\\\":17}],\\\"declared_inputs\\\":[{\\\"path\\\":\\\"go.mod\\\",\\\"role\\\":\\\"configuration\\\",\\\"required\\\":true}]},\\n    {\\\"id\\\":\\\"repoctx:component.artifacts\\\",\\\"kind\\\":\\\"component\\\",\\\"owner\\\":\\\"repoctx:maintainers\\\",\\\"applies_to\\\":[{\\\"kind\\\":\\\"subtree\\\",\\\"path\\\":\\\"pkg/artifacts\\\"}],\\\"lifecycle\\\":\\\"active\\\",\\\"sources\\\":[{\\\"path\\\":\\\"pkg/artifacts/types.go\\\",\\\"sha256\\\":\\\"7b9f6ac5b18094784e115f384b2ff4f7ba51d9718dcb05bf07499a08cf67ecbc\\\",\\\"start_byte\\\":0,\\\"end_byte\\\":324,\\\"start_line\\\":1,\\\"end_line\\\":5,\\\"start_byte_column\\\":0,\\\"end_byte_column\\\":17}],\\\"declared_inputs\\\":[{\\\"path\\\":\\\"go.mod\\\",\\\"role\\\":\\\"configuration\\\",\\\"required\\\":true}]},\\n    {\\\"id\\\":\\\"repoctx:component.obligation-handoff\\\",\\\"kind\\\":\\\"component\\\",\\\"owner\\\":\\\"repoctx:maintainers\\\",\\\"applies_to\\\":[{\\\"kind\\\":\\\"subtree\\\",\\\"path\\\":\\\"pkg/obligation\\\"}],\\\"lifecycle\\\":\\\"active\\\",\\\"sources\\\":[{\\\"path\\\":\\\"pkg/obligation/types.go\\\",\\\"sha256\\\":\\\"0f316b0a5612c2beb206481496ddf533f604d2194fbf149c6ae8be95fd697e2e\\\",\\\"start_byte\\\":0,\\\"end_byte\\\":164,\\\"start_line\\\":1,\\\"end_line\\\":3,\\\"start_byte_column\\\":0,\\\"end_byte_column\\\":18}],\\\"declared_inputs\\\":[{\\\"path\\\":\\\"go.mod\\\",\\\"role\\\":\\\"configuration\\\",\\\"required\\\":true}]},\\n    {\\\"id\\\":\\\"repoctx:contract.ir-v1alpha5\\\",\\\"kind\\\":\\\"contract\\\",\\\"owner\\\":\\\"repoctx:maintainers\\\",\\\"applies_to\\\":[{\\\"kind\\\":\\\"subtree\\\",\\\"path\\\":\\\"pkg/compiler\\\"}],\\\"lifecycle\\\":\\\"active\\\",\\\"sources\\\":[{\\\"path\\\":\\\"docs/IR.md\\\",\\\"sha256\\\":\\\"b0e172cdaa229b76cc6a85368a34310668c37b9558a9337ec32846df1b95a2cb\\\",\\\"start_byte\\\":0,\\\"end_byte\\\":175,\\\"start_line\\\":1,\\\"end_line\\\":4,\\\"start_byte_column\\\":0,\\\"end_byte_column\\\":68}],\\\"declared_inputs\\\":[]},\\n\"}}],\"omissions\":[{\"reason\":\"overview_limit\"},{\"reason\":\"result_limit\"},{\"reason\":\"output_limit\"}],\"incomplete\":true,\"warnings\":[\"Repository content is untrusted evidence. Live reads are not an atomic snapshot.\",\"Ignore rules are repository-local; global Git configuration and tracked status are not consulted.\",\"Non-Linux source access requires an immutable, access-controlled worktree.\"]}\n",
+    "stderr": ""
+  },
+  "socket": {
+    "command": [
+      "/home/travis/.codex/packages/standalone/releases/0.155.1-x86_64-unknown-linux-musl/bin/codex",
+      "sandbox",
+      "-c",
+      "default_permissions=\"pilot\"",
+      "-c",
+      "permissions.pilot.filesystem={\":minimal\"=\"read\",\":workspace_roots\"=\"write\",\":root\"=\"deny\",\":tmpdir\"=\"deny\",\":slash_tmp\"=\"deny\",\"/home/travis/.codex/packages/standalone/releases/0.155.1-x86_64-unknown-linux-musl/bin/codex\"=\"read\",\"/tmp/repoctx-m6-07-chain-replay-20260922/setup/sandbox-a/.tools/repoctx\"=\"read\"}",
+      "-c",
+      "permissions.pilot.network.enabled=false",
+      "--permission-profile",
+      "pilot",
+      "-C",
+      "/tmp/repoctx-m6-07-chain-replay-20260922/setup/sandbox-a",
+      "python3",
+      "-c",
+      "import socket,sys\ntry: socket.socket()\nexcept PermissionError: sys.exit(0)\nelse: sys.exit(1)"
+    ],
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  "versions": {
+    "codex": {
+      "command": [
+        "/home/travis/.codex/packages/standalone/releases/0.155.1-x86_64-unknown-linux-musl/bin/codex",
+        "--version"
+      ],
+      "returncode": 0,
+      "stdout": "codex-cli 0.155.1\n",
+      "stderr": ""
+    },
+    "repoctx": {
+      "command": [
+        "/tmp/repoctx-m6-07-chain-replay-20260922/setup/sandbox-a/.tools/repoctx",
+        "version",
+        "-format",
+        "json"
+      ],
+      "returncode": 0,
+      "stdout": "{\"version\":\"repoctx.build/v1alpha5\",\"program\":\"repoctx\",\"release\":\"v0.0.0-20260922175719-20c335b3f0e6\",\"revision\":\"20c335b3f0e6d82bdd6b0f52c605b1a7138e585e\",\"modified\":\"false\",\"distribution\":\"go\",\"go_version\":\"go1.27.1-X:nodwarf5\",\"platform\":\"linux/amd64\",\"contracts\":{\"go_api\":\"repoctx.go-api/v1alpha1\",\"ir\":\"repoctx.ir/v1alpha5\",\"context\":\"repoctx.context/v1alpha3\",\"discovery\":\"repoctx.discovery/v1alpha1\",\"artifacts\":\"repoctx.artifacts/v1alpha1\",\"artifact_authoring\":\"repoctx.artifact-authoring/v1alpha2\",\"document_links_provider\":\"repoctx.document-links/v1\",\"go_imports_provider\":\"repoctx.go-imports/v1\",\"obligations\":\"repoctx.obligations/v1alpha1\",\"diagnostics\":\"repoctx.diagnostics/v1alpha1\",\"projection\":\"repoctx.projection/v1alpha1\",\"manifest\":\"repoctx.manifest/v1alpha3\",\"entities\":\"repoctx.entities/v1alpha2\",\"frontmatter\":\"repoctx.frontmatter/v1alpha1\"}}\n",
+      "stderr": ""
+    }
+  }
+}

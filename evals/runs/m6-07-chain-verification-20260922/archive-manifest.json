@@ -1,0 +1,21 @@
+{
+  "classification": "final tuned same-task M6-07 high-effort verification with a skill-only overlay and changed model configuration; not independent fresh, comparative, efficiency, causal, or generalization evidence",
+  "whitelist": [
+    "protocol.initial.json",
+    "protocol.initial.sha256",
+    "protocol.json",
+    "original-source-hashes.json",
+    "effective-source-hashes.json",
+    "setup/probe.json",
+    "trials.jsonl",
+    "task-inputs/f-artifacts-check-chain.json",
+    "overlay/skills/repoctx/SKILL.md",
+    "operators/operator-source.py",
+    "operators/runner-source.py",
+    "operators/runner-helper-source.py",
+    "trials/01-f-artifacts-check-chain-ordinary_tools_plus_repoctx/record.json",
+    "trials/01-f-artifacts-check-chain-ordinary_tools_plus_repoctx/raw/events.jsonl",
+    "trials/01-f-artifacts-check-chain-ordinary_tools_plus_repoctx/raw/final.txt",
+    "trials/01-f-artifacts-check-chain-ordinary_tools_plus_repoctx/raw/stderr.txt"
+  ]
+}

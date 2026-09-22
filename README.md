@@ -602,3 +602,9 @@ public issue.
 Copyright 2026 Travis DeShazo. Licensed under the
 [Apache License 2.0](LICENSE). See [NOTICE](NOTICE) and
 [third-party notices](THIRD_PARTY_NOTICES.md) for attribution.
+
+> **Roadmap status (2026-09-22):** M6-07 is complete for the documented
+> discover → inspect → expand workflow checks. See the [completion report](docs/reports/m6-07-completion.md).
+> The next active evaluation item is the unchecked [M4-14 confirmatory
+> held-out workflow evaluation](ROADMAP.md#2-test-the-actual-agent-workflow);
+> these records make no efficiency or natural-adoption claim.

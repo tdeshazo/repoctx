@@ -1,0 +1,7 @@
+{
+  "id": "f-artifacts-check-chain",
+  "type": "indexed_cross_file_chain",
+  "repository": "repoctx-source@20c335b3f0e6d82bdd6b0f52c605b1a7138e585e",
+  "prompt": "A proposed change could make `repoctx artifacts -check` overwrite a stale catalog. Use indexed context to locate the intermediate functions, then inspect source and trace the actual caller-to-callee route from CLI dispatch through artifact generation and authoring decode. Name every function in order and cite each hop as `path:line`. Explain the branch that preserves the output for `-check` versus the ordinary write branch, and state what the indexed call relationship cannot prove."
+}
+

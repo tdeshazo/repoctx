@@ -1,0 +1,31 @@
+The request flows as follows:
+
+- `main` passes arguments to `cli.Main` (`repository/main.go:9`).
+- `cli.Main` dispatches `read` to `discoveryCmd` (`repository/internal/cli/main.go:20-27`).
+- `runDiscovery` parses `-file PATH:START:END`; `223` and `340` become `StartLine=223`, `EndLine=340` (`repository/internal/cli/discovery.go:67-95`).
+- `discovery.Run` normalizes options and walks the repository (`repository/pkg/discovery/discovery.go:39-42`, `repository/pkg/discovery/discovery.go:82-102`).
+- `walk` invokes `inspect` for the file (`repository/pkg/discovery/discovery.go:300-310`).
+- `inspect` computes the observed line count. It defaults end `0` to `len(starts)`, but rejects any explicit end beyond that count (`repository/pkg/discovery/search.go:236-269`).
+
+`units.go` has 336 observed lines, so `340 > 336`; the command returns a `UsageError` with the EOF recovery hint (`repository/pkg/discovery/types.go:110-116`). The user-facing guidance explicitly says to use `PATH:START:0` when the end is unknown and not guess an oversized endpoint (`repository/skills/repoctx/SKILL.md:100-104`).
+
+Safe retry:
+
+```sh
+repoctx read -root . -file 'pkg/agentctx/units.go:223:0' -max-bytes 12000
+```
+
+Returned evidence:
+
+- Path: `pkg/agentctx/units.go`
+- Inclusive span: lines `223–336`
+
+The evidence fields are populated as one-based inclusive line numbers (`repository/pkg/discovery/types.go:71-79`, `repository/pkg/discovery/search.go:342-347`).
+
+Before relying on the retry, inspect these response completeness fields:
+
+- `incomplete`
+- `omissions`
+- `warnings`
+
+They are part of `Response` (`repository/pkg/discovery/types.go:92-102`) and are specifically required by the guidance (`repository/skills/repoctx/SKILL.md:69-72`, `repository/skills/repoctx/SKILL.md:103-104`).

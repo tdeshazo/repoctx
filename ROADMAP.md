@@ -12,7 +12,7 @@ expanding the architecture.
 | --- | --- |
 | Foundations, retrieval, input identity, and optional artifacts (M0–M3) | Recorded complete in the [historical plan](docs/history/roadmap-2026-09-22.md); preserve existing capabilities. |
 | Evaluation (M4) | Fixtures, controls, accounting, and prototypes exist. The small exploratory M4-13 pilot completed four paired synthetic tasks with both conditions at 4/4; it found no efficiency gain. Agent-outcome acceptance gates remain open. See the [pilot report](docs/reports/m4-13-workflow-pilot.md) and [evaluation protocol](evals/m4/README.md). |
-| Default workflow (M6-07) | The first-use record covered three paired tasks: both conditions passed the documentation and discovery tasks, while both were partial on the cross-file relationship task. A focused guidance replay remained partial and exposed oversized-range recovery friction. Guidance now distinguishes literal search from task discovery and gives a concrete indexed caller/callee trigger; M6-07 remains open for reliable bounded reads and a complete cross-file trace. See the [first-use record](docs/reports/m6-07-first-use.md). |
+| Default workflow (M6-07) | Complete for the documented workflow checks described in the [completion report](docs/reports/m6-07-completion.md). The fresh bounded-read task passed; a final tuned replay of the same relationship task also passed after earlier partial runs. |
 | Performance and distribution (M5–M6) | Recorded complete for their declared workloads and supported distribution. These results do not establish agent task success. |
 | Canonical model (M7) | M7-01 through M7-03 implemented. Further expansion is paused; maintain the existing implementation. |
 | Authority, semantic views, execution plans, and projections (M8–M11) | Deferred proposals, not the next delivery sequence. |
@@ -25,8 +25,8 @@ completion links, and architectural proposals. This file owns current priorities
 
 M4-12 records the bounded retrieval corrections under realistic output limits.
 The M4-13 paired workflow pilot below is complete. The next active item is
-M6-07: verify that the revised discovery-first guidance works in realistic
-first-use tasks before further retrieval tuning or infrastructure work.
+M4-14: run the predeclared confirmatory evaluation after recording the M6-07
+workflow checks below.
 The corrections address three [recorded context failures](docs/reports/m4-09-evidence.md):
 identifier noise, an answer-bearing window that did not fit, and a clipped
 reference to the actionable requirement.
@@ -82,32 +82,41 @@ held-out set if using the results to tune retrieval. Preserve the existing
 for published improvement claims; do not relax them or treat this pilot as M4
 completion. Persistence and compaction experiments remain separate and optional.
 
+- [ ] **M4-14 — Run the confirmatory held-out workflow evaluation.** Execute the
+  existing [confirmatory protocol and decision rules](evals/m4/README.md#predeclared-decisions)
+  against its frozen task set, with its paired accounting, missingness guard, and
+  predeclared classification. Keep this gate open until the run and its
+  classification report are linked; M6-07 evidence does not satisfy it.
+
 ## 3. Simplify the default path
 
-- [ ] **M6-07 — Make discover → inspect → expand the obvious workflow.** Align
+- [x] **M6-07 — Make discover → inspect → expand the obvious workflow.** Align
   CLI guidance, README examples, and the agent skill around finding useful
   evidence with minimal setup. Use pilot friction to guide any behavior changes.
+  Evidence: [workflow verification report](docs/reports/m6-07-completion.md).
 
-The discovery-first guidance is implemented in the README and agent skill. Keep
-M6-07 open until a realistic first-use task verifies that the revised primer
-reaches useful evidence with clear follow-ups; the synthetic pilot alone is not
-enough to establish that result.
+The discovery-first guidance is implemented in the README and agent skill. The
+fresh bounded-read verification passed. The artifacts trace was partial in the
+initial run and after a medium-effort skill replay. A final tuned replay of the
+same task passed with revised skill guidance and `gpt-6-sol` at high effort; it
+does not isolate the guidance effect. Earlier partial results remain visible in
+their original reports.
 
 The initial first-use run passed the documentation and discovery tasks in both
 conditions, but both answers to the cross-file relationship task omitted the
 required `build` → `choose` → `chooseSymbols` intermediate. The run also
-observed multiword literal searches returning no results. The README and agent
-skill now explain the literal-versus-task search choice and when an indexed
-caller/callee follow-up is useful. A small post-replay bounded-read diagnostic
-fix now points oversized-range errors to the `:START:0` EOF form; it addresses
-observed usage errors and carries no agent-benefit claim.
+observed multiword literal searches returning no results. A later fresh
+verification passed EOF recovery, while its first artifacts answer confused
+sibling calls in a headline; the final tuned replay passed all five frozen
+claims. The README and agent skill explain the
+literal-versus-task search choice, bounded EOF recovery, and caller/callee edge
+verification. These results carry no efficiency or natural-adoption claim.
 
 The focused treatment replay still omitted the required cross-file chain and
 did not name the relationship source locations. It also guessed read endpoints
-beyond EOF, producing bounded-read usage errors. M6-07 remains open. The next
-action is to check recovery and a complete cross-file trace on a fresh
-representative task with reliable bounded reads; retain this observed case as a
-regression reference.
+beyond EOF, producing bounded-read usage errors. Retain this observed case as a
+regression reference; the completion report records the later directed checks
+and their limits.
 
 Start with index-free discovery and bounded reads. Introduce compilation when
 indexed symbols and relationships help. Keep manifests, artifact catalogs,
@@ -118,6 +127,8 @@ not require authoring metadata or configuring a session store.
 documented workflow, with clear next reads when output is incomplete. Capture
 setup and follow-up friction in the paired pilot rather than inferring usability
 from command count alone. Documentation improvements can proceed alongside it.
+M6-07 is complete for the documented workflow checks above; the confirmatory M4
+evaluation remains a separate open gate.
 
 ## Requirements to preserve
 

@@ -1,0 +1,24 @@
+{
+  "classification": "M6-07 actual-source treatment verification; no comparative, efficiency, or generalization claim",
+  "whitelist": [
+    "protocol.initial.json",
+    "protocol.initial.sha256",
+    "protocol.json",
+    "source-export-hashes.json",
+    "trials.jsonl",
+    "setup/probe.json",
+    "operators/operator-source.py",
+    "operators/runner-source.py",
+    "operators/runner-helper-source.py",
+    "task-inputs/f-artifacts-check-chain.json",
+    "task-inputs/f-read-eof-recovery.json",
+    "trials/01-f-artifacts-check-chain-ordinary_tools_plus_repoctx/record.json",
+    "trials/01-f-artifacts-check-chain-ordinary_tools_plus_repoctx/raw/events.jsonl",
+    "trials/01-f-artifacts-check-chain-ordinary_tools_plus_repoctx/raw/final.txt",
+    "trials/01-f-artifacts-check-chain-ordinary_tools_plus_repoctx/raw/stderr.txt",
+    "trials/02-f-read-eof-recovery-ordinary_tools_plus_repoctx/record.json",
+    "trials/02-f-read-eof-recovery-ordinary_tools_plus_repoctx/raw/events.jsonl",
+    "trials/02-f-read-eof-recovery-ordinary_tools_plus_repoctx/raw/final.txt",
+    "trials/02-f-read-eof-recovery-ordinary_tools_plus_repoctx/raw/stderr.txt"
+  ]
+}

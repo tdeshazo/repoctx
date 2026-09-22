@@ -69,16 +69,16 @@
       "end": "go build -o repoctx-cmd ./cmd/repoctx"
     },
     {
-      "id": "default-path",
+      "id": "evaluation-section",
       "path": "ROADMAP.md",
-      "start": "## 3. Simplify the default path",
-      "end": "## 3. Simplify the default path"
+      "start": "## 2. Test the actual agent workflow",
+      "end": "## 2. Test the actual agent workflow"
     },
     {
-      "id": "m6-07",
+      "id": "m4-14",
       "path": "ROADMAP.md",
-      "start": "- [ ] **M6-07 \u2014 Make discover \u2192 inspect \u2192 expand the obvious workflow.** Align",
-      "end": "  evidence with minimal setup. Use pilot friction to guide any behavior changes."
+      "start": "- [ ] **M4-14 \u2014 Run the confirmatory held-out workflow evaluation.** Execute the",
+      "end": "  classification report are linked; M6-07 evidence does not satisfy it."
     }
   ],
   "artifacts": [
@@ -354,7 +354,7 @@
       "runner_check_id": "go-vet-all"
     },
     {
-      "id": "repoctx:milestone.default-path",
+      "id": "repoctx:milestone.evaluation",
       "kind": "component",
       "owner": "repoctx:maintainers",
       "applies_to": [
@@ -366,12 +366,12 @@
       "lifecycle": "active",
       "sensitivity": "public",
       "sources": [
-        "default-path"
+        "evaluation-section"
       ],
       "declared_inputs": []
     },
     {
-      "id": "repoctx:requirement.m6-07-default-workflow",
+      "id": "repoctx:requirement.m4-14-confirmatory-evaluation",
       "kind": "requirement",
       "owner": "repoctx:maintainers",
       "applies_to": [
@@ -383,7 +383,7 @@
       "lifecycle": "active",
       "sensitivity": "public",
       "sources": [
-        "m6-07"
+        "m4-14"
       ],
       "declared_inputs": []
     }
@@ -453,12 +453,12 @@
       ]
     },
     {
-      "from": "repoctx:milestone.default-path",
-      "to": "repoctx:requirement.m6-07-default-workflow",
+      "from": "repoctx:milestone.evaluation",
+      "to": "repoctx:requirement.m4-14-confirmatory-evaluation",
       "kind": "contains",
       "resolution": "declared",
       "sources": [
-        "m6-07"
+        "m4-14"
       ]
     }
   ]

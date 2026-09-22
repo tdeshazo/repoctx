@@ -1,0 +1,15 @@
+The current call chain is:
+
+`repository/main.go:9` `main` → `repository/internal/cli/main.go:20` `Main` → `repository/internal/cli/main.go:30-31` `artifactsCmd` → `repository/internal/cli/artifacts.go:15` `runArtifacts` → `repository/internal/cli/artifacts.go:50` `readBounded` → `repository/internal/cli/artifacts.go:54` `artifacts.Generate` → `repository/pkg/artifacts/authoring.go:75` `Compile` → `repository/pkg/artifacts/authoring.go:90` `decodeAuthoring`.
+
+`Generate` calls `Compile`, which first decodes and validates the authoring JSON before resolving source anchors. It then encodes the generated catalog at `repository/pkg/artifacts/authoring.go:79`.
+
+The `-check` protection is explicit:
+
+- `runArtifacts` generates the candidate catalog at `repository/internal/cli/artifacts.go:54`.
+- With `-check`, `! *check` is false, so the ordinary write call is skipped.
+- It reads the existing output at `repository/internal/cli/artifacts.go:61`, compares it at `:65`, and returns a stale error at `:66` if bytes differ.
+
+Without `-check`, the branch at `repository/internal/cli/artifacts.go:58-59` calls `writePayload`, preserving the normal write behavior.
+
+Indexed context confirms `Main → artifactsCmd`, `artifactsCmd → runArtifacts`, and `runArtifacts → artifacts.Generate`, but those relationships are reported as syntax/name-heuristic evidence. The index lacks type-checked dispatch and module resolution, and its cross-package `artifacts.Generate` edge is unresolved; therefore it cannot by itself prove runtime dispatch, causality, or that missing edges represent absent calls.
