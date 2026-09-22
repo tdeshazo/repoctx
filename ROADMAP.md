@@ -684,11 +684,12 @@ the existing deterministic artifact-authoring workflow.
   R-CIR entities. Preserve the existing syntax graph and source-only workflow;
   every semantic assertion retains its exact source and declaration status.
   Evidence: [typed repository entities](docs/reports/m7-02-evidence.md).
-- [ ] **M7-03 — Unify artifact authoring and compilation.** Make the current
+- [x] **M7-03 — Unify artifact authoring and compilation.** Make the current
   deterministic artifact generator an input adapter for the canonical model,
   with one semantic declaration path and no agent-authored hashes or coordinates.
   Detect duplicate identity across manifests, generated catalogs, and document
-  frontmatter rather than selecting one by load order.
+  frontmatter rather than selecting one by load order. Evidence:
+  [unified artifact authoring and compilation](docs/reports/m7-03-evidence.md).
 - [ ] **M7-04 — Expand compilation identity.** Record optional Git revision and
   dirty state, submodules, toolchain and target profiles, policy identity, provider
   inputs, and declared negative dependencies. Keep content identity usable without

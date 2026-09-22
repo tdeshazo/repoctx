@@ -51,8 +51,14 @@ func TestRepositoryArtifactCatalog(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+	expectedRelationships := len(catalog.Relationships)
+	for _, artifact := range catalog.Artifacts {
+		if artifact.Owner != nil {
+			expectedRelationships++
+		}
+	}
 	if grounding.Incomplete || len(grounding.Diagnostics) != 0 ||
-		len(grounding.Relationships) != len(catalog.Relationships) {
+		len(grounding.Relationships) != expectedRelationships {
 		t.Fatalf("catalog links did not ground completely: %+v", grounding)
 	}
 

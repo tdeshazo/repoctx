@@ -14,14 +14,15 @@ var (
 )
 
 // EntityVersion identifies the typed semantic layer embedded in repository IR.
-const EntityVersion = "repoctx.entities/v1alpha1"
+const EntityVersion = "repoctx.entities/v1alpha2"
 
 // EntityModel contains repository-authored semantic declarations. Repository
 // metadata remains evidence: it does not grant authority or activate behavior.
 type EntityModel struct {
-	Version   string   `json:"version"`
-	Namespace string   `json:"namespace"`
-	Entities  []Entity `json:"entities"`
+	Version       string               `json:"version"`
+	Namespace     string               `json:"namespace"`
+	Entities      []Entity             `json:"entities"`
+	Relationships []EntityRelationship `json:"relationships"`
 }
 
 // Entity is a stable repository declaration. IDs and references are qualified
@@ -53,8 +54,17 @@ type Freshness struct {
 // Declaration records that an entity is an authored claim and where its exact
 // bytes came from. Other declaration states are intentionally unsupported.
 type Declaration struct {
-	Status string     `json:"status"`
-	Source SourceSpan `json:"source"`
+	Status  string       `json:"status"`
+	Sources []SourceSpan `json:"sources"`
+}
+
+// EntityRelationship is an authored semantic edge. It remains a declaration;
+// presence in R-CIR does not establish authority or runtime causality.
+type EntityRelationship struct {
+	From        string      `json:"from"`
+	To          string      `json:"to"`
+	Kind        string      `json:"kind"`
+	Declaration Declaration `json:"declaration"`
 }
 
 // SourceSpan uses physical byte coordinates. Endpoints are exclusive, lines
@@ -79,7 +89,7 @@ func (r *Repository) validateEntities() error {
 	if model.Version != EntityVersion || !entityNamespacePattern.MatchString(model.Namespace) {
 		return fmt.Errorf("invalid entity model identity")
 	}
-	if model.Entities == nil || len(model.Entities) > 1024 {
+	if model.Entities == nil || model.Relationships == nil || len(model.Entities) > 1024 || len(model.Relationships) > 4096 {
 		return fmt.Errorf("invalid entity collection")
 	}
 	byID := make(map[string]Entity, len(model.Entities))
@@ -107,7 +117,7 @@ func (r *Repository) validateEntities() error {
 				return fmt.Errorf("entity %d: invalid freshness input", i)
 			}
 		}
-		if entity.Declaration.Status != "declared" || !validEntitySource(entity.Declaration.Source) {
+		if !validDeclaration(entity.Declaration) {
 			return fmt.Errorf("entity %d: invalid declaration source", i)
 		}
 		byID[entity.ID] = entity
@@ -124,6 +134,15 @@ func (r *Repository) validateEntities() error {
 			}
 		}
 	}
+	for i, relationship := range model.Relationships {
+		if !entityIDPattern.MatchString(relationship.From) || !entityIDPattern.MatchString(relationship.To) ||
+			!entityRelationshipKind(relationship.Kind) || !validDeclaration(relationship.Declaration) {
+			return fmt.Errorf("entity relationship %d: invalid fields", i)
+		}
+		if i > 0 && compareEntityRelationship(relationship, model.Relationships[i-1]) < 0 {
+			return fmt.Errorf("entity relationship %d: noncanonical order", i)
+		}
+	}
 	return nil
 }
 
@@ -133,6 +152,20 @@ func entityKind(value string) bool {
 
 func entityLifecycle(value string) bool {
 	return oneOfEntity(value, "draft", "active", "deprecated", "superseded", "retired")
+}
+
+func entityRelationshipKind(value string) bool {
+	return oneOfEntity(value, "contains", "references", "governed_by", "depends_on", "supersedes", "verifies")
+}
+
+func compareEntityRelationship(a, b EntityRelationship) int {
+	if result := strings.Compare(a.From, b.From); result != 0 {
+		return result
+	}
+	if result := strings.Compare(a.Kind, b.Kind); result != 0 {
+		return result
+	}
+	return strings.Compare(a.To, b.To)
 }
 
 func oneOfEntity(value string, choices ...string) bool {
@@ -157,6 +190,18 @@ func validEntitySource(source SourceSpan) bool {
 		source.StartByte >= 0 && source.EndByte > source.StartByte &&
 		source.StartLine > 0 && source.EndLine >= source.StartLine &&
 		source.StartByteColumn >= 0 && source.EndByteColumn >= 0
+}
+
+func validDeclaration(declaration Declaration) bool {
+	if declaration.Status != "declared" || len(declaration.Sources) == 0 || len(declaration.Sources) > 16 {
+		return false
+	}
+	for _, source := range declaration.Sources {
+		if !validEntitySource(source) {
+			return false
+		}
+	}
+	return true
 }
 
 func uniqueBounded(values []string) bool {

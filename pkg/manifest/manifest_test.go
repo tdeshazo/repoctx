@@ -19,7 +19,7 @@ document_sources:
 artifact_sources:
   - id: claims
     path: claims.json
-    format: repoctx.artifact-authoring/v1alpha1
+    format: repoctx.artifact-authoring/v1alpha2
 components:
   - id: core
     source_roots: [source]
@@ -56,6 +56,29 @@ entities:
 ---
 # Model
 `
+
+const validArtifactAuthoring = `{
+  "version":"repoctx.artifact-authoring/v1alpha2",
+  "namespace":"demo",
+  "source_anchors":[{"id":"claim","path":"model.md","start":"# Model","end":"# Model"}],
+  "artifacts":[{
+    "id":"demo:contract.claim",
+    "kind":"contract",
+    "owner":"demo:maintainers",
+    "applies_to":[{"kind":"file","path":"model.md"}],
+    "lifecycle":"active",
+    "sensitivity":"internal",
+    "sources":["claim"],
+    "declared_inputs":[]
+  }],
+  "relationships":[{
+    "from":"demo:contract.claim",
+    "to":"demo:core",
+    "kind":"references",
+    "resolution":"declared",
+    "sources":["claim"]
+  }]
+}`
 
 func TestLoadValidManifestAndVerifyAvailability(t *testing.T) {
 	root := t.TempDir()

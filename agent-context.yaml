@@ -10,7 +10,7 @@ document_sources:
 artifact_sources:
   - id: artifact-authoring
     path: docs/repoctx-artifacts.source.json
-    format: repoctx.artifact-authoring/v1alpha1
+    format: repoctx.artifact-authoring/v1alpha2
 components:
   - id: repoctx
     source_roots:

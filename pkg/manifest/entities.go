@@ -11,6 +11,7 @@ import (
 	"unicode/utf8"
 
 	"github.com/tdeshazo/repoctx/internal/sourceroot"
+	"github.com/tdeshazo/repoctx/pkg/artifacts"
 	"github.com/tdeshazo/repoctx/pkg/ir"
 	"gopkg.in/yaml.v3"
 )
@@ -50,9 +51,9 @@ var (
 	)
 )
 
-// CompileEntities compiles manifest components and explicitly listed Markdown
-// frontmatter into stable, source-linked repository entities. It validates
-// claims but grants no authority and invokes no provider.
+// CompileEntities compiles manifest components, artifact authoring, and
+// explicitly listed Markdown frontmatter into stable, source-linked repository
+// entities. It validates claims but grants no authority and invokes no provider.
 func CompileEntities(root, path string, limits Limits, permit func(string) bool) (*ir.EntityModel, error) {
 	normalized, err := normalizeLimits(limits)
 	if err != nil {
@@ -87,13 +88,31 @@ func CompileEntities(root, path string, limits Limits, permit func(string) bool)
 		return nil, err
 	}
 
-	model := &ir.EntityModel{Version: ir.EntityVersion, Namespace: doc.Namespace, Entities: []ir.Entity{}}
+	model := &ir.EntityModel{
+		Version: ir.EntityVersion, Namespace: doc.Namespace,
+		Entities: []ir.Entity{}, Relationships: []ir.EntityRelationship{},
+	}
 	componentNodes := sequenceMappings(node, "components")
 	for i, component := range doc.Components {
 		if i >= len(componentNodes) {
 			return nil, fail("$.components", "source mapping unavailable")
 		}
 		model.Entities = append(model.Entities, componentEntity(doc.Namespace, path, data, componentNodes[i], component))
+	}
+	for i, source := range doc.ArtifactSources {
+		authoring, err := sources.Read(source.Path, 1<<20)
+		if err != nil {
+			return nil, fail(fmt.Sprintf("$.artifact_sources[%d].path", i), "artifact source is unavailable")
+		}
+		fragment, err := artifacts.Entities(root, authoring, permit)
+		if err != nil {
+			return nil, fail(fmt.Sprintf("$.artifact_sources[%d]", i), err.Error())
+		}
+		if fragment.Namespace != doc.Namespace {
+			return nil, fail(fmt.Sprintf("$.artifact_sources[%d]", i), "namespace disagrees with manifest")
+		}
+		model.Entities = append(model.Entities, fragment.Entities...)
+		model.Relationships = append(model.Relationships, fragment.Relationships...)
 	}
 	for i, source := range doc.DocumentSources {
 		documentData, err := sources.Read(source.Path, 2<<20)
@@ -105,15 +124,29 @@ func CompileEntities(root, path string, limits Limits, permit func(string) bool)
 			return nil, fail(fmt.Sprintf("$.document_sources[%d]", i), err.Error())
 		}
 		model.Entities = append(model.Entities, entities...)
-		if len(model.Entities) > 1024 {
-			return nil, fail("$.entities", "count limit exceeded")
-		}
+	}
+	if len(model.Entities) > 1024 {
+		return nil, fail("$.entities", "count limit exceeded")
+	}
+	if len(model.Relationships) > 4096 {
+		return nil, fail("$.relationships", "count limit exceeded")
 	}
 	slices.SortFunc(model.Entities, func(a, b ir.Entity) int { return strings.Compare(a.ID, b.ID) })
+	slices.SortFunc(model.Relationships, compareRelationships)
 	if err := validateEntities(model); err != nil {
 		return nil, err
 	}
 	return model, nil
+}
+
+func compareRelationships(a, b ir.EntityRelationship) int {
+	if result := strings.Compare(a.From, b.From); result != 0 {
+		return result
+	}
+	if result := strings.Compare(a.Kind, b.Kind); result != 0 {
+		return result
+	}
+	return strings.Compare(a.To, b.To)
 }
 
 func componentEntity(namespace, path string, data []byte, node *yaml.Node, component Component) ir.Entity {
@@ -122,7 +155,7 @@ func componentEntity(namespace, path string, data []byte, node *yaml.Node, compo
 		Owners: qualifyAll(namespace, component.Owners), Scopes: irScopes(component.Scopes),
 		Lifecycle: component.Lifecycle, Supersedes: qualifyAll(namespace, component.Supersedes),
 		Sensitivity: component.Sensitivity, Freshness: ir.Freshness{Inputs: slices.Clone(component.Freshness.Inputs)},
-		Declaration: ir.Declaration{Status: "declared", Source: sourceSpan(path, data, node, 0)},
+		Declaration: ir.Declaration{Status: "declared", Sources: []ir.SourceSpan{sourceSpan(path, data, node, 0)}},
 	}
 }
 
@@ -155,7 +188,7 @@ func decodeFrontmatter(namespace, path string, data []byte, limits Limits) ([]ir
 	if authored.Version != FrontmatterVersion {
 		return nil, fmt.Errorf("unsupported frontmatter version")
 	}
-	if authored.Entities == nil || len(authored.Entities) == 0 {
+	if len(authored.Entities) == 0 {
 		return nil, fmt.Errorf("at least one entity is required")
 	}
 	if len(authored.Entities) > 1024 {
@@ -176,7 +209,7 @@ func decodeFrontmatter(namespace, path string, data []byte, limits Limits) ([]ir
 			Lifecycle: declaration.Lifecycle, Supersedes: qualifyAll(namespace, declaration.Supersedes),
 			Sensitivity: declaration.Sensitivity,
 			Freshness:   ir.Freshness{Inputs: slices.Clone(declaration.Freshness.Inputs)},
-			Declaration: ir.Declaration{Status: "declared", Source: sourceSpan(path, data, nodes[i], lineOffset)},
+			Declaration: ir.Declaration{Status: "declared", Sources: []ir.SourceSpan{sourceSpan(path, data, nodes[i], lineOffset)}},
 		})
 	}
 	return result, nil

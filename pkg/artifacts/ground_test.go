@@ -1,4 +1,4 @@
-package artifacts
+package artifacts_test
 
 import (
 	"os"
@@ -7,9 +7,32 @@ import (
 	"strings"
 	"testing"
 
+	. "github.com/tdeshazo/repoctx/pkg/artifacts"
 	"github.com/tdeshazo/repoctx/pkg/compiler"
 	"github.com/tdeshazo/repoctx/pkg/ir"
 )
+
+func minimal() *Catalog {
+	return &Catalog{
+		Version: Version, Namespace: "a",
+		Artifacts: []Artifact{{
+			ID: "a:a", Kind: "component", Lifecycle: "active",
+			AppliesTo: []Applicability{}, DeclaredInputs: []Input{},
+			Sources: []Span{{
+				Path: "a", SHA256: strings.Repeat("0", 64), StartByte: 0,
+				EndByte: 1, StartLine: 1, EndLine: 1, EndByteColumn: 1,
+			}},
+		}},
+		Relationships: []Relationship{},
+	}
+}
+
+func relationship(from, to, kind string) Relationship {
+	return Relationship{
+		From: from, To: to, Kind: kind, Resolution: "declared",
+		Sources: minimal().Artifacts[0].Sources,
+	}
+}
 
 func TestGroundRelationshipsSeparatesProvenance(t *testing.T) {
 	repo := groundingFixture(t)
@@ -106,7 +129,7 @@ func TestGroundRelationshipsBoundsAndRejectsUnsupportedConfiguration(t *testing.
 		{GoImports: &GoImportOptions{}},
 		{GoImports: &GoImportOptions{GoMod: []byte("module example.test/other\n")}},
 		{MaxRelationships: -1},
-		{MaxDiagnostics: maximumGroundingLimit + 1},
+		{MaxDiagnostics: 16385},
 	}
 	for _, options := range bad {
 		grounding, err := GroundRelationships(repo, nil, options)

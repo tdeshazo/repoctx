@@ -113,9 +113,12 @@ func compile(opts Options) (*ir.Repository, CacheStats, error) {
 	}
 	linkRepository(repo, st, goModule(contents["go.mod"]))
 	if opts.Manifest != "" {
-		entities, err := repomanifest.CompileEntities(root, opts.Manifest, repomanifest.Limits{}, func(path string) bool {
-			return pathAllowed(path, opts)
-		})
+		entities, err := repomanifest.CompileEntities(
+			root,
+			opts.Manifest,
+			repomanifest.Limits{},
+			func(path string) bool { return pathAllowed(path, opts) },
+		)
 		if err != nil {
 			return nil, CacheStats{}, fmt.Errorf("compile repository entities: %w", err)
 		}

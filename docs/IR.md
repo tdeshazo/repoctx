@@ -35,13 +35,15 @@ type Repository struct {
 }
 ```
 
-`entities`, when present, is `repoctx.entities/v1alpha1`. It contains
+`entities`, when present, is `repoctx.entities/v1alpha2`. It contains
 namespace-qualified, ID-sorted declarations compiled from the caller-selected
-canonical manifest and its explicit Markdown frontmatter inputs. Entity kinds
+canonical manifest, artifact-authoring inputs, and explicit Markdown
+frontmatter inputs. Entity kinds
 cover documents, components, decisions, contracts, requirements, verification
 obligations, and owners. Each retains owners, scopes, lifecycle, supersession,
-sensitivity, freshness inputs, status `declared`, and an exact source span with
-a full-file SHA-256 digest. These are repository claims, not trusted policy.
+sensitivity, freshness inputs, status `declared`, and one or more exact source
+spans with full-file SHA-256 digests. Authored artifact relationships are
+retained with the same exact evidence. These are repository claims, not trusted policy.
 Omitting the compiler's manifest option preserves source-only IR.
 
 `inputs` records sorted source paths, full hashes and byte sizes, plus root

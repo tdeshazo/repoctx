@@ -140,7 +140,7 @@ repoctx artifacts -root . -source docs/repoctx-artifacts.source.json \
   -o docs/repoctx-artifacts.json -check
 ```
 
-The authoring input uses `repoctx.artifact-authoring/v1alpha1`. Start and end
+The authoring input uses `repoctx.artifact-authoring/v1alpha2`. Start and end
 anchor text must each occur exactly once in a UTF-8 regular file; equal values
 select that single occurrence. Files are read through the same root-confined,
 symlink-rejecting reader used for source evidence. Named anchors prevent repeated
@@ -149,6 +149,13 @@ whole-file SHA-256 and exclusive physical span, validates the emitted artifact
 contract, and atomically writes only after success. Its stable line-oriented
 JSON keeps each declaration independently retrievable. `-check` performs no
 write and fails when the committed output differs.
+
+Each v1alpha2 artifact declares `sensitivity`; optional `owner` is a stable,
+same-namespace owner entity ID. Canonical manifest compilation consumes this
+compact input directly, adapts entities and relationships into
+`repoctx.entities/v1alpha2`, and rejects duplicate identities across all
+declaration inputs. The `repoctx.artifacts/v1alpha1` catalog remains a derived
+standalone view; canonical compilation does not load that generated JSON.
 
 Neither file is reserved, discovered, or loaded automatically. The root dogfood
 test regenerates and byte-compares the catalog before decoding it, resolving all

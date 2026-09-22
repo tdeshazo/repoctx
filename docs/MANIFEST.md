@@ -120,6 +120,12 @@ directly in the manifest. Compilation qualifies local IDs with the namespace,
 sorts by ID, resolves owner and same-kind supersession references, and attaches
 an exact hashed byte span with status `declared`.
 
+`artifact_sources` are compiled through the same canonical entity path. Their
+compact declarations can carry multiple exact source anchors and declared
+relationships. Duplicate entity IDs across manifest components, artifact
+authoring, or Markdown frontmatter reject the whole compilation; source order
+never selects a winner.
+
 ## Authored versus generated data
 
 The manifest contains only authored semantic declarations. Hashes, byte/line
@@ -127,6 +133,8 @@ coordinates, observed availability, Git state, compiler identity, provider
 results, and snapshot IDs are generated data and are rejected as unknown
 fields. `artifact_sources` points to the existing compact semantic authoring
 format; it does not point to the generated catalog containing hashes and spans.
+The standalone generated catalog is a deterministic compatibility view of that
+same input, not a second semantic declaration source.
 
 Structural validity grants no filesystem, provider, network, execution, or
 policy authority. The caller selects `-root`; every path must remain beneath it.

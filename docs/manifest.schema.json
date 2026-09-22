@@ -108,7 +108,7 @@
       "properties": {
         "id": {"$ref": "#/$defs/id"},
         "path": {"$ref": "#/$defs/path"},
-        "format": {"const": "repoctx.artifact-authoring/v1alpha1"}
+        "format": {"const": "repoctx.artifact-authoring/v1alpha2"}
       },
       "required": ["id", "path", "format"]
     },

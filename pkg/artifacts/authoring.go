@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"io"
 	"reflect"
+	"strings"
 	"unicode/utf8"
 
 	"github.com/tdeshazo/repoctx/internal/sourceroot"
@@ -14,7 +15,18 @@ import (
 
 // AuthoringVersion identifies the compact artifact-authoring contract. Its
 // source anchors are resolved into exact artifact wire spans by Generate.
-const AuthoringVersion = "repoctx.artifact-authoring/v1alpha1"
+const AuthoringVersion = "repoctx.artifact-authoring/v1alpha2"
+
+// PathPermit decides whether canonical compilation may read an anchored path.
+// A nil permit allows every path beneath the already caller-selected root.
+type PathPermit func(path string) bool
+
+// Compilation is the single validated result used by both the canonical entity
+// adapter and the deterministic standalone catalog projection.
+type Compilation struct {
+	Authoring *AuthoringCatalog
+	Catalog   *Catalog
+}
 
 // AuthoringCatalog contains semantic declarations without derived provenance.
 type AuthoringCatalog struct {
@@ -33,6 +45,7 @@ type AuthoringArtifact struct {
 	Owner          *string         `json:"owner,omitempty"`
 	AppliesTo      []Applicability `json:"applies_to"`
 	Lifecycle      string          `json:"lifecycle"`
+	Sensitivity    string          `json:"sensitivity"`
 	Sources        []string        `json:"sources"`
 	DeclaredInputs []Input         `json:"declared_inputs"`
 	RunnerCheckID  *string         `json:"runner_check_id,omitempty"`
@@ -59,6 +72,21 @@ type NamedSourceAnchor struct {
 // Generate strictly decodes an authoring catalog, resolves its anchors beneath
 // root, and returns a deterministic, line-oriented artifact wire catalog.
 func Generate(root string, data []byte, limits Limits) ([]byte, error) {
+	compiled, err := Compile(root, data, limits, nil)
+	if err != nil {
+		return nil, err
+	}
+	out, err := encodeCatalog(compiled.Catalog)
+	if err != nil {
+		return nil, fmt.Errorf("encode artifact catalog: %w", err)
+	}
+	return out, nil
+}
+
+// Compile validates artifact authoring, resolves its exact source anchors, and
+// returns both the canonical authoring declarations and derived catalog. It
+// performs no provider activation, authority resolution, or command execution.
+func Compile(root string, data []byte, limits Limits, permit PathPermit) (*Compilation, error) {
 	doc, normalized, err := decodeAuthoring(data, limits)
 	if err != nil {
 		return nil, err
@@ -83,6 +111,9 @@ func Generate(root string, data []byte, limits Limits) ([]byte, error) {
 	cache := make(map[string][]byte)
 	resolved := make(map[string]Span, len(doc.SourceAnchors))
 	for _, anchor := range doc.SourceAnchors {
+		if permit != nil && !permit(anchor.Path) {
+			return nil, fmt.Errorf("source anchor %q: path is outside caller scope", anchor.ID)
+		}
 		content, ok := cache[anchor.Path]
 		if !ok {
 			content, err = sources.Read(anchor.Path, 2<<20)
@@ -109,11 +140,7 @@ func Generate(root string, data []byte, limits Limits) ([]byte, error) {
 	if err := validateGenerated(catalog, normalized); err != nil {
 		return nil, err
 	}
-	out, err := encodeCatalog(catalog)
-	if err != nil {
-		return nil, fmt.Errorf("encode artifact catalog: %w", err)
-	}
-	return out, nil
+	return &Compilation{Authoring: doc, Catalog: catalog}, nil
 }
 
 func decodeAuthoring(data []byte, limits Limits) (*AuthoringCatalog, Limits, error) {
@@ -170,6 +197,14 @@ func validateAuthoring(doc *AuthoringCatalog, limits Limits) (map[string]NamedSo
 			return nil, fmt.Errorf("$.source_anchors[%d]: %w", i, err)
 		}
 		anchors[anchor.ID] = anchor
+	}
+	for i, artifact := range doc.Artifacts {
+		if !oneOf(artifact.Sensitivity, "public", "internal", "restricted") {
+			return nil, fmt.Errorf("$.artifacts[%d].sensitivity: unknown sensitivity", i)
+		}
+		if artifact.Owner != nil && (!idPattern.MatchString(*artifact.Owner) || !strings.HasPrefix(*artifact.Owner, doc.Namespace+":")) {
+			return nil, fmt.Errorf("$.artifacts[%d].owner: invalid local owner identity", i)
+		}
 	}
 	return anchors, nil
 }

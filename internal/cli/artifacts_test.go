@@ -15,7 +15,7 @@ func TestArtifactsCommandWritesAndChecksGeneratedCatalog(t *testing.T) {
 	if err := os.WriteFile(source, []byte("unique evidence\n"), 0600); err != nil {
 		t.Fatal(err)
 	}
-	doc := []byte(`{"version":"repoctx.artifact-authoring/v1alpha1","namespace":"test","source_anchors":[{"id":"sample","path":"source.txt","start":"unique evidence","end":"unique evidence"}],"artifacts":[{"id":"test:component.sample","kind":"component","applies_to":[{"kind":"file","path":"source.txt"}],"lifecycle":"active","sources":["sample"],"declared_inputs":[]}],"relationships":[]}`)
+	doc := []byte(`{"version":"repoctx.artifact-authoring/v1alpha2","namespace":"test","source_anchors":[{"id":"sample","path":"source.txt","start":"unique evidence","end":"unique evidence"}],"artifacts":[{"id":"test:component.sample","kind":"component","applies_to":[{"kind":"file","path":"source.txt"}],"lifecycle":"active","sensitivity":"internal","sources":["sample"],"declared_inputs":[]}],"relationships":[]}`)
 	if err := os.WriteFile(authoring, doc, 0600); err != nil {
 		t.Fatal(err)
 	}

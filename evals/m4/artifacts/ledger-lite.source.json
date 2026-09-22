@@ -1,5 +1,5 @@
 {
-  "version": "repoctx.artifact-authoring/v1alpha1",
+  "version": "repoctx.artifact-authoring/v1alpha2",
   "namespace": "ledger",
   "source_anchors": [
     {"id":"config","path":"ledger/config.py","start":"DEFAULT_CURRENCY", "end":"REQUEST_TIMEOUT_SECONDS = 45"},
@@ -9,11 +9,11 @@
     {"id":"operations","path":"docs/operations.md","start":"# Operations", "end":"Operators retry a failed settlement at most three times."}
   ],
   "artifacts": [
-    {"id":"ledger:component.config","kind":"component","applies_to":[{"kind":"file","path":"ledger/config.py"}],"lifecycle":"active","sources":["config"],"declared_inputs":[]},
-    {"id":"ledger:component.pricing","kind":"component","applies_to":[{"kind":"file","path":"ledger/pricing.py"}],"lifecycle":"active","sources":["pricing"],"declared_inputs":[]},
-    {"id":"ledger:component.service","kind":"component","applies_to":[{"kind":"file","path":"ledger/service.py"}],"lifecycle":"active","sources":["service"],"declared_inputs":[]},
-    {"id":"ledger:component.storage","kind":"component","applies_to":[{"kind":"file","path":"ledger/storage.py"}],"lifecycle":"active","sources":["storage"],"declared_inputs":[]},
-    {"id":"ledger:requirement.operations","kind":"requirement","applies_to":[{"kind":"file","path":"docs/operations.md"}],"lifecycle":"active","sources":["operations"],"declared_inputs":[]}
+    {"id":"ledger:component.config","kind":"component","applies_to":[{"kind":"file","path":"ledger/config.py"}],"lifecycle":"active","sensitivity":"internal","sources":["config"],"declared_inputs":[]},
+    {"id":"ledger:component.pricing","kind":"component","applies_to":[{"kind":"file","path":"ledger/pricing.py"}],"lifecycle":"active","sensitivity":"internal","sources":["pricing"],"declared_inputs":[]},
+    {"id":"ledger:component.service","kind":"component","applies_to":[{"kind":"file","path":"ledger/service.py"}],"lifecycle":"active","sensitivity":"internal","sources":["service"],"declared_inputs":[]},
+    {"id":"ledger:component.storage","kind":"component","applies_to":[{"kind":"file","path":"ledger/storage.py"}],"lifecycle":"active","sensitivity":"internal","sources":["storage"],"declared_inputs":[]},
+    {"id":"ledger:requirement.operations","kind":"requirement","applies_to":[{"kind":"file","path":"docs/operations.md"}],"lifecycle":"active","sensitivity":"internal","sources":["operations"],"declared_inputs":[]}
   ],
   "relationships": [
     {"from":"ledger:component.service","to":"ledger:component.config","kind":"depends_on","resolution":"declared","sources":["service"]},

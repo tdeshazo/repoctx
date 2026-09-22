@@ -1,5 +1,5 @@
 {
-  "version": "repoctx.artifact-authoring/v1alpha1",
+  "version": "repoctx.artifact-authoring/v1alpha2",
   "namespace": "repoctx",
   "source_anchors": [
     {
@@ -75,16 +75,17 @@
       "end": "the existing deterministic artifact-authoring workflow."
     },
     {
-      "id": "m7-03",
+      "id": "m7-04",
       "path": "ROADMAP.md",
-      "start": "- [ ] **M7-03 — Unify artifact authoring and compilation.** Make the current",
-      "end": "  frontmatter rather than selecting one by load order."
+      "start": "- [ ] **M7-04 — Expand compilation identity.** Record optional Git revision and",
+      "end": "  Git and distinguish reproducibility metadata from authentication."
     }
   ],
   "artifacts": [
     {
       "id": "repoctx:component.compiler",
       "kind": "component",
+      "owner": "repoctx:maintainers",
       "applies_to": [
         {
           "kind": "subtree",
@@ -92,6 +93,7 @@
         }
       ],
       "lifecycle": "active",
+      "sensitivity": "public",
       "sources": [
         "compiler-package"
       ],
@@ -106,6 +108,7 @@
     {
       "id": "repoctx:component.agent-context",
       "kind": "component",
+      "owner": "repoctx:maintainers",
       "applies_to": [
         {
           "kind": "subtree",
@@ -113,6 +116,7 @@
         }
       ],
       "lifecycle": "active",
+      "sensitivity": "public",
       "sources": [
         "context-package"
       ],
@@ -127,6 +131,7 @@
     {
       "id": "repoctx:component.discovery",
       "kind": "component",
+      "owner": "repoctx:maintainers",
       "applies_to": [
         {
           "kind": "subtree",
@@ -134,6 +139,7 @@
         }
       ],
       "lifecycle": "active",
+      "sensitivity": "public",
       "sources": [
         "discovery-package"
       ],
@@ -148,6 +154,7 @@
     {
       "id": "repoctx:component.artifacts",
       "kind": "component",
+      "owner": "repoctx:maintainers",
       "applies_to": [
         {
           "kind": "subtree",
@@ -155,6 +162,7 @@
         }
       ],
       "lifecycle": "active",
+      "sensitivity": "public",
       "sources": [
         "artifacts-package"
       ],
@@ -169,6 +177,7 @@
     {
       "id": "repoctx:component.obligation-handoff",
       "kind": "component",
+      "owner": "repoctx:maintainers",
       "applies_to": [
         {
           "kind": "subtree",
@@ -176,6 +185,7 @@
         }
       ],
       "lifecycle": "active",
+      "sensitivity": "public",
       "sources": [
         "obligation-package"
       ],
@@ -190,6 +200,7 @@
     {
       "id": "repoctx:contract.ir-v1alpha4",
       "kind": "contract",
+      "owner": "repoctx:maintainers",
       "applies_to": [
         {
           "kind": "subtree",
@@ -197,6 +208,7 @@
         }
       ],
       "lifecycle": "active",
+      "sensitivity": "public",
       "sources": [
         "ir-contract"
       ],
@@ -205,6 +217,7 @@
     {
       "id": "repoctx:contract.context-v1alpha3",
       "kind": "contract",
+      "owner": "repoctx:maintainers",
       "applies_to": [
         {
           "kind": "subtree",
@@ -212,6 +225,7 @@
         }
       ],
       "lifecycle": "active",
+      "sensitivity": "public",
       "sources": [
         "context-contract"
       ],
@@ -220,6 +234,7 @@
     {
       "id": "repoctx:contract.discovery-v1alpha1",
       "kind": "contract",
+      "owner": "repoctx:maintainers",
       "applies_to": [
         {
           "kind": "subtree",
@@ -227,6 +242,7 @@
         }
       ],
       "lifecycle": "active",
+      "sensitivity": "public",
       "sources": [
         "discovery-contract"
       ],
@@ -235,6 +251,7 @@
     {
       "id": "repoctx:contract.artifacts-v1alpha1",
       "kind": "contract",
+      "owner": "repoctx:maintainers",
       "applies_to": [
         {
           "kind": "subtree",
@@ -242,6 +259,7 @@
         }
       ],
       "lifecycle": "active",
+      "sensitivity": "public",
       "sources": [
         "artifacts-contract"
       ],
@@ -250,6 +268,7 @@
     {
       "id": "repoctx:contract.obligations-v1alpha1",
       "kind": "contract",
+      "owner": "repoctx:maintainers",
       "applies_to": [
         {
           "kind": "subtree",
@@ -257,6 +276,7 @@
         }
       ],
       "lifecycle": "active",
+      "sensitivity": "public",
       "sources": [
         "obligations-contract"
       ],
@@ -265,6 +285,7 @@
     {
       "id": "repoctx:requirement.development-verification",
       "kind": "requirement",
+      "owner": "repoctx:maintainers",
       "applies_to": [
         {
           "kind": "subtree",
@@ -272,6 +293,7 @@
         }
       ],
       "lifecycle": "active",
+      "sensitivity": "public",
       "sources": [
         "development-verification"
       ],
@@ -286,6 +308,7 @@
     {
       "id": "repoctx:check.go-test-all",
       "kind": "verification_obligation",
+      "owner": "repoctx:maintainers",
       "applies_to": [
         {
           "kind": "subtree",
@@ -293,6 +316,7 @@
         }
       ],
       "lifecycle": "active",
+      "sensitivity": "public",
       "sources": [
         "development-verification"
       ],
@@ -308,6 +332,7 @@
     {
       "id": "repoctx:check.go-vet-all",
       "kind": "verification_obligation",
+      "owner": "repoctx:maintainers",
       "applies_to": [
         {
           "kind": "subtree",
@@ -315,6 +340,7 @@
         }
       ],
       "lifecycle": "active",
+      "sensitivity": "public",
       "sources": [
         "development-verification"
       ],
@@ -330,6 +356,7 @@
     {
       "id": "repoctx:milestone.m7-canonical-model",
       "kind": "component",
+      "owner": "repoctx:maintainers",
       "applies_to": [
         {
           "kind": "file",
@@ -337,14 +364,16 @@
         }
       ],
       "lifecycle": "active",
+      "sensitivity": "public",
       "sources": [
         "m7-milestone"
       ],
       "declared_inputs": []
     },
     {
-      "id": "repoctx:requirement.m7-03-unified-authoring",
+      "id": "repoctx:requirement.m7-04-compilation-identity",
       "kind": "requirement",
+      "owner": "repoctx:maintainers",
       "applies_to": [
         {
           "kind": "file",
@@ -352,8 +381,9 @@
         }
       ],
       "lifecycle": "active",
+      "sensitivity": "public",
       "sources": [
-        "m7-03"
+        "m7-04"
       ],
       "declared_inputs": []
     }
@@ -424,11 +454,11 @@
     },
     {
       "from": "repoctx:milestone.m7-canonical-model",
-      "to": "repoctx:requirement.m7-03-unified-authoring",
+      "to": "repoctx:requirement.m7-04-compilation-identity",
       "kind": "contains",
       "resolution": "declared",
       "sources": [
-        "m7-03"
+        "m7-04"
       ]
     }
   ]

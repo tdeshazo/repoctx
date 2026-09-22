@@ -34,11 +34,11 @@ func TestPublishedContractVersions(t *testing.T) {
 		"agent context":           "repoctx.context/v1alpha3",
 		"discovery":               "repoctx.discovery/v1alpha1",
 		"artifacts":               "repoctx.artifacts/v1alpha1",
-		"artifact authoring":      "repoctx.artifact-authoring/v1alpha1",
+		"artifact authoring":      "repoctx.artifact-authoring/v1alpha2",
 		"document-links provider": "repoctx.document-links/v1",
 		"Go-imports provider":     "repoctx.go-imports/v1",
 		"obligation handoff":      "repoctx.obligations/v1alpha1",
-		"repository entities":     "repoctx.entities/v1alpha1",
+		"repository entities":     "repoctx.entities/v1alpha2",
 		"repository manifest":     "repoctx.manifest/v1alpha2",
 		"document frontmatter":    "repoctx.frontmatter/v1alpha1",
 	}

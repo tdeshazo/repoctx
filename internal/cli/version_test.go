@@ -34,7 +34,7 @@ func TestCurrentBuildInfoUsesInjectedProvenance(t *testing.T) {
 	}
 	if info.Version != buildInfoVersion || info.Contracts.GoAPI != compat.GoAPI ||
 		info.Contracts.IR != "repoctx.ir/v1alpha4" ||
-		info.Contracts.ArtifactAuthoring != "repoctx.artifact-authoring/v1alpha1" ||
+		info.Contracts.ArtifactAuthoring != "repoctx.artifact-authoring/v1alpha2" ||
 		info.Contracts.DocumentLinks != "repoctx.document-links/v1" ||
 		info.Contracts.GoImports != "repoctx.go-imports/v1" ||
 		info.Contracts.Obligations != "repoctx.obligations/v1alpha1" ||

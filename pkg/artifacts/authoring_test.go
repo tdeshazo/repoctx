@@ -7,6 +7,8 @@ import (
 	"path/filepath"
 	"strings"
 	"testing"
+
+	"github.com/tdeshazo/repoctx/pkg/ir"
 )
 
 func TestGenerateResolvesExactSourceEvidence(t *testing.T) {
@@ -62,9 +64,40 @@ func TestGenerateRejectsInvalidOrAmbiguousAuthoring(t *testing.T) {
 	}
 }
 
+func TestEntitiesUsesCanonicalCompilation(t *testing.T) {
+	root := t.TempDir()
+	content := []byte("start middle end\n")
+	if err := os.WriteFile(filepath.Join(root, "source.txt"), content, 0600); err != nil {
+		t.Fatal(err)
+	}
+	model, err := Entities(root, authoringFixture("start", "end"), func(path string) bool {
+		return path == "source.txt"
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if model.Version != ir.EntityVersion || len(model.Entities) != 1 || len(model.Relationships) != 1 {
+		t.Fatalf("unexpected entity adapter result: %+v", model)
+	}
+	entity := model.Entities[0]
+	if entity.ID != "test:component.sample" || entity.Sensitivity != "internal" ||
+		entity.Owners == nil || entity.Supersedes == nil || entity.Freshness.Inputs == nil ||
+		len(entity.Declaration.Sources) != 1 || entity.Declaration.Sources[0].EndByte != int64(len("start middle end")) {
+		t.Fatalf("artifact declaration was not preserved: %+v", entity)
+	}
+	if relationship := model.Relationships[0]; relationship.From != entity.ID || relationship.To != entity.ID ||
+		relationship.Kind != "references" || len(relationship.Declaration.Sources) != 1 {
+		t.Fatalf("artifact relationship was not preserved: %+v", relationship)
+	}
+
+	if denied, err := Entities(root, authoringFixture("start", "end"), func(string) bool { return false }); err == nil || denied != nil || !strings.Contains(err.Error(), "outside caller scope") {
+		t.Fatalf("denied anchor was read: model=%+v err=%v", denied, err)
+	}
+}
+
 func authoringFixture(start, end string) []byte {
 	doc := `{
-  "version":"repoctx.artifact-authoring/v1alpha1",
+  "version":"repoctx.artifact-authoring/v1alpha2",
   "namespace":"test",
   "source_anchors":[{"id":"sample","path":"source.txt","start":START,"end":END}],
   "artifacts":[{
@@ -72,10 +105,17 @@ func authoringFixture(start, end string) []byte {
     "kind":"component",
     "applies_to":[{"kind":"file","path":"source.txt"}],
     "lifecycle":"active",
+    "sensitivity":"internal",
     "sources":["sample"],
     "declared_inputs":[]
   }],
-  "relationships":[]
+  "relationships":[{
+    "from":"test:component.sample",
+    "to":"test:component.sample",
+    "kind":"references",
+    "resolution":"declared",
+    "sources":["sample"]
+  }]
 }`
 	startJSON, _ := json.Marshal(start)
 	endJSON, _ := json.Marshal(end)

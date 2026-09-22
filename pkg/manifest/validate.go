@@ -71,7 +71,7 @@ func validate(doc *Manifest, limits Limits) error {
 		if !validPath(source.Path, false) {
 			return fail(path+".path", "invalid path")
 		}
-		if source.Format != "repoctx.artifact-authoring/v1alpha1" {
+		if source.Format != "repoctx.artifact-authoring/v1alpha2" {
 			return fail(path+".format", "unsupported artifact source format")
 		}
 	}
