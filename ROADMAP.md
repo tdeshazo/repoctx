@@ -32,6 +32,17 @@ earlier M6-07 directed pass does not establish reliable EOF handling across task
 See the [actionable feedback](docs/reports/real-repoctx-skill-2026-09-22-feedback.md)
 for evidence, limitations, and verification criteria.
 
+A later matched `gpt-6-sol` comparison also passed 8/8 in both arms. The
+Repoctx arm used 2.4% more total input/output tokens and fewer on two tasks;
+it made 12 discoveries, one read, and no failed Repoctx calls. Treatment
+included a required Repoctx call, executable, skill, and cold index, so the
+result does not isolate the skill or verify EOF recovery. See the
+[matched-run feedback](docs/reports/real-sol-skill-2026-09-22-feedback.md).
+Keep usage optional; inspect the largest per-task differences and include index
+setup in cost reporting before changing defaults. The planned fresh-task
+comparison still needs to vary skill visibility with the executable available
+in both arms and without a forced-use instruction.
+
 - [x] **Report all invalid ranges in a batched read.** The [EOF correction](pkg/discovery/search.go)
   gives a through-EOF retry for each oversized end; focused tests cover multiple
   invalid ranges, empty files, and starts beyond EOF. Fresh agent recovery remains

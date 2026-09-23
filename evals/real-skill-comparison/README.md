@@ -4,6 +4,9 @@ This protocol prepares a future controlled comparison of Repoctx skill guidance
 on fresh repository tasks. It does not rerun or reinterpret the eight-task
 September report. The primary comparison isolates whether showing the pinned
 native skill helps when both conditions have the same pinned Repoctx executable.
+The later [matched gpt-6-sol feedback](../../docs/reports/real-sol-skill-2026-09-22-feedback.md)
+describes a separate eight-pair run with forced Repoctx use and a control without
+the executable. That run does not satisfy this protocol's primary contrast.
 The existing [M4 protocol](../m4/README.md) remains the source for the project's
 paired confidence and decision conventions.
 
